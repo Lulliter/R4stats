@@ -8,7 +8,7 @@
 websites:
   lulas_site: https://luisamimmi.org/ # "https://lulliter.github.io/nerd-help"
   gh_repo: https://github.com/Lulliter/R4stats
-  live_site: https://lulliter.github.io/R4stats
+  live_site: https://lulliter.github.io/R4stats/
   R4biostats: https://R4biostats.com/
 
 ## --- To include the value of a variable, use:
