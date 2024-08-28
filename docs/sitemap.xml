@@ -1,79 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>{{< var websites.live_site >}}/syllabus.html</loc>
+    <loc>https://lulliter.github.io/R4stats/syllabus.html</loc>
     <lastmod>2024-08-28T08:17:01.882Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab03.html</loc>
+    <loc>https://lulliter.github.io/R4stats/practice/practice_slides/slides_lab03.html</loc>
     <lastmod>2024-08-28T08:17:01.871Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab01.html</loc>
+    <loc>https://lulliter.github.io/R4stats/practice/practice_slides/slides_lab01.html</loc>
     <lastmod>2024-08-28T08:17:01.843Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/practice/lab04_intro_ML.html</loc>
+    <loc>https://lulliter.github.io/R4stats/practice/lab04_intro_ML.html</loc>
     <lastmod>2024-08-28T08:17:01.821Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/practice/lab02_inference.html</loc>
+    <loc>https://lulliter.github.io/R4stats/practice/lab02_inference.html</loc>
     <lastmod>2024-08-28T08:17:01.821Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/me.html</loc>
+    <loc>https://lulliter.github.io/R4stats/me.html</loc>
     <lastmod>2024-08-28T08:17:01.807Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/lectures_slides/000_exe_mine.html</loc>
+    <loc>https://lulliter.github.io/R4stats/lectures_slides/000_exe_mine.html</loc>
     <lastmod>2024-08-28T08:17:01.760Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/lectures/lec03_corr_regress.html</loc>
+    <loc>https://lulliter.github.io/R4stats/lectures/lec03_corr_regress.html</loc>
     <lastmod>2024-08-28T08:17:01.760Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/lectures/lec01_data_with_R.html</loc>
+    <loc>https://lulliter.github.io/R4stats/lectures/lec01_data_with_R.html</loc>
     <lastmod>2024-08-28T08:17:01.760Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/index.html</loc>
+    <loc>https://lulliter.github.io/R4stats/index.html</loc>
     <lastmod>2024-08-28T08:36:11.313Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/install.html</loc>
+    <loc>https://lulliter.github.io/R4stats/install.html</loc>
     <lastmod>2024-08-28T08:17:01.759Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/lectures/lec02_inference.html</loc>
+    <loc>https://lulliter.github.io/R4stats/lectures/lec02_inference.html</loc>
     <lastmod>2024-08-28T08:17:01.760Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/lectures/lec04_intro_ML.html</loc>
+    <loc>https://lulliter.github.io/R4stats/lectures/lec04_intro_ML.html</loc>
     <lastmod>2024-08-28T08:17:01.760Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/license_etc.html</loc>
+    <loc>https://lulliter.github.io/R4stats/license_etc.html</loc>
     <lastmod>2024-08-28T08:36:13.370Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/practice/lab01_data_with_R.html</loc>
+    <loc>https://lulliter.github.io/R4stats/practice/lab01_data_with_R.html</loc>
     <lastmod>2024-08-28T08:17:01.821Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/practice/lab03_corr_regress.html</loc>
+    <loc>https://lulliter.github.io/R4stats/practice/lab03_corr_regress.html</loc>
     <lastmod>2024-08-28T08:17:01.821Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_extra_01.html</loc>
+    <loc>https://lulliter.github.io/R4stats/practice/practice_slides/slides_extra_01.html</loc>
     <lastmod>2024-08-28T08:17:01.821Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab02.html</loc>
+    <loc>https://lulliter.github.io/R4stats/practice/practice_slides/slides_lab02.html</loc>
     <lastmod>2024-08-28T08:17:01.856Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab04.html</loc>
+    <loc>https://lulliter.github.io/R4stats/practice/practice_slides/slides_lab04.html</loc>
     <lastmod>2024-08-28T08:17:01.882Z</lastmod>
   </url>
 </urlset>

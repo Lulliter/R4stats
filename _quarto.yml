@@ -24,7 +24,7 @@ csl: bib/apa-6th-edition.csl
 website:
   title: "R 4 stats"
   description: "Code and supplementary materials for the ...."
-  site-url: "{{< var websites.live_site >}}" # "https://lulliter.github.io/R4stats/" 
+  site-url: "https://lulliter.github.io/R4stats" # "https://lulliter.github.io/R4stats/" 
  #### ---  Account Google Analytics "Lulliter github (UA-128632724)" collegato a https://r4biostats.com/
   # google-analytics: "G-51QEQ3S83R"
   repo-url: "{{< var websites.gh_repo >}}" #  "https://github.com/Lulliter/R4stats"
