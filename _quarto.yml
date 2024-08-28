@@ -22,12 +22,12 @@ bibliography: bib/R4biostats.bib
 csl: bib/apa-6th-edition.csl
 
 website:
-  title: "R 4 biostats"
+  title: "R 4 stats"
   description: "Code and supplementary materials for the ...."
-  site-url: "{{< var websites.live_site >}}" # "http://r4biostats.com/" 
- # Account Google Analytics "Lulliter github (UA-128632724)" collegato a https://r4biostats.com/
-  google-analytics: "G-51QEQ3S83R"
-#  repo-url: "https://github.com/Lulliter/R4biostats"
+  site-url: "{{< var websites.live_site >}}" # "https://lulliter.github.io/R4stats/" 
+ #### ---  Account Google Analytics "Lulliter github (UA-128632724)" collegato a https://r4biostats.com/
+  # google-analytics: "G-51QEQ3S83R"
+  repo-url: "{{< var websites.gh_repo >}}" #  "https://github.com/Lulliter/R4stats"
 #  repo-actions: [edit, issue]
   favicon: images/icons8_hist_96.png
   search: false # no magnifier on navbar 
@@ -38,7 +38,9 @@ website:
       {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-nc >}} {{< fa brands creative-commons-sa >}}
       [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) <br> M. Chiara Mimmi & Luisa M. Mimmi 2024
     right: |
-      Made with {{< fa brands r-project >}} and [Quarto](https://quarto.org/)
+      Made with {{< fa brands r-project >}} and [Quarto](https://quarto.org/) <br> 
+      [Code at {{< fa brands github >}} GitHub]("{{< var websites.gh_repo >}}")
+
     background: "#e3eff7"
 #     left: |
 #      {{< fa regular copyright >}} M. Chiara Mimmi & Luisa M. Mimmi 2024
@@ -89,9 +91,9 @@ website:
             href: practice/lab03_corr_regress.qmd
           - text: "Lab: Intro to machine learning"
             href: practice/lab04_intro_ML.qmd
-      - text: "About"
-        icon: mortarboard-fill #person-circle # https://icons.getbootstrap.com/?q=home
-        href: me.qmd
+      # - text: "About"
+      #   icon: mortarboard-fill #person-circle # https://icons.getbootstrap.com/?q=home
+      #   href: me.qmd
       - text: "Acknowledgements"
         icon: bookmark-heart-fill # code-square # https://icons.getbootstrap.com/?q=home
         href: license_etc.qmd

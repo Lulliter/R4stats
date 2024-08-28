@@ -1,5 +1,5 @@
 ---
-title: "Intro to Biostatistics with R"
+title: "Intro to Statistics with R"
 subtitle: "Intensive summer workshop for life science PhD students"
 ## -------  general Output Options
 execute:     
@@ -30,76 +30,8 @@ format:
 
 # Welcome! 
 
-This website collects the materials for a four day workshop organized by [MITGEST Doctoral Network](https://www.mitgest.eu/) in July 2024, hosted by the Radboud Center for Mitochondrial Medicine, Nijmegen, Netherlands.
+This website collects the materials used for teaching **Introductory Statistics** with R.  
 
-- [Location:]{.smallcaps} Radboud Center for Mitochondrial Medicine, Nijmegen, Netherland
-- [Time:]{.smallcaps} 9 am - 4 pm July 24^th^ to July 27^th^, 2024.
+This (ongoing) work collected here originated from the preparation of a Summer workshop in July 2024 that my sister taught to a group of EU PhD students in the life science fields: see [{{< var websites.R4biostats >}}]({{< var websites.R4biostats >}}).
 
-
-# Workshop Overview
-
-This Biostatistics workshop provides an introduction to selected topics in biostatistical concepts and reasoning. 
-This course aims to introduce to the field and gives a solid understanding of data and data types, hypothesis testing and statistical inference applied to life sciences. 
-
-Specific topics covered include: tools for describing central tendency and variability in data; methods for performing inference on population means and proportions via sample data; statistical hypothesis testing and its application to group comparisons; issues of power and sample size in study designs; elements of machine learning algorithms for understanding and classifying data.
-
-While there are some formulae and computational elements to the course, the emphasis is on applications of acquired concepts to “real life” of research scientists. 
-
-Though the vast majority of what you will learn in this course can be applied in any software package, the seminar will use R for empirical examples and exercises. 
-
-
-<!-- After completing the course, you will: -->
-
-<!-- + ~~Know the technical and substantive difference between fixed and random effects.~~ -->
-<!-- Understand random intercepts and random coefficients and know when to use each one.~~ -->
-<!-- + ~~Know how to combine the strengths of random-effects and fixed effects approaches into a single model.~~ -->
-<!-- + ~~Know how to estimate these models and interpret the results.~~ -->
-
-<!-- # Why use R? -->
-
-
-
-
-# Schedule
-
-```{r sched}
-#| eval: true
-#| echo: false
-#| output: true
-
-library (tibble)
-library (kableExtra)
-library(stringr)
-
-schedule <- tibble::tribble(
-   ~Day,             ~Time,            ~Activity, #~Location,
-   "24 July, 2024",  "9am - 12am", "Lesson 1 ~ Working with data (with intro to R)", # "Building ??, Room ?",
-   "24 July, 2024",  "1pm - 4pm",  "Practice Session 1",                  #"Building ??, Room ?",
-
-   "25 July, 2024",  "9am - 12am", "Lesson 2 ~ Inferential statistics",               # "Building ??, Room ?",
-   "25 July, 2024",  "1pm - 4pm",  "Practice Session 2",                 #"Building ??, Room ?",
-
-   "26 July, 2024",  "9am - 12am", "Lesson 3 ~ Modeling correlation and regression",#  "Building ??, Room ?",
-   "26 July, 2024",  "1pm - 4pm",  "Practice Session 3",                  #"Building ??, Room ?",
-
-   "27 July, 2024",  "9am - 12am", "Lesson 4 ~ Intro to machine learning (with R and MetaboAnalyst)",  #   "Building ??, Room ?",
-   "27 July, 2024",  "1pm - 4pm", "Practice Session 4"                   #"Building ??, Room ?"
-   )
-
-schedule %>% 
-#  kbl(caption = "(Tentative Schedule)") %>% 
-  kbl() %>% 
-  column_spec(c(1,3), bold = ifelse( str_detect(schedule$Activity, "~", negate = FALSE), TRUE, FALSE)) %>% 
-  collapse_rows(columns = 1, valign = "middle", target = 1) %>% 
-  kable_styling()
-```
  
-<!-- Hot & cold drinks will be served during the morning breaks. -->
-
-# Practical information
-
-Participants will need to bring their own laptop and make sure to have the required software installed ahead of the workshop. 
-
-Step-by-step installation instructions are provided [here](https://r4biostats.com/install.html).  
-
-

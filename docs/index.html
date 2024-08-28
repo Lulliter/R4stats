@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.550">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>R 4 biostats - Intro to Biostatistics with R</title>
+
+
+<title>R 4 stats - Intro to Statistics with R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 </style>
 
+
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <link href="./images/icons8_hist_96.png" rel="icon" type="image/png">
 <script src="site_libs/clipboard/clipboard.min.js"></script>
@@ -32,7 +36,8 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -46,21 +51,20 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-51QEQ3S83R"></script><script type="text/javascript">
+}</script>
 
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-51QEQ3S83R', { 'anonymize_ip': true});
-</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
 </head>
+
 <body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">R 4 biostats</span>
+    <span class="navbar-title">R 4 stats</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -68,7 +72,7 @@ gtag('config', 'G-51QEQ3S83R', { 'anonymize_ip': true});
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item">
+  <li class="nav-item">
     <a class="nav-link active" href="./index.html" aria-current="page"> <i class="bi bi-house-fill" role="img">
 </i> 
 <span class="menu-text">Home</span></a>
@@ -89,8 +93,8 @@ gtag('config', 'G-51QEQ3S83R', { 'anonymize_ip': true});
 </i> 
  <span class="menu-text">Lectures</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-lectures">
-<li>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-lectures">    
+        <li>
     <a class="dropdown-item" href="./lectures/lec01_data_with_R.html">
  <span class="dropdown-text">Intro to R and data analysis</span></a>
   </li>  
@@ -107,13 +111,13 @@ gtag('config', 'G-51QEQ3S83R', { 'anonymize_ip': true});
  <span class="dropdown-text">Intro to machine learning</span></a>
   </li>  
     </ul>
-</li>
+  </li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-fa-brands-r-project--labs" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text"><i class="fa-brands fa-r-project" aria-label="r-project"></i> Labs</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-fa-brands-r-project--labs">
-<li>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-fa-brands-r-project--labs">    
+        <li>
     <a class="dropdown-item" href="./practice/lab01_data_with_R.html">
  <span class="dropdown-text">Lab: Intro to R and data analysis</span></a>
   </li>  
@@ -130,39 +134,41 @@ gtag('config', 'G-51QEQ3S83R', { 'anonymize_ip': true});
  <span class="dropdown-text">Lab: Intro to machine learning</span></a>
   </li>  
     </ul>
-</li>
-  <li class="nav-item">
-    <a class="nav-link" href="./me.html"> <i class="bi bi-mortarboard-fill" role="img">
-</i> 
-<span class="menu-text">About</span></a>
-  </li>  
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="./license_etc.html"> <i class="bi bi-bookmark-heart-fill" role="img">
 </i> 
 <span class="menu-text">Acknowledgements</span></a>
   </li>  
 </ul>
-</div> <!-- /navcollapse -->
+          </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-<li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome!</a></li>
-  <li><a href="#workshop-overview" id="toc-workshop-overview" class="nav-link" data-scroll-target="#workshop-overview">Workshop Overview</a></li>
-  <li><a href="#schedule" id="toc-schedule" class="nav-link" data-scroll-target="#schedule">Schedule</a></li>
-  <li><a href="#practical-information" id="toc-practical-information" class="nav-link" data-scroll-target="#practical-information">Practical information</a></li>
-  </ul></nav>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome!</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title">Intro to Biostatistics with R</h1>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Intro to Statistics with R</h1>
 <p class="subtitle lead">Intensive summer workshop for life science PhD students</p>
 </div>
 
@@ -177,87 +183,22 @@ gtag('config', 'G-51QEQ3S83R', { 'anonymize_ip': true});
   
 
 
-</header><!-- ::: {.callout-caution collapse="false"} --><!-- Webpage construction in progress... --><!-- ::: --><section id="welcome" class="level1"><h1>Welcome!</h1>
-<p>This website collects the materials for a four day workshop organized by <a href="https://www.mitgest.eu/">MITGEST Doctoral Network</a> in July 2024, hosted by the Radboud Center for Mitochondrial Medicine, Nijmegen, Netherlands.</p>
-<ul>
-<li>
-<span class="smallcaps">Location:</span> Radboud Center for Mitochondrial Medicine, Nijmegen, Netherland</li>
-<li>
-<span class="smallcaps">Time:</span> 9 am - 4 pm July 24<sup>th</sup> to July 27<sup>th</sup>, 2024.</li>
-</ul></section><section id="workshop-overview" class="level1"><h1>Workshop Overview</h1>
-<p>This Biostatistics workshop provides an introduction to selected topics in biostatistical concepts and reasoning. This course aims to introduce to the field and gives a solid understanding of data and data types, hypothesis testing and statistical inference applied to life sciences.</p>
-<p>Specific topics covered include: tools for describing central tendency and variability in data; methods for performing inference on population means and proportions via sample data; statistical hypothesis testing and its application to group comparisons; issues of power and sample size in study designs; elements of machine learning algorithms for understanding and classifying data.</p>
-<p>While there are some formulae and computational elements to the course, the emphasis is on applications of acquired concepts to “real life” of research scientists.</p>
-<p>Though the vast majority of what you will learn in this course can be applied in any software package, the seminar will use R for empirical examples and exercises.</p>
-<!-- After completing the course, you will: -->
-<!-- + ~~Know the technical and substantive difference between fixed and random effects.~~ -->
-<!-- Understand random intercepts and random coefficients and know when to use each one.~~ -->
-<!-- + ~~Know how to combine the strengths of random-effects and fixed effects approaches into a single model.~~ -->
-<!-- + ~~Know how to estimate these models and interpret the results.~~ -->
-<!-- # Why use R? -->
-</section><section id="schedule" class="level1"><h1>Schedule</h1>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<thead><tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Day</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Time</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Activity</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">24 July, 2024</td>
-<td style="text-align: left;">9am - 12am</td>
-<td style="text-align: left; font-weight: bold;">Lesson 1 ~ Working with data (with intro to R)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">24 July, 2024</td>
-<td style="text-align: left;">1pm - 4pm</td>
-<td style="text-align: left;">Practice Session 1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">25 July, 2024</td>
-<td style="text-align: left;">9am - 12am</td>
-<td style="text-align: left; font-weight: bold;">Lesson 2 ~ Inferential statistics</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">25 July, 2024</td>
-<td style="text-align: left;">1pm - 4pm</td>
-<td style="text-align: left;">Practice Session 2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">26 July, 2024</td>
-<td style="text-align: left;">9am - 12am</td>
-<td style="text-align: left; font-weight: bold;">Lesson 3 ~ Modeling correlation and regression</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">26 July, 2024</td>
-<td style="text-align: left;">1pm - 4pm</td>
-<td style="text-align: left;">Practice Session 3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">27 July, 2024</td>
-<td style="text-align: left;">9am - 12am</td>
-<td style="text-align: left; font-weight: bold;">Lesson 4 ~ Intro to machine learning (with R and MetaboAnalyst)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">27 July, 2024</td>
-<td style="text-align: left;">1pm - 4pm</td>
-<td style="text-align: left;">Practice Session 4</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<!-- Hot & cold drinks will be served during the morning breaks. -->
-</section><section id="practical-information" class="level1"><h1>Practical information</h1>
-<p>Participants will need to bring their own laptop and make sure to have the required software installed ahead of the workshop.</p>
-<p>Step-by-step installation instructions are provided <a href="https://r4biostats.com/install.html">here</a>.</p>
+</header>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<!-- ::: {.callout-caution collapse="false"} -->
+<!-- Webpage construction in progress... -->
+<!-- ::: -->
+<section id="welcome" class="level1">
+<h1>Welcome!</h1>
+<p>This website collects the materials used for teaching <strong>Introductory Statistics</strong> with R.</p>
+<p>This (ongoing) work collected here originated from the preparation of a Summer workshop in July 2024 that my sister taught to a group of EU PhD students in the life science fields: see <a href="https://R4biostats.com/">https://R4biostats.com/</a>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -645,7 +586,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
+<footer class="footer">
+  <div class="nav-footer">
     <div class="nav-footer-left">
 <p><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> <i class="fa-brands fa-creative-commons-nc" aria-label="creative-commons-nc"></i> <i class="fa-brands fa-creative-commons-sa" aria-label="creative-commons-sa"></i> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> <br> M. Chiara Mimmi &amp; Luisa M. Mimmi 2024</p>
 </div>   
@@ -653,10 +595,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p>Made with <i class="fa-brands fa-r-project" aria-label="r-project"></i> and <a href="https://quarto.org/">Quarto</a></p>
+<p>Made with <i class="fa-brands fa-r-project" aria-label="r-project"></i> and <a href="https://quarto.org/">Quarto</a> <br> <a href="&quot;https://github.com/Lulliter/R4stats&quot;">Code at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>
   </div>
 </footer>
+
+
 
 
 </body></html>

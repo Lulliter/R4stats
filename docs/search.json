@@ -1822,9 +1822,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Intro to Biostatistics with R",
+    "title": "Intro to Statistics with R",
     "section": "",
-    "text": "Welcome!\nThis website collects the materials for a four day workshop organized by MITGEST Doctoral Network in July 2024, hosted by the Radboud Center for Mitochondrial Medicine, Nijmegen, Netherlands.\n\n\nLocation: Radboud Center for Mitochondrial Medicine, Nijmegen, Netherland\n\nTime: 9 am - 4 pm July 24th to July 27th, 2024.\nWorkshop Overview\nThis Biostatistics workshop provides an introduction to selected topics in biostatistical concepts and reasoning. This course aims to introduce to the field and gives a solid understanding of data and data types, hypothesis testing and statistical inference applied to life sciences.\nSpecific topics covered include: tools for describing central tendency and variability in data; methods for performing inference on population means and proportions via sample data; statistical hypothesis testing and its application to group comparisons; issues of power and sample size in study designs; elements of machine learning algorithms for understanding and classifying data.\nWhile there are some formulae and computational elements to the course, the emphasis is on applications of acquired concepts to “real life” of research scientists.\nThough the vast majority of what you will learn in this course can be applied in any software package, the seminar will use R for empirical examples and exercises.\n\n\n\n\n\n\nSchedule\n\n\n\n\n\nDay\nTime\nActivity\n\n\n\n24 July, 2024\n9am - 12am\nLesson 1 ~ Working with data (with intro to R)\n\n\n24 July, 2024\n1pm - 4pm\nPractice Session 1\n\n\n25 July, 2024\n9am - 12am\nLesson 2 ~ Inferential statistics\n\n\n25 July, 2024\n1pm - 4pm\nPractice Session 2\n\n\n26 July, 2024\n9am - 12am\nLesson 3 ~ Modeling correlation and regression\n\n\n26 July, 2024\n1pm - 4pm\nPractice Session 3\n\n\n27 July, 2024\n9am - 12am\nLesson 4 ~ Intro to machine learning (with R and MetaboAnalyst)\n\n\n27 July, 2024\n1pm - 4pm\nPractice Session 4\n\n\n\n\n\n\n\nPractical information\nParticipants will need to bring their own laptop and make sure to have the required software installed ahead of the workshop.\nStep-by-step installation instructions are provided here."
+    "text": "Welcome!\nThis website collects the materials used for teaching Introductory Statistics with R.\nThis (ongoing) work collected here originated from the preparation of a Summer workshop in July 2024 that my sister taught to a group of EU PhD students in the life science fields: see https://R4biostats.com/."
   },
   {
     "objectID": "install.html",
@@ -1894,7 +1894,7 @@
     "href": "license_etc.html#acknowledgements",
     "title": "Acknowledgments and resources",
     "section": "Acknowledgements",
-    "text": "Acknowledgements\n\n\nI am genuinely grateful to many people within the Biostatistics, Epidemiology and R programming communities, who shared their valuable work, open source software, and training resources. Special thanks to Luisa M. Mimmi (my sister!) who revised the workshop content and built this dedicated website.\nBelow is a curated list of great resources (most of which free and openly accessible) you can peruse on your own.\n\nI would love to hear your feedback, questions, or suggestions about the workshop:\n\n    contact us"
+    "text": "Acknowledgements\n\n\n\nBelow is a curated list of great resources (most of which free and openly accessible) you can peruse on your own.\n\nI would love to hear your feedback, questions, or suggestions about the workshop:\n\n    contact us"
   },
   {
     "objectID": "license_etc.html#licensing-and-use-of-the-workshop-materials",
@@ -1985,7 +1985,7 @@
     "href": "practice/practice_slides/slides_extra_01.html#final-thoughts",
     "title": "Diving deeper into Causal Analysis",
     "section": "Final thoughts",
-    "text": "Final thoughts\n\n\n\n…..\n\n…\n\n\n…\n\n\n\n\n\n\nhttps://r4biostats.com/ | R 4 stats"
+    "text": "Final thoughts\n\n\n\n…..\n\n…\n\n\n…\n\n\n\n\n\n\nhttps://lulliter.github.io/R4stats/ | R 4 stats"
   },
   {
     "objectID": "practice/practice_slides/slides_lab02.html#goal-of-todays-practice-session",

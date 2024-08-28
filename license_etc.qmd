@@ -120,7 +120,7 @@ mybib_df <-
 <!-- something along the lines of [MADA course](https://andreashandel.github.io/MADAcourse/)    -->
 <!--  https://www.laleggepertutti.it/492987_fair-use-esiste-in-italia -->
 
-I am genuinely grateful to many people within the Biostatistics, Epidemiology and R programming communities, who shared their valuable work, open source software, and training resources. Special thanks to [Luisa M. Mimmi]({{< var websites.lulas_site >}}) (my sister!) who revised the workshop content and built this dedicated website. 
+<!-- I am genuinely grateful to many people within the Biostatistics, Epidemiology and R programming communities, who shared their valuable work, open source software, and training resources. Special thanks to [Luisa M. Mimmi]({{< var websites.lulas_site >}}) (my sister!) who revised the workshop content and built this dedicated website.  -->
 
 Below is a curated list of great resources (most of which free and openly accessible) you can peruse on your own. 
 

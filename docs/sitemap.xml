@@ -2,78 +2,78 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>{{< var websites.live_site >}}/syllabus.html</loc>
-    <lastmod>2024-08-08T15:55:19.569Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.882Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab03.html</loc>
-    <lastmod>2024-07-15T11:01:32.161Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.871Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab01.html</loc>
-    <lastmod>2024-08-08T13:52:13.271Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.843Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/lab04_intro_ML.html</loc>
-    <lastmod>2024-06-26T09:02:39.236Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.821Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/lab02_inference.html</loc>
-    <lastmod>2024-06-26T08:40:34.406Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.821Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/me.html</loc>
-    <lastmod>2024-06-19T08:13:00.683Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.807Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/lectures_slides/000_exe_mine.html</loc>
-    <lastmod>2024-03-26T09:44:14.908Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.760Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/lectures/lec03_corr_regress.html</loc>
-    <lastmod>2024-06-26T08:22:00.307Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.760Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/lectures/lec01_data_with_R.html</loc>
-    <lastmod>2024-04-03T09:34:03.473Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.760Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/index.html</loc>
-    <lastmod>2024-08-08T08:52:28.711Z</lastmod>
+    <lastmod>2024-08-28T08:36:11.313Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/install.html</loc>
-    <lastmod>2024-08-28T07:52:10.511Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.759Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/lectures/lec02_inference.html</loc>
-    <lastmod>2024-06-26T08:22:51.093Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.760Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/lectures/lec04_intro_ML.html</loc>
-    <lastmod>2024-07-08T16:04:05.785Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.760Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/license_etc.html</loc>
-    <lastmod>2024-08-28T07:40:17.959Z</lastmod>
+    <lastmod>2024-08-28T08:36:13.370Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/lab01_data_with_R.html</loc>
-    <lastmod>2024-06-26T09:38:35.135Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.821Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/lab03_corr_regress.html</loc>
-    <lastmod>2024-06-26T09:02:41.991Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.821Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_extra_01.html</loc>
-    <lastmod>2024-08-28T07:56:38.139Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.821Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab02.html</loc>
-    <lastmod>2024-07-15T11:01:32.109Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.856Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab04.html</loc>
-    <lastmod>2024-08-08T08:21:36.346Z</lastmod>
+    <lastmod>2024-08-28T08:17:01.882Z</lastmod>
   </url>
 </urlset>
