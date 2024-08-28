@@ -1,0 +1,263 @@
+---
+title: "Course Description & Objectives"
+# general Output Options
+execute:     
+  eval: true
+  echo: false     #  include source code in output?
+  warning: false  #  include warning code in output?
+  error: false    #  include error code in output?
+  output: true   # include output code in output (CHG in BLOCKS)?
+  # include: false   # R still runs but code and results DON"T appear in output  
+  # cache: false
+toc: true
+format:
+  html:
+    code-fold: false # redundant IF echo false 
+    toc-depth: 2
+    toc_float: true
+    toc-location: left
+    toc-title: ""
+    # template: theme/template.tex  
+bibliography: bib/R4biostats.bib
+csl: bib/apa-cv.csl # Very important for complete citations!!!!! 
+## --------- NO END REFERENCES .... other options are redundant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+suppress-bibliography: true
+# biblio-style: apa # authoryear-icomp # abbrv # alpha #apalike # plain # unsrt #siam
+#reference-section-title: References
+#link-citations: false
+# filters:
+#   - section-bibliographies
+---
+
+
+#  Course Description
+
+<!-- https://bioinformatics.ca/workshops-all/2024-help-what-statistical-model-should-i-use-guelph-on/ -->
+<!-- This is a specialized course designed for bioinformatics professionals and researchers dealing with biological datasets who are unsure about which statistical analysis they should implement. This course focuses on empowering participants to conduct end-to-end data analyses. Learn the art of selecting appropriate statistical methods aligned with research questions, and develop a decision tree guiding data cleaning, exploration, analysis, and interpretation. Engage in hands-on coding sessions in the R software with real-world datasets, learning the skills needed to confidently navigate and communicate insights throughout the analytical process. Particular emphasis will be placed on developing an understanding of the statistical methods used, when to apply them, and how to interpret them. By the course’s conclusion, participants will be equipped with a concise and powerful toolkit for unlocking the full potential of complex biological datasets. -->
+
+This is an intensive course originally designed for PhD students and researchers dealing with biological datasets to help them consolidate their practical understanding of frequently implemented data analysis and statistical modeling for academic research purposes. This course focuses on empowering participants to conduct **end-to-end data analyses**, guiding them through reproducible data storage, cleaning, exploration, analysis, and interpretation cycle. 
+
+Beyond the **conceptual foundations**, participants engage in **hands-on coding sessions** in the R software with real-world datasets and solved questions, validating in practice the skills needed to confidently acquire and communicate insights throughout the analytical process.   
+
+Particular emphasis is placed on developing an understanding of the statistical methods used, when to apply them, and how to interpret them, in close connection to “real life” situations for a research scientists. <!-- By the course’s conclusion, participants will be equipped with a concise and powerful toolkit for unlocking the full potential of complex biological datasets. -->
+
+<!-- # Course Objectives -->
+
+<!-- Participants will gain practical experience and skills to be able to: -->
+
+<!--   + Understand the challenges and opportunities presented by complex biological data. -->
+<!--   + Apply fundamental techniques for exploring and summarizing biological datasets. -->
+<!--   + Address missing values through sophisticated imputation methodologies.  -->
+<!--   + Analyze relationships within high-dimensional data, both between variables and samples, employing regression methods, regularization techniques, and clustering methods. -->
+<!--   + Integrate various statistical methods into a cohesive workflow to tackle a variety of common problems in bioinformatics from data exploration to interpretation. -->
+
+# Target Audience
+
+The target audience for this course is graduate students, post-doctoral fellows, and researchers in industry or academia already familiar with basic statistics (ideally in R) and looking to learn more about conducting an analysis from start to finish with more intermediate or advanced statistical techniques.  
+
+# Prerequisites
+
+<!-- Participants are expected to have completed the ‘Introduction to R’ and ‘Analysis Using R’ courses available through Bioinformatics.ca or possess equivalent proficiency in R. Previous years’ R workshop materials are available open-access here. In particular, we expect participants to feel comfortable with the following skills in R as our course will build upon them: -->
+
+<!-- + Reading data into R -->
+<!-- + Data types and classes  -->
+<!-- + Manipulating data in R with Tidyverse (e.g., select, mutate, filter, etc.) -->
+<!-- + Making plots in ggplot2 -->
+<!-- + Writing custom functions -->
+<!-- + Estimating a correlation matrix -->
+<!-- + Hierarchical and K-means clustering algorithms -->
+<!-- + Fitting a linear regression model with the lm function -->
+<!-- + Fitting a logistic regression model with the glm function -->
+
+<!-- You will also require your own laptop computer. Minimum requirements: 1024×768 screen resolution, 1.5GHz CPU, 2GB RAM, 10GB free disk space, recent versions of Windows, Mac OS X or Linux (Most computers purchased in the past 3-4 years likely meet these requirements). -->
+
+<!-- This workshop requires participants to complete pre-workshop tasks and readings. -->
+
+While there are no specific prerequisites, because of the intensive nature of this course, participants will make the most of it if they have prior exposure to quantitative work in the biology/life science field. Similarly, some prior exposure to R programming will make the lab sessions more engaging.
+
+Detailed [instructions](https://r4biostats.com/install.html) are provided to complete the required installation of R and RStudio ahead of the workshop, so that participants can follow along the lab sessions.
+
+# Course Outline
+
+### Module 1: Introduction to R and data analysis
+
++ **Introduction to reproducible end-to-end analysis using R** 
+  + Why use R?
+  + Principles of reproducible analysis with R + RStudio
+  + R objects, functions, packages
++ **Discussion of different variable types (qualitative, quantitative) and levels of measurement (nominal, ordinal, interval, ratio)**
+  + Principles of “tidy data”
+  + Introduction to data cleaning and manipulation methods
++ **Descriptive statistics**
+  + Univariate analysis
+  + Measures of central tendency, measures of variability (or spread), and frequency distributions
++ **Visual data exploration** 
+  + Introduction to `ggplot2` package for making graphs in R  
+  
+<!-- + Discussion of the importance of “tidy data” when performing statistical analyses -->
+<!-- + Introduction to advanced data cleaning methods -->
+<!-- + Discussion of methods from the perspective of finding patterns in order to plan out your analyses and pre-processing steps -->
+
+
+
+
+### Module 2: Statistical inference and classical hypothesis testing
+
++ **Purpose and foundations of inferential statistics**
+  + Probability and random variables 
+  + Meaningful probability distributions
+  + Sampling distributions and Central Limit Theorem
++ **Getting to know the “language” of hypothesis testing**
+  + The *null* and alternative hypothesis
+  + The probability of error? (*α* or "significance level")
+  + The *p-value* probability and tests interpretation
+  + Confidence Intervals
+  + Types of errors (Type 1 and Type 2)
+  + Effective vs statistical significance
++ **Hypothesis tests examples**
+  + Comparing sample mean to a hypothesized population mean (Z test & t test)
+  + Comparing two independent sample means (t test)
+  + Comparing sample means from 3 or more groups (ANOVA) 
++ **A closer look at testing assumptions (with examples)** 
+  + Testing two groups that are *not* independent 
+  + Testing if the data are *not* normally distributed: non-parametric tests
+  + Testing samples *without* homogeneous variance of observations
+  
+
+### Module 3: Modeling correlation and regression
+
++ Testing and summarizing relationship between 2 variables (**correlation**)
+  + Pearson $r$ analysis (parametric)
+     + (numerical variables)
+  + Spearman's test (not parametric)
++ Measures of **association** 
+  + Chi-Square Test of Independence 
+    + (categorical variables)
+  + Fisher’s Exact Test
++ From correlation/association to **prediction/causation** 
+  + The purpose of observational and experimental studies
++ Introduction of **regression based statistical methods**
+  + Simple linear regression models
+  + Multiple Linear Regression models
++ Shifting the emphasis on **empirical prediction** 
+  + Introduction to Machine Learning (ML)
+  + Distinction between Supervised and Unsupervised algorithms 
+  
+
+
+### Module 4: Introduction to machine learning
+
++ Examples of Machine Learning algorithms 
+  + **PCA** -- "unsupervised" ML algorithm for dimensionality reduction
+  + **PLS-Discriminant Analysis** -- "supervised" alternative to PCA performing simultaneous dimensionality reduction and classification
+<!-- + Shifting the emphasis on **empirical prediction**  -->
+<!--   + Distinction between supervised & **unsupervised** algorithms -->
+<!--     + Unsupervised ML Example -->
+<!--       + PCA  -->
++ **Introduction to `MetaboAnalyst` software**
+  + Overview of a useful, R-based resources for metabolomics 
+  + Illustrative workflow with `MetaboAnalyst` 
++ **Elements of statistical Power Analysis**
+  + Brief review of hypothesis testing framework (from Module 2)
+  + Review of *type I* and *type II* decision errors, contextualizing them in experimental settings
+  + Understanding the test's *statistical power* in connection to the *effect size* of an experiment  
+
+
+::: {style="color:#77501a"}
+
+### [{{< fa brands r-project >}}]{style="color:#005ca1"} programming labs
+
+Each of the above module is accompanied by a matching practical session intended to consolidate the theoretical concepts via hands-on **R coding** sessions. 
+
++ The illustrative examples used are based on real biology/clinical research data. 
++ In each example, the student is guided through the entire process: acquiring and reading data into R, identifying the appropriate analytical method, running the analysis and, finally, interpreting the obtained outcomes. 
++ For every exercise, the participant is provided with input datasets (complete with documentation) and R code source files (`*.R`) with solved examples for future reference.
++ The instructor will also use the lab sessions as an opportunity to discuss common questions and challenges that are normally encountered in the day-to-day life of research scientists. 
+
+:::
+
+
+
+<!-- ### Module 1: Data cleaning and exploration review -->
+
+<!-- + Introduction to end-to-end analysis (overview of the entire analysis process) -->
+<!-- + Discussion of different data types (continuous, count, binary, multi-categorical) -->
+<!-- + Discussion of the importance of “tidy data” when performing statistical analyses -->
+<!-- + Introduction to advanced data cleaning methods -->
+<!--  + Discussion of methods from the perspective of finding patterns in order to plan out your analyses and pre-processing steps -->
+
+<!-- ### Module 1 Lab: -->
+
+<!-- + Data wrangling 101: cleaning and structuring messy datasets -->
+<!-- + Exploratory analysis and pre-processing, including visualization, outlier detection, and dimensionality reduction -->
+<!-- + Identifying variables to be used in future analyses -->
+
+<!-- ### Module 2: Dealing with Missingness -->
+
+<!-- + Introduction to different kinds of missingness -->
+<!-- + Discussion of how missingness impacts statistical analyses -->
+<!-- + Review of complete-case analysis and its limitations -->
+<!-- + Introduction to common types of imputation methods, including multiple imputation methods -->
+<!-- + Discussion of when to use each type of method and the advantages and disadvantages of each -->
+
+<!-- ### Module 2 Lab: -->
+
+<!-- + Explore and visualize missingness to understand how it influences the analysis if not dealt with properly -->
+<!-- + Impute missing data with single and multiple imputation methods (i.e. mean replacement, k-nearest neighbour, missForest, MICE) and use the imputed dataset(s) in analyses -->
+
+<!-- ### Module 3: Modeling part 1 -->
+
+<!-- + Overview of regression based statistical modeling methods: -->
+<!--   + Regression (multiple linear regression models, generalized linear models for binary outcomes, count outcomes, binomial outcomes, etc.) -->
+<!--   + Variable selection (lasso, elastic net) -->
+<!-- + Model evaluation and selection -->
+<!-- + Model visualization -->
+
+<!-- ### Module 3 Lab: -->
+
+<!-- + Identify the proper model given a particular question of interest with examples including -->
+<!--   + Multiple linear regression analyses -->
+<!--   + Generalized linear models for a diverse range of outcomes (e.g., binary, count, binomial) -->
+<!-- + Conduct variable selection using regularization methods such as lasso and elastic net. -->
+
+<!-- ### Module 4: Modeling part 2 -->
+
+<!-- + Overview of non-regression based statistical modeling methods -->
+<!--   + Classification (e.g., Random Forest) -->
+<!--   + Clustering (K nearest neighbours) -->
+<!-- + Model evaluation and selection -->
+<!-- + Model visualization -->
+
+<!-- ### Module 4 Lab: -->
+
+<!-- + Identify appropriate classification or clustering techniques given a particular question of interest with examples including -->
+<!--   + Logistic regression -->
+<!--   + Random forest -->
+<!--   + K-nearest neighbours -->
+<!--   + Hierarchical clustering -->
+<!-- + Evaluate and visualize chosen models.  -->
+
+<!-- ### Module 5: Putting it all together -->
+
+<!-- + Brief review of first four modules -->
+<!-- + Finalizing a decision tree to be used as a tool when planning out your analysis -->
+<!-- + Examples of identifying which model to use based on different datasets using the decision tree -->
+
+<!-- ### Module 5 Lab: -->
+
+<!-- + Discuss when the decision tree may not be sufficient for identifying a model and resources for continual learning. -->
+<!-- + End-to-end analysis of real-world data starting with data cleaning, exploration, analysis, and interpretation -->
+<!-- + Select from a list of curated datasets and address predefined research questions using the learned methods -->
+
+<!-- ### Module 6: Introduction to Causal inference -->
+
+<!-- + Causation vs. correlation -->
+<!-- + Understanding the potential outcome framework -->
+<!-- + How to estimate propensity scores with methods learned and use them for estimating the average treatment effect -->
+
+<!-- ### Module 6 Lab: -->
+
+<!-- + Assess the balance of covariates between treated and untreated groups -->
+<!-- + Propensity score estimation via classification methods such as logistic regression and random forest -->
+<!-- + Estimation of Average Treatment Effect (ATE) using propensity score matching and inverse weighting -->
+

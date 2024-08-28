@@ -1,0 +1,44 @@
+---
+title: "Lecture 1: Intro to R and data analysis"
+subtitle: "<span class='code'>2024-07-24</span>"
+#date: "2024-07-24"
+# image: "images/01-foundations.png"
+tbl-colwidths: [5,20,75]
+---
+
+<!-- Shortcode for embedding a Quarto RevealJS presentation inside of a website -->
+<!-- see [GH issue ](https://github.com/quarto-dev/quarto-cli/discussions/7410) -->
+
+
+<!-- ### Lecture slides  -->
+
+<!-- 1/2 DIAPOSITIVA STD (16:9) --> 
+
+<!-- ```{=html} -->
+<!-- <iframe class="slide-deck" src="../lectures_slides/Lecture_01.pdf" height="420" width="747" style="border: 1px solid #2e3846;"></iframe> -->
+<!-- ``` -->
+
+<!-- 2/2 DIAPOSITIVA STD (4:3) -->
+```{=html}
+<iframe class="slide-deck" src="../lectures_slides/Lecture_01.pdf" height="418" width="560" style="border: 1px solid #2e3846;"></iframe>
+```
+
+<a href='../lectures_slides/Lecture_01.pdf' target="_blank">View slides in full screen</a>
+
+## Lecture 1 Outline
+
++ Introduction to R and R-studio
+  + Why R?
+  + Principles of reproducible analysis with R + RStudio
++ R objects, functions, packages
++ Understanding different types of variables
+  + Principles of “tidy data”
+  + Data cleaning and manipulation
++ Descriptive statistics
+  + Measures of central tendency, measures of variability (or spread), and
++ Frequency distribution
++ Visual data exploration
+  + {ggplot2}
+  
+<!-- + Foundations of inference -->
+

@@ -1,0 +1,22 @@
+# SEE https://quarto.org/docs/authoring/variables.html
+# If you are using a Quarto project, the `var` shortcode enables you to insert
+# content from a project-level _variables.yml file into the _quarto.yml file
+
+# Variables can be either simple values or can include arbitrary markdown content
+
+
+websites:
+  lulas_site: https://luisamimmi.org/ # "https://lulliter.github.io/nerd-help"
+  gh_repo: https://github.com/Lulliter/R4biostats
+  live_site: https://r4biostats.com/
+
+## --- To include the value of a variable, use:
+#	+ the `{{< var >}}` shortcode in normal *.qmd       {{< var websites.lulas_site >}}
+#	+ the `"{{< var >}}"` shortcode in YAML entry       "{{< var websites.lulas_site >}}"
+
+
+#	+ in normal *.qmd        {{< var websites.gh_repo >}}
+#	+ in YAML entry        "{{< var websites.gh_repo >}}"
+
+#	+ in normal *.qmd        {{< var websites.live_site >}}
+#	+ in YAML entry        "{{< var websites.live_site >}}"

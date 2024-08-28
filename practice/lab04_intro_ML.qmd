@@ -1,0 +1,125 @@
+---
+title: "Lab 4: Intro to machine learning"
+subtitle: "<span class='code'>2024-07-27</span>"
+## ------  general Output Options
+execute:     
+  eval: true
+  echo: false     #  include source code in output
+  warning: false  #  include warning code in output
+  error: false    #  include error code in output
+  output: false   # include output code in output (CHG in BLOCKS)
+  # include: false   # R still runs but code and results DON"T appear in output  
+  cache: false # normalmnte false
+tbl-colwidths: [5,20,75]
+## ------  parameters (for disclorsure or not of files)
+params:
+  src_slide_file: "practice_slides/slides_lab04.html" 
+                  # "slides_lab00.html" # default value (placeholder slide)
+                  # "slides_lab01.html"
+                  # "slides_lab02.html"
+                  # "slides_lab03.html"
+                  # "slides_lab04.html"
+  lab_data_dir: "04_datasets"
+                  # "01_datasets" # default value (placeholder slide)
+                  # "02_datasets"
+                  # "03_datasets"
+                  # "04_datasets"
+  lab_R_code: "lab04_code.R"           
+              # "lab00_code.R"          # default value (placeholder R code)
+              # "lab01_code.R"
+              # "lab02_code.R"
+              # "lab03_code.R"
+              # "lab04_code.R"
+---
+
+```{r}
+#| eval: false
+#| echo: false
+#| output: false
+
+## ----------------- params 
+## ---  To use in chunk params$src_slide_file # [1] "slides_lab00.html"
+## ---  To use in line `r params$src_slide_file`# [1] "slides_lab00.html"
+
+## ----------------- Render this web apage 
+## --- Con Knitr (fa automaticamente quello in YAMl)
+## --- Con Quarto 
+quarto::quarto_render(
+  input = here::here("practice", "lab04_inference.qmd"),
+  execute_params =  list(
+    src_slide_file =  "slides_lab04.html", # "slides_lab00.html" ,
+    lab_data_dir= "04_datasets",
+    lab_R_code = "lab04_code.R"))
+```
+
+<!-- 1/2 DIAPOSITIVA WIDE (16:9) -->
+```{=html}
+<iframe class="slide-deck" src= `r params$src_slide_file` height="420" width="747" style="border: 1px solid #2e3846;"></iframe>
+```
+
+<!-- <!-- 2/2 DIAPOSITIVA STD (4:3) -->
+<!-- ```{=html} -->
+<!-- <iframe class="slide-deck" src= params$src_slide_file height="420" width="565" style="border: 1px solid #2e3846;"></iframe> -->
+<!-- ``` -->
+
+<a href=`r params$src_slide_file` target="_blank">View slides in full screen</a>
+
+
+
+\pagebreak
+
+```{r}
+#| eval: true
+#| echo: false
+#| output: true
+
+library(downloadthis)
+```
+
+{{< pagebreak >}}
+
+
+## Practice session 4: input data (as `subfolder`)
+
+<!-- #| output: false  -->
+```{r}
+#| echo: false
+#| eval: true
+#| output: true
+
+download_dir(
+  path = here::here("practice", "data_input", params$lab_data_dir), # param
+  output_name = "labs input data",
+  button_label = "Download input data Lab 4",
+  button_type = "success",
+  has_icon = TRUE,
+  icon = "fa-solid fa-folder-open",
+  self_contained = FALSE
+)
+```
+
+
+## Practice session 4: R code (as `.R` file)
+
+<!-- #| output: false  -->
+```{r}
+#| echo: false
+#| eval: true
+#| output: true
+
+library(fs) 
+
+# using a param for which file 
+download_file(
+  path =  here::here("practice", "Rcode", params$lab_R_code ), # param
+  output_name = fs::path_ext_remove ( params$lab_R_code), # param + no extension.... 
+  output_extension = ".R",  
+  button_label = "Download Lab session 4 as .R file",
+  button_type = "primary",
+  has_icon = TRUE,
+  icon = "fa-brands fa-r-project",
+  self_contained = FALSE
+)
+```
+
+<!-- ![](../images/coming_soon.png) -->

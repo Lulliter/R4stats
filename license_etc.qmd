@@ -1,0 +1,249 @@
+---
+title: "Acknowledgments and resources"
+# general Output Options
+execute:     
+  eval: true
+  echo: false     #  include source code in output?
+  warning: false  #  include warning code in output?
+  error: false    #  include error code in output?
+  output: true   # include output code in output (CHG in BLOCKS)?
+  # include: false   # R still runs but code and results DON"T appear in output  
+  # cache: false
+toc: true
+format:
+  html:
+    code-fold: false # redundant IF echo false 
+    toc-depth: 2
+    toc_float: true
+    toc-location: left
+    toc-title: ""
+    # template: theme/template.tex  
+bibliography: bib/R4biostats.bib
+csl: bib/apa-cv.csl # Very important for complete citations!!!!! 
+## --------- NO END REFERENCES .... other options are redundant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+suppress-bibliography: true
+# biblio-style: apa # authoryear-icomp # abbrv # alpha #apalike # plain # unsrt #siam
+#reference-section-title: References
+#link-citations: false
+# filters:
+#   - section-bibliographies
+---
+
+<!-- ::: {.callout-caution collapse="false"} -->
+<!-- Website construction in progress... -->
+<!-- ::: -->
+
+```{r}
+if (!require(pacman)) {install.packages(pacman)} 
+library(pacman)
+
+# pacman::p_ver("bib2df")
+# pacman::p_exists("bib2df")  #TRUE
+# pacman::p_ver_diff("bib2df")
+# p_load_gh("ropensci/bib2df") # otherwise warns `as_data_frame() was deprecated in tibble 2.0.0.`
+
+#remotes::install_github("ropensci/bib2df")
+p_load(RefManageR,
+       #  bib2df,
+       bibtex,
+       janitor,here, paint,
+       glue,
+       tidyverse, # lubridate,
+       htmltools,
+       # distilltools,
+       bib2df
+)
+
+```
+
+```{r}
+# For this I need the Zotero bib to be exported as BEtter BibLaTex !!!!!!!!!!!!!
+
+# - Load bibliography (exported from Zotero)
+bib_path <- here::here ("bib","R4biostats.bib")
+
+# - as list  (NEEDED for functions later)
+mybib <- RefManageR::ReadBib(bib_path, check = FALSE,.Encoding = "UTF-8" )  #bibtex::do_read_bib(file = bib_path, encoding = "unknown", srcfile)
+
+# - as dataframe
+mybib_df_raw <- bib2df::bib2df(bib_path)  
+
+# - Format dataframe version of bibliography
+mybib_df <-
+  mybib_df_raw %>%
+  clean_names() %>%
+  select(key = bibtexkey, 
+         date, 
+         author, 
+         title, 
+         category,# THIS MY Zotero's 
+         type, # THIS MY OWN "Extra: tex.type: ..." in zotero 
+         url, 
+         file, 
+         include # THIS MY OWN "Extra: tex.include: ..." in zotero 
+         ) %>%
+  mutate(
+    # date = parse_date_time(date, "ymd",
+    # 							  #select_formats = .select_formats
+    # 							  drop = FALSE),
+    yyyy_mm = str_sub(date, start = 1, end = 7), # I have some irregularities in format  
+    date_parsed = parse_date_time(yyyy_mm,  "ym", truncated = 2 ),
+    year = year(date_parsed), 
+    month = month(date_parsed)) %>%
+  arrange(desc(year), key) %>% 
+  dplyr::relocate(c("yyyy_mm" ,    "year" ,        "month"  ), .after =date)
+
+   
+# # Set RefManageR options (needed to avoid the "[1]")
+# oldopts <- RefManageR::BibOptions(
+# 	style = "text",
+# 	bib.style = "authoryear", 
+# 	no.print.fields = c("doi", "url", "urldate", "eprint", "eprinttype"),
+# 	max.names = 50, # maximum number of names to display before using “et al.”
+# 	dashed = FALSE, 
+# 	sorting = "ydnt"
+# )
+
+# # - Load additional metadata
+# mybib_meta <- tibble::tribble( 
+# 	~"url_pub", ~"url_pdf",~ "url_rg", ~"url_repo", ~"url_arch", ~"url_osf", ~"url_other", ~"url_blog" ) 
+# mybib_meta[1:nrow(mybib_df), ] <- as.character(NA)
+# 
+# # bind 
+# mybib_df2 <- cbind(mybib_df, mybib_meta)
+# names(mybib_df2)
+# rm(mybib, mybib_df, mybib_df_raw, mybib_meta)
+```
+
+ 
+## Acknowledgements
+<!-- something along the lines of [MADA course](https://andreashandel.github.io/MADAcourse/)    -->
+<!--  https://www.laleggepertutti.it/492987_fair-use-esiste-in-italia -->
+
+I am genuinely grateful to many people within the Biostatistics, Epidemiology and R programming communities, who shared their valuable work, open source software, and training resources. Special thanks to [Luisa M. Mimmi]({{< var websites.lulas_site >}}) (my sister!) who revised the workshop content and built this dedicated website. 
+
+Below is a curated list of great resources (most of which free and openly accessible) you can peruse on your own. 
+
+<!-- The following individuals have contributed to improving the course: Ian Bachli (@idbachli), Megan Beaudry (@MeganSarah), Zane Billings (@wzbillings),   -->
+
+I would love to hear your feedback, questions, or suggestions about the workshop:  <p> <a id="mail-link" href="mailto:lmm76@georgetown.edu"  class="btn btn-info"> <i class="fa fa-envelope"></i> &nbsp;&nbsp;contact us</a></p>
+
+## Licensing and use of the workshop materials
+
+The workshop materials are licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/). All borrowed external materials (images, worked examples, etc.), are credited with proper "*Source*" statements and governed by their own licenses. To my knowledge, all the consulted materials were published under "open access" or "creative commons" frameworks. If this were not the case for any content piece displayed here, please let me know and it will be  removed.
+
+ 
+<!-- ## Materials -->
+
+<!-- This source code and license for all of the materials on this website can be found on a dedicated Github repo [{{< fa brands github >}}](https://github.com/Lulliter/R4biostats). -->
+
+<!-- ## License -->
+
+<!-- The work presented in this website is licensed under a {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-nc >}} {{< fa brands creative-commons-sa >}} [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/), except for the borrowed and mentioned with proper *"Source:"* statements. -->
+
+
+## Selected resources for self-guided learning
+
+<!-- ### Journal Articles -->
+
+```{r article}
+#| include: false
+
+#mybib_df[mybib_df$type == "article",  1] 
+mybib_df %>% 
+  filter(!(include %in% "no") & type ==  "article") %>% 
+   select(key)
+
+# print(mybib[type = "article"], 
+#       .opts = list(bib.style = "authoryear", 
+#                    check.entries = FALSE))
+
+```
+
+ <!-- + @mayne_role_1957     -->
+
+### Biostatistics/Epidemiology with R examples
+
+```{r course}
+#| include: false
+
+#mybib_df[mybib_df$type == "course",  1] 
+mybib_df %>% 
+  filter(!(include %in% "no") & type == "course") %>% 
+  select(key) %>% 
+  # just to copy by hand
+  map( ~cat (paste0("+ @", .x),
+             fill = FALSE, 
+             labels = NULL, sep = "\n")
+  )
+```
+
+```{r book}
+#| include: false
+
+#mybib_df[mybib_df$type == "course",  1] 
+mybib_df %>% 
+  filter(!(include %in% "no") & type == "book") %>% 
+  select(key) %>% 
+  # just to copy by hand
+  map( ~cat (paste0("+ @", .x),
+             fill = FALSE, 
+             labels = NULL, sep = "\n")
+  )
+```
+
+
++ @applied_epi_team_applied_2024
++ @applied_epi_team_r_2024
++ @bobbitt_statology_2024
++ @cetinkaya-rundel_introduction_2023
++ @childs_introductory_2022-1
++ @selby_analytical_2024                                   
++ @vu_introductory_2021
+
+### R packages & tools
+
+```{r R}
+#| include: false
+
+#mybib_df[mybib_df$type == "R",  1] 
+mybib_df %>% 
+  filter(!(include %in% "no") & type == "R") %>% 
+   select(key) %>% 
+  # just to copy by hand
+  map( ~cat (paste0("+ @", .x),
+             fill = FALSE, 
+             labels = NULL, sep = "\n")
+  )
+``` 
+
++ @posit_posit_2024
++ @rstudio_base-r-cheat-sheetpdf_2024
++ @various_contributors_bioconductor_2024
++ @wickham_programming_2023
++ @wickham_tidy_2014
+
+
+### Sources of practice datasets
+
+```{r dataset}
+#| include: false
+mybib_df %>% 
+  filter(!(include %in% "no") & type == "dataset") %>% 
+   select(key)  %>% 
+  # just to copy by hand
+  map( ~cat (paste0("+ @", .x),
+             fill = FALSE, 
+             labels = NULL, sep = "\n")
+  )
+```
+
++ @vanderbilt_department_of_biostatistics_vanderbilt_2023
++ @chicco_machine_2020
++ @ahmad_survival_2017
+
+<!-- <!-- For HTML output -->  
+<!-- ::: {.content-hidden when-format="html"} -->
+<!-- ## References -->
+<!-- ::: -->
+

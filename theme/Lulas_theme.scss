@@ -1,0 +1,93 @@
+/*-- scss:defaults --*/
+
+
+// Define Color variables `$var-name: value;`
+$pachar_sha_1: #d4e6f3;
+$pachar_sha_2: #b8d6eb;
+$pachar_sha_3: #9cc6e3;
+$pachar_sha_4: #80b6db;
+$pacificharbour: #72aed8;
+$pachar_sha_6: #5b8bac;
+$pachar_sha_7: #39576c;
+$pachar_sha_8: #223643;
+$pachar_sha_9: #16222b;
+
+$darkblue: #183e7f; 
+$darkred: #7f173d; 
+$teal: #17717f;
+$cream: #FDFBF7;
+
+$triad_ora : #d89c72;
+$triad_yel : #d8cf71;
+$triad_red : #d8717b;
+$viola :#717ad8;
+
+$lightgrey : #d3d3d3;
+$darkgray: #a9a9a9;
+$brightburgundy : #9b2339;
+
+ 
+/*-- use vars in CSS rules (we'll learn more about how to write CSS soon!) --*/
+h1 {
+  font-color: $darkblue;
+}
+
+.button-styling {
+  background: $teal;
+  color: $darkblue; 
+  border-color: $darkgray;
+}
+
+
+// use litera as the base
+$theme: "litera" !default;
+
+// import google fonts
+@import url('https://fonts.googleapis.com/css2?family=Lato');
+@import url('https://fonts.googleapis.com/css2?family=Chivo');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Inconsolata:wght@200&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Overpass:ital,wght@0,100..900;1,100..900&display=swap');
+
+// Andrew Heiss 
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Fira+Sans+Condensed:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+// use Lato font if available
+$font-family-sans-serif:  "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+
+/*-- scss:rules --*/
+
+// litera is serif by default: revert to san-serif
+p {
+  font-family: $font-family-sans-serif;
+}
+
+// Navs
+
+.navbar-brand {
+  font-family: "Overpass", mono;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: $pachar_sha_8;
+}
+
+// Navbar
+
+.navbar {
+  font-family: "Overpass", mono;
+  font-size: 1rem;
+}
+
+// Base document colors
+
+/* $navbar-bg: $cream; // navbar                                                */
+/* $navbar-fg: $dark-green; // navbar foreground elements                       */
+/* $navbar-hl: $triad_ora; // highlight color when hovering over navbar links   */
+/*  $body-bg: $light-green; // page background                                  */
+/*  $body-color: $gray; // page text                                            */
+/*  $footer-bg: $cream; // footer                                               */
+/* $link-color: $triad_red; // hyperlinks                                       */
+
+$navbar-dark-hover-color:           "#ff6700" !default;
+$navbar-light-hover-color:          "#ff6700" !default;
+
+

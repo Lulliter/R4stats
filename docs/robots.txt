@@ -1,0 +1,1 @@
+Sitemap: {{< var websites.live_site >}}/sitemap.xml

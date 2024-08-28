@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>R 4 biostats - Acknowledgments and resources</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<link href="./images/icons8_hist_96.png" rel="icon" type="image/png">
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-51QEQ3S83R"></script><script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-51QEQ3S83R', { 'anonymize_ip': true});
+</script>
+</head>
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">R 4 biostats</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="./index.html"> <i class="bi bi-house-fill" role="img">
+</i> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./install.html"> <i class="bi bi-download" role="img">
+</i> 
+<span class="menu-text">Pre-Workshop</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./syllabus.html"> <i class="bi bi-book-fill" role="img">
+</i> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-easel-fill" role="img">
+</i> 
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-lectures">
+<li>
+    <a class="dropdown-item" href="./lectures/lec01_data_with_R.html">
+ <span class="dropdown-text">Intro to R and data analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/lec02_inference.html">
+ <span class="dropdown-text">Statistical inference &amp; hypothesis testing</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/lec03_corr_regress.html">
+ <span class="dropdown-text">Modeling correlation and regression</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./lectures/lec04_intro_ML.html">
+ <span class="dropdown-text">Intro to machine learning</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-fa-brands-r-project--labs" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text"><i class="fa-brands fa-r-project" aria-label="r-project"></i> Labs</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-fa-brands-r-project--labs">
+<li>
+    <a class="dropdown-item" href="./practice/lab01_data_with_R.html">
+ <span class="dropdown-text">Lab: Intro to R and data analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./practice/lab02_inference.html">
+ <span class="dropdown-text">Lab: Statistical inference &amp; hypothesis testing</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./practice/lab03_corr_regress.html">
+ <span class="dropdown-text">Lab: Modeling correlation and regression</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./practice/lab04_intro_ML.html">
+ <span class="dropdown-text">Lab: Intro to machine learning</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item">
+    <a class="nav-link" href="./me.html"> <i class="bi bi-mortarboard-fill" role="img">
+</i> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./license_etc.html" aria-current="page"> <i class="bi bi-bookmark-heart-fill" role="img">
+</i> 
+<span class="menu-text">Acknowledgements</span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+<li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link active" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
+  <li><a href="#licensing-and-use-of-the-workshop-materials" id="toc-licensing-and-use-of-the-workshop-materials" class="nav-link" data-scroll-target="#licensing-and-use-of-the-workshop-materials">Licensing and use of the workshop materials</a></li>
+  <li><a href="#selected-resources-for-self-guided-learning" id="toc-selected-resources-for-self-guided-learning" class="nav-link" data-scroll-target="#selected-resources-for-self-guided-learning">Selected resources for self-guided learning</a></li>
+  </ul></nav>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Acknowledgments and resources</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><!-- ::: {.callout-caution collapse="false"} --><!-- Website construction in progress... --><!-- ::: --><div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<section id="acknowledgements" class="level2"><h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
+<!-- something along the lines of [MADA course](https://andreashandel.github.io/MADAcourse/)    -->
+<!--  https://www.laleggepertutti.it/492987_fair-use-esiste-in-italia -->
+<p>I am genuinely grateful to many people within the Biostatistics, Epidemiology and R programming communities, who shared their valuable work, open source software, and training resources. Special thanks to <a href="https://luisamimmi.org/">Luisa M. Mimmi</a> (my sister!) who revised the workshop content and built this dedicated website.</p>
+<p>Below is a curated list of great resources (most of which free and openly accessible) you can peruse on your own.</p>
+<!-- The following individuals have contributed to improving the course: Ian Bachli (@idbachli), Megan Beaudry (@MeganSarah), Zane Billings (@wzbillings),   -->
+I would love to hear your feedback, questions, or suggestions about the workshop:
+<p>
+<a id="mail-link" href="mailto:lmm76@georgetown.edu" class="btn btn-info"> <i class="fa fa-envelope"></i> &nbsp;&nbsp;contact us</a>
+</p>
+</section><section id="licensing-and-use-of-the-workshop-materials" class="level2"><h2 class="anchored" data-anchor-id="licensing-and-use-of-the-workshop-materials">Licensing and use of the workshop materials</h2>
+<p>The workshop materials are licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. All borrowed external materials (images, worked examples, etc.), are credited with proper “<em>Source</em>” statements and governed by their own licenses. To my knowledge, all the consulted materials were published under “open access” or “creative commons” frameworks. If this were not the case for any content piece displayed here, please let me know and it will be removed.</p>
+<!-- ## Materials -->
+<!-- This source code and license for all of the materials on this website can be found on a dedicated Github repo [](https://github.com/Lulliter/R4biostats). -->
+<!-- ## License -->
+<!-- The work presented in this website is licensed under a     [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/), except for the borrowed and mentioned with proper *"Source:"* statements. -->
+</section><section id="selected-resources-for-self-guided-learning" class="level2"><h2 class="anchored" data-anchor-id="selected-resources-for-self-guided-learning">Selected resources for self-guided learning</h2>
+<!-- ### Journal Articles -->
+<p><!-- + @mayne_role_1957     --></p>
+<section id="biostatisticsepidemiology-with-r-examples" class="level3"><h3 class="anchored" data-anchor-id="biostatisticsepidemiology-with-r-examples">Biostatistics/Epidemiology with R examples</h3>
+<ul>
+<li><span class="citation" data-cites="applied_epi_team_applied_2024">Applied Epi Team (2024). <em>Applied <span>Epi</span> - <span>Elevating</span> frontline epidemiology</em> [Course]. Training, support, tools. <a href="https://www.appliedepi.org/" role="doc-biblioref">https://www.appliedepi.org/</a></span></li>
+<li><span class="citation" data-cites="applied_epi_team_r_2024">Applied Epi Team (2024). <em>R for applied epidemiology and public health <span>The Epidemiologist R Handbook</span></em> [Course]. <a href="https://epirhandbook.com/en/" role="doc-biblioref">https://epirhandbook.com/en/</a></span></li>
+<li><span class="citation" data-cites="bobbitt_statology_2024">Bobbitt, Z. (2024). <em>Statology</em> [Course]. Statology. <a href="https://www.statology.org/" role="doc-biblioref">https://www.statology.org/</a></span></li>
+<li><span class="citation" data-cites="cetinkaya-rundel_introduction_2023">Çetinkaya-Rundel, M., &amp; Hardim, J. (2023). <em>Introduction to <span>Modern Statistics</span> (1st <span>Ed</span>)</em> [Book]. <a href="https://openintro-ims.netlify.app/" role="doc-biblioref">https://openintro-ims.netlify.app/</a></span></li>
+<li><span class="citation" data-cites="childs_introductory_2022-1">Childs, D. Z., Hindle, B. J., &amp; Warren, P. H. (2022). <em>Introductory <span>Biostatistics</span> with <span>R</span></em> [Book]. <a href="https://github.com/rstudio/bookdown" role="doc-biblioref">https://github.com/rstudio/bookdown</a></span></li>
+<li>
+<span class="citation" data-cites="selby_analytical_2024">Selby, D., &amp; 2021 (2024). <em>Analytical <span>Epidemiology II</span></em> [Course]. David Selby. <a href="https://personalpages.manchester.ac.uk/staff/david.selby/analysis/2021-03-30-inference/" role="doc-biblioref">https://personalpages.manchester.ac.uk/staff/david.selby/analysis/2021-03-30-inference/</a></span><br>
+</li>
+<li><span class="citation" data-cites="vu_introductory_2021">Vu, J., &amp; Harrington, D. (2021). <em>Introductory <span>Statistics</span> for the <span>Life</span> and <span>Biomedical Sciences</span></em> [Book]. <a href="https://www.openintro.org/book/biostat/" role="doc-biblioref">https://www.openintro.org/book/biostat/</a></span></li>
+</ul></section><section id="r-packages-tools" class="level3"><h3 class="anchored" data-anchor-id="r-packages-tools">R packages &amp; tools</h3>
+<ul>
+<li><span class="citation" data-cites="posit_posit_2024">POSIT (2024). <em><span>POSIT</span> resources</em> [R]. https://posit.co/resources/.</span></li>
+<li><span class="citation" data-cites="rstudio_base-r-cheat-sheetpdf_2024">RStudio, &amp; Posit (2024). <em>Base-r-cheat-sheet.pdf</em> [R]. <a href="https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf" role="doc-biblioref">https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf</a></span></li>
+<li><span class="citation" data-cites="various_contributors_bioconductor_2024">Various contributors (2024). <em>Bioconductor - <span>Open</span> source software for <span>Bioinformatics</span></em> [R]. Bioconductor - Open source software for Bioinformatics. <a href="https://www.bioconductor.org/" role="doc-biblioref">https://www.bioconductor.org/</a></span></li>
+<li><span class="citation" data-cites="wickham_programming_2023">Wickham, H., François, R., Müller, K., &amp; Vaughan, D. (2023). <em>Programming with dplyr</em> [R]. dplyr. <a href="https://dplyr.tidyverse.org/articles/programming.html#tidy-selection" role="doc-biblioref">https://dplyr.tidyverse.org/articles/programming.html#tidy-selection</a></span></li>
+<li><span class="citation" data-cites="wickham_tidy_2014">Wickham, H. (2014). Tidy <span>Data</span> [R]. <em>Journal of Statistical Software</em>, <em>59</em>(10). <a href="https://doi.org/10.18637/jss.v059.i10" role="doc-biblioref">https://doi.org/10.18637/jss.v059.i10</a></span></li>
+</ul></section><section id="sources-of-practice-datasets" class="level3"><h3 class="anchored" data-anchor-id="sources-of-practice-datasets">Sources of practice datasets</h3>
+<ul>
+<li><span class="citation" data-cites="vanderbilt_department_of_biostatistics_vanderbilt_2023">Vanderbilt Department of Biostatistics (2023, September 17). <em>Vanderbilt <span>Biostatistics Datasets</span></em> [Dataset]. <a href="https://hbiostat.org/data/" role="doc-biblioref">https://hbiostat.org/data/</a></span></li>
+<li><span class="citation" data-cites="chicco_machine_2020">Chicco, D., &amp; Jurman, G. (2020). Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone [Dataset]. <em>BMC Medical Informatics and Decision Making</em>, <em>20</em>(1), 16. <a href="https://doi.org/10.1186/s12911-020-1023-5" role="doc-biblioref">https://doi.org/10.1186/s12911-020-1023-5</a></span></li>
+<li><span class="citation" data-cites="ahmad_survival_2017">Ahmad, T., Munir, A., Bhatti, S. H., Aftab, M., &amp; Raza, M. A. (2017). Survival analysis of heart failure patients: <span>A</span> case study [Dataset]. <em>PLOS ONE</em>, <em>12</em>(7), e0181001. <a href="https://doi.org/10.1371/journal.pone.0181001" role="doc-biblioref">https://doi.org/10.1371/journal.pone.0181001</a></span></li>
+</ul>
+<!-- <!-- For HTML output --><!-- ::: {.content-hidden when-format="html"} --><!-- ## References --><!-- ::: -->
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> <i class="fa-brands fa-creative-commons-nc" aria-label="creative-commons-nc"></i> <i class="fa-brands fa-creative-commons-sa" aria-label="creative-commons-sa"></i> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> <br> M. Chiara Mimmi &amp; Luisa M. Mimmi 2024</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Made with <i class="fa-brands fa-r-project" aria-label="r-project"></i> and <a href="https://quarto.org/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

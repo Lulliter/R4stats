@@ -1,0 +1,75 @@
+---
+title: "About the Instructor"
+about:
+  id: hero-heading #about-block 
+  template: jolla
+  image: images/Chiara_luglio_2023.png
+  links:
+    # - icon: file-pdf
+    #   text: CV (tbd)
+    #   href: https://www.linkedin.com/in/maria-chiara-mimmi-b0aa9233/  
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/maria-chiara-mimmi-b0aa9233/
+    - icon: envelope
+      text: Email
+      href: mailto:chiara_mimmi@yahoo.it
+    # - icon: github
+    #   text: Github (EXE Lula)
+    #   href: https://github.com/Lulliter
+    # https://jpswalsh.github.io/academicons/
+    - text: "{{< ai google-scholar >}} Google Scholar"
+    # - text: "![](images/icons8-google-scholar-16.jpg) Google Scholar"
+      href: https://scholar.google.com/citations?user=a5BhtocAAAAJ&hl=en&oi=ao
+    - text: "{{< ai researchgate >}} Research Gate" # fa brands researchgate
+      href: https://www.researchgate.net/profile/Maria-Mimmi-2
+    - text: "{{< ai orcid >}} Orcid"
+      href: https://orcid.org/0000-0002-5165-9230
+---
+
+<!-- ::: {.callout-caution collapse="false"} -->
+<!-- Website construction in progress... -->
+<!-- ::: -->
+
+
+:::{#hero-heading}
+
+**Maria Chiara Mimmi**, Ph.D., is a Research Fellow at University of Pavia - Dept. of Molecular Medicine, as well as NMR Expert at Fondazione IRCCS Policlinico San Matteo. She has twenty years of experience working in life science research, with a focus on NMR and Mass Spectrometry applied to metabolomics/lipidomics.
+
+In 2020, she joined the University of Pavia, at the Molecular Medicine Dept., to work with the recently acquired 700 MHz NMR spectrometer. Since then she focused on NMR applied to either metabolomics and to structure/dynamics of amyloidogenic proteins.
+
+## Education
+
+Università degli Studi di Pavia | Pavia, Italy 
+**Master of Biostatistics and Epidemiology** | 2018-2019
+
+Università degli Studi di Milano | Milano, Italy 
+**Ph.D. in Chemical Sciences** | 2001 - 2003
+
+Institut National de la Recherche Agronomique |  Versailles-Grignon, France 
+**Visiting scholar** | 2003 - 2003
+
+Università degli Studi di Pavia | Pavia, Italy 
+**BSc Degree in Chemistry** | 1994 - 2000
+
+Universiteit Leiden | Leiden, The Netherlands 
+**Erasmus exchange student** (6 months) | 1999 - 1999
+
+
+:::
+
+
+
+
+<!-- ## Teaching Team -->
+
+<!-- #### Andrew Bray -->
+
+<!-- Andrew Bray is a statistician at UC Berkeley where he develops and teaches courses in statistics and data science. His gets excited about empowering students to use data to understand the world and enjoys being part of a community of people developing open source software and open source educational resources. Though primarily an R user, last year he taught a large data science class to 1100 students in Python, which had him sorely missing the R Markdown ecosystem. The experience made him particularly grateful for Quarto as a bridge to other communities of data scientists. -->
+
+<!-- #### Rebecca Barter -->
+
+<!-- Rebecca is a statistician, data scientist, educator, and communicator who has a dual passion for empowering others by teaching critical thinking and technical skills for data science, and for uncovering the hidden patterns and stories that live inside complex datasets (primarily related to healthcare and medicine). She is currently a postdoc at UC Berkeley and she sometimes writes about data science and R on her website at [www.rebeccabarter.com](https://www.rebeccabarter.com). -->
+
+
+

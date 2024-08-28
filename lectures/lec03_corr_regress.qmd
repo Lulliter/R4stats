@@ -1,0 +1,48 @@
+---
+title: "Modeling correlation and regression"
+subtitle: "<span class='code'>2024-07-26</span>"
+# date: "2024-07-26"
+# image: "images/03-design.png"
+tbl-colwidths: [5,20,75]
+---
+
+<!-- Shortcode for embedding a Quarto RevealJS presentation inside of a website -->
+<!-- see [GH issue ](https://github.com/quarto-dev/quarto-cli/discussions/7410) -->
+
+<!-- ```{=html} -->
+<!-- <iframe class="slide-deck" src="../lectures_slides/03-design.html" height="420" width="747" style="border: 1px solid #2e3846;"></iframe> -->
+<!-- ``` -->
+ 
+
+<!-- 1/2 DIAPOSITIVA STD (16:9) --> 
+<!-- ```{=html} -->
+<!-- <iframe class="slide-deck" src="../lectures_slides/Lecture_00.pdf" height="420" width="747" style="border: 1px solid #2e3846;"></iframe> -->
+<!-- ``` -->
+
+<!-- 2/2 DIAPOSITIVA STD (4:3) -->
+```{=html}
+<iframe class="slide-deck" src="../lectures_slides/Lecture_03.pdf" height="418" width="560" style="border: 1px solid #2e3846;"></iframe>
+```
+
+<a href='../lectures_slides/Lecture_03.pdf' target="_blank">View slides in full screen</a>
+
+## Lecture 3 Outline
+
++ Testing and summarizing relationship between 2 variables (**correlation**)
+  + Pearson $r$ analysis (param)
+     + (numerical variables)
+  + Spearman's test (no param)
++ Measures of **association** 
+  + Chi-Square Test of Independence 
+    + (categorical variables)
+  + Fisher’s Exact Test
++ From correlation/association to **prediction/causation** 
+  + The purpose of observational and experimental studies
++ Widely used analytical tools
+  + Simple linear regression models
+  + Multiple Linear Regression models
++ Shifting the emphasis on **empirical prediction** 
+  + Introduction to Machine Learning (ML)
+  + Distinction between Supervised & Unsupervised algorithms
+
+

@@ -1,0 +1,1668 @@
+---
+title: "Lab 2: Statistical inference & hypothesis testing"
+subtitle: "<span style='font-size:2em;'> Practice session covering topics discussed in Lecture 2 </span>"
+author: "<a href='https://r4biostats.com/me.html' style='color:#72aed8;font-weight:600;'>M. Chiara Mimmi, Ph.D.</a>&ensp;|&ensp;Università degli Studi di Pavia"
+date: 2024-07-25
+date-format: long
+code-link: true
+format:
+  revealjs:
+    smaller: true
+    scrollable: true
+    theme: ../../theme/slidesMine.scss # QUARTO LOOKS IN SAME FOLDER 
+#    logo: imgs_slides/mitgest_logo.png
+    footer: '[R 4 Biostatistics](https://r4biostats.com/) | MITGEST::training(2024)'
+#    footer: <https://lulliter.github.io/R4biostats/lectures.html>
+## ------------- x salvare come PDF 
+    standalone: false
+    ## -------Produce a standalone HTML file with no external dependencies,
+    embed-resources: true
+    transition: fade
+    background-transition: fade
+    highlight-style: ayu-mirage
+    slide-number: true
+    fig-cap-location: top
+    # fig-format: svg
+    pdf-separate-fragments: false
+    # fig-align: center
+execute:
+  # Quarto pre code blocks do not echo their source code by default
+  echo: true
+  include: true
+  freeze: auto
+bibliography: ../../bib/R4biostats.bib
+csl: ../../bib/apa-6th-edition.csl 
+suppress-bibliography: true
+---
+
+
+## GOAL OF TODAY'S PRACTICE SESSION
+
+[Consolidate understanding of inferential statistic, through R coding examples conducted on real biostatistics research data.]{style="color:#77501a"}
+
+<br><br>
+
+#### Lecture 2: topics 
+
++ **Purpose and foundations of inferential statistics**
+  <!-- + Probability and random variables  -->
+  <!-- + Meaningful probability distributions -->
+  <!-- + Sampling distributions and Central Limit Theorem -->
+  <!-- + Confidence Intervals -->
++ **Getting to know the “language” of hypothesis testing**
+  <!-- + The null and alternative hypothesis -->
+  <!-- + The probability of error? (*α* or "significance level") -->
+  <!-- + The *p-value* probability and tests interpretation -->
+  <!-- + Effective vs statistical significance -->
+  <!-- + Types of errors (Type 1 and Type 2) -->
++ **Hypothesis testing**
+  + review examples
+  
+  <!-- + Comparing sample mean to a hypothesized population mean (Z test & t test) -->
+  <!-- + Comparing two independent sample means (t test) -->
+  <!-- + Comparing sample means from 3 or more groups (ANOVA) <!-- (esempio metabolomica Catanzaro?) -->  
++ **A closer look at testing assumptions** 
+  + more examples dealing with assumptions' violation
+
+  <!-- + Testing two groups that are *not* independent  -->
+  <!-- + Testing if the data are *not* normally distributed: non-parametric tests -->
+  <!-- + Testing samples *without* homogeneous variance of observations -->
+    
+
+# R ENVIRONMENT SET UP & DATA
+
+## Needed R Packages
+::: {style="font-size: 80%;"}
++ We will use functions from packages `base`, `utils`, and `stats` (pre-installed and pre-loaded) 
++ We will also use the packages below (specifying `package::function` for clarity).
+:::
+
+```{r}
+# Load pckgs for this R session
+
+# General 
+library(fs)           # file/directory interactions
+library(here)         # tools find your project's files, based on working directory
+library(janitor)      # tools for examining and cleaning data
+library(dplyr)        # {tidyverse} tools for manipulating and summarising tidy data 
+library(forcats)      # {tidyverse} tool for handling factors
+library(tidyr)        # Tidy Messy Data       
+
+# Statistics
+library(BSDA)         # Basic Statistics and Data Analysis   
+library(rstatix)      # Pipe-Friendly Framework for Basic Statistical Tests
+library(car)          # Companion to Applied Regression
+library(multcomp)     # Simultaneous Inference in General Parametric Models 
+
+# Plotting
+library(ggplot2)      # {tidyverse} tools for plotting
+library(ggstatsplot) # 'ggplot2' Based Plots with Statistical Details  
+library(ggpubr)       # 'ggplot2' Based Publication Ready Plots 
+library(patchwork)    # Functions for ""Grid" Graphics"composing" plots 
+library(viridis)      # Colorblind-Friendly Color Maps for R 
+library(ggthemes)     # Extra Themes, Scales and Geoms for 'ggplot2'
+```
+
+
+
+# DATASETS FOR TODAY
+
+::: {style="font-size: 80%;"}
+For the most part, we will refer to a real clinical dataset (for which a *Creative Commons license* was granted) discussed in two articles (also open access) :  
+
++ Ahmad, T., Munir, A., Bhatti, S. H., Aftab, M., & Raza, M. A. (2017). ***Survival analysis of heart failure patients: A case study***. PLOS ONE, 12(7), e0181001. [https://doi.org/10.1371/journal.pone.0181001](https://doi.org/10.1371/journal.pone.0181001)
++ Chicco, D., & Jurman, G. (2020). ***Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone***. BMC Medical Informatics and Decision Making, 20(1), 16. [https://doi.org/10.1186/s12911-020-1023-5](https://doi.org/10.1186/s12911-020-1023-5)
+:::
+
+## [Importing from project folder (previously downloaded file)]{.r-fit-text}
+
+You can access the dataset either:  
+
++ From the UC Irvine Machine Learning Repository [Heart Failure Clinical Records](https://archive.ics.uci.edu/dataset/519/heart+failure+clinical+records)
++ From the workshop website: use function `here` to specify the complete path of the input data folder
+
+```{r}
+# Check my working directory location
+# here::here()
+
+# Use `here` in specifying all the subfolders AFTER the working directory 
+heart_failure <- read.csv(file = here::here("practice", "data_input", "02_datasets",
+                                      "heart_failure_clinical_records_dataset.csv"), 
+                          header = TRUE, # 1st line is the name of the variables
+                          sep = ",", # which is the field separator character.
+                          na.strings = c("?","NA" ), # specific MISSING values  
+                          row.names = NULL) 
+```
+ 
+
+::: {.callout-tip}
+Make sure to match your own folder structure! 
+:::
+
+# INSPECTING THE "HEART FAILURE" DATASET
+
+## [What are the variables and their levels of measurement?]{.r-fit-text}
+
+::: {style="font-size: 70%;"}
+The data, with medical records of **299 heart failure patient**, were collected at the Faisalabad Institute of Cardiology and at the Allied Hospital in Faisalabad (Punjab, Pakistan), during April–December 2015. See @tbl-heart_vars [@chicco_machine_2020, p.3].
+:::
+
+![](../../images/HEART_FAIL_vars.png){#tbl-heart_vars} 
+
+
+## Look into the dataset just loaded in the R environment
+
+Recall some `base R` functions from Lab 1
+
+```{r}
+# What variables are included in this dataset?
+colnames(heart_failure)
+# How many observations & variables?
+nrow(heart_failure)
+# How many rows & columns?
+dim(heart_failure)
+```
+
+## [Inspect the dataframe structure (`base R`)]{.r-fit-text}
+
+```{r}
+# What does the dataframe look like?
+str(heart_failure)
+```
+
+## [Inspect the dataframe structure (`skimr`)]{.r-fit-text}
+
+Remember the `skimr` function `skim`?
+
+```{r}
+#| eval: false
+#| echo: true
+ 
+# some variables 
+heart_failure %>% skimr::skim( age, DEATH_EVENT ) 
+
+# the whole dataframe
+heart_failure %>% skimr::skim() 
+```
+
+<br><br>
+
+::: {.callout-warning icon=false}
+## {{< bi terminal-fill color=rgba(155,103,35,1.00) >}} You try...
+Run `skimr::skim()` on your own either on the whole dataset or on any specific variable
+:::
+
++ notice there are no (missing values) `NAs` in any of the variables
+
+## [Recode some variables for later ease of analysis]{.r-fit-text} 
+
+::: {style="font-size: 85%;"}
+I may need some variables coded as `factor` (e.g. categorical variables for plotting), and, while I am at it, I can add clearer labels for the variables' levels. Here, we are:
+
++ using tidyverse packages `dplyr` and `forcats`
++ adding new (recoded) variables called *"`oldname_f`"* 
+:::
+
+```{r}
+heart_failure <-heart_failure %>% 
+  dplyr::mutate(DEATH_EVENT_f = as.factor(DEATH_EVENT) %>%
+                  forcats::fct_recode("died" = "1", "survived" = "0")) %>% 
+  dplyr::mutate(sex_f = as.factor(sex) %>%
+                  forcats::fct_recode("male" = "1", "female" = "0"))
+
+# check 
+table(heart_failure$DEATH_EVENT_f)
+table(heart_failure$sex_f)
+```
+
+
+## [Some more dummy variables recoded as factor]{.r-fit-text}
+
+::: {style="font-size: 70%;"}
+[Mostly for illustration: it's totally fine (if not preferable) to keep these as binary [0,1] variables]
+
+  + It's worth learning the useful function `dplyr::across`^[This is a bit more [advanced](https://dplyr.tidyverse.org/articles/colwise.html), but it will save a lot of typing in some situations...], which allows to iteratively transform several columns at once!
+  
+:::
+
+```{r}
+# Recode as factor with levels "yes" (= 1), "no" (= 0)
+fct_cols = c("anaemia", "diabetes", "high_blood_pressure", "smoking" )
+
+heart_failure <- heart_failure  %>% 
+  ## ---- 1st create new cols as "factor versions" of old cols
+  dplyr::mutate(
+    # let's introduce `across` function 
+    dplyr::across(
+      # Columns to transform
+      .cols = all_of(fct_cols), 
+      # Functions to apply to each col  
+      .fns =  ~as.factor (.x),
+      # new name to apply where "{.col}" stands for the selected column
+      .names = "{.col}_f")) %>% 
+  ## ---- 2nd create new cols as "factor versions" of old cols
+  dplyr::mutate(
+    dplyr::across(
+      # Columns to transform 2 conditions 
+      .cols = ends_with("_f") & !matches(c( "DEATH_EVENT_f", "sex_f" )) , 
+      # Functions to apply to each col(different syntax)
+      .fns = ~forcats::fct_recode(.x,  yes = "1", no = "0" )))
+``` 
+
+ 
+## [(Small digression on `dplyr::across`)]{.r-fit-text}
+
+::: {style="font-size: 80%;"}
+Notice how `dplyr::across(.cols = ..., .fns = ..., .names = ...)` has these arguments:
+
+1. `.cols =` to select the columns which we want to transform (i.e. `fct_cols`)
+    + with help from `tidyselect` functions: `all_of`, `ends_with`, and `matches`
+2.  `.fns = ~function(.x)` to specify the `function`
+            <!-- .fns =  as.factor,  -->
+            <!-- .fns =  function (x) as.factor (x),  -->
+            <!-- .fns =  ~as.factor (.x), -->
+    + where `~function(.x)` uses the "anonymous function" syntax of the `tidyverse`
+    + and `.x` inside the function is a "stand in" for *each of the columns selected*
+3. [*optional*] `.names =` to name the new cols created using `{.col}` in place of each of the transformed columns
+:::
+
+
+```{r}
+#| eval: false
+#| code-line-numbers: "5,12|6,13|8"
+
+## ---- 1st create new cols as "factor versions" of old cols
+heart_failure <- heart_failure  %>% 
+  dplyr::mutate(
+    dplyr::across(
+      .cols = all_of(fct_cols), 
+      .fns = ~as.factor (.x), 
+      # (optional)
+      .names = "{.col}_f")) %>% 
+  ## ---- 2nd create new cols as "factor versions" of old cols
+  dplyr::mutate(
+    dplyr::across(
+      .cols = ends_with("_f") & !matches(c( "DEATH_EVENT_f", "sex_f" )) , 
+      .fns =  ~forcats::fct_recode(.x,  yes = "1", no = "0" )))
+```
+
+
+# [VISUAL DATA EXPLORATION FOR THE "HEART FAILURE"]{.r-stretch}
+
+**CONTINUOUS VARIABLES**
+ 
+## Why is visual exploration important?
+
+::: {style="font-size: 90%;"}
++ Gaining insight on the variables (range, outliers, missing data)
++ Preliminary check of assumptions for parametric hypothesis testing:
+  + normally distributed outcome variables?
+  + homogeneity of variance across groups? 
+
+Let's explore the **Heart failure dataset** with some data visualization...
+
++ Following the referenced articles (which were mostly interested in predict mortality based on patients' characteristics), we will take the categorical, binary variable `DEATH_EVENT_f` as our main criterion to split the sample (into *survived* and *dead* patients) to explore any significant difference between groups in terms of means of known quantitative features.   
++ We will look at both:
+  + **continuous variables** in the dataset (with the Probability Density Function (PDF))
+  + **discrete variables** in the dataset (with the Probability Mass Function (PMF))
+:::
+
+
+
+
+  
+## Age 
+
+Introducing the handy R package `patchwork` which lets us compose different plots in a very simple and intuitive way
+
+  + (check it out with `??patchwork`)
+
+```{r}
+#| output-location: slide
+#| fig-cap: "As the age increases, the incidence of death event seems to increase" 
+#| fig-cap-location: bottom
+
+age <-ggplot(heart_failure,aes(x = age ))+
+  geom_histogram(binwidth = 5, color = "white", fill = "grey",alpha = 0.5)+
+  geom_vline(aes(xintercept = mean(age)), color = "#4c4c4c")+
+  theme_fivethirtyeight()+
+  labs(title = "Age Distribution" )+
+  scale_x_continuous(breaks = seq(40,100,5))  
+
+age2 <-ggplot(heart_failure, aes(x = age, fill = DEATH_EVENT_f))+
+  geom_histogram(binwidth = 5, position = "identity",alpha = 0.5,color = "white")+
+  geom_vline(aes(xintercept = mean(age[DEATH_EVENT == 0])), color = "#4c4c4c")+
+  geom_vline(aes(xintercept = mean(age[DEATH_EVENT==1])), color = "#d8717b")+
+  theme_fivethirtyeight()+
+  scale_fill_manual(values = c("#999999", "#d8717b"))+
+  labs(title =  "Age Distribution by group (Death Event)")+
+  scale_x_continuous(breaks = seq(40,100,5))
+
+# patchwork
+library(patchwork) # The Composer of Plots
+age + age2 + plot_layout(ncol = 1)
+
+```
+
+
+## Creatinine Phosphokinase (CPK) 
+```{r}
+#| output-location: slide
+#| fig-cap: "This definitely doesn't look like a normal distribution!" 
+#| fig-cap-location: bottom
+
+cpk <- ggplot(heart_failure,aes(x = creatinine_phosphokinase))+
+  geom_density(fill = "gray", alpha = 0.5)+
+  scale_x_continuous(breaks = seq(0,8000, 500))+
+  geom_vline(aes(xintercept = mean(creatinine_phosphokinase)), color = "#4c4c4c")+
+  theme_fivethirtyeight()+
+  theme(axis.text.x = element_text(angle=50, vjust=0.75))+
+  labs(title = "Creatinine phosphokinase (density distribution)" )+
+  theme(plot.caption = element_text(hjust = 0.5, face = "italic"))
+
+cpk2 <- ggplot(heart_failure,aes(x = creatinine_phosphokinase,fill = DEATH_EVENT_f))+
+  geom_density(alpha = 0.5)+theme_fivethirtyeight()+
+  scale_fill_manual(values = c("#999999", "#d8717b"))+
+  scale_x_continuous(breaks = seq(0,8000, 500))+
+  geom_vline(aes(xintercept = mean(creatinine_phosphokinase[DEATH_EVENT == 0])),
+             color = "#4c4c4c")+
+  geom_vline(aes(xintercept = mean(creatinine_phosphokinase[DEATH_EVENT==1])), 
+             color = "#d8717b")+
+  theme_fivethirtyeight()+
+  theme(axis.text.x = element_text(angle=50, vjust=0.75))+
+  labs(title =  "Creatinine phosphokinase (density distribution) by group (Death Event)")
+
+cpk + cpk2 + plot_layout(ncol = 1)
+```
+
+
+
+## Ejection Fraction  
+
+```{r}
+#| output-location: slide
+#| fig-cap: "This also doesn’t look like a normal distribution... and there is a remarkable change in the *probability density function* (PDF) shape when we introduce the grouping variable" 
+#| fig-cap-location: bottom
+
+ejf <- ggplot(heart_failure,aes(x = ejection_fraction))+
+  geom_density(fill = "gray", alpha = 0.5)+
+  scale_x_continuous(breaks = seq(0,100, 5))+
+  geom_vline(aes(xintercept = mean(ejection_fraction)), color = "#4c4c4c")+
+  theme_fivethirtyeight()+
+  labs(title = "Ejection Fraction (density distribution)" )+
+  theme(plot.caption = element_text(hjust = 0.5, face = "italic"))
+
+ejf2 <- ggplot(heart_failure,aes(x = ejection_fraction,fill = DEATH_EVENT_f))+
+  geom_density(alpha = 0.5)+theme_fivethirtyeight()+
+  scale_x_continuous(breaks = seq(0,100, 5))+
+  scale_fill_manual(values = c("#999999", "#d8717b"))+
+  geom_vline(aes(xintercept = mean(ejection_fraction[DEATH_EVENT == 0])),
+             color = "#4c4c4c")+
+  geom_vline(aes(xintercept = mean(ejection_fraction[DEATH_EVENT==1])), 
+             color = "#d8717b")+
+  labs(title =  "Ejection Fraction (density distribution) by group (Death Event)")+
+  theme_fivethirtyeight()
+
+ejf + ejf2 + plot_layout(ncol = 1)
+
+ 
+```
+
+
+## Platelets
+
+```{r}
+#| output-location: slide
+#| fig-cap: "Here the probability distributions resemble a Normal one and we observe more uniformity in the mean/variance across the 2 groups" 
+#| fig-cap-location: bottom
+
+# normalize the var for readability 
+heart_failure  <-  heart_failure %>%  dplyr::mutate(plat_norm = platelets/1000) 
+
+plat <- ggplot(heart_failure,aes(x = plat_norm))+
+  geom_density(fill = "gray", alpha = 0.5)+
+  scale_x_continuous(breaks = seq(0,800, 100))+
+  geom_vline(aes(xintercept = mean(plat_norm)), color = "#4c4c4c")+
+  theme_fivethirtyeight()   + 
+  labs(title =  "Platelets (density distribution)",
+       y = "Density", x = "Sample platelet count (in 10^3 µL)") 
+
+plat2 <- ggplot(heart_failure,aes(x = plat_norm,fill = DEATH_EVENT_f))+
+  geom_density(alpha = 0.5)+theme_fivethirtyeight()+
+  scale_x_continuous(breaks = seq(0,800, 100))+
+  scale_fill_manual(values = c("#999999", "#d8717b"))+
+  geom_vline(aes(xintercept = mean(plat_norm[DEATH_EVENT == 0])),
+             color = "#4c4c4c")+
+  geom_vline(aes(xintercept = mean(plat_norm[DEATH_EVENT==1])), 
+             color = "#d8717b")+
+  theme_fivethirtyeight()   + 
+  labs(title =  "Platelets (density distribution) by group (Death Event)",
+       caption = "(Sample platelet count in 10^3 µL)") 
+ 
+plat + plat2 + plot_layout(ncol = 1)
+```
+
+
+## Serum Creatinine
+
+```{r}
+#| output-location: slide
+#| fig-cap: "Another continuous random variable with a non-normal distribution (long right tails) and a seemingly important difference in variance between the groups. " 
+#| fig-cap-location: bottom
+
+ser_cr <- ggplot(heart_failure,aes(x = serum_creatinine))+
+  geom_density(fill = "gray", alpha = 0.5)+
+  scale_x_continuous(breaks = seq(0,10, 1))+
+  geom_vline(aes(xintercept = mean(serum_creatinine)), color = "#4c4c4c")+
+  theme_fivethirtyeight()+
+  labs(title = "Serum Creatinine (density distribution)" )+
+  theme(plot.caption = element_text(hjust = 0.5, face = "italic"))
+
+ser_cr2 <- ggplot(heart_failure,aes(x = serum_creatinine,fill = DEATH_EVENT_f))+
+  geom_density(alpha = 0.5)+theme_fivethirtyeight()+
+  scale_x_continuous(breaks = seq(0,10, 1))+
+  scale_fill_manual(values = c("#999999", "#d8717b"))+
+  geom_vline(aes(xintercept = mean(serum_creatinine[DEATH_EVENT == 0])),
+             color = "#4c4c4c")+
+  geom_vline(aes(xintercept = mean(serum_creatinine[DEATH_EVENT==1])), 
+             color = "#d8717b")+
+  labs(title =  "Serum Creatinine (density distribution) by group (Death Event)")+
+  theme_fivethirtyeight()
+
+ser_cr + ser_cr2 + plot_layout(ncol = 1)
+```
+
+
+## Serum Sodium
+
+```{r}
+#| output-location: slide
+#| fig-cap: "Same as above, except for the long left tails..." 
+#| fig-cap-location: bottom
+ 
+ser_sod <- ggplot(heart_failure,aes(x = serum_sodium))+
+  geom_density(fill = "gray", alpha = 0.5)+
+  scale_x_continuous(breaks = seq(0,150, 5))+
+  geom_vline(aes(xintercept = mean(serum_sodium)), color = "#4c4c4c")+
+  theme_fivethirtyeight()+
+  labs(title = "Serum Sodium (density distribution)" )
+
+ser_sod2 <- ggplot(heart_failure,aes(x = serum_sodium,fill = DEATH_EVENT_f))+
+  geom_density(alpha = 0.5)+
+  scale_x_continuous(breaks = seq(0,150, 5))+
+  scale_fill_manual(values = c("#999999", "#d8717b"))+
+  geom_vline(aes(xintercept = mean(serum_sodium[DEATH_EVENT == 0])),
+             color = "#4c4c4c")+
+  geom_vline(aes(xintercept = mean(serum_sodium[DEATH_EVENT==1])), 
+             color = "#d8717b")+
+  theme_fivethirtyeight()+
+  labs(title =  "Serum Sodium (density distribution) by group (Death Event)")+
+  theme_fivethirtyeight()
+
+ser_sod + ser_sod2 + plot_layout(ncol = 1)
+
+```
+
+
+<!-- # PURPOSE AND FOUNDATIONS OF INFERENTIAL STATISTICS -->
+
+<!-- ## Probability and random variables -->
+
+<!-- ## Meaningful probability distributions -->
+
+<!-- ## Sampling distributions and Central Limit Theorem -->
+
+<!-- ## Confidence Intervals -->
+  
+<!-- # GETTING TO KNOW THE “LANGUAGE” OF HYPOTHESIS TESTING -->
+
+<!-- ## The null and alternative hypothesis -->
+
+<!-- ## The probability of error? (*α* or "significance level") -->
+
+<!-- ## The *p-value* probability and tests interpretation -->
+
+<!-- ## Effective vs statistical significance -->
+
+<!-- ## Types of errors (Type 1 and Type 2) -->
+
+
+# [VISUAL DATA EXPLORATION FOR THE "HEART FAILURE"]{.r-stretch}
+
+**DISCRETE VARIABLES**
+ 
+## Anaemia
+```{r}
+#| output-location: slide
+#| fig-cap: "There seems to be a greater incidence of anaemia in group 'died'" 
+
+anem <- ggplot(heart_failure, aes(x = forcats::fct_infreq(DEATH_EVENT_f ), 
+                                  fill = anaemia_f ))+
+  geom_bar(position = "dodge")+
+  ## add count labels
+  geom_text(stat = "count", aes(label = ..count..),
+            ## make labels suit the dodged bars 
+            position=position_dodge(width = 1 ), 
+            hjust=0.5, vjust=2,color = "white") +
+  theme_fivethirtyeight() +
+  #scale_x_discrete(labels  = c("Death Event:No","Death Event:Yes"))+
+  scale_fill_manual(values = c("#af854f", "#af4f78"),
+                    name = "Has Anaemia",
+                    labels = c("No","Yes"))+
+  labs(title = "Number of Patients with Anemia") + 
+  theme(#axis.text.x = element_text(angle=50, vjust=0.75), 
+    axis.text.x = element_text(size=12,face="bold"))     
+
+anem
+```
+
+## Diabetes
+```{r}
+#| output-location: slide
+
+diab <- ggplot(heart_failure, 
+               aes(x = forcats::fct_infreq(DEATH_EVENT_f ), fill = diabetes_f ))+
+  geom_bar(position = "dodge")+
+  ## add count labels
+  geom_text(stat = "count", aes(label = ..count..),
+            ## make labels suit the dodged bars 
+            position=position_dodge(width = 1 ), 
+            hjust=0.5, vjust=2,color = "white", size =4) +
+  theme_fivethirtyeight() +
+  #scale_x_discrete(labels  = c("Death Event:No","Death Event:Yes"))+
+  scale_fill_manual(values = c("#af854f", "#af4f78"),
+                    name = "Has Diabetes",
+                    labels = c("No","Yes"))+
+  labs(title = "Number of Patients with Diabetes") + 
+  theme(#axis.text.x = element_text(angle=50, vjust=0.75), 
+    axis.text.x = element_text(size=12,face="bold"))     
+
+diab
+```
+
+## Smoking
+```{r}
+#| output-location: slide
+
+smok <- ggplot(heart_failure, aes(x = forcats::fct_infreq(DEATH_EVENT_f ), 
+                                  fill = smoking_f ))+
+  geom_bar(position = "dodge")+
+  ## add count labels
+  geom_text(stat = "count", aes(label = ..count..),
+            ## make labels suit the dodged bars 
+            position=position_dodge(width = 1 ), 
+            hjust=0.5, vjust=2,color = "white", size =4) +
+  theme_fivethirtyeight() +
+  #scale_x_discrete(labels  = c("Death Event:No","Death Event:Yes"))+
+  scale_fill_manual(values = c("#af854f", "#af4f78"),
+                    name = "Patient smokes",
+                    labels = c("No","Yes"))+
+  labs(title = "Number of Patients who smoke") + 
+  theme(#axis.text.x = element_text(angle=50, vjust=0.75), 
+    axis.text.x = element_text(size=12,face="bold"))     
+
+smok
+```
+
+## High blood pressure
+```{r}
+#| output-location: slide
+#| fig-cap: "There is also a greater incidence of high blood pressure in group 'died'" 
+
+hbp <- ggplot(heart_failure, aes(x = forcats::fct_infreq(DEATH_EVENT_f ), 
+                                  fill = high_blood_pressure_f ))+
+  geom_bar(position = "dodge")+
+    ## add count labels
+  geom_text(stat = "count", aes(label = ..count..),
+            ## make labels suit the dodged bars 
+            position=position_dodge(width = 1 ), 
+            hjust=0.5, vjust=2,color = "white", size =4) +
+  theme_fivethirtyeight() +
+  #scale_x_discrete(labels  = c("Death Event:No","Death Event:Yes"))+
+  scale_fill_manual(values = c("#af854f", "#af4f78"),
+                    name = "Has high blood pressure",
+                    labels = c("No","Yes"))+
+  labs(title = "Number of Patients with High blood pressure") + 
+  theme(#axis.text.x = element_text(angle=50, vjust=0.75), 
+    axis.text.x = element_text(size=12,face="bold"))     
+
+hbp
+```
+
+# HYPOTHESIS TESTNG - some examples - 
+
+Let's continue to explore data from the **heart failure patients' dataset**, but this time using **hypothesis testing** as we learned in Lecture 2. We will do two types of test:
+
+1. Comparing a sample **against a *hypothetical* general population** 
+2. Testing if mean variables' **differences between the two groups of patients** (those who survived after heart failure event and those who didn't) is statistically significant 
+ 
+
+# --- EXAMPLE A  --- 
+
+**(1 sample | n > 30 |  Z test)**
+
+## [Comparing sample mean to a hypothesized population mean (with Z test)]{.r-fit-text}
+
+::: {style="font-size: 90%;"}
+Stating the above hypotheses more formally:
+
+**What is the population Total Platelet Count (TPC) mean for all people who suffered  of heart failure ($𝝁_{HF}$)?** 
+
++ $𝑯_𝟎$ : there is no difference in mean TPC between patients who suffered heart failure and the general population  
+  + $𝝁_{HF}$ = 236 -> hypothesis of no effect or (“no difference”) 
+
++ $𝑯_𝒂$ : there is a difference in mean TPC between patients who have suffered heart failure and the general population (“some effect”). This can be formalized as either:
+  + $𝝁_{HF}$ < 236 (one-sided test), or  
+  + $𝝁_{HF}$ > 236 (one-sided test), or
+  + $𝝁_{HF}$ ≠ 236 (two-sided test) 
+:::  
+
+## [1. Question: How does the mean platelets count in the patients’ sample compare against a reference population?]{.r-fit-text}
+ 
+
+```{r}
+#| output-location: slide
+#| fig-cap: "For a general population, the Total Platelet Count (TPL) has 𝛍=236 (1000 /µL) and 𝛔= 59 (1000 /µL). Below is the sample distribution:" 
+ 
+# compute mean & sd for plot
+mean_plat_p <- round(mean(heart_failure$plat_norm), digits = 1)
+sd_plat_p <- round(sd(heart_failure$plat_norm), digits = 1)
+ 
+heart_failure %>% 
+  ggplot(aes(x = plat_norm))+
+  geom_histogram(aes(y = ..density..), bins=30, alpha=0.25, colour = "#4c4c4c") + 
+  geom_density(colour ="#9b2339", alpha=0.25, fill = "#9b2339") +
+  # add mean vertical line
+  geom_vline(xintercept = mean_plat_p, na.rm = FALSE,size = 1,color= "#9b6723") +
+  # add also +/- 1sd  
+  geom_vline(aes(xintercept = mean_plat_p + sd_plat_p), 
+             color = "#23749b", size = 1, linetype = "dashed") +
+  geom_vline(aes(xintercept = mean_plat_p - sd_plat_p), 
+             color = "#23749b", size = 1, linetype = "dashed") +
+  # add annotations with the mean value
+  geom_label(aes(x=mean_plat_p,  y=0.0085, label=paste0("Sample mean\n",mean_plat_p)),
+             color = "#9b6723") + 
+  geom_label(aes(x=361,  y=0.0085, label=paste0("Sample sd\n",sd_plat_p)),
+             color = "#23749b") +
+  theme_bw() +  labs(y = "Density", x = "Sample platelet count (x 1000/µL)") 
+```
+
+::: aside
+General population data taken from the literature [See @wongsaengsak_significance_2019].
+:::  
+
+## 2.a Computation of the test statistic 
+::: {style="font-size: 90%;"}
+In this case, we have: 
+
++ a large sample $(n > 100)$
++ a known $𝛔^𝟐$ (of the reference population)
++ the observed sample mean $\bar{x}$ and sample sd $s$. 
+
+So we can compute: 
+
+$𝒁_{calc}=\frac{\bar{x}-\mu}{\frac{\sigma}{\sqrt{n}}}$
+
++ ✍🏻 Let's do it "by hand" first to see the steps 
+```{r}
+# General Population of reference 
+mu <- 236 
+sigma  <- 59
+# Sample of HF patients
+n <- 299
+x_HF <- mean(heart_failure$plat_norm)         #    263.358
+s_HF <- sd(heart_failure$plat_norm)           #    97.80424
+# IF large sample & KNOWN pop variance 
+std_err_HF <- sigma /sqrt(n)                  # 3.412058
+z_calc_HF <-  (x_HF - mu) / std_err_HF        # 8.018043
+```
+:::
+
+## 2.b Computation of the p-value associated to the test statistic  
+
+To find the **p-value** associated with a z-score in R, we can use the `pnorm()` function, which uses the following syntax:
+
+  + `q`: The z-score
+  + `mean`: The mean of the normal distribution. Default is 0.
+  + `sd`: The standard deviation of the normal distribution. Default is 1.
+  + `lower.tail`: 
+    + If TRUE, the probability to the left of q in the normal distribution is returned 
+    + If FALSE, the probability to the right is returned. Default is TRUE.
+```{r}
+# Left-tailed test
+p_value_l <- stats::pnorm(z_calc_HF, mean = 0, sd = 1, lower.tail = TRUE) 
+# Right-tailed test
+p_value_r <- stats::pnorm(z_calc_HF, mean = 0, sd = 1,lower.tail = FALSE) 
+# Two-tailed test  (our case)
+p_value_two <- 2*stats::pnorm(z_calc_HF, mean = 0, sd = 1, lower.tail = FALSE)  
+```
+
+## 2.c Computation of the p-value associated to the test statistic  
+
++ 👩🏻‍💻 Let's see how this could be done using an R function `BSDA::z.test`
+```{r}
+z_test_summary <- BSDA::z.test(x = heart_failure$plat_norm,   
+             alternative='two.sided', 
+             mu=236, 
+             sigma.x=59, 
+             conf.level=.95)
+z_test_summary
+```
+
+Same results! 
+
+## 3. Results and interpretation
+
+1.  Based on the critical region, the calculated test statistic `z_calc_HF = 8.0180` falls in the CRITICAL REGION (well beyond the critical point) 
+
+```{r}
+# given 
+z_critical  <- c(-1.96, +1.96) # (Z score corresponding to 𝛼  = 0.05)
+# Check 
+z_calc_HF > z_critical 
+```
+
+2.  Based on the p-value, `p_value_two = 1.07443e-15` is much much smaller than $\alpha$  
+
+```{r}
+# Check
+p_value_two <  0.05
+```
+
+**DECISION**: we reject the Null Hypothesis (basically we conclude that it is extremely unlikely that the sample we drew could have occurred just by chance). So the test indicates that, indeed, there is a difference between heart failure patients and the general population in terms of average platelets count.
+
+# --- EXAMPLE B --- 
+
+**(1 sample | n < 30 | t test)**
+
+## Comparing sample mean to a hypothesized population mean (with t test)
+
+::: {style="font-size: 80%;"}
+Same question, but with a *smaller sample* to work on (this varies, but generally it means $n < 30$). Imagine the patients were only observed over a **follow-up period of 21 days**, and also let's assume we don't know the population’s variance
+
+Stating the hypothesis more formally:
+
+**What is the population Total Platelet Count (TPC) mean for all people who suffered  of heart failure ($𝝁_{HF21d}$) in the past 21 days or less?** 
+
++ $𝑯_𝟎$ : there is no difference in mean TPC between patients who suffered heart failure (visited in 21 days) and the general population  
+  + $𝝁_{HF21d}$ = 236 -> hypothesis of no effect or (“no difference”) 
+
++ $𝑯_𝒂$ : there is a difference in mean TPC between patients who have suffered heart failure and the general population (“some effect”). This can be formalized as:
+  + $𝝁_{HF21d}$ ≠ 236 (two-sided test) 
+
+:::
+
+
+## [1. Question: How does the mean platelets count in the patients’ sample compare against a reference population?]{.r-fit-text}
+```{r}
+#| output-location: slide
+#| fig-cap: "For a general population, the Total Platelet Count (TPL) has 𝛍=236 (1000 /µL) and 𝛔= 59 (1000 /µL). Below is the smaller sample distribution:" 
+ 
+# normalize the var for readability 
+heart_21d  <-  heart_failure %>%  dplyr::mutate(plat_norm = platelets/1000) %>% 
+  filter(time <= 21)                                # 23 obs 
+# compute mean & sd for plot
+mean_plat_p <- round(mean(heart_21d$plat_norm), digits = 1)
+sd_plat_p <- round(sd(heart_21d$plat_norm), digits = 1)
+ 
+heart_21d %>% 
+  ggplot(aes(x = plat_norm))+
+  geom_histogram(aes(y = ..density..), bins=30, alpha=0.25, colour = "#4c4c4c") + 
+  geom_density(colour ="#9b2339", alpha=0.25, fill = "#9b2339") +
+  # add mean vertical line
+  geom_vline(xintercept = mean_plat_p, na.rm = FALSE,size = 1,color= "#9b6723") +
+  # add also +/- 1sd  
+  geom_vline(aes(xintercept = mean_plat_p + sd_plat_p), 
+             color = "#23749b", size = 1, linetype = "dashed") +
+  geom_vline(aes(xintercept = mean_plat_p - sd_plat_p), 
+             color = "#23749b", size = 1, linetype = "dashed") +
+  # add annotations with the mean value
+  geom_label(aes(x=mean_plat_p,  y=0.014, label=paste0("Sample mean\n",mean_plat_p)),
+             color = "#9b6723") + 
+  geom_label(aes(x=361,  y=0.014, label=paste0("Sample sd\n",sd_plat_p)),
+             color = "#23749b") +
+  theme_bw() +  labs(y = "Density", x = "Sample platelet count (x 1000/µL)") 
+```
+
+
+## 2.a Picking the suitable test   
+
+In this case, we have: 
+
++ a "small"  sample $n = 23$
++ an unknown $𝛔^𝟐$ (of the reference population)
++ We obtained the sample mean $\bar{x}$ and sample sd $s$. 
+
+So we can compute: 
+
+$t_{calc} =\frac{\bar{x}-\mu}{\frac{s_\bar{x}}{\sqrt{n-1}}}$
+
+
+
+## 2.b Computation of the test statistic 
+
+::: {style="font-size: 80%;"}
+
++ Option 1: Let's compute the t test "by hand" ✍🏻
+
+```{r}
+# General Population of reference 
+mu_pop <- 236 
+
+# SAMPLE HF patients follow up less 21 days 
+heart_21d <- heart_failure %>% filter(time <= 21) 
+
+n_21d <- nrow(heart_21d)                            # 23
+x_HF_21d <- mean(heart_21d$plat_norm)               # 251.5094
+s_HF_21d <- sd(heart_21d$plat_norm)                 # 102.7341
+df_HF_21d <- n_21d-1                                # 22   
+
+# IF SMALL sample UNKNOWN sigma
+std_err_HF_21d <- s_HF_21d /sqrt(n_21d -1)        # 21.90298
+t_calc <-  (x_HF_21d - mu_pop) / std_err_HF_21d   # 0.7080951
+```
+
++ Option 2:  Let's compute the t test  with `stats::t.test` 👩🏻‍💻
+```{r}
+t_stat_HF_21d_v2 <- stats::t.test(x = heart_21d$plat_norm,
+                                  mu = mu_pop,
+                                  alternative = "two.sided")
+# extract t_calc from results df
+t_calc_v2  <- t_stat_HF_21d_v2[["statistic"]][["t"]] # 0.7240093
+```
+
+::: {.aside}
+There is a small difference in the `t_calc ≠ t_calc_v2` due to the fact that I use the Bessel's correction `n-1` in the **sample standard deviation formula** denominator, while the R function uses `n`
+:::
+
+::: 
+
+
+## [2.c Computation of the p-value associated to the test statistic]{.r-fit-text} 
+
+::: {style="font-size: 75%;"}
++ Option 1:  "by hand" ✍🏻
+
+To find the **p-value** associated with a t-score in R, we can use the `pt(q, df, lower.tail = TRUE)` function, which uses the following syntax:
+
+  + `q`: The t-score
+  + `df`: The degrees of freedom
+  + `lower.tail`: 
+     + TRUE  to calculate the probability to the left of q which is called as left-tailed test 
+     + FALSE as right-tailed test.
+     
+
+```{r}
+# ---- Option 1 
+# -- Left-tailed test
+#pt(t_stat_HF_21d, df_HF_21d, lower.tail = TRUE)
+
+# -- Right-tailed test
+#pt(t_stat_HF_21d, df_HF_21d, lower.tail = FALSE) 
+
+# -- Two-tailed test  (our case)
+p_value_t_test <- 2*pt(t_calc, df_HF_21d, lower.tail = FALSE) # 0.4863214
+```
+
++ Option 2: from results of `stats::t.test` 👩🏻‍💻
+```{r}
+# ---- Option 2 
+# extract  p_value from results df
+p_value_v2  <- t_stat_HF_21d_v2[["p.value"]] # 0.4766892
+```
+:::
+
+## 3. Results and interpretation
+
+::: {style="font-size: 80%;"}
+1.  Based on the critical region, `t_calc ≃ 0.71` is smaller than the t critical value, i.e. it falls within the region of acceptance, so he null hypothesis is not rejected
+
+```{r}
+#find two-tailed t critical values
+
+t_crit_two <- qt(p=.05/2, df=22, lower.tail=FALSE)    # 2.073873
+# Compare t score against t critical    
+t_calc > t_crit_two  # FALSE 
+```
+
+2.  Based on the p-value, `p_value ≃ 0.48` is larger than $\alpha$, i.e. the probability of observing a test statistic (assuming  $H_0$ is true) is quite large
+```{r}
+# Check 
+p_value_t_test <  0.05  # FALSE 
+```
+
+**DECISION**: we FAIL to reject $H_0$. So the test indicates that there is not a statistically significant difference between heart failure patients visited within 21 days and the general population in terms of average platelets count.
+
+::: {.callout-note}
+What changed testing a sample with smaller `n`, instead of a large one? 
+
+<!-- small n >>> bigger se >>> smaller t calc >>> weaker evidence to reject the null -->
+:::
+
+:::
+
+
+
+# --- EXAMPLE C  --- 
+**(2 samples | t test)**
+
+## [Comparing two independent sample means (t test)]{.r-fit-text}
+
+::: {style="font-size: 80%;"}
+This time, we investigate if there might be an actual difference in the Platelet Count means **between the patients who died and the patients who survived** heart failure.
+
+Stating the above hypotheses more formally:
+
+**Is there a statistically significant difference between the mean values of two groups?** 
+
++ $𝑯_𝟎$ : The two population means are equal
+  + $𝝁_𝟏 = 𝝁_𝟎 ⟺ 𝝁_𝟏−𝝁_𝟎=𝟎$  
++ $𝑯_𝒂$ : There is a mean difference between the two groups in the population. Possible directional difference formulation (two-tailed, left-tailed, right-tailed) 
+  + $𝝁_𝟏≠𝝁_𝟎  ⟺ 𝝁_𝟏−𝝁_𝟎≠𝟎$ (the two population means are not equal)
+  + $𝝁_𝟏 < 𝝁_𝟎  ⟺ 𝝁_𝟏−𝝁_𝟎<𝟎$ (population 1 mean is less than population 0 mean)
+  + $𝝁_𝟏 > 𝝁_𝟎  ⟺ 𝝁_𝟏−𝝁_𝟎>𝟎$  (population 1 mean is greater than population 0 mean)
+
+:::
+
+## [Comparing two independent sample means (t test) (cont.)]{.r-fit-text}
+
+[1. Question: Is there a statistically significant difference between the Platelet Counts in the patients who died v. survived heart failure?]{.r-fit-text}
+```{r}
+#| output-location: slide
+#| fig-cap: "There seems to be no major difference in the two groups" 
+ 
+# boxplot by group
+heart_failure %>% 
+  ggplot(mapping = aes(y = plat_norm, x = DEATH_EVENT_f, fill = DEATH_EVENT_f)) +
+  geom_boxplot(alpha=0.5)+ 
+  #geom_violin(alpha=0.5) +
+  geom_point(position = position_jitter(width = 0.1), size = 0.5)+ 
+  scale_fill_manual(values = c("#999999", "#d8717b"))  +
+  # drop legend and Y-axis title
+  theme(plot.title = element_text(size = 14,face="bold", color = "#873c4a"),
+        legend.position = "none",
+        axis.text.x = element_text(size=12,face="bold"), 
+        axis.text.y = element_text(size=12,face="bold")) + 
+  labs(title = "Boxplot of Total Platelet Count (TPL), grouping by DEATH_EVENT [0,1]",
+       x = "", y  = "Platelet count (1000 /µL)")
+```
+
+## 2. Verify the assumptions for independent t-test
+
+1. The 2 samples (“died” and “survived”) must be independent ✅
+2. The dependent variable is scaled in intervals (Platelets Count in 10^3 "/µL") ✅
+3. The dependent variable is normally distributed (Platelets Count in 10^3 "/µL") ✅
+  + (If not, use *non parametric* test)  
+4. The variance within the 2 groups should be similar ❓
+  + (If not, perform Welch’s t-test) 
+
+## [Preliminary Fisher's F test to check for variance equality]{.r-stretch}
+
++ We can compute the Fisher test "by hand" ✍🏻 
+```{r}
+## -- data by group
+n_died <- nrow(heart_failure[heart_failure$DEATH_EVENT == 1 ,])
+mean_died <- mean(heart_failure [ heart_failure$DEATH_EVENT == 1,  "plat_norm"])
+sd_died <- sd(heart_failure [heart_failure$DEATH_EVENT == 1 ,  "plat_norm"])
+var_died <- var(heart_failure [heart_failure$DEATH_EVENT == 1 ,  "plat_norm"])
+
+n_survived <- nrow(heart_failure[heart_failure$DEATH_EVENT == 0, ])
+mean_survived <- mean(heart_failure [ heart_failure$DEATH_EVENT == 0,  "plat_norm"])
+sd_survived <- sd(heart_failure [heart_failure$DEATH_EVENT == 0 ,  "plat_norm"])
+var_survived <- var(heart_failure [heart_failure$DEATH_EVENT == 0 ,  "plat_norm"])
+
+## -- F TEST
+F_ratio <- var_died / var_survived
+F_ratio  # 1.020497 
+```
+
+## [Preliminary Fisher's F test to check for variance equality (.cont)]{.r-stretch}
+
+```{r}
+## -- Define the critical value of F distribution for a risk of alpha = 0.05
+# qf(p=.05, df1 = n_died-1, df2 = n_survived-1, lower.tail = FALSE) # RIGHT-Tailed
+# qf(0.95, df1 = n_died-1, df2 = n_survived-1, lower.tail = FALSE) # LEFT- Tailed 
+qf(c(0.025, 0.975), df1 = n_died-1, df2 = n_survived-1) # TWO-Tailed 
+
+## --Compute the exact p-value (two-tailed )
+p_value_f <- 2 * (1 - pf(F_ratio, df1 = (n_died-1), df2 = (n_survived-1))) 
+p_value_f
+```
+
+A test statistic (F) of 1.02 is obtained, with degrees of freedom 95 and 202. 
+
+The p-value is 0.89, greater than the p-value threshold of 0.05. This suggests **we can not reject the null hypothesis of equal variances**. 
+
+The variance within the 2 groups should be similar ✅  --> we can run a t-test.
+
+## 3.a Computation of t test statistic  
+
+::: {style="font-size: 80%;"}
+Since we verified the required assumptions, the test method is the independent (two-sample) t-test. In this case, we have: 
+
++ a large sample $(𝐧_𝟏 +𝐧_𝟐 > 100)$
++ the population variance(s) are unknown, but we can assume = variances in 2 groups  
++ $standard\, error$ of the means' difference is obtained as **pooled estimate standard deviation of the sampling distribution of the difference**
+
+So we can compute: $t_{calc} = \frac{Difference\,Between\,Sample\,means}{Std.\,Err.\,of\,the\,difference} = \frac{\bar{x_1} -\bar{x_2}}{\sqrt{\frac{s_{1}^{2}}{n_{1}}+\frac{s_{2}^{2}}{n_{2}}}}$
+::: 
+
+```{r}
+# Step 1 - compute difference of sample means
+mean_diff <- (mean_died - mean_survived) # -10.27645 
+
+# Step 2 - Compute associated t-statistics
+# pooled std error 
+pooled_stderror <- sqrt(sd_died^2/(n_died ) + sd_survived^2/(n_survived )) 
+# pooled std error corrected
+pooled_stderror_corr <- sqrt(sd_died^2/(n_died-1) + sd_survived^2/(n_survived-1)) 
+
+###  t statistic  
+t_calc <- (mean_died - mean_survived) / pooled_stderror_corr 
+```
+
+## 3.b Computation of the p-value associated to the t statistic  
+```{r}
+# Step 3 - degrees of freedom
+# n1 + n2 - number of estimated parameters (2 means)
+d_f <- n_died + n_survived - 1 - 1 # 297
+
+# Step 4 - Deduced p-value
+p_value <- 2 * pt(t_calc, df = d_f) # 0.4009635
+p_value
+```
+
+## 4. Results and interpretation
+::: {style="font-size: 80%;"}
+1.  Looking at the confidence interval of the difference, the `sample mean_diff` is well inside the 95% CI of = population mean 
+
+```{r}
+mean_diff
+# CI of the means difference 
+CI_lower <- mean_diff + qt(.025, sum(n_died + n_survived) - 2) * pooled_stderror_corr  
+CI_lower
+CI_upper <- mean_diff + qt(.975, sum(n_died + n_survived) - 2) * pooled_stderror_corr  
+CI_upper
+```
+
+2. As for the p-value, `p_value = 0.40` is  bigger than threshold probability $\alpha$  
+
+```{r}
+# Check 
+p_value
+p_value <  0.05  # FALSE 
+```
+
+**DECISION**: So, we  fail to reject the null hypothesis of equal populations means of TPC. So the test indicates that we do not have sufficient evidence to say that the mean counts of platelets in between these two populations is different.
+:::
+
+# --- EXAMPLE D  --- 
+
+<!-- (esempio metabolomica Catanzaro?) -->  
+    
+**(3+ samples |  ANOVA test)**
+
+## Comparing sample means from 3 or more groups (ANOVA)
+
+In this example, we adopt the ANOVA (“Analysis Of Variance”) test, i.e. an extension of the previous test, but examined how means of a variable differ across 3 or more groups. We will use **‘one- way’ ANOVA**, which serves when there is only one explanatory variable (“treatment”) with 3 or more levels, and only one level of treatment is applied for a given subject. 
+
+For this particular case, we use another realistic dataset showing the survival times of 33 laboratory mice  with thymic leukemia who were randomly divided into 3 groups: 
+
+  + 1st group received Treatment 1
+  + 2nd group received Treatment 2
+  + 3rd group as Control
+
+
+```{r}
+# load new dataset
+mice <- readxl::read_excel(here::here("practice","data_input",
+                                      "02_datasets","mice_exe_ANOVA.xlsx"))
+```
+
+
+## [1. Question: Is there a statistically significant difference between the mean values of the k populations? ]{.r-fit-text}
+
+Defining the question formally: 
+
++ $𝑯_𝟎$ : $𝝁_𝟏 = 𝝁_𝟐 =  𝝁_3$  all 3 population means are equal
++ $𝑯_𝒂$ : at least one of  $(𝝁_𝟏,𝝁_𝟐,𝝁_3)$ is not equal to the other means     
+
+```{r}
+#| output-location: slide
+#| fig-cap: "The boxplot suggests that the 3 groups might have some fairly different distributions" 
+ 
+# boxplot by group
+mice %>% 
+ggplot(., aes(x = group, y = surv_days, fill = group)) +
+  geom_boxplot() + 
+  scale_fill_viridis(discrete = TRUE, alpha=0.6, option="A") +
+  geom_jitter(color="black", size=0.4, alpha=0.9) +
+  # theme_minimal() +
+  # drop legend and Y-axis title
+  theme(plot.title = element_text(size = 14,face="bold", color = "#873c4a"),
+        axis.text.x = element_text(size=12,face="bold"), 
+        axis.text.y = element_text(size=12,face="bold"),
+        legend.position = "none",
+        ) + 
+  labs(title = "Visually check mean and variance in populations' samples" ) + 
+  ylab(label = "Survival (# days") + xlab(label = "")
+```
+
+## 2. Verify the assumptions for one-way ANOVA
+
+The dependent variable is on a metric scale. In the case of the analysis of variance, the independent variable (factor) has at least three levels. 
+
+Assumptions for the results of a one-way ANOVA to be valid:
+
+1. **Independence of observations** – The observations in each group are independent of each other and the observations within groups were obtained by a random sample. ✅
+2. **Normally-distributed response variable** – The values of the dependent variable follow a normal distribution. ❓
+3. **Homogeneity of variance** – The variances of the populations that the samples come from are equal. ❓
+
+## [Preliminary check for normality (visual)]{.r-stretch}
+
+2. **Normally-distributed response variable**  ✅ 
+
+  + (confirmed by visual inspection )
+ 
+```{r}
+#| echo: false
+# visual verification 
+mice %>% 
+  ggplot(., aes( x = surv_days )) +
+  geom_density(fill = "gray", alpha = 0.5) +
+  geom_vline(aes(xintercept = mean(surv_days)), color = "#4c4c4c") +
+  theme_fivethirtyeight() +
+  theme(axis.text.x = element_text(angle=50, vjust=0.75)) +
+  labs(title = "Survival days (density distribution)") +
+  theme(plot.caption = element_text(hjust = 0.5, face = "italic"))
+```
+
+
+## [Preliminary check for normality (test) with `stats::shapiro.test`]{.r-stretch}
+
+```{r}
+# Shapiro-Wilk Normality Test to verify normality  
+# option 1 
+stats::shapiro.test(mice[mice$group == "Control", "surv_days", drop=TRUE])
+stats::shapiro.test(mice[mice$group == "Treatment 1", "surv_days", drop=TRUE])
+stats::shapiro.test(mice[mice$group == "Treatment 2", "surv_days", drop=TRUE])
+```
+
+## [Preliminary check for normality (test) with `rstatix::shapiro_test`]{.r-stretch}
+
+_(same thing, but using a different R function)_
+
+2. **Normally-distributed response variable** – ✅ 
+  + (confirmed by Shapiro-Wilk normality test)
+
+[The null hypothesis of this test is **$H_0$ = “sample distribution is normal”** ] 
+```{r}
+# Shapiro-Wilk Normality Test to verify normality  
+# option 2 (all 3 groups at once)
+mice %>%
+  dplyr::group_by(group) %>%
+  rstatix::shapiro_test(surv_days)
+```
+
+## [Preliminary check variance equality ]{.r-stretch}
+::: {style="font-size: 85%;"}
+3. **Homogeneity of variance** – ✅ 
+  + (Besides visual inspection, confirmed  by Levene test for variance equality)
+
+[The null hypothesis **$H_0$ = several groups have the same variance** (possible variance differences occur only by chance, since there are small differences in each sampling)]
+
+```{r}
+# Levene test for variance equality
+levene <- mice %>%                               # name of the data
+  car::leveneTest(surv_days ~ as.factor(group),   # continuous DV ~  group IV
+                  data = .,            # pipe the data from above
+                  center = mean)       # default is median 
+levene
+```
+
+No evidence of violations of HOV were found, since the p-value for the Levene test (= 0.8427157) is greater than .05, then the variances are not significantly different from each other (i.e., the homogeneity assumption of the variance is met). 
+:::
+
+## [3 Computation of ANOVA F-ratio]{.r-fit-text} 
+
+ANOVA in R can be done in several ways.
+
+Since it's quite straightforward, let's do all the steps by hand first. We need to obtain the needed "ingredients" to calculate the F-ratio: 
+
+$$𝑭_{calc}=\frac{Mean\, Square\, Between}{Mean, Square\, Within}=  \frac{MSB}{MSW} = \frac{\frac{SSB}{df1}}{\frac{SSW}{df2}} $$
+
+## [3.a Computation of ANOVA F-ratio ("by hand")]{.r-fit-text} 
+::: {style="font-size: 80%;"}
++ Option 1: Let's compute the ANOVA test "by hand" ✍🏻 
+
+```{r}
+# Summary statistics
+mice_calc <- mice %>% 
+  dplyr::mutate(mean_all = mean(surv_days),
+         sd_all = sd (surv_days),
+         dfw = 33-3, # df1 = n-k
+         dfb = 3-1, # df2 = K−1 
+         group_f = as.factor(group)
+         ) %>% 
+  dplyr::group_by(group) %>% 
+  dplyr::mutate(n_group = n(),
+         mean_group = mean(surv_days),
+         sd_group = sd (surv_days)) %>% 
+  ungroup() %>% 
+  mutate (ST = (surv_days - mean_all)^2,
+          SW = (surv_days - mean_group)^2,
+          SB = (mean_group - mean_all)^2)
+
+# Sum of Squares 
+SST <- sum(mice_calc$ST)
+SSB <- sum(mice_calc$SB)
+SSW <- sum(mice_calc$SW)
+dfw <- 33-3  # df2
+dfb <- 3-1 # df1
+
+# calculated F statistic 
+F_calc <- (SSB/dfb)/(SSW/dfw) # 5.65
+# F critical value
+F_crit <- qf(p = 0.01, df1 = 2, df2 = 30, lower.tail = FALSE) # 5.390346
+```
+:::
+
+## [3.b Computation of ANOVA F-ratio (with R functions)]{.r-fit-text} 
+
+::: {style="font-size: 90%;"}
+That was just to show how to build it step-by-step (🤓), but we don't have to! We have alternative R functions that can do ANOVA for us:
+
++ Option 2: With the `stats::aov` followed by the command `summary` 👩🏻‍💻
+
+```{r}
+aov_1 <- stats::aov(surv_days ~ group_f,
+                 data = mice_calc)
+summary(aov_1) 
+```
+
++ Option 3: With the `stats::oneway.test()` function 👩🏻‍💻
+
+```{r}
+aov_2 <- stats::oneway.test(surv_days ~ group_f,
+            data = mice_calc,
+            # assuming equal variances
+            var.equal = TRUE)
+aov_2
+```
+ 
+:::
+
+
+## 4. Results and interpretation
+ 
+All 3 options have given the same results, i.e., `F-ratio = 5.652` and a  `p-value = 0.00826`
+
+
+**DECISION**: Given that the p-value is smaller than 0.05, we reject the null hypothesis, so we reject the hypothesis that all means are equal. Therefore, we can conclude that *at least one* group is different than the others in mean number of survival days.
+
+
+::: {.callout-note}
+Have you seen the kind of notation `Pr(>F) 0.00826 **` before (as in the output of the `stats::aov` function)?  
+:::
+
+
+# A CLOSER LOOK AT TESTING ASSUMPTIONS 
+
+# --- EXAMPLE E  --- 
+
+
+## [Testing two groups that are *not* independent]{.r-fit-text}
+
+Let's introduce another toy dataset just for demonstration purposes: imagine a statistics test is administered to the *same* group of 12 students **before and after** attending a workshop 😉. 
+
+```{r}
+# toy dataset for paired groups
+grades <- data.frame(
+  before = c(16, 5, 15, 2, 14, 15, 4, 7, 15, 6, 7, 14),
+  after = c(19, 18, 9, 17, 8, 7, 16, 19, 20, 9, 11, 18)
+)
+```
+
+We may reshape the dataframe into the long form using `tidyr::pivot_longer` (for plotting)
+```{r}
+# reshape into long form
+grades_long <- grades %>% 
+  dplyr::mutate(id = row_number()) %>%
+  tidyr::pivot_longer(cols = before:after, 
+                      names_to = "time", 
+                      values_to = "grade") %>% 
+  dplyr::group_by(id) %>% 
+  # recode time as factor 
+  dplyr::mutate(time_f = as_factor(time ))  %>% 
+  # reorder time_ levels  
+  dplyr::mutate(time_f =  fct_relevel(time_f, "after", after =  1))
+
+```
+
+## [1. Question: Is the difference between two PAIRED samples statistically significant?]{.r-fit-text} 
+
+```{r}
+#| echo: false
+#| fig-cap: "What a successful workshop! 😁" 
+ 
+# boxplot by group
+grades_long %>% 
+  
+  ggplot(mapping = aes(y = grade, x = time_f, fill = time_f)) +
+  geom_boxplot(alpha=0.5) + 
+  #geom_violin(alpha=0.5) +
+  geom_point(position = position_jitter(width = 0.1), size = 0.5)+ 
+  scale_fill_manual(values = c( "#d8717b", "#239b85"))  +
+  # drop legend and Y-axis title
+  theme(plot.title = element_text(size = 14,face="bold", color = "#873c4a"),
+        legend.position = "none",
+        axis.text.x = element_text(size=12,face="bold"), 
+        axis.text.y = element_text(size=12,face="bold")) + 
+  labs(title = "Boxplot of test grades grouped as before and after",
+       x = "", y  = "")
+```
+
+## [2 Hypotehsis for the PAIRED t-test for dependent samples]{.r-fit-text}  
+
+::: {style="font-size: 90%;"}
+In this example, it is clear that the two samples are not independent since the same 12 students took the test before and after the workshop.
+
+Given that the normality assumption is NOT violated (and given the small sample size), we use the **paired t-test**, with the following hypotheses:
+
++ $𝑯_𝟎$ : mean grades before and after the workshop are equal
++ $𝑯_𝒂$ : mean grades before and after the workshop are different
+
+:::
+
+## [2 Computation of the PAIRED t-test for dependent samples]{.r-fit-text}   
+
+
+<!-- ```{r} -->
+<!-- # # Wilcoxon signed-rank test  -->
+<!-- # test <- stats::wilcox.test(grades_long$grade ~ grades_long$time_f, -->
+<!-- #                            paired = TRUE) -->
+<!-- # # results -->
+<!-- # test -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- # paired t test  -->
+<!-- n = 12 -->
+<!-- grades_diff <- grades %>%  -->
+<!--   # diff of each pair -->
+<!--   mutate (diff = after-before) -->
+<!-- # the mean value x̄diff is then calculated.  -->
+<!-- x_diff <- mean(grades_diff$diff) # 4.5  -->
+<!-- sd_diff <- sd(grades_diff$diff) # 7.840744 -->
+<!-- stderr <- sd_diff / sqrt(n) # 2.263428 -->
+<!-- t_calc <- (x_diff - 0)/stderr # 1.877683 -->
+<!-- df <- n-1  # 11 -->
+
+<!-- ``` -->
+
+```{r}
+t_stat_paired <- stats::t.test(x = grades$before,
+                               y = grades$after, 
+                               mu = 0, 
+                               alternative = "two.sided",
+                               paired = TRUE
+)
+t_stat_paired
+# extract t_calc from results df
+t_calc_pair   <- t_stat_paired[["statistic"]][["t"]] # -1.877683
+p_value_pair   <- t_stat_paired[["p.value"]] # 0.08717703
+
+```
+
+
+## 3. Results and interpretation
+
+We obtain the test statistic, the p-value and a reminder of the hypothesis tested.
+
+The calculated **t value** is `r t_calc_pair` The **p-value** is `r p_value_pair`. Therefore, at the 5% significance level, **we do not reject the null hypothesis** that the statistics' grades are similar before and after the workshop (😭).
+
+
+## Bonus function! 
+
+It is worth mentioning the `ggstatsplot` package, which combines plots representing the distribution for each group—and the results of the statistical test displayed in the subtitle of the plot. 
+
+Below we check out the `ggwithinstats()` function for *paired samples.*
+
+```{r}
+#| output-location: slide
+#| fig-cap: "The test results are rendered with the plot!"
+
+# load package
+library(ggstatsplot) # 'ggplot2' Based Plots with Statistical Details
+
+# plot with statistical results
+grades_long %>% 
+  # must ungroup the dataframe or it will give an error
+  ungroup () %>% 
+  ggstatsplot::ggwithinstats(.,
+                             x = time_f ,
+                             y = grade ,
+                             type = "parametric", # for t test 
+                             centrality.plotting = FALSE # remove median
+  )
+```
+
+# --- EXAMPLE F  --- 
+
+**(2 samples no normal | Wilcoxon Rank Sum Test)**
+
+## Testing samples *without* normality assumption
+
+Let’s go back to the HEART FAILURE dataset but looking at the levels of **Creatinine Phosphokinase (CPK)** in the blood, an enzyme that might indicate a heart failure or injury
+
+
+## [1. Question: Is there a statistically significant difference between CPK levels in the blood of the survivors v. those who died after heart failure?]{.r-fit-text}
+
+Defining the question formally: 
+
++ $𝑯_𝟎$ : $𝝁_{CPK-died} = 𝝁_{CPK-surv}$  there is no difference in mean CPK between patients who suffered heart failure  and died  versus patients who survived after heart failure
+
++ $𝑯_𝒂$ : $𝝁_{CPK-died} ≠ 𝝁_{CPK-surv}$  there is a difference in mean CPK between patients who suffered heart failure  and died  versus patients who survived after heart failure (two-sided test)   
+
+```{r}
+#| output-location: slide
+#| fig-cap: "The density plot suggests non normality of the variable distribution" 
+ 
+ggplot(heart_failure,aes(x = creatinine_phosphokinase,fill = DEATH_EVENT_f))+
+  geom_density(alpha = 0.5)+theme_fivethirtyeight()+
+  scale_fill_manual(values = c("#999999", "#d8717b"))+
+  guides(fill = "none") +
+  scale_x_continuous(breaks = seq(0,8000, 500))+
+  geom_vline(aes(xintercept = mean(creatinine_phosphokinase[DEATH_EVENT == 0])),
+             color = "#4c4c4c")+
+  geom_vline(aes(xintercept = mean(creatinine_phosphokinase[DEATH_EVENT==1])), 
+             color = "#d8717b")+
+  theme_fivethirtyeight()+
+  theme(axis.text.x = element_text(angle=50, vjust=0.75))+
+  labs(title =  "Creatinine phosphokinase (density distribution) by group (Death Event)") + 
+  theme(plot.title = element_text(size = 14,face="bold", color = "#873c4a"))
+```
+
+## [Preliminary check for normality (visual)]{.r-stretch}
+
++ **Normally-distributed response variable** - ❌
+
+**QQ plot** (or quantile-quantile plot) draws the correlation between a given sample and the normal distribution. A 45-degree reference line is also plotted. In a QQ plot, each observation is plotted as a single dot. 
+  
+  + If the data are normal, the dots should form a straight line.
+
+```{r}
+#| output-location: slide
+#| fig-cap: "In a QQ plot, if the data are normal, the dots should follow a straight line."
+
+# visual verification with QQ plot 
+ggpubr::ggqqplot( 
+  heart_failure$creatinine_phosphokinase, 
+  title = "QQ plot for CPK levels in blood",
+  xlab ="Theoretical", ylab = "Sample (CPK)")
+``` 
+
+
+## [Preliminary check for normality (test) with `rstatix::shapiro_test`]{.r-stretch}
+
+(same thing, but using a different R function)
+
++ **Normally-distributed response variable** - ❌
+  + (NOT normality confirmed by Shapiro-Wilk normality test)
+
+[The null hypothesis of this test is **$H_0$ = “sample distribution(s) is/are normal”** ] 
+
+Given the p-value we reject the null hypothesis
+```{r}
+# Shapiro-Wilk Normality Test to verify normality  
+heart_failure %>%
+  dplyr::group_by(DEATH_EVENT_f) %>%
+  rstatix::shapiro_test(creatinine_phosphokinase)
+```
+
+## [3. Computation of the Wilcoxon Rank Sum test statistic]{.r-fit-text} 
+
+The **Wilcoxon Rank Sum test** is considered to be the nonparametric equivalent to the **two-sample independent t-test**
+
+Its ASSUMPTIONS are:
+
++ Ordinal or Continuous dependent variable: e.g. CPK levels ✅
++ Independence: All of the observations from both groups are independent of each other ✅
++ Shape: The shapes of the distributions for the two groups are roughly the same ✅
+
+```{r}
+wrs_res <- wilcox.test(creatinine_phosphokinase ~ DEATH_EVENT, # immagino 0, 1
+                   data = heart_failure ,
+                   exact = FALSE, 
+                   alternative = "two.sided" )
+wrs_res
+```
+
+::: aside
+The **Wilcoxon Rank Sum test** is equivalent to the **Mann-Whitney U test** to compare two independent samples. Different software use one or the other.
+
+:::
+
+## [4. Results and interpretation]{.r-fit-text}
+
+RESULTS: since the test statistic is `W = 9460` and the corresponding `p-value is 0.684 > 0.05`, we fail to reject the null hypothesis.
+
+INTERPRETATION: We do not have sufficient evidence to say that CPK levels for dead patients is different than that of survived patients $𝝁_{CPK-died} ≠ 𝝁_{CPK-surv}$ at some statistically significant level)
+
+# --- EXAMPLE G  --- 
+
+**(2 samples no HOV | t test with the Welch correction  )**
+
+## Testing samples *without* homogeneous variance of observations assumption
+
+## [1. Question: Is there a statistically significant difference between serum sodium levels in the blood of the survivors v. those who died after heart failure?]{.r-fit-text}
+
+Defining the question formally: 
+
++ $𝑯_𝟎$ : $𝝁_{sersod-died} = 𝝁_{sersod-surv}$  there is no difference in mean serum sodium between patients who suffered heart failure  and died  versus patients who survived after heart failure
+
++ $𝑯_𝒂$ : $𝝁_{sersod-died} ≠ 𝝁_{sersod-surv}$  there is a difference in mean serum sodium between patients who suffered heart failure  and died  versus patients who survived after heart failure (two-sided test)   
+
+
+## [Preliminary check “HOV” assumption (visual)]{.r-stretch}
+
+::: {style="font-size: 85%;"}
++ **Homogeneity of Variance assumption** - ❌
+Plotting the data offers some graphical intuition that the variance of observations in the two groups seem not homogenous
+
+```{r}
+#| output-location: slide
+
+#Compute means and 95% confidence intervals
+swstats <- heart_failure %>%
+  group_by(DEATH_EVENT_f) %>%
+  summarise(count = n(),
+    mean = mean(serum_sodium,na.rm=TRUE),
+    stddev = sd(serum_sodium, na.rm=TRUE),
+    meansd_l = mean - stddev,
+    meansd_u = mean + stddev)
+
+#The complete script with some styling added
+ggplot(swstats, aes(x=DEATH_EVENT_f, y=mean)) + 
+  geom_point(colour = "black" , size = 2) +
+  #Now plotting the individual data points before the mean values
+  geom_point(data=heart_failure, aes(x=DEATH_EVENT_f, y=serum_sodium, colour = DEATH_EVENT_f), 
+             position = position_jitter() ) +
+  scale_colour_manual(values = c("#999999","#d8717b") ) +
+  #Add the error bars
+  geom_errorbar(aes(ymin = meansd_l, ymax = meansd_u), width=0.2, color = "black") +
+  labs(title = "Mean (-/+SD) serum sodium (mEq/L) by group", x = "", y = "Serum Sodium") +
+  guides(fill = "none")  +
+  coord_flip() +
+  labs(title =  "Serum Sodium means and 95% confidence intervals by group (Death Event)") + 
+  theme(legend.position="none",plot.title = element_text(size = 14,face="bold", color = "#873c4a"))
+```
+
+:::
+
+## [Preliminary check “HOV” assumption (test)]{.r-stretch}
+
+It is always best to use an actual test, so we use also the **Fisher's F test** to verify equal variances of Serum Sodium concentration in the two groups. [In this test **$H_0$ = “the ratio of variances is equal to 1”**] 
+
+```{r}
+f_test_res <- stats::var.test(heart_failure$serum_sodium[heart_failure$DEATH_EVENT == 1] ,
+                              heart_failure$serum_sodium[heart_failure$DEATH_EVENT == 0])
+f_test_res
+```
+
+Given the `p-value = 0.007646` (smaller than $\alpha$) we reject the null hypothesis, hence the HOV assumption for the t test does not hold. 
+
+
+## [2 Computation of the t test with the Welch correction]{.r-fit-text} 
+
+::: {style="font-size: 85%;"}
+We can still run the **t test but with Welch correction**, i.e. the unequal variance condition is compensated by lowering the df. In fact the documentation (`?t.test`), reads:
+
+  + If `var.equal = TRUE`, then the pooled variance is used to estimate the variance
+  + Otherwise (`var.equal = FALSE`), the Welch  approximation to the degrees of freedom is used.
+
+```{r}
+# With Welch correction (on by default) Unequal variance is compensated by lowering df
+t_test_w <- t.test(heart_failure$serum_sodium[heart_failure$DEATH_EVENT == 1], 
+                   heart_failure$serum_sodium[heart_failure$DEATH_EVENT == 0],
+                   # here we specify the situation
+                   var.equal = FALSE,
+                   paired = FALSE, alternative = "two.sided") 
+
+t_test_w
+```
+
+:::
+
+## [3. Results and interpretation]{.r-fit-text}
+
+
+RESULTS: since the test statistic is `t = -3.1645 (with df = 154.01)` and the corresponding `p-value is 0.001872 < 0.05`, we reject the null hypothesis.
+
+INTERPRETATION: We therefore have sufficient evidence to say that the level of serum sodium levels for dead patients is significantly different than that of survived patients $𝝁_{sersod-died} ≠ 𝝁_{sersod-surv}$  
+
+
+## Final thoughts/recommendations
+
+::: {style="font-size: 85%;"}
+
++ There are often **many ways to do the same thing in R** (which is both a blessing and a curse in open source software). *Which should you choose?* It depends on the situation, but you may want to consider:
+
+  + how recent/popular/well maintained is a `{package}` (this affects its stability) 
+  + the more a function abstracts away complexity, the easier it is to use interactively, but the harder it gets to handle inside your own custom functions
+  + different function outputs may be more/less suitable for your analysis/publication requirements (check out your peers' choices!)
+  + *(Always **read the documentation** to assess all of the above)* 
+
++ With easy equations, breaking them down "by hand" (at least once!) can really help you understand them
+
++ It may seem a lot of work to write R code the first time 🥵 (e.g. for a publication-ready plot), but the good news is **once you wrote a script, you will be able to easily re-use it in many more instances** 🙌🏻 😃 
+
++ **Sample size `n` has a very powerful impact** on classical hypothesis testing results! More on this later...
+ 
+:::
+  
+ 
+<!-- # FOUNDATIONS OF INFERENCE -->
+
+<!-- (lo lascerei x lab \# 2) -->
+

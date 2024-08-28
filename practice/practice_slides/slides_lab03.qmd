@@ -1,0 +1,1656 @@
+---
+title: "Lab 3: Modeling correlation and regression"
+subtitle: "<span style='font-size:2em;'> Practice session covering topics discussed in Lecture 3 </span>"
+author: "<a href='https://r4biostats.com/me.html' style='color:#72aed8;font-weight:600;'>M. Chiara Mimmi, Ph.D.</a>&ensp;|&ensp;Università degli Studi di Pavia"
+date: 2024-07-26
+date-format: long
+code-link: true
+format:
+  revealjs:
+    smaller: true
+    scrollable: true
+    theme: ../../theme/slidesMine.scss # QUARTO LOOKS IN SAME FOLDER 
+#    logo: imgs_slides/mitgest_logo.png
+    footer: '[R 4 Biostatistics](https://r4biostats.com/) | MITGEST::training(2024)'
+#    footer: <https://lulliter.github.io/R4biostats/lectures.html>
+## ------------- x salvare come PDF 
+    standalone: false
+    ## -------Produce a standalone HTML file with no external dependencies,
+    embed-resources: true
+    transition: fade
+    background-transition: fade
+    highlight-style: ayu-mirage
+    slide-number: true
+    fig-cap-location: top
+    # fig-format: svg
+    pdf-separate-fragments: false
+    # fig-align: center
+execute:
+  # Quarto pre code blocks do not echo their source code by default
+  echo: true
+  include: true
+  freeze: auto
+bibliography: ../../bib/R4biostats.bib
+csl: ../../bib/apa-6th-edition.csl 
+suppress-bibliography: true
+---
+
+# [GOAL OF TODAY'S PRACTICE SESSION]{.r-fit-text}
+
+::: {style="font-size: 90%;"}
+::: {style="color:#77501a"}
++ Review the basic questions we can ask about ASSOCIATION between any two variables:
+  + does it exist?
+  + how strong is it?
+  + what is its direction?
++ Introduce a widely used analytical tool: REGRESSION
+
+:::
+:::
+
+<br><br>
+
+::: {style="font-size: 70%;"}
+The examples and code from this lab session follow very closely the open access book:  
+
++ Vu, J., & Harrington, D. (2021). **Introductory Statistics for the Life and Biomedical Sciences**. [https://www.openintro.org/book/biostat/](https://www.openintro.org/book/biostat)
+:::
+
+
+## Topics discussed in Lecture # 3
+
+
+::: {style="font-size: 75%;"}
+**Lecture 3: topics** 
+
++ Testing and summarizing relationship between 2 variables (**correlation**)
+  + Pearson’s 𝒓 analysis (param)  
+  + Spearman test (no param)  
++ Measures of **association** 
+  + Chi-Square test of independence  
+  + Fisher’s Exact Test
+    + alternative to the Chi-Square Test of Independence
++ From correlation/association to **prediction/causation** 
+  + The purpose of observational and experimental studies
++ Widely used analytical tools
+  + Simple linear regression models
+  + Multiple Linear Regression models
++ Shifting the emphasis on **empirical prediction** 
+  + Introduction to Machine Learning (ML)
+  + Distinction between Supervised & Unsupervised algorithms
+
+:::  
+
+# R ENVIRONMENT SET UP & DATA
+
+## Needed R Packages
+::: {style="font-size: 80%;"}
++ We will use functions from packages `base`, `utils`, and `stats` (pre-installed and pre-loaded) 
++ We will also use the packages below (specifying `package::function` for clarity).
+:::
+
+```{r}
+# Load pckgs for this R session
+
+# -- General 
+library(fs)      # file/directory interactions
+library(here)    # tools find your project's files, based on working directory
+library(paint) # paint data.frames summaries in colour
+library(janitor) # tools for examining and cleaning data
+library(dplyr)   # {tidyverse} tools for manipulating and summarizing tidy data 
+library(forcats) # {tidyverse} tool for handling factors
+library(openxlsx) # Read, Write and Edit xlsx Files
+library(flextable) # Functions for Tabular Reporting
+# -- Statistics
+library(rstatix) # Pipe-Friendly Framework for Basic Statistical Tests
+library(lmtest) # Testing Linear Regression Models 
+library(broom) # Convert Statistical Objects into Tidy Tibbles
+#library(tidymodels) # not installed on this machine
+library(performance) # Assessment of Regression Models Performance 
+# -- Plotting
+library(ggplot2) # Create Elegant Data Visualisations Using the Grammar of Graphics
+```
+
+
+<!-- # Data  -->
+<!-- # devtools::install_github("OI-Biostat/oi_biostat_data") -->
+<!-- #library(oibiostat) # Data Package for OpenIntro Biostatistics  -->
+
+
+# DATASETS FOR TODAY
+
+::: {style="font-size: 70%;"}
+We will use examples (with adapted datasets) from real clinical studies, provided among the learning materials of the open access books:  
+
++ Vu, J., & Harrington, D. (2021). **Introductory Statistics for the Life and Biomedical Sciences**. [https://www.openintro.org/book/biostat/](https://www.openintro.org/book/biostat)
++ Çetinkaya-Rundel, M., & Hardim, J. (2023). **Introduction to Modern Statistics (1st Ed)**. [https://openintro-ims.netlify.app/](https://openintro-ims.netlify.app/)
+:::
+
+<!-- FATTO IO MA LORO NON VEDONO -->
+```{r}
+#| eval: false
+#| output: false
+#| echo: false
+
+library(oibiostat) # Data Package for OpenIntro Biostatistics
+library(openintro) # Data Sets and Supplemental Functions from 'OpenIntro' Textbooks and Labs 
+
+data(famuss)
+data(prevend)
+data(prevend.samp)
+data(nhanes.samp.adult.500 )
+
+# li salvo nel mio folder per poi darglieli 
+nhanes.samp.adult.500 
+write.csv(nhanes.samp.adult.500, file = here::here("practice", "data_input", "03_datasets",
+                                      "nhanes.samp.csv"))
+
+prevend
+write.csv(prevend, file = here::here("practice", "data_input", "03_datasets",
+                                      "prevend.csv"))
+
+prevend.samp
+write.csv(prevend.samp, file = here::here("practice", "data_input", "03_datasets",
+                                      "prevend.samp.csv"))
+
+famuss
+write.csv(famuss, file = here::here("practice", "data_input", "03_datasets",
+                                      "famuss.csv"))
+
+# data(COL)
+# colors <- COL 
+# saveRDS(colors, file = here::here("practice", "data_input", "03_datasets",
+#                                        "colors.rds"))
+
+```
+ 
+## [Importing Dataset 1 (NHANES)]{.r-fit-text}
+
+::: {style="font-size: 85%;"}
+**Name**: NHANES (National Health and Nutrition Examination Survey) combines interviews and physical examinations to assess the health and nutritional status of adults and children in the United States. Sterted in the 1960s, it became a continuous program in 1999.  
+**Documentation**: [dataset1](https://wwwn.cdc.gov/nchs/nhanes/Default.aspx)  
+**Sampling details**: Here we use a sample of 500 adults from NHANES 2009-2010 & 2011-2012 (`nhanes.samp.adult.500` in the R `oibiostat` package, which has been adjusted so that it can be viewed as a random sample of the US population)
+::: 
+```{r}
+# Check my working directory location
+# here::here()
+
+# Use `here` in specifying all the subfolders AFTER the working directory 
+nhanes_samp <- read.csv(file = here::here("practice", "data_input", "03_datasets",
+                                      "nhanes.samp.csv"), 
+                          header = TRUE, # 1st line is the name of the variables
+                          sep = ",", # which is the field separator character.
+                          na.strings = c("?","NA" ), # specific MISSING values  
+                          row.names = NULL) 
+```
+
+ 
++ Adapting the function `here` to match your own folder structure
+ 
+## [*NHANES* Variables and their description]{.r-fit-text}
+::: {style="font-size: 60%;"}
+[[EXCERPT: see complete file in Input Data Folder]]{style="color:#77501a"}
+
+```{r}
+#| eval: true
+#| output: true
+#| echo: false
+
+nhanes_desc <- tribble(
+  ~Variable, ~ Type, ~Description,
+"X"                ,"int", "xxxx", 
+"ID"               ,"int", "xxxxx", 
+"SurveyYr"         ,"chr", "yyyy_mm. Ex. 2011_12",    
+"Gender"           ,"chr", "Gender (sex) of study participant coded as male or female",
+"Age"              ,"int", "##", 
+"AgeDecade"        ,"chr", "yy-yy es 20-29",   
+# "AgeMonths"        ,"int", "### es 471", 
+#"Race1"            ,"chr", "Reported race of study participant: Mexican, Hispanic, White, #Black, or Other",
+#"Race3"            ,"chr", "Reported race of study participant... Not availale for #2009-10", 
+
+"Education"        ,"chr", "[>= 20 yro]. Ex. 8thGrade, 9-11thGrade, HighSchool, SomeCollege, or CollegeGrad.", 
+# "MaritalStatus"    ,"chr", "[>= 20 yro]. Ex. Married, Widowed, Divorced, Separated, # NeverMarried, or LivePartner",  
+# "HHIncome"         ,"chr","Total annual gross income for the household in US dollars", 
+# "HHIncomeMid"      ,"int", "Numerical version of HHIncome derived from the middle income # in each category. Ex. 12500 40000" ,   
+# "Poverty"          ,"dbl", "A ratio of family income to poverty guidelines. Smaller # numbers indicate more poverty Ex.. 0.95 1.74 4.99" , 
+# "HomeRooms"        ,"int", "How many rooms are in home of study participant (counting # kitchen but not bath room).", 
+# "HomeOwn"          ,"chr", "One of Home, Rent, or Other", 
+# "Work"             ,"chr", "NotWorking Working" ,
+  
+"Weight"           ,"dbl", "Weight in kg",
+# "Length"           ,"lgl", "Recumbent length in cm. Reported for participants aged 0 - 3 years", 
+# "HeadCirc"         ,"lgl", "Head circumference in cm. Reported for participants aged 0 years (0 - 6 months)", 
+"Height"           ,"dbl",  "Standing height in cm. Reported for participants aged 2 years or older.",
+"BMI"              ,"dbl",  "Body mass index (weight/height2 in kg/m2). Reported for participants aged 2 years or older", 
+# "BMICatUnder20yrs" ,"lgl",  "Body mass index category. Reported for participants aged 2 to 19 years", 
+# "BMI_WHO"          ,"chr",  "Body mass index category. Reported for participants aged 2 years or older", 
+"Pulse"            ,"int",  "60 second pulse rate",
+# "BPSysAve"         ,"int", "Combined systolic blood pressure reading, following the # procedure outlined for BPXSAR",
+# "BPDiaAve"         ,"int", "Combined diastolic blood pressure reading, following the # procedure outlined for BPXDAR",
+#"BPSys1"           ,"int", "Systolic blood pressure in mm Hg – first reading",
+#"BPDia1"           ,"int", "Diastolic blood pressure in mm Hg – second reading (consecutive readings)",
+#"BPSys2"           ,"int", "Systolic blood pressure in mm Hg – second reading (consecutive readings)",
+#"BPDia2"           ,"int", "Diastolic blood pressure in mm Hg – second reading",
+#"BPSys3"           ,"int", "Systolic blood pressure in mm Hg third reading (consecutive readings)",
+#"BPDia3"           ,"int", "Diastolic blood pressure in mm Hg – third reading (consecutive readings)",
+#"Testosterone"     ,"dbl", "Testerone total (ng/dL). Reported for participants aged 6 years or older. Not available for 2009-2010",
+#
+"DirectChol"       ,"dbl","Direct HDL cholesterol in mmol/L. Reported for participants aged 6 years or older", 
+"TotChol"          ,"dbl","Total HDL cholesterol in mmol/L. Reported for participants aged 6 years or older", 
+#"UrineVol1"        ,"int", "Urine volume in mL – first test. Reported for participants aged 6 years or older", 
+#"UrineFlow1"       ,"dbl", "Urine flow rate in mL/min – first test. Reported for participants aged 6 years or older", 
+#"UrineVol2"        ,"int", "Urine volume in mL – second test",
+#"UrineFlow2"       ,"dbl","Urine flow rate (urine volume/time since last urination) in mL/min – second test",
+"Diabetes"         ,"chr","Study participant told by a doctor or health professional that they have diabetes", 
+"DiabetesAge"      ,"int", "Age of study participant when first told they had diabetes", 
+"HealthGen"        ,"chr", "Self-reported rating of health: Excellent, Vgood, Good, Fair, or Poor Fair" , 
+#"DaysPhysHlthBad"  ,"int", "Self-reported # of days participant’s physical health was not good out of the past 30 days", 
+#"DaysMentHlthBad " ,"int", "Self-reported # of days participant’s mental health was not good out of the past 30 days", 
+#"LittleInterest"   ,"chr", "Self-reported # of days where participant had little interest in doing things. Among: None, Several, Majority, #or AlmostAll", 
+#"Depressed"        ,"chr", "Self-reported # of days where participant felt down, depressed or hopeless. Among: None, Several, Majority, or #AlmostAll", 
+#"nPregnancies"     ,"int", "# times participant has been pregnant",
+#"nBabies"          ,"int", "# deliveries resulted in live births", 
+#"PregnantNow"      ,"chr", "Pregnancy status ascertained for females 8-59 years of age", 
+#
+#"Age1stBaby"       ,"int",  "Age of participant at time of first live birth",
+#"SleepHrsNight"    ,"int",  "Self-reported # of hours study participant gets at night on weekdays or workdays. For participants aged 16 #years and older", 
+#"SleepTrouble"     ,"chr", "Participant [16 years and older] has had trouble sleeping. Coded as Yes or No." ,  
+#"PhysActive"       ,"chr", "Participant does moderate or vigorous-intensity sports, fitness or recreational activities (Yes or No)." ,  
+#"PhysActiveDays"   ,"int", "Number of days in a typical week that participant does moderate or vigorous intensity activity. ", 
+#"TVHrsDay"         ,"chr", "Number of hours per day on average participant watched TV over the past 30 days.",
+#"CompHrsDay"       ,"chr", "Number of hours per day on average participant used a computer or gaming device over the past 30 day", 
+#"TVHrsDayChild"    ,"lgl", "[2-11 yro] Number of hours per day on average participant watched TV over the past 30 days.",
+#"CompHrsDayChild"  ,"lgl", "[2-11 yro] Number of hours per day on average participant used a computer or gaming device over the past 30 #day", 
+"Alcohol12PlusYr"  ,"chr",  "Participant has consumed at least 12 drinks of any type of alcoholic beverage in any one year", 
+#"AlcoholDay"       ,"int",  "Average number of drinks consumed on days that participant drank alcoholic beverages", 
+#"AlcoholYear"      ,"int",  "[>+ 18yro] Estimated number of days over the past year that participant drank alcoholic beverages", 
+#"SmokeNow"         ,"chr", "Study participant currently smokes cigarettes regularly. (Yes or No)",  
+#"Smoke100"         ,"chr", "Study participant has smoked at least 100 cigarettes in their entire life. (Yes pr No)",  
+#"Smoke100n"        ,"chr", " Smoker Non-Smoker" , 
+#"SmokeAge"         ,"int", "Age study participant first started to smoke cigarettes fairly regularly", 
+#"Marijuana"        ,"chr",  "Participant has tried marijuana", 
+#"AgeFirstMarij"    ,"int", "Age Participant has tried marijuana first", 
+#"RegularMarij"     ,"chr", "Participant has been/is a regular marijuana user (used at least once a month for a year) (Yes or No)",
+#"AgeRegMarij"      ,"int", "Age of participant when first started regularly using marijuana", 
+#"HardDrugs"        ,"chr", "Participant has tried cocaine, crack cocaine, heroin or methamphetamine (Yes or No)" ,
+#"SexEver"          ,"chr", "Participant had had  sex (Yes or No)" ,
+#"SexAge"           ,"int", "Age Participant had had sex first time" ,
+#"SexNumPartnLife"  ,"int", "Number of opposite sex partners participant has had",
+#"SexNumPartYear"   ,"int", "Number of opposite sex partners over the past 12 months",
+#"SameSex"          ,"chr", "Participant has had any kind of sex with a same sex partne(Yes or No)" ,
+#"SexOrientation"   ,"chr",  "Participant’s sexual orientation One of Heterosexual, Homosexual, Bisexual", 
+"..."  ,"...",  "..."#, 
+)
+
+kableExtra::kable(nhanes_desc)
+```
+:::
+
+
+## [Importing Dataset 2 (PREVEND)]{.r-fit-text}
+
+::: {style="font-size: 85%;"}
+**Name**: PREVEND (**Prevention of REnal and Vascular END-stage Disease**) is a study which took place in the Netherlands starting in the 1990s, with subsequent follow-ups throughout the 2000s. This dataset is from the third survey, which participants completed in 2003-2006; data is provided for 4,095 individuals who completed cognitive testing.  
+**Documentation**: [dataset2](https://research.rug.nl/en/datasets/prevention-of-renal-and-vascular-end-stage-disease-prevend) and sample dataset variables' [codebook](https://www.openintro.org/data/index.php?data=prevend)  
+**Sampling details**: Here we use a sample of 500 adults taken from 4,095 individuals who completed cognitive testing (i.e. the `prevend.samp` dataset in the R `oibiostat` package)
+:::
+```{r}
+# Check my working directory location
+# here::here()
+
+# Use `here` in specifying all the subfolders AFTER the working directory 
+prevend_samp <- read.csv(file = here::here("practice", "data_input", "03_datasets",
+                                      "prevend.samp.csv"), 
+                          header = TRUE, # 1st line is the name of the variables
+                          sep = ",", # which is the field separator character.
+                          na.strings = c("?","NA" ), # specific MISSING values  
+                          row.names = NULL) 
+```
+
+## [*PREVEND* Variables and their description]{.r-fit-text}
+::: {style="font-size: 60%;"}
+[[EXCERPT: see complete file in Input Data Folder]]{style="color:#77501a"}
+```{r}
+#| eval: true
+#| output: true
+#| echo: false
+
+prevend_desc <- tribble(
+   ~Variable, ~ Type, ~Description,
+"X", "int", "Patient ID",#  1 2 3 4 5 6
+#"Casenr", "int", "case number",#  1 2 3 4 5 6
+"Age", "int", "Age in years",#  35 35 35 35 35 35
+"Gender", "int", "Expressed as: 0 = males; 1 = females",#  0 0 0 0 0 0
+"RFFT", "int", "Performance on the Ruff Figural Fluency Test. Scores range from 0 (worst) to 175 (best)",#  58 82 105 39 94 40
+"VAT", "int", "Visual Association Test score. Scores may range from 0 (worst) to 12 (best)",#  11 11 10 12 -1 9
+"Chol", "dbl", "Total cholesterol, in mmol/L.",#  5.5 3.65 6.93 3.95 4.58 5.64
+"HDL", "dbl", "HDL cholesterol, in mmol/L.
+",#  0.94 0.87 1.14 0.98 0.92 1.1
+"Statin       ", "int", "Statin use at enrollment. Numeric vector: 0 = No; 1 = Yes.",#  0 0 0 0 0 0
+# "Solubility   ", "int", "Statin solubility. Numeric vector: 0 = lipophilic; 1 = hydrophilic; 2 = no statin use. NA is used for statin users for # whom solubility of the statin is missing.
+# ",#  2 2 2 2 2 2
+# "Days", "int", "Total duration of statin use, in days.",#  -1 -1 -1 -1 -1 -1
+# "Years", "dbl", "Total duration of statin use, in years.
+# ",#  -1 -1 -1 -1 -1 -1
+# "DDD", "dbl", "Defined daily dose of the statin. Numeric vector: One DDD corresponds to the following: Simvastatin 30 mg, Pravastatin 30 mg, # Fluvastatin 60 mg, Atorvastatin 20 mg and Rosuvastatin 10 mg.",#  0 0 0 0 0 0
+"CVD", "int", "History of cardiovascular event. Numeric vector: 0 = No; 1 = Yes",#  0 0 0 0 0 0
+"DM", "int", "Diabetes mellitus status at enrollment. Numeric vector: 0 = No; 1 = Yes",#  0 0 0 0 0 0
+"Education", "int", "Highest level of education. Numeric: 0 primary school; 1 = lower secondary education; 3 = university", #  3 3 2 2 3 1
+"Smoking", "int", "Smoking at enrollment. numeric vector: 0 = No; 1 = Yes",#  1 0 1 0 0 0
+"Hypertension", "int", "Status of hypertension at enrollment. Numeric vector: 0 = No; 1 = Yes",#  0 0 0 0 0 0
+"Ethnicity", "int", "Expressed as: 0 = Western European; 1 = African; 2 = Asian; 3 = Other",#  0 0 0 0 0 "BMI          ", "dbl", "Body mass index, in kg/m^2",#  24.615211 21.234102 29.241493 29.158769 2~
+# "SBP", "dbl", "Systolic blood pressure, in mmHg",#  116 117.5 132.5 130.5 118.5 124.5
+# "DBP", "dbl", "Diastolic blood pressure, in mmHg",#  64.5 61 79 79.5 71.5 69
+# "MAP", "dbl", "Mean arterial pressure, in mmHg",#  78.5 81 98.5 98.5 88 89
+# "eGFR", "dbl", "Estimated glomerular filtration rate, a measure of kidney function. Low values indicate possible # kidney damage, in mL/min",#  68.229675 104.552682 98.541586 113.097796~
+# "Albuminuria.1", "int", "Albuminuria (mg/24hr) in two categories. Numeric vector: 0 = (< 30); 1 = (≥ 30)",#  0 0 1 # 0 0 0
+# "Albuminuria.2", "int", "Albuminuria (mg/24hr) in three categories. Numeric: 0 = (0 to < 10), 1 = (10 to < 30); 3 = # (≥ 30)",#  1 0 2 0 1 0
+# "FRS          ", "int", "Framingham risk score (risk for a cardivascular event within 10 years). Numeric vector. # Circulation 117: 743–753.",#  7 2 11 4 2 3
+# "PS", "dbl", "Propensity score of statin use. Numeric vector. See the PLOS One paper for the model used to # calculate the score",#  0.08101 0.060693 0.170476 0.09006 0.07644~
+# "PSquint      ", "int", "Quintile of PS. Numeric vector.",#  2 1 3 2 2 2
+# "GRS          ", "int", "Indicator for random sample of 1638 Groningen residents in the study. Numeric vector.",#  # 1 0 1 0 0 0
+# "Match_1", "int", "Statin users and non-users matched 1:1 on age and educational level. Matched pairs share a # common integer label. Numeric vector.",#  -1 -1 -1 -1 -1 -1
+# "Match_2", "int", "Statin users and non-users matched 1:1 on Framingham risk score. Matched pairs share a common # integer label. Numeric vector." #  -1 -1 -1 -1 -1 -1 0
+ "..."  ,"...",  "..."#, 
+)
+
+kableExtra::kable(prevend_desc)
+```
+:::
+
+## [Importing Dataset 3 (FAMuSS)]{.r-fit-text}
+
+::: {style="font-size: 85%;"}
+**Name**: FAMuSS (Functional SNPs Associated with Muscle Size and Strength) examine the association of demographic, physiological and genetic characteristics with muscle strength -- including data on race and genotype at a specific locus on the ACTN3 gene (the "sports gene").  
+**Documentation**: [dataset3](https://www.openintro.org/data/index.php?data=famuss)  
+**Sampling details**: the DATASET includes 595 observations on 9 variables (`famuss` in the R `oibiostat` package)
+:::
+
+```{r}
+# Check my working directory location
+# here::here()
+
+# Use `here` in specifying all the subfolders AFTER the working directory 
+famuss <- read.csv(file = here::here("practice", "data_input", "03_datasets",
+                                      "famuss.csv"), 
+                          header = TRUE, # 1st line is the name of the variables
+                          sep = ",", # which is the field separator character.
+                          na.strings = c("?","NA" ), # specific MISSING values  
+                          row.names = NULL) 
+```
+
+## [*FAMuSS* Variables and their description]{.r-fit-text}
+::: {style="font-size: 60%;"}
+[[See complete file in Input Data Folder]]{style="color:#77501a"}
+```{r}
+#| eval: true
+#| output: true
+#| echo: false
+
+famuss_desc <- tribble(
+  ~Variable, ~Description,
+  "X", "id",
+  "ndrm.ch", "Percent change in strength in the non-dominant arm",
+  "drm.ch", "Percent change in strength in the  dominant arm" ,
+  "sex", "Sex of the participant", 
+  "age", "Age in years", 
+  "race", "Recorded as African Am (African American), Caucasian, Asian, Hispanic, Other", 
+  "height", "Height in inches" , 
+  "weight", "Weight in pounds" , 
+  "actn3.r577x", "Genotype at the location r577x in the ACTN3 gene.", 
+  "bmi", "Body Mass Index"
+)
+
+kableExtra::kable(famuss_desc)
+```
+:::
+
+
+```{r}
+#| echo: false
+write.csv(nhanes_desc, file = here::here("practice", "data_input", "03_datasets",
+                                      "nhanes_var_desc.csv"))
+
+write.csv(famuss_desc, file = here::here("practice", "data_input", "03_datasets",
+                                      "famuss_var_desc.csv"))
+
+write.csv(prevend_desc, file = here::here("practice", "data_input", "03_datasets",
+                                      "prevend_var_desc.csv"))
+
+```
+
+# CORRELATION
+
+> [Using NHANES and FAMuSS datasets]
+
+## [Explore relationships between two variables]{.r-fit-text}
+Approaches for summarizing relationships between two variables vary depending on variable types...
+
+- Two **numerical** variables
+- Two **categorical** variables
+- One **numerical** variable and one **categorical** variable
+
+Two variables $x$ and $y$ are 
+
+- *positively associated* if $y$ increases as $x$ increases. 
+- *negatively associated* if $y$ decreases as $x$ increases.
+
+# TWO NUMERICAL VARIABLES (NHANES)
+
+## [Two numerical variables (plot)]{.r-fit-text}
+
+**Height** and **weight** (taken from the `nhanes_samp` dataset) are positively associated.
+
++ notice we can also use the generic base R function `plot` for a quick scatter plot
+```{r}
+#| echo: true
+#| output-location: slide
+
+# rename for convenience
+nhanes <- nhanes_samp %>% 
+  janitor::clean_names()
+
+# basis plot 
+plot(nhanes$height, nhanes$weight,
+     xlab = "Height (cm)", ylab = "Weight (kg)", cex = 0.8)  
+```
+
+## [Two numerical variables: correlation (with `stats::cor`)]{.r-fit-text}
+::: {style="font-size: 85%;"}
+**Correlation** is a numerical summary that measures the strength of a linear relationship between two variables.
+
+ <!-- - Introduced in *OI Biostat* Section 1.6.1; details in Ch. 6. -->
+
+ - The correlation coefficient $r$ takes on values between $-1$ and $1$.
+  - The closer $r$ is to $\pm 1$, the stronger the linear association.
+
++ Here we compute the **Pearson rho (parametric)**, with base R function `stats::cor`  
+  + the `use` argument let us choose how to deal with missing values (in this case only using **all complete pairs**)  
+
+```{r}
+is.numeric(nhanes$height) 
+is.numeric(nhanes$weight)
+
+# using `stats` package
+stats::cor(x = nhanes$height, y =  nhanes$weight, 
+    # argument for dealing with missing values
+    use = "pairwise.complete.obs",
+    method = "pearson")
+```
+
+::: 
+
+## [Two numerical variables: correlation (with `stats::cor.test`)]{.r-fit-text}
+
++ Here we compute the **Pearson rho (parametric)**, with the function `cor.test` (the same we used for testing paired samples)
+  + implicitely takes care on `NAs`  
+```{r}
+# using `stats` package 
+cor_test_result <- cor.test(x = nhanes$height, y =  nhanes$weight, 
+                            method = "pearson")
+
+# looking at the cor estimate
+cor_test_result[["estimate"]][["cor"]]
+```
+
++ The function `ggpubr::ggscatter` gives us all in one (scatter plot + $r$ ("R"))! 🤯 
+
+```{r}
+#| echo: true
+#| output-location: slide
+library("ggpubr") # 'ggplot2' Based Publication Ready Plots
+ggpubr::ggscatter(nhanes, x = "height", y = "weight", 
+                  cor.coef = TRUE, cor.method = "pearson", #cor.coef.coord = 2,
+                  xlab = "Height (in)", ylab = "Weight (lb)")
+```
+
+
+## [Spearman rank-order correlation]{.r-fit-text} 
+The **Spearman's rank-order correlation is the nonparametric version** of the `Pearson` correlation. 
+
+Spearman's correlation coefficient, ($ρ$, also signified by $rs$) measures the strength and direction of association between two ranked variables.
+ 
++ used when 2 variables have a **non-linear** relationship
++ excellent for **ordinal** data (when Pearson's is not appropriate), i.e. Likert scale items
+
+> To compute it, we simply calculate Pearson’s correlation of the `rankings` of the raw data (instead of the data).
+
+## [Spearman rank-order correlation (example)]{.r-fit-text}
+::: {style="font-size: 70%;"}
+Let's say we want to get Spearman's correlation with ordinal factors `Education` and `HealthGen` in the `NHANES` sample. 
+
++ We have to convert them to their underlying numeric code, to compare rankings. 
+
+```{r}
+tabyl(nhanes$education)
+tabyl(nhanes$health_gen)
+
+nhanes <- nhanes %>% 
+  # reorder education
+  mutate (edu_ord = factor (education, 
+                            levels = c("8th Grade", "9 - 11th Grade",
+                                       "High School", "Some College",
+                                       "College Grad" , NA))) %>%  
+  # create edu_rank 
+  mutate (edu_rank = as.numeric(edu_ord)) %>% 
+  # reorder health education
+  mutate (health_ord = factor (health_gen, 
+                            levels = c( NA, "Poor", "Fair",
+                                       "Good", "Vgood",
+                                       "Excellent"))) %>%
+  # create health_rank 
+  mutate (health_rank = as.numeric(health_ord))
+```
+:::
+
+## [Spearman rank-order correlation (example), cont.]{.r-fit-text}
+
+::: {style="font-size: 70%;"}
++ Let's check out the `..._rank` version of the 2 categorical variables of interest: 
+  + **education** from `edu_ord` to `edu_rank`
+```{r}
+table(nhanes$edu_ord, useNA = "ifany" )
+table(nhanes$edu_rank, useNA = "ifany" )
+
+```
+
+  + **general health** from `health_ord` to `health_rank`
+
+```{r}
+table(nhanes$health_ord, useNA = "ifany" )
+table(nhanes$health_rank,  useNA = "ifany" )
+```
+::: 
+
+
+## [Spearman rank-order correlation (example cont.)]{.r-fit-text}
+After setting up the variables in the correct (numerical rank) format, now we can actually compute it: 
++ same function call `stats::cor.test`
++ but specifying argument `method = "spearman"`
+
+```{r}
+# -- using `stats` package 
+cor_test_result_sp <- cor.test(x = nhanes$edu_rank,
+                               y = nhanes$health_rank, 
+                               method = "spearman", 
+                               exact = FALSE) # removes the Ties message warning 
+# looking at the cor estimate
+cor_test_result_sp
+
+# -- only print Spearman rho 
+#cor_test_result_sp[["estimate"]][["rho"]]
+```
+
+# TWO CATEGORICAL VARIABLES (FAMuSS)
+
+## [Two categorical variables (plot)]{.r-fit-text}
+::: {style="font-size: 80%;"}
+In the `famuss` dataset, the variables `race`, and `actn3.r577x` are categorical variables.
+
++ we can use the generic base R function `graphics::barplot`  
+```{r}
+mycolors_contrast <- c("#9b2339", "#E7B800","#239b85", "#85239b", "#9b8523","#23399b", "#d8e600", "#0084e6","#399B23",  "#e60066" , "#00d8e6",  "#005ca1", "#e68000")
+
+## genotypes as columns
+genotype.race = matrix(table(famuss$actn3.r577x, famuss$race), ncol=3, byrow=T)
+colnames(genotype.race) = c("CC", "CT", "TT")
+rownames(genotype.race) = c("African Am", "Asian", "Caucasian", "Hispanic", "Other")
+
+# using generic base::barplot
+graphics::barplot(genotype.race, col = mycolors_contrast[1:5], ylim=c(0,300), width=2)
+legend("topright", inset=c(.05, 0), fill=mycolors_contrast[1:5], 
+       legend=rownames(genotype.race))
+```
+::: 
+
+## [Two categorical variables (contingency table)]{.r-fit-text}
+::: {style="font-size: 80%;"}
+Specifically, the variable `actn3.r577x` takes on three possible levels (`CC`, `CT`, or `TT`) which indicate the distribution of genotype at location `r577x` on the `ACTN3` gene for the FAMuSS study participants.
+
+A **contingency table** summarizes data for two categorical variables. 
+
++ the function `stats::addmargins` puts arbitrary *Margins* on multidimensional tables
+  + The extra column & row `"Sum"` provide the *marginal totals* across each row and each column, respectively 
+
+```{r}
+# levels of actn3.r577x
+table(famuss$actn3.r577x)
+
+# contingency table to summarize race and actn3.r577x
+addmargins(table(famuss$race, famuss$actn3.r577x))
+```
+:::
+## [Two categorical variables (contingency table prop)]{.r-fit-text}
+::: {style="font-size: 80%;"}
+Contingency tables can also be converted to show *proportions*. Since there are 2 variables, it is necessary to specify whether the proportions are calculated according to the row variable or the column variable.
+
+  + using the `margin = ` argument in the `base::prop.table` function (1 indicates rows, 2 indicates columns)
+
+```{r}
+# adding row proportions
+addmargins(prop.table(table(famuss$race, famuss$actn3.r577x), margin =  1))
+
+# adding column proportions
+addmargins(prop.table(table(famuss$race, famuss$actn3.r577x),margin =  2))
+```
+:::
+
+## [Chi Squared test of `independence`]{.r-fit-text}
+
+The **Chi-squared test** is a hypothesis test used to determine whether there is a relationship between **two categorical variables**. 
+
+  + categorical vars. can have *nominal* or *ordinal* measurement scale
+  + the *observed* frequencies are compared with the *expected* frequencies and their deviations are examined.
+```{r}
+# Chi-squared test
+# (Test of association to see if 
+# H0: the 2 cat var (race  & actn3.r577x ) are independent
+# H1: the 2 cat var are correlated in __some way__
+
+tab <- table(famuss$race, famuss$actn3.r577x)
+test_chi <- chisq.test(tab)
+```
+
+
+the obtained result (`test_chi`) is a list of objects...
+
+::: {.callout-warning icon=false}
+### {{< bi terminal-fill color=rgba(155,103,35,1.00) >}} You try...
+...run `View(test_chi)` to check 
+:::
+
+
+## [Chi Squared test of `independence` (cont)]{.r-fit-text}
+
+Within `test_chi` results there are:
+
+:::: {.columns}
+::: {.column width="50%"}
++ `Observed frequencies` =   
+how often a combination occurs in our sample
+```{r}
+# Observed frequencies
+test_chi$observed
+```
+
+:::
+  
+::: {.column width="50%"}
++ `Expected frequencies` = what would it be if the 2 vars were PERFECTLY INDEPENDENT  
+```{r}
+# Expected frequencies
+round(test_chi$expected  , digits = 1 )
+```
+:::
+  
+::::
+
+## [Chi Squared test of `independence` (results)]{.r-fit-text}
+
++ Recall that:
+  + $H_{0}$: the 2 cat. var. are **independent**
+  + $H_{1}$: the 2 cat. var. are **correlated** in some way 
+
++ The result of Chi-Square test represents a comparison of the above two tables (*observed* v. *expected*): 
+  + p-value = 0.01286 smaller than α = 0.05 so **we REJECT the null hypothesis** (i.e. there’s likely an association between race and ACTN3 gene)
+  
+```{r}
+test_chi
+```
+
+<!-- + Additional tables (from test results) -->
+<!-- ```{r} -->
+<!-- # Pearson's residual -->
+<!-- test_chi$residuals   -->
+<!-- # Standardized residual -->
+<!-- test_chi$stdres      -->
+<!-- ``` -->
+
+## [Computing Cramer's V after test of independence]{.r-fit-text}
+::: {style="font-size: 90%;"}
+Recall that **Crammer's V** allows to measure the *effect size* of the test of independence (i.e. the **strength of association** between two nominal variables)
+
++ $V$ ranges from [0 1] (the smaller $V$, the lower the correlation)
+
+$$V=\sqrt{\frac{\chi^2}{n(k-1)}} $$
+
+where:
+
++ $V$ denotes Cramér’s V 
++ $\chi^2$ is the Pearson chi-square statistic from the prior test
++ $n$ is the sample size involved in the test 
++ $k$ is the lesser number of categories of either variable
+::: 
+## [Computing Cramer's V after test of independence (2 ways)]{.r-fit-text}
+::: {style="font-size: 90%;"}
++ ✍🏻 "By hand" first to see the steps 
+```{r}
+# Compute Creamer's V by hand
+ 
+# inputs 
+chi_calc <- test_chi$statistic
+n <- nrow(famuss) # N of obd 
+n_r <- nrow(test_chi$observed) # number of rows in the contingency table
+n_c <- ncol(test_chi$observed) # number of columns in the contingency table
+
+# Cramer’s V
+sqrt(chi_calc / (n*min(n_r -1, n_c -1)) )
+```
+
++ 👩🏻‍💻 Using an R function `rstatix::cramer_v`
+```{r}
+# Cramer’s V with rstatix
+rstatix::cramer_v(test_chi$observed)
+```
+
+**Cramer’s V = 0.12**, which indicates a relatively weak association between the two categorical variables. It suggests that while there may be some relationship between the variables, it is not particularly strong.
+:::
+
+## [Chi Squared test of `goodness of fit`]{.r-fit-text}
+
+In some cases the `Chi-square test` examines **whether or not an observed frequency distribution matches an expected theoretical distribution**.
+
+Here, we are conducting a type of `Chi-square Goodness of Fit Test` which:
+
++ serves to test whether the observed distribution of a categorical variable differs from your expectations 
++ interprets the statistic based on the discrepancies between observed and expected counts
+
+
+## [Chi Squared test of `goodness of fit` (example)]{.r-fit-text}
+::: {style="font-size: 80%;"}
+Since the participants of the **FAMuSS study** where *volunteers* at a university, they did not come from a "representative" sample of the US population, we can use the $\chi^{2}$ goodness of fit test to test against:
+
+  + $H_{0}$: the study participants (1st row below) are racially representative of the general population (2nd row below)
+
+```{r}
+#| echo: false
+#| output: true
+famuss_race <- openxlsx::read.xlsx(
+  here::here("practice","data_input","03_datasets","famuss_race.xlsx") )
+
+famuss_race %>% flextable()
+```
+
+We use the formula 
+$$\chi^{2} = \sum_{k}\frac{(Observed - Expected)^{2}}{Expected}$$
+
+Under $H_{0}$, the sample proportions should equal the population proportions.
+:::
+
+## [Chi Squared test of `goodness of fit` (example)]{.r-fit-text}
+::: {style="font-size: 80%;"}
+```{r} 
+# Subset the vectors of frequencies from the 2 rows  
+observed <- c(27,  55,  467, 46)
+expected <- c(76.2,  5.95, 478.38,  34.51)
+
+# Calculate Chi-Square statistic manually 
+chi_sq_statistic <- sum((observed - expected)^2 / expected) 
+df <- length(observed) - 1 
+p_value <- 1 - pchisq(chi_sq_statistic, df) 
+
+# Print results 
+chi_sq_statistic
+df
+p_value 
+```
+
+The calculated $\chi^{2}$ statistic is very large, and the `p_value` is close to 0. Hence, there is more than sufficient evidence to **reject the null hypothesis** that the sample is representative of the general population.  
+Comparing the observed and expected values (or the residuals), we find the **largest discrepancy with the over-representation of Asian study participants**.
+
+:::
+<!-- # 1 CATEGORICAL & 1 NUMERICAL VARIABLES (???) -->
+
+# SIMPLE LINEAR REGRESSION 
+
+> [Using NHANES dataset]
+
+## Visualize the data: BMI and age
+
+We are mainly looking for a "vaguely" linear shape here 
+
++ `ggplot2` gives us a visual confirmation with `geom_point()`
++ Essentially, `geom_smooth()` adds a trend line over an existing plot
+  + inside the function, we have different options with the `method` argument (default is LOESS (locally estimated scatterplot smoothing))
+  + with `method = lm` we get the linear best fit (the **least squares regression line**) & its 95% CI 
+```{r}
+#| echo: true
+#| output-location: slide
+
+ggplot(nhanes, aes (x = age, 
+                          y = bmi)) + 
+  geom_point() + 
+  geom_smooth(method = lm,  
+              #se = FALSE
+              )
+```
+
+
+## [Linear regression model]{.r-fit-text}
+The `lm()` function is used to fit linear models has the following generic structure:
+
+```{r}
+#| eval: false
+lm(y ~ x, data)
+```
+
+where:
+
++ the 1st argument `y ~ x` specifies the variables used in the model (here the model regresses a **response variable**  $y$ against an **explanatory variable** $x$. 
++ The 2nd argument `data` is used only when the dataframe name is not already specified in the first argument. 
+
+## [Linear regression models syntax]{.r-fit-text}
+
+The following example shows fitting a linear model that predicts **BMI** from **age (in years)** using data from `nhanes` adult sample (individuals 21 years of age or older from the NHANES data). 
+```{r}
+#| eval: false
+# fitting linear model
+lm(nhanes$bmi ~ nhanes$age)
+```
+
+```{r}
+# or equivalently...
+lm(bmi ~ age, data = nhanes)
+```
++ Running the function creates an *object* (of class `lm`) that contains several components (model coefficients, etc), either directly displayed or accessible with `summary()` notation or specific functions.
+
+
+## [Linear regression models syntax]{.r-fit-text}
+::: {style="font-size: 80%;"}
+<!-- https://www.youtube.com/watch?v=4wS3n54Kon0 -->
+We can save the model and then extract individual output elements from it using the `$` syntax 
+
+```{r}
+#| eval: true
+#| output: false
+
+# name the model object
+lr_model <- lm(bmi ~ age, data = nhanes)
+
+# extract model output elements
+lr_model$coefficients
+lr_model$residuals
+lr_model$fitted.values
+```
+
+The command `summary` returns these elements 
+
++ `Call`: reminds the equation used for this regression model
++ `Residuals`: a 5 number summary of the distribution of residuals from the regression model
++ `Coefficients`:displays the estimated coefficients of the regression model and relative hypothesis testing, given for:  
+  + intercept 
+  + explanatory variable(s) slope
+  
+::: 
+
+## [Linear regression models interpretation: coefficients]{.r-fit-text}
+
++ The model tests the null hypothesis $H_{0}$ that a coefficient is 0
++ `coefficients` outputs are: `estimate`, `std. error`, `t-statistic`, and `p-value` correspondent to the t-statistic for:
+  + *intercept* 
+  + *explanatory variable(s)* slope
++ In regression, the population **parameter of interest** is typically the *slope* parameter 
+  + in this model, `age` doesn't appear significantly ≠ 0 
+
+```{r}
+summary(lr_model)$coefficients 
+```
+
+## [Linear regression models interpretation: Coefficients 2 ]{.r-fit-text}
+
+For the the estimated coefficients of the regression model, we get:
+
++ `Estimate` = the average increase in the response variable associated with a one unit increase in the predictor variable, (assuming all other predictor variables are held constant).
++ `Std. Error` = a measure of the uncertainty in our estimate of the coefficient.
+<!-- `Std. Error` = of coefficients = `Residual Standard Error` (see below) divided by the square root of the sum of the square of that particular x variable. -->
++ `t value`  = the t-statistic for the predictor variable, calculated as (Estimate) / (Std. Error).
++ `Pr(>|t|)` = the p-value that corresponds to the t-statistic. If less than some alpha level (e.g. 0.05). the predictor variable is said to be *statistically significant*. 
+
+
+## [Linear regression models outputs: fitted values]{.r-fit-text}
+
+Here we see $\hat{y}_i$, i.e. the **fitted $y$ value for the $i$-th individual**
+
+```{r}
+fit_val <- lr_model$fitted.values
+
+# print the first 6 elements
+head(fit_val)
+```
+
+## [Linear regression models outputs: residuals]{.r-fit-text}
+
+Here we see $e_i = y_i - \hat{y}_i$, i.e. the **residual value for the $i$-th individual**
+
+```{r}
+resid_val <- lr_model$residuals 
+
+# print the first 6 elements
+head(resid_val)
+```
+
+
+## [Linear regression model's fit: Residual standard error]{.r-fit-text}
+::: {style="font-size: 80%;"}
++ The `Residual standard error` (an estimate of the parameter $\sigma$) tells the average distance that the observed values fall from the regression line (we are assuming constant variance). 
+  + *The smaller it is, the better the model fits the dataset!*
+
+We can compute it manually as: 
+
+${\rm SE}_{resid}=\ \sqrt{\frac{\sum_{i=1}^{n}{(y_i-{\hat{y}}_i)}^2}{{\rm df}_{resid}}}$
+
+```{r}
+# Residual Standard error (Like Standard Deviation)
+
+# ---  inputs 
+# sample size
+n =length(lr_model$residuals)
+# n of parameters in the model
+k = length(lr_model$coefficients)-1 #Subtract one to ignore intercept
+# degrees of freedom of the the residuals 
+df_resid = n-k-1
+# Squared Sum of Errors
+SSE =sum(lr_model$residuals^2) # 22991.19
+
+# --- Residual Standard Error
+ResStdErr <- sqrt(SSE/df_resid)  # 6.815192
+ResStdErr
+```
+
+:::
+
+## [Linear regression model's fit: : $R^2$ and $Adj. R^2$]{.r-fit-text} 
+::: {style="font-size: 85%;"}
+The **$R^2$** tells us the **proportion of the variance in the response variable** that can be explained by the predictor variable(s).
+
++ if $R^2$ close to 0 -> data more spread
++ if $R^2$ close to 1 -> data more tight around the regression line
+
+```{r}
+# --- R^2
+summary(lr_model)$r.squared
+```
+
+The **$Adj. R^2$** is a **modified version of $R^2$** that has been adjusted for the number of predictors in the model. 
+
++ It is always lower than the R-squared
++ It can be useful for comparing the fit of different regression models that use different numbers of predictor variables.
+
+```{r}
+# --- Adj. R^2
+summary(lr_model)$adj.r.squared
+```
+:::
+
+## [Linear regression model's fit: : F statistic]{.r-fit-text}
+The **F-statistic** indicates whether the regression model provides a better fit to the data than a model that contains no independent variables. In essence, it tests if the regression model as a whole is useful.
+
+
+```{r}
+# extract only F statistic 
+summary(lr_model)$fstatistic 
+
+# define function to extract overall p-value of model
+overall_p <- function(my_model) {
+    f <- summary(my_model)$fstatistic
+    p <- pf(f[1],f[2],f[3],lower.tail=F)
+    attributes(p) <- NULL
+    return(p)
+}
+
+# extract overall p-value of model
+overall_p(lr_model)
+
+```
+
+Given the **p-value is > 0.05**, this indicate that *the predictor variable is not useful for predicting the value of the response variable*.
+
+# DIAGNOSTIC PLOTS 
+
+The following plots help us checking if (most of) the assumptions of linear regression are met!
+
+> (the **independence** assumption is more linked to the study design than to the data used in modeling)
+
+<!-- 2. Independence: The residuals are independent. In particular, there is no correlation between consecutive residuals in time series data. -->
+
+## [Linear regression diagnostic plots: residuals 1/4]{.r-fit-text}
+
+> **ASSUMPTION 1**: there exists a linear relationship between the independent variable, x, and the dependent variable, y
+
+For an observation $(x_i, y_i)$, where $\hat{y}_i$ is the `predicted value` according to the line $\hat{y} = b_0 + b_1x$, the `residual` is the value
+$e_i = y_i - \hat{y}_i$
+
++ A linear (e.g. `lr_model`) is a particularly good fit for the data when the residual plot shows random scatter above and below the horizontal line.
+  + (In this R plot, we look for a red line that is fairly straight)
+```{r}
+#| output-location: slide
+#| fig-cap: "" 
+
+# residual plot
+plot(lr_model, which = 1 )
+```
+
++ We use the argument `which` in the function `plot` so we see the plots one at a time.
+
+## [Linear regression diagnostic plots: normality of residuals 2/4]{.r-fit-text}
+
+> **ASSUMPTION 2**: The residuals of the model are normally distributed
+
+With the quantile-quantile plot (Q-Q) we can checking normality of the residuals.
+
+```{r}
+#| output-location: slide
+#| fig-cap: "The data appear roughly normal, but there are deviations from normality in the tails, particularly the upper tail. " 
+
+# quantile-quantile plot
+plot(lr_model, which = 2 )
+```
+
+
+## [Linear regression diagnostic plots: Homoscedasticity 3/4]{.r-fit-text}
+
+>**ASSUMPTION 3**: The residuals have constant variance at every level of x ("*homoscedasticity*")
+
+This one is called a **Spread-location plot**: shows if residuals are spread equally along the ranges of predictors
+```{r}
+#| output-location: slide
+#| fig-cap: "" 
+
+# Spread-location plot
+plot(lr_model, which = 3 )
+```
+
+
+## [Test for Homoscedasticity]{.r-fit-text} 
+::: {style="font-size: 90%;"}
+Besides visual check, we can perform the `Breusch-Pagan test` to verify the assumption of homoscedasticity. In this case:
+
+  + $H_{0}$: residuals are distributed with **equal variance** 
+  + $H_{1}$: residuals are distributed with **UNequal variance**  
+
++ we use `bptest` function from the `lmtest` package
+ 
+
+<!--  https://www.codingprof.com/3-easy-ways-to-test-for-heteroscedasticity-in-r-examples/ -->
+
+
+```{r}
+# Breusch-Pagan test against heteroskedasticity 
+lmtest::bptest(lr_model)
+```
+Because the test statistic (BP) is small and the p-value is not significant  (p-value > 0.05): **WE DO NOT REJECT THE NULL HYPOTHESIS** (i.e. we can assume equal variance)
+:::
+
+## [Linear regression diagnostic plots: leverage 4/4]{.r-fit-text}
+
+This last diagnostic plot has to do with **outliers**: 
+
++ A **residuals vs. leverage plot** allows us to identify *influential observations* in a regression model
+  + The x-axis shows the  "`leverage`"  of each point and the y-axis shows the "`standardized residual of each point`", i.e. *"How much would the coefficients in the regression model would change if a particular observation was removed from the dataset?"* 
+  + `Cook's distance lines` (red dashed lines)  -- not visible here -- should appear on the corners of the plot when there are influential cases 
+
+
+```{r}
+#| output-location: slide
+#| fig-cap: "In this particular case, there is no influential case, or cases" 
+plot(lr_model, which = 5 )
+```
+
+## [(Digression on the `broom` package)]{.r-fit-text}
+
+::: {style="font-size: 90%;"}
++ The `broom` package introduces the ***tidy approach*** to regression modeling code and outputs, allowing to convert/save them in the form of `tibbles`
++ The function `tidy` will turn an object into a tidy tibble
++ The function `glance` will construct a single row summary "glance" of a model, fit, or other object
++ The function `augment` will show a lot of results for the model attached to each observation 
+  + this is very useful for further use of such objects, like `ggplot2` etc. 
+
+```{r}
+#| eval: false
+
+# render model as a dataframe 
+broom::tidy(lr_model)
+
+# see overal performance 
+broom::glance(lr_model)
+
+# save an object with all the model output elements 
+model_aug <- broom::augment(lr_model)
+```
+
+::: {.callout-warning icon=false}
+### {{< bi terminal-fill color=rgba(155,103,35,1.00) >}} You try...
+Run these functions and then run `View(model_aug)` to check out the output
+:::
+
+:::
+
+
+# MULTIPLE LINEAR REGRESSION 
+
+> [Using PREVEND dataset: a sample of 500 obs]
+
+
+<!-- PREVEND STESSO ESEMPIO -->
+
+<!-- copia  practice/slides_lesson_03_INPUT.Rmd  -->
+<!-- guardando libro Vu  pg 334  -->
+
+<!-- poi adatta su lezione  -->
+
+
+## [Visualize the data: Statin use and cognitive function]{.r-fit-text}
+
+**Statins** are a class of drugs widely used to lower **cholesterol** (recent guidelines would lead to statin use in almost half of Americans between 40 - 75 years of age and nearly all men over 60). But a few small studies have suggested that statins may be associated with lower **cognitive ability**.
+
++ From this sample of the PREVEND study, we can observe the relationship between **statin use** (`statin_use`) and **cognitive ability** (`rfft`). 
+
+```{r}
+#| echo: true
+#| output-location: slide
+#| fig-cap: "The boxplot suggests that statin user (red) present lower cognitive ability score, on average"  
+
+# rename for convenience
+prevend <- prevend_samp %>% janitor::clean_names() %>% 
+  #create statin.use logical + factor
+  mutate(statin_use = as.logical(statin)) %>% 
+  mutate(statin_use_f = factor(statin, levels = c(0,1), labels = c("NonUser", "User")))   
+ 
+# box plot 
+ggplot(prevend, 
+       aes (x = statin_use_f, y = rfft, fill = statin_use_f)) + 
+  geom_boxplot(alpha=0.5) +
+  scale_fill_manual(values=c("#005ca1","#9b2339" )) +
+  # drop legend and Y-axis title
+  theme(legend.position = "none") 
+```
+
+
+## [Confirm visual intuition with independent sample t-test]{.r-fit-text}
+We could use an independent t-test to confirm what the boxplot shows 
+
+```{r}
+t_test_w <- t.test(prevend$rfft[prevend$statin == 1], 
+                   prevend$rfft[prevend$statin == 0],
+                   # here we specify the situation
+                   var.equal = TRUE,
+                   paired = FALSE, alternative = "two.sided") 
+
+t_test_w
+```
+
+...statistically significant difference in means (Statin use: yes and no) do exist 
+
+## [Consider Simple Linear regression: Statin use and cognitive function]{.r-fit-text}
+::: {style="font-size: 80%;"}
+
+... and build a simple linear regression model like so:
+
+ $$E(RFFT) = b_0 + b_{statin} {(Statin\ use)}$$
+
+```{r}
+#fit the linear model
+model_1 <- lm(rfft ~ statin, data=prevend)
+summary(model_1)
+```
+
++ This preliminary model shows that, on average, **statin** users score approximately 10 points lower on the RFFT cognitive test (and the statin coefficient is **highly significant**!)
+  
+:::
+
+## [Visualize the data: Statin use and cognitive function + age]{.r-fit-text}
+
+However, following the literature, this prelimary model might be misleading (`biased`) because it does not account for the underlying relationship between age and statin  
+
++ hence **age** could be a `confounder` within the **statin** -> **RFFT** relationship
+
+<!-- ```{r} -->
+<!-- #create statin.use logical -->
+<!-- statin.use = (prevend.samp$Statin == 1) -->
+
+<!-- #plot blue points -->
+<!-- plot(prevend.samp$Age[statin.use == FALSE], -->
+<!--      prevend.samp$RFFT[statin.use == FALSE], -->
+<!--      pch = 21, bg = COL[1, 3], col = COL[1], -->
+<!--      cex = 1.3, -->
+<!--      xlab = "Age (yrs)", -->
+<!--      ylab = "RFFT Score", -->
+<!--      main = "RFFT Score versus Age in PREVEND (n = 500)") -->
+
+<!-- #plot red points -->
+<!-- points(prevend.samp$Age[statin.use == TRUE], -->
+<!--      prevend.samp$RFFT[statin.use == TRUE], -->
+<!--      pch = 21, bg = COL[4, 3], col = COL[4], -->
+<!--      cex = 1.3) -->
+
+<!-- #draw vertical lines -->
+<!-- abline(v = 40, lty = 2) -->
+<!-- abline(v = 50, lty = 2) -->
+<!-- abline(v = 60, lty = 2) -->
+<!-- abline(v = 70, lty = 2) -->
+<!-- abline(v = 80, lty = 2) -->
+<!-- ``` -->
+
+ 
+
+```{r}
+#| output-location: slide
+#| fig-cap: "Statin users are represented with red points; participants not using statins are shown as blue points"  
+
+ggplot(prevend, 
+       aes (x = age, y = rfft, group = statin_use)) + 
+  geom_point (aes(color = statin_use , size=.01, alpha = 0.75),
+              show.legend = c(size = F, alpha = F) )+
+  scale_color_manual(values=c("#005ca1","#9b2339" )) + 
+  # decades line separators 
+  geom_vline(xintercept = 40, color = "#A6A6A6")+
+  geom_vline(xintercept = 50, color = "#A6A6A6")+
+  geom_vline(xintercept = 60, color = "#A6A6A6")+
+  geom_vline(xintercept = 70, color = "#A6A6A6")+
+  geom_vline(xintercept = 80, color = "#A6A6A6")  
+```
+
+
+## [Multiple linear regression model]{.r-fit-text}
+
+Multiple regression allows for a (richer) model that incorporates both statin use and age: 
+
+ $$E(RFFT) = b_0 + b_{statin} {(Statin\ use)}+ b_{age} {(Age)}$$
+
+ + or (*in statistical terms*) the association between **RFFT** and **Statin use** is being estimated `after adjusting` for **Age**
+
+The R syntax is very easy: simply use `+` to add covariates
+```{r}
+# fit the (multiple) linear model
+model_2 <- lm(rfft ~ statin + age , data=prevend)
+
+```
+
+
+## [RFFT vs. statin use & age...]{.r-fit-text}
+
+Although the use of statins appeared to be associated with lower RFFT scores when no adjustment was made for possible confounders, **`statin use` is not significantly associated with `RFFT score` in a regression model that adjusts for `age`**.
+
+```{r}
+summary(model_2)
+```
+
+# Evaluating a multiple regression model
+
+## [Assumptions for multiple regression]{.r-fit-text}
+Similar to those of simple linear regression...
+
+1. **Linearity**: For each predictor variable $x_j$, change in the predictor is linearly related to change in the response variable when the value of all other predictors is held constant.
+2. **Constant variability**: The residuals have approximately constant variance.
+3. **Normality of residuals**: The residuals are approximately normally distributed. 
+4. **Independent observations**: Each set of observations $(y, x_1, x_2, \dots, x_p)$ is independent.
+5. **No multicollinearity**: i.e. no situations when there is a strong linear correlation between the independent variables, conditional on the other variables in the model
+
+## [Using residual plots to assess LINEARITY: age]{.r-fit-text}
+
+> **ASSUMPTION 1**: there exists a linear relationship between the independent variables, $(x_1, x_2, \dots, x_p)$, and the dependent variable, y
+
+It is not possible to make a scatterplot of a response against several simultaneous predictors. Instead, use a `modified residual plot` to assess linearity:
+
+  - For **each** (numerical) predictor, plot the residuals on the $y$-axis and the predictor values on the $x$-axis. 
+  - Patterns/curvature are indicative of non-linearity.
+
+```{r}
+#| output-location: slide
+#| fig-cap: "There are no apparent trends; the data scatter evenly above and below the horizontal line. There does not seem to be remaining nonlinearity with respect to age after the model is fit."  
+
+# recall 
+model_2 <- lm(rfft ~ statin + age , data=prevend)
+
+# assess linearity
+plot(residuals(model_2) ~ prevend$age,
+     main = "Residuals vs Age in PREVEND (n = 500)",
+     xlab = "Age (years)", ylab = "Residual",
+     pch = 21, col = "cornflowerblue", bg = "slategray2",
+     cex = 0.60)
+abline(h = 0, col = "red", lty = 2)
+```
+  
+## [Using residual plots to assess LINEARITY: statin use]{.r-fit-text}
+  
+Should we be testing linearity of residuals also against a **categorical variable** (`statin use`)? (not really, because not meaningful)
+
+```{r}
+#| output-location: slide
+#| fig-cap: "It is not necessary to assess linearity with respect to statin use since statin use is measured as a categorical variable. A line drawn through two points (that is, the mean of the two groups defined by a binary variable) is necessarily linear"  
+
+# recall 
+model_2 <- lm(rfft ~ statin + age , data=prevend)
+
+#assess linearity
+plot(residuals(model_2) ~ prevend$statin,
+     main = "Residuals vs Age in PREVEND (n = 500)",
+     xlab = "Age (years)", ylab = "Residual",
+     pch = 21, col = "cornflowerblue", bg = "slategray2",
+     cex = 0.60)
+abline(h = 0, col = "red", lty = 2)
+```
+  
+## [Using residual plots to assess CONSTANT VARIABILITY]{.r-fit-text}
+
+>**ASSUMPTION 2**: The residuals have constant variance at every level of x ("*homoscedasticity*")
+
+  - Constant variability: plot the residual values on the $y$-axis and the predicted values on the $x$-axis
+
+```{r}
+#| output-location: slide
+#| fig-cap: "The variance of the residuals is somewhat smaller for lower predicted values of RFFT score, but this may simply be an artifact from observing few individuals with relatively low predicted scores. It seems reasonable to assume approximately constant variance."  
+
+#assess constant variance of residuals
+plot(residuals(model_2) ~ fitted(model_2),
+     main = "Resid. vs Predicted RFFT in PREVEND (n = 500)",
+     xlab = "Predicted RFFT Score", ylab = "Residual",
+     pch = 21, col = "cornflowerblue", bg = "slategray2",
+     cex = 0.60)
+abline(h = 0, col = "red", lty = 2)
+```
+
+## [Using residual plots to assess NORMALITY of residuals]{.r-fit-text}
+
+> **ASSUMPTION 3**: The residuals of the model are normally distributed
+  - Normality of residuals: use Q-Q plots
+  
+```{r}
+#| output-location: slide
+#| fig-cap: "The residuals are reasonably normally distributed, with only slight departures from normality in the tails."  
+
+#assess normality of residuals
+qqnorm(resid(model_2),
+       pch = 21, col = "cornflowerblue", bg = "slategray2", cex = 0.75,
+       main = "Q-Q Plot of Residuals")
+qqline(resid(model_2), col = "red", lwd = 2)
+```
+
+In our example, we see that most data points are OK, except some observations at the tails. However, if all other plots indicate no violation of assumptions, some deviation of normality, particularly at the tails, can be less critical.
+
+## [Assumption of INDEPENDENCE of observations]{.r-fit-text}
+
+>  **ASSUMPTION 4**: Each set of observations $(y, x_1, x_2, \dots, x_p)$ is independent.
+
+
+Is it reasonable to assume that each set of observations is independent of the others?
+    
+> Using the PREVEND data, it is reasonable to assume that the observations in this dataset are independent. The participants were recruited from a large city in the Netherlands for a study focusing on factors associated with renal and cardiovascular disease.
+
+## [Assumption of NO MULTICOLLINEARITY]{.r-fit-text}
+::: {style="font-size: 95%;"}
+
+>  **ASSUMPTION 5**: Each set of observations $(y, x_1, x_2, \dots, x_p)$ is independent.
+
+
+The R package `performance` actually provides a very helpful function `check_model()` which tests these assumptions all at the same time 
+
++ **Multicollinearity** is not an issue (based on a general threshold of 10 for VIF, all of them are below 10)
+```{r}
+#| output-location: slide
+
+# return and store a list of single plots
+diagnostic_plots <- plot(performance::check_model(model_2, panel = FALSE))
+
+# see multicollinearity plot 
+diagnostic_plots[[5]]
+```
+
+:::
+## [Checking out the `performance` R package ]{.r-fit-text}
+
++ Find more info on the helpful `performance` R package [here](https://easystats.github.io/performance/index.html) for verifying assumptions and model's quality and goodness of fit. 
+
+::: {.callout-warning icon=false}
+### {{< bi terminal-fill color=rgba(155,103,35,1.00) >}} You try...
+Run also the following commands 
+
++ Diagnostic plot of linearity
+`diagnostic_plots[[2]]`
++ Diagnostic plot of influential observations - outliers
+`diagnostic_plots[[4]]`
++ Diagnostic plot of normally distributed residuals
+`diagnostic_plots[[6]]`
+:::
+
+
+
+## [$R^2$ with multiple regression]{.r-fit-text}
+
+::: {style="font-size: 90%;"}
+As in simple regression, $R^2$ represents the proportion of variability in the response variable explained by the model.
+
++ As variables are added, $R^2$ always increases.
+
+In the `summary(lm( ))`  output,  `Multiple R-squared` is $R^2$.
+ 
+```{r}
+#extract R^2 of a model
+summary(model_2)$r.squared
+```
+
+> The $R^2$ is 0.285; **the model explains 28.5\% of the observed variation in RFFT score**. 
+> The moderately low $R^2$ suggests that the model is missing other predictors of RFFT score.
+
+:::
+## [Adjusted $R^2$ as a tool for model assessment]{.r-fit-text}
+
+The **adjusted $R^2$** is computed as:  
+$$R_{adj}^{2} = 1- \left( \frac{\text{Var}(e_i)}{\text{Var}(y_i)} \times \frac{n-1}{n-p-1} \right)$$
+
++ where $n$ is the number of cases and $p$ is the number of predictor variables.
+
+Adjusted $R^2$ incorporates a penalty for including predictors that do not contribute much towards explaining observed variation in the response variable.
+
+ - It is often used to balance predictive ability with model complexity.
+ 
+ - Unlike $R^2$, $R^2_{adj}$ does not have an inherent interpretation.
+
+```{r}
+#extract adjusted R^2 of a model
+summary(model_2)$adj.r.squared
+```
+
+# INTRODUCING SPECIAL KINDS OF PREDICTORS
+
+## [Categorical predictor in regression - (example)]{.r-fit-text}
+::: {style="font-size: 90%;"}
+Is RFFT score associated with **education**?
+The variable `Education` in the `PREVEND` dataset indicates the highest level of education an individual completed in the Dutch educational system: 
+
+ - 0: primary school
+ - 1: lower secondary school
+ - 2: higher secondary education
+ - 3: university education
+
+```{r}
+# convert Education to a factor
+prevend <- prevend %>% 
+  mutate(educ_f = factor(education,
+                          levels = c(0, 1, 2, 3),
+                          labels = c("Primary", "LowerSecond",
+                                     "HigherSecond", "Univ")))
+
+```
+
+```{r}
+#| output-location: slide
+#| fig-cap: "A very clear association seems to exist between education level and average RFFT score in the sample "
+
+# load 4 color palette
+pacificharbour_shades <- c( "#d4e6f3",  "#9cc6e3", "#5b8bac", "#39576c",  "#16222b")
+
+# create plot
+plot(rfft ~ educ_f, data = prevend,
+     xlab = "Educational Level", ylab = "RFFT Score",
+     main = "RFFT by Education in PREVEND (n = 500)",
+     names = c("Primary", "LowSec", "HighSec", "Univ"),
+     col = pacificharbour_shades[1:4])
+```
+
+:::
+
+## [Categorical predictor in regression - model]{.r-fit-text}
+::: {style="font-size: 90%;"}
+Calculate the average RFFT score in the sample across education levels
+```{r}
+# calculate group means
+prevend %>% 
+  group_by(educ_f) %>% 
+  summarise(avg_RFFT_score = mean(rfft))
+```
+
+Fitting a model with `education` as a predictor
+```{r}
+# fit a model
+model_cat <- lm(rfft ~ educ_f, data = prevend) 
+model_cat$coefficients
+```
+
++ Notice how `Primary` level of `educ_f` does NOT appear as a coefficient 
+:::
+
+## [Categorical predictor in regression - model interpretation]{.r-fit-text}
+
+::: {style="font-size: 80%;"}
+```{r}
+#| echo: false
+summary(model_cat)
+```
+
+The baseline category represents individuals who at most completed primary school `Education = 0`. The coefficients represent the change in estimated average RFFT relative to the baseline category.
+
+  -  `(Intercept)` is the sample mean RFFT score for these individuals, 40.94 points
+  - An increase of 14.78 points is predicted for `LowerSecond` level, $40.94 + 14.78 = 55.72 \ points$
+  - An increase of 32.13 points is predicted for `HigherSecond` level, $40.94 + 32.13 = 73.07  \ points$
+  - An increase of 44.96 points is predicted for `Univ` level,  $40.94 + 44.96 = 85.90 \ points$
+
+:::
+
+## [Interaction in regression - (example) - NHANES]{.r-fit-text}
+
+Let's go back to the `NHANES` dataset and consider a linear model that predicts **total cholesterol level (mmol/L)** from **age (yrs.)** and **diabetes status**.
+
+
+The multiple regression model:
+
+$$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p + \epsilon$$ 
+
+assumes that when one of the predictors $x_j$ is changed by 1 unit and the values of the other variables remain constant, the predicted response changes by $\beta_j$, *regardless of the values of the other variables*.
+
++ With statistical **interaction**, this assumption is not true, such that *the effect of one explanatory variable $x_j$ on the $y$ depends on the particular value(s) of one or more other explanatory variables*.
+
+
+## [Interaction in regression - visual]{.r-fit-text}
+
+Fitting a model with `age` and `diabetes` as independent predictors (i.e. WITHOUT interaction terms)
+```{r}
+# fit a model
+model_NOinterac <- lm(tot_chol ~ age + diabetes, data = nhanes) 
+model_NOinterac$coefficients
+```
+
++ Using `geom_smooth` for a visual intuition of a linear relationship
+  + ⚠️ here I consider sample DATA **as a whole** for plotting a smooth line
+```{r}
+#| output-location: slide
+#| fig-cap: "Users in two categories are represented points; linear relationship is representated by ONE golden line for ALL SAMPLE"   
+
+ggplot(nhanes, 
+       aes (x = age, y = tot_chol)) + 
+  # For POINTS I split by category (category)
+  geom_point (aes(color = diabetes, 
+                  alpha = 0.75),
+              show.legend = c(size = F, alpha = F) )+
+  scale_color_manual(values=c("#005ca1","#9b2339" )) + 
+  # For SMOOTHED LINES I take ALL data
+  geom_smooth(colour="#BD8723",  method = lm) 
+```
+
+
+## [Interaction in regression - visual (RETHINKING)]{.r-fit-text}
+Suppose two separate models were fit for the relationship between total cholesterol and age; one in diabetic individuals and one in non-diabetic individuals.
+
++ Using `geom_smooth` for a visual intuition of a linear relationship
+  + ⚠️ here I consider sample DATA **as 2 separate groups** for plotting a smooth line
+
+```{r}
+#| output-location: slide
+#| fig-cap: "Users in two categories are represented points; linear relationship is representated by 2 respective line according to diabetes status... the association has DIFFERENT DIRECTION!"  
+
+ggplot(nhanes, 
+       # For *both POINTS & LINES* I split by category (category)
+       aes (x = age, y = tot_chol, color = diabetes)) + 
+  geom_point (aes(alpha = 0.75),
+              show.legend = c(size = F, alpha = F) )+
+  geom_smooth(method = lm)+ 
+  scale_color_manual(values=c("#005ca1","#9b2339" ))  
+
+```
+
+
+
+## [Interaction in regression - adding term in model]{.r-fit-text}
+
+Let's rethink the model and consider this new *specification*: 
+
+$$E(TotChol) = \beta_0 + \beta_1(Age) + \beta_2(Diabetes) + \beta_3(Diabetes \times Age).$$
+
+Where: 
++ the term $(Diabetes \times Age)$ is the `interaction term` between `diabetes` status and `age`, and $\beta_3$ is the coefficient of such interaction term.
+
++ notice the use of `...*...` in the model syntax
+```{r}
+#fit a model
+model_interac2 <- lm(tot_chol ~ age*diabetes, data = nhanes) 
+model_interac2$coefficients
+```
+
+## [Interaction in regression - prediction model]{.r-fit-text}
+::: {style="font-size: 80%;"}
+We obtained this predictive model: 
+$$\widehat{TotChol} = 4.70 + 0.0096(Age) + 0.1.72(Diabetes) - 0.033(Age \times Diabetes)$$
+
+```{r}
+summary(model_interac2)
+```
+:::
+
+
+## [Interaction in regression - interactive term interpretation]{.r-fit-text}
+
+::: {style="font-size: 90%;"}
+Given:  
+
+$\widehat{TotChol} = 4.70 + 0.0096(Age) + 0.1.72(Diabetes) - 0.033(Age \times Diabetes)$  
+<br>
+For diabetics ( `DiabetesYes = 1` ), the model equation is:
+            
+$TotChol_{diab} =  4.70 + 0.0096(Age) + 1.72(1) - 0.034(Age)(1)$ i.e.  
+$TotChol_{diab} =  6.42 - 0.024(Age)$
+
+<br>               
+For non-diabetics ( `DiabetesYes = 0` ), the model equation is:
+
+$TotChol_{NOdiab} =  4.70 + 0.0096(Age) + 1.72(0) - 0.034(Age)(0)$ i.e.  
+$TotChol_{NOdiab} =  4.70 + 0.0096(Age)$  
+
+:::
+
+## Final thoughts/recommendations
+
+::: {style="font-size: 85%;"}
+
++ The analyses proposed in this Lab are very similar to the process we go through in real life. The following steps are always included:
+  + Thorough **understanding of the input data** and the data collection process 
+  + Bivariate **analysis of correlation / association** to form an intuition of which explanatory variable(s) may or may not affect the response variable 
+  + **Diagnostic plots** to verify if the necessary assumptions are met for a linear model to be suitable 
+  + Upon verifying the assumptions, we **fit data** to hypothesized (linear) model 
+  + **Assessment of the model performance** ($R^2$, $Adj. R^2$, $F-Statistic$, etc.)
+
++ As we saw with hypothesis testing, the **assumptions** we make (and require) for regression are of utter importance
+
++ Clearly, we only scratched the surface in terms of all the possible predictive models, but we got a hang of the **fundamental steps** and some **useful tools** that might serve us also in more advanced analysis 
+  + e.g. `broom` (within `tidymodels`), `performace` `rstatix`, `lmtest`
+:::
+  

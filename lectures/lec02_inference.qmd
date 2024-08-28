@@ -1,0 +1,41 @@
+---
+title: "Statistical inference & hypothesis testing"
+subtitle: "<span class='code'>2024-07-25</span>"
+# date: "2024-07-25"
+# image: "images/02-display.png"
+tbl-colwidths: [5,20,75]
+---
+
+<!-- 1/2 DIAPOSITIVA STD (16:9) --> 
+<!-- ```{=html} -->
+<!-- <iframe class="slide-deck" src="../lectures_slides/Lecture_00.pdf" height="420" width="747" style="border: 1px solid #2e3846;"></iframe> -->
+<!-- ``` -->
+
+<!-- 2/2 DIAPOSITIVA STD (4:3) -->
+```{=html}
+<iframe class="slide-deck" src="../lectures_slides/Lecture_02.pdf" height="418" width="560" style="border: 1px solid #2e3846;"></iframe>
+```
+
+<a href='../lectures_slides/Lecture_02.pdf' target="_blank">View slides in full screen</a>
+
+## Lecture 2 Outline
+
++ **Purpose and foundations of inferential statistics**
+  + Probability and random variables 
+  + Meaningful probability distributions
+  + Sampling distributions and Central Limit Theorem
++ **Getting to know the “language” of hypothesis testing**
+  + The null and alternative hypothesis
+  + The probability of error? (*α* or "significance level")
+  + The *p-value* probability and tests interpretation
+  + Confidence Intervals
+  + Types of errors (Type 1 and Type 2)
+  + Effective vs statistical significance
++ **Hypothesis tests examples**
+  + Comparing sample mean to a hypothesized population mean (Z test & t test)
+  + Comparing two independent sample means (t test)
+  + Comparing sample means from 3 or more groups (ANOVA) <!-- (esempio metabolomica Catanzaro?) -->
++ **A closer look at testing assumptions (with examples)** 
+  + Testing two groups that are *not* independent 
+  + Testing if the data are *not* normally distributed: non-parametric tests
+  + Testing samples *without* homogeneous variance of observations

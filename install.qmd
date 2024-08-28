@@ -1,0 +1,317 @@
+---
+title: "Installation and setup"
+# general Output Options
+execute:     
+  eval: false
+  echo: true     #  include source code in output
+  warning: false  #  include warning code in output
+  error: false    #  include error code in output
+  output: false   # include output code in output (CHG in BLOCKS)
+  # include: false   # R still runs but code and results DON"T appear in output  
+  # cache: false
+toc: true
+format:
+  html:
+    code-fold: false # redundant IF echo false 
+    toc-depth: 2
+    toc_float: true
+    toc-location: left
+    toc-title: ""
+---
+
+<!-- ::: {.callout-caution collapse="false"} -->
+<!-- Webpage construction in progress... -->
+<!-- ::: -->
+
+This workshop showcases introductory bio statistics concepts using the open source (and free!) programming language {{< fa brands r-project >}}. Each session of the workshop features exercises that will help you learn by doing. 
+
+We will quickly go over this at our first Practice session, but you are expected to have the required software installed on your machine **before** the workshop.
+
+Below is a step by step process that should guide you through the needed installation steps.
+
+# Install `r fontawesome::fa("r-project", fill = "#5F85A7")`
+
+<!-- `r fontawesome::fa("fab fa-windows", fill = "steelblue")` -->
+
+<!-- `r fontawesome::fa("fab fa-linux", fill = "steelblue")` -->
+
+<!-- `r fontawesome::fa("fab fa-apple", fill = "steelblue")` -->
+
+**R** is available for free for Windows [{{< fa brands windows >}}]{style="color:#d8717b"}, GNU/Linux [{{< fa brands linux >}}]{style="color:#d8717b"}, and macOS [{{< fa brands apple >}}]{style="color:#d8717b"}.
+
+-   To install **R**, you can go to this [**link**](https://cloud.r-project.org/). The latest available release is **R 4.4.1 "Race for Your Life" released on 2024/06/14**, but any (fairly recent) version will do.
+
+If you have previously installed R on your machine, you can check which version you are running by executing this command in `R`:
+
+```{r}
+#| eval: false
+#| echo: true
+
+# From the R console
+base::R.version.string
+    # (This is the version on my own machine)
+    # [1] "R version 4.2.2 (2022-10-31)"
+```
+
+...or by executing this command in your `CLI` (Command Line Interface):
+
+```{bash}
+#| eval: false
+#| echo: true
+
+# From Terminal/Powershell/bash
+R --version
+```
+
+# Install RStudio IDE
+
+While not strictly required, it is highly recommended that you also install RStudio to facilitate your work. **RStudio Desktop** is an Integrated Development Editor (IDE), basically a graphical interface wrapping and interfacing R (which needs to be installed first).
+
+::: {.callout-tip collapse="true"}
+R, which is a command line driven program, can be executed via its native interface (**R GUI**), as well as from many other code editors, like **VS Code**, **Sublime Text**, **Jupyter Notebook**, etc. **RStudio** remains the most widely used by beginners and advanced programmers alike, because of its intuitive and integrated interface.
+:::
+
+- To install **RStudio** you can go to this [**link**](https://posit.co/download/rstudio-desktop/).
+- The free **RStudio Desktop** version contains everything you need.
+- Again, you don't need to have the latest RStudio version, but I recommend **v2022.07.1** or later (it also includes the installation of Quarto)
+
+::: {.callout-tip collapse="true"}
+[Quarto](https://quarto.org/) is a multi-language, next-generation version of R Markdown from Posit (former RSTUDIO company). While for R users it is not much different form `Rmarkdown` (you can author files with extension `.qmd` which are very similar), its key feature is that is It is available also for Python, Julia, and Observable languages. 
+
++ Quarto is not an R package so it has to be downloaded separately. However Rstudio v2022.07.1 or later come with Quarto included
+
++ The [www.R4biostats.com]({{< var websites.live_site >}}) is actually a quarto website 😊
+ 
+:::
+
+![RStudio Pane Layout [Source: Posit's RStudio User Guide](https://docs.posit.co/ide/user/ide/guide/ui/ui-panes.html)](images/rstudio-panes-labeled.jpeg) 
+
+# Install R packages from the CRAN
+
+An **R *package* ** is a shareable bundle of functions. Besides the basic built-in functions already contained in the R program (i.e. the `base`, `stats`, or `utils` packages), many more useful R functions come in free libraries of code (*packages*) written by the R users community.
+
+-   **CRAN** - the Comprehensive R Archive Network - is the general package repository for R: [https://cran.r-project.org/](https://cran.r-project.org/)
+
+(We will only use packages from CRAN for our purposes) 
+
+-   **Bioconductor** - a  package repository geared towards biostatistics: [https://www.bioconductor.org/](https://www.bioconductor.org/)
+
+-   **Github** - a repository where you can find developer’s version of a package: [https://github.com/](https://github.com/)
+
+
+# R packages that will be required for the workshop
+
+Below are the R packages, that we will need for the workshop's practical sessions. You should have them pre-installed on your laptop ahead of the workshop as well (at least the ones needed fo Lab # 1: `pkg_list_lab_1`)... This will also serve as a test to check whether the R version you have is compatible. 
+
+A couple of things to be aware of when installing R packages: 
+
+1. By default, the RStudio IDE uses the **RStudio CRAN global mirror** (i.e. the primary repository with all the packages code globally distributed using Amazon S3 storage), but you could also override the default *CRAN repository* and choose another *CRAN mirror* (i.e. a server copy), perhaps one hosted at an institution near you -- see box below. 
+
+<!-- ::: {.callout-tip collapse="true"} -->
+<!-- R, which is a command line driven program, can be executed via its native interface (**R GUI**), as well as from many other code editors, like **VS Code**, **Sublime Text**, **Jupyter Notebook**, etc. **RStudio** remains the most widely used by beginners and advanced programmers alike, because of its intuitive and integrated interface. -->
+<!-- ::: -->
+
+::: {.callout-warning icon=false collapse="true"}
+### {{< bi terminal-fill color=rgba(155,103,35,1.00) >}} [OPTIONAL] Choose CRAN mirror from RStudio
+[You don't have to, but] you can access and chose a CRAN repository of your choice from the RStudio IDE.
+
+1. ![Access CRAN mirror selection](images/CRAN_mirror1.png) 
+2. ![Select from menu - close to you](images/CRAN_mirror2.png)  
+:::
+
+2. R may automatically install some related packages if the package you are trying to install has what is known as a `dependency` (other packages needed for it to work).
+
+3. R may ask you this question: "`Do you want to install from sources the package which needs compilation? (Yes/no/cancel)`. This (in most cases) means that the package has updated recently on CRAN but the binary isn't yet available for your OS (can take a day or two). 
+
+    + To answer, follow instructions by responding directly in the R console (you are asked to type "Yes" or "No"): 
+      + If you say "`no`", you won't get the most recent version, and install from the pre-compiled `binaries` available --which should be totally fine! (At least for our purposes). 
+      + If you say "`yes`", the package will be built from source locally. If its `source code` needs compilation (i.e. has portions of code that need to be '*translated*' from C/C++ or Fortran) and you've never set up build tools for R, then this may not succeed.
+
+4. At the end of the installation process you will get a message (bottom of the R Console) indicating were the source code for the package(s) has been stored on your machine. 
+
+## Installing packages (1st time you use an R Package)
+
+### Option 1) 
+You could install one package at a time via the function `install.packages()`...
+```{r}
+#| eval: false
+#| echo: true
+
+# (**ONLY** the 1st time you use them)
+
+# Installing 
+install.packages("name_of_package_here" ) 
+
+# [OPTIONAL ARGUMENT] Installing (with specification for dependencies)
+install.packages("name_of_package_here" , dependencies = TRUE)
+```
+
+... or in bulk, like so (it might take a few moments more):
+```{r}
+#| eval: false
+#| echo: true
+
+# (**ONLY** the 1st time you use them)
+
+# ---- Installing R pckgs for 1st LAB 
+pkg_list_lab_1 <- c("fs","here", "janitor", "skimr", 
+                   "dplyr", "forcats", 
+                   "ggplot2",  "ggridges")
+
+install.packages(pkg_list_lab_1)
+
+
+# ---- Installing (more) R pckgs for 2nd LAB  
+pkg_list_lab_2 <- c("tidyr", "patchwork",
+                    "ggthemes", "ggstatsplot", "ggpubr",  "viridis",
+                    "BSDA", "rstatix", "car", "multcomp") 
+
+install.packages(pkg_list_lab_2)
+
+
+# ----  Installing (more) R pckgs for 3rd LAB  
+pkg_list_lab_3 <- c("openxlsx", 
+                    "lmtest" , 
+                    "broom", 
+                    "performance")
+
+install.packages(pkg_list_lab_3)
+
+
+# ----  Installing (more) R pckgs for 4th LAB  
+pkg_list_lab_4 <- c("rsample",
+                    "MASS",
+                    "FactoMineR",
+                    "factoextra",
+                    "ggfortify",
+                    "scatterplot3d",
+                    "pwr" )
+
+install.packages(pkg_list_lab_4)
+```
+
+### Option 2) 
+In alternative, you could install each package separately, using the RStudio GUI, from the `Packages` tab in the bottom right pane as indicated here: 
+
+![Screenshot Install/Update pckgs from RStudio](../../images/RStudio_install_pckg_2way.png)
+
+
+## Loading a package (at the beginning of every R session)
+Once packages have been installed, with the command `library()` loads the specific R packages that you are going to need in any given R session. 
+
+```{r}
+#| eval: false
+#| echo: true
+
+# Loading a package (at the beginning of every R session) 
+# --- General 
+library(here)       # tools find your project's files, based on working directory
+library(fs)         # file/directory interactions
+library(janitor)    # tools for examining and cleaning data
+library(skimr)      # Compact and Flexible Summaries of Data     
+library(openxlsx)   # Read, Write and Edit xlsx Files
+
+# --- Tidyverse 
+library(dplyr)      # {tidyverse} A Grammar of Data Manipulation     
+library(tidyr)      # {tidyverse} Tools to create tidy data 
+library(forcats)    # {tidyverse} Tools for Categorical Var.(Factors)   
+
+# --- Plotting
+library(ggplot2)    # {tidyverse} tools for plotting
+library(ggstatsplot)# 'ggplot2' Based Plots with Statistical Details 
+library(ggpubr)     # 'ggplot2' Based Publication Ready Plots 
+library(patchwork)  # Functions for ""Grid" Graphics"composing" plots 
+library(viridis)    # Colorblind-Friendly Color Maps for R 
+library(ggthemes)   # Extra Themes, Scales and Geoms for 'ggplot2'
+library(ggridges)   # Ridgeline Plots in 'ggplot2' (density functions)
+
+# --- Statistics
+library(BSDA)       # Basic Statistics and Data Analysis   
+library(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests
+library(car)        # Companion to Applied Regression
+library(multcomp)   # Simultaneous Inference in General Parametric Models 
+library(lmtest)     # Testing Linear Regression Models  
+library(broom)      # Convert Statistical Objects into Tidy Tibbles
+library(performance)# Assessment of Regression Models Performance 
+library(pwr)        # Basic Functions for Power Analysis
+```
+
+
+## Learning about a package (after installation)
+
+Once an R package is installed, you can also read the documentation about it directly inside the RStudio IDE. For example, try running in your `Console`:
+
+```{r}
+#| eval: false
+#| echo: true
+
+# - To ask about a package
+?here
+
+# -- To ask about a specific function
+?janitor::clean_names
+
+?dplyr::group_by
+```
+
+Congrats! You are all done! 🙌🏻
+
+# R coding tips and tricks 
+
+## Useful keyboard shortcuts in RStudio
+
+```{r}
+#| eval: true
+#| echo: false
+#| output: true
+
+library(tibble) # Simple Data Frames
+library(flextable) # Functions for Tabular Reporting
+
+key_short <- tibble::tribble (
+  ~Description, 	             ~'Windows & Linux',     ~'Mac', 
+  "Insert code section", 	     "Ctrl+Shift+R",       	"Shift+Command+R  or Ctrl+Shift+R",
+  "Run current line/selection", "Ctrl+Enter",     "Command+Return",
+  "Reindent lines", 	             "Ctrl+I", 	"Command+I",
+  
+  "Insert <- operator", 	"Alt+-", 	"Option+-",
+  "Insert %>% operator", 	    "Ctrl+Shift+M", 	"Shift+Command+M",
+  
+  "Code completion",          "Tab", "Tab", 
+  "File path completion (console)",    "\"+Tab", "\"+Tab"
+)
+
+ 	
+key_short_ft <- key_short %>% 
+  # adorn_percentages(  denominator = 'row', na.rm = TRUE) %>%
+  flextable() %>% 
+ #   flextable::set_header_labels(key_stakes_types = "Type of agencies most frequently involved", N = "N. of cases") %>% 
+  bold( bold = TRUE,   part = "header") %>% 
+  color( color = "white",   part = "header") %>% 
+  bg( bg = "#d8717b",   part = "header") %>% 
+  bg( bg = "#F2F2F2", part = "body", source = j) %>% 
+  fontsize( i = NULL, j = NULL, size = 11, part = "body") %>% 
+  # bg(bg =bordeaux_light, i = ~  `Type of agencies most frequently involved` %in%  c ( "more than 1 agency involved" ), part = "body") %>% 
+  fontsize(size = 14, part = "header") %>% 
+  fontsize(size = 12, part = "body") %>% 
+  autofit() 
+
+
+key_short_ft
+```
+
+Here you find the complete list of [RStudio Keyboard Shortcuts](https://docs.posit.co/ide/user/ide/reference/shortcuts.html)
+<!-- ## Install [Quarto] -->
+
+<!--  - Install latest version of [Quarto](https://quarto.org/docs/get-started/) (v1.0.36 or greater) -->
+
+<!-- - After installing Quarto, open the terminal in RStudio and: -->
+
+<!--   - See [this guide](https://support.rstudio.com/hc/en-us/articles/115010737148-Using-the-RStudio-Terminal-in-the-RStudio-IDE) for details on using the terminal -->
+
+<!--   - Install/Update TinyTeX for PDFs with `quarto install tool tinytex` -->
+
+<!--   - Install/Update Chromium with `quarto install tool chromium` -->
+
+
+
