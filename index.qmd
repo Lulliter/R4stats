@@ -1,6 +1,6 @@
 ---
 title: "Intro to Statistics with R"
-subtitle: "Intensive summer workshop for life science PhD students"
+#subtitle: "Intensive summer workshop for life science PhD students"
 ## -------  general Output Options
 execute:     
   eval: false
@@ -28,7 +28,7 @@ format:
 <!-- ::: -->
 
 
-# Welcome! 
+### Welcome! 
 
 This website collects the materials used for teaching **Introductory Statistics** with R.  
 

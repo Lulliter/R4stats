@@ -5,15 +5,7 @@ project:
 #  will be rendered (NO .file, _dir/)
   render:
     - "*.qmd"
-    - "!R_resources/"
-    - "!zzz_old"
-    # # RIINSERIRE DOPO !!!!
-    # - "!lectures/lec02_inference.qmd"
-    # - "!lectures/lec03_corr_regress.qmd"
-    # - "!lectures/lec04_intro_ML.qmd"
-    # - "!practice/lab02_inference.qmd"
-    # - "!practice/lab03_corr_regress.qmd"
-    # - "!practice/lab04_intro_ML.qmd"
+    - "!ignored-dir/"
 
 execute:
   freeze: auto  # Re-render only when source changes
@@ -63,7 +55,7 @@ website:
         icon: house-fill # https://icons.getbootstrap.com/?q=home
         href: index.qmd
       - text: "Pre-Workshop"
-        icon: download # code-square # https://icons.getbootstrap.com/?q=home
+        icon: tools # code-square # https://icons.getbootstrap.com/?q=home
         href: install.qmd
       - text: "Syllabus"
         icon: book-fill # code-square # https://icons.getbootstrap.com/?q=home

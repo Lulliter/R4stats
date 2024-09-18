@@ -26,7 +26,12 @@ $lightgrey : #d3d3d3;
 $darkgray: #a9a9a9;
 $brightburgundy : #9b2339;
 
- 
+$theme_related1: #3b7697;
+$theme_related1_light: #c4d5df;
+$theme_related2: #3d8085;
+$gold:#7f6b00;
+
+
 /*-- use vars in CSS rules (we'll learn more about how to write CSS soon!) --*/
 h1 {
   font-color: $darkblue;
@@ -89,5 +94,15 @@ p {
 
 $navbar-dark-hover-color:           "#ff6700" !default;
 $navbar-light-hover-color:          "#ff6700" !default;
+
+// footer background
+.nav-footer {
+  background-color: $pachar_sha_1;
+}
+
+// footer link
+.nav-footer a {
+  color: $gold;// #515c61;
+}
 
 
