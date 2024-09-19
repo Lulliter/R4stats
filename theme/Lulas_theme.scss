@@ -2,35 +2,34 @@
 
 
 // Define Color variables `$var-name: value;`
-$pachar_sha_1: #d4e6f3;
-$pachar_sha_2: #b8d6eb;
-$pachar_sha_3: #9cc6e3;
-$pachar_sha_4: #80b6db;
-$pacificharbour: #72aed8;
-$pachar_sha_6: #5b8bac;
-$pachar_sha_7: #39576c;
-$pachar_sha_8: #223643;
-$pachar_sha_9: #16222b;
-
+$textblue: #16222b;
 $darkblue: #183e7f; 
 $darkred: #7f173d; 
 $teal: #17717f;
 $cream: #FDFBF7;
-
-$triad_ora : #d89c72;
-$triad_yel : #d8cf71;
-$triad_red : #d8717b;
-$viola :#717ad8;
-
 $lightgrey : #d3d3d3;
 $darkgray: #a9a9a9;
 $brightburgundy : #9b2339;
+
+// Schema R4Biostats
+/* $theme_main_dark: #0a222e; */
+/* $theme_main: #23749b; */
+/* $theme_main_light: #BDD5E1; */
+/* $theme_main_extralight:#f6f9fb; */
+
+// Schema R4stats
+$theme_main_dark: #3E0E17;
+$theme_main: #9b2339;
+$theme_main_lig: #B96574;
+$theme_main_light: #D7A7B0;
+$theme_main_extralight:#E1BDC4;
 
 $theme_related1: #3b7697;
 $theme_related1_light: #c4d5df;
 $theme_related2: #3d8085;
 $gold:#7f6b00;
 
+$theme_comp: #239b85;
 
 /*-- use vars in CSS rules (we'll learn more about how to write CSS soon!) --*/
 h1 {
@@ -66,43 +65,88 @@ p {
   font-family: $font-family-sans-serif;
 }
 
-// Navs
-
+// Navbar
 .navbar-brand {
   font-family: "Overpass", mono;
   font-size: 1.4rem;
   font-weight: 900;
-  color: $pachar_sha_8;
+  color: $textblue;
 }
-
-// Navbar
 
 .navbar {
   font-family: "Overpass", mono;
   font-size: 1rem;
-}
+  background-color: $theme_main;
+  /* a is the anchor tag representing links inside the navbar.*/ 
+  a {
+    color: #D7A7B0; // Default text color
+ /* &:hover applies the hover state styling.*/ 
+    &:hover {
+      color: #E1BDC4; // Hover text color
+    }
+  }
+  
+  // Dropdown menu inside NAVBAR styling
+  .dropdown {
+    position: relative;
+
+    .dropdown-toggle {
+      color: #fff; // Default color for dropdown toggle
+
+      &:hover {
+        color: #D7A7B0; // Hover color for dropdown toggle
+      }
+    }
+    .dropdown-menu {
+      background-color: #6a5357; // Background of dropdown menu
+      padding: 10px;
+      display: none; // Hidden by default
+
+      a {
+        color: #f5d5db; // Default color for dropdown links
+        &:hover {
+          color: #536a65; // Darker hover color for dropdown links
+        }
+      }
+    }
+    // Show the dropdown menu on hover
+    &:hover .dropdown-menu {
+      display: block;
+    }
+  }
+} 
 
 // Base document colors
-
-/* $navbar-bg: $cream; // navbar                                                */
-/* $navbar-fg: $dark-green; // navbar foreground elements                       */
-/* $navbar-hl: $triad_ora; // highlight color when hovering over navbar links   */
-/*  $body-bg: $light-green; // page background                                  */
-/*  $body-color: $gray; // page text                                            */
-/*  $footer-bg: $cream; // footer                                               */
-/* $link-color: $triad_red; // hyperlinks                                       */
-
-$navbar-dark-hover-color:           "#ff6700" !default;
-$navbar-light-hover-color:          "#ff6700" !default;
+// $navbar-dark-hover-color:           "#ff6700" !default;
+// $navbar-light-hover-color:          "#ff6700" !default;
 
 // footer background
 .nav-footer {
-  background-color: $pachar_sha_1;
+  background-color: #E1BDC4;
 }
 
 // footer link
-.nav-footer a {
-  color: $gold;// #515c61;
+.footer {
+
+  a {
+    color: #32403d; // Default link color
+    text-decoration: none;
+
+    &:hover {
+      color: #155d50; // Hover state color
+    }
+
+    &:active {
+      color: #5d5014; // Color when the link is clicked/active
+    }
+  }
+
+  // Footer text (non-link)
+  p {
+    color: #32403d; // Default footer text color
+    font-size: 14px;
+    margin: 0;
+  }
 }
 
-
+ 

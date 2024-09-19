@@ -49,7 +49,7 @@ website:
   navbar:
 #    logo: images/MITGEST_logo.jpeg
     pinned: true # non si muove quando scorro la pagina 
-    background: "#72aed8" # "#0084e6" "#EE6A24"
+#    background: "#B96574" # "#72aed8" # "#0084e6" "#EE6A24"
     right:
       - text: "Home"
         icon: house-fill # https://icons.getbootstrap.com/?q=home
