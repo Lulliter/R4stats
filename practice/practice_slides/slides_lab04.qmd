@@ -1,5 +1,5 @@
 ---
-title: "Lab 4: Intro to Machine Learning"
+title: "Lab 5: Intro to Machine Learning"
 subtitle: "<span style='font-size:2em;'> Practice session covering topics discussed in Lecture 4 </span>"
 author: "<a href='https://r4biostats.com/me.html' style='color:#72aed8;font-weight:600;'>M. Chiara Mimmi, Ph.D.</a>&ensp;|&ensp;Università degli Studi di Pavia"
 date: 2024-07-27
@@ -56,11 +56,11 @@ The examples and datasets in this Lab session follow very closely two sources:
 :::
 
 
-## Topics discussed in Lecture # 4
+## Topics discussed in Lecture # 5
 
 
 ::: {style="font-size: 95%;"}
-**Lecture 4: topics** 
+**Lecture 5: topics** 
 <!-- + Shifting the emphasis on **empirical prediction**  -->
 <!--   + Distinction between supervised & **unsupervised** algorithms -->
 <!--     + Unsupervised ML Example -->

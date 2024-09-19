@@ -79,7 +79,7 @@ https://info5940.infosci.cornell.edu/slides/publishing-reproducible-documents/#/
 ## Web input attributions
 
 <!-- - Favicon1 (giallo) <a target="_blank" href="https://icons8.com/icon/110187/grafico-combinato">Grafico combinato</a> icona di <a target="_blank" href="https://icons8.com">Icons8</a> -->
-- Website favicon [icons8.com](https://icons8.com/icon/lmhleiXG9ioV/analitica)
+- Website favicon Flip Chart icon by [icons8](https://icons8.com/icon/7emdDeJ5w6gv/flip-chart)
 - Google Scholar icon from [icons8.com](https://icons8.com/icon/pU44R9xgF3wq/google-scholar)
 - Font-Awsome Icons downloaded in `./images/*` from [Font-Awsome svgs](https://github.com/FortAwesome/Font-Awesome/tree/6.x/svgs)
 - Great tutorial on "Customizing Quarto Websites" by Sam Csik: [slides](https://ucsb-meds.github.io/customizing-quarto-websites/#/title-slide)

@@ -1,0 +1,29 @@
+---
+title: "Mapping causal & predictive approaches"
+subtitle: "<span class='code'>2024-07-27</span>"
+# date: "2024-07-27"
+# image: "images/04-guide.png"
+tbl-colwidths: [5,20,75]
+---
+
+
+<!-- 1/2 DIAPOSITIVA STD (16:9) --> 
+<!-- ```{=html} -->
+<!-- <iframe class="slide-deck" src="../lectures_slides/Lecture_05.pdf" height="420" width="747" style="border: 1px solid #2e3846;"></iframe> -->
+<!-- ``` -->
+
+<!-- 2/2 DIAPOSITIVA STD (4:3) -->
+```{=html}
+<iframe class="slide-deck" src="../lectures_slides/Lecture_04.pdf" height="418" width="560" style="border: 1px solid #2e3846;"></iframe>
+```
+
+<a href='../lectures_slides/Lecture_04.pdf' target="_blank">View slides in full screen</a>
+
+## Lecture 4 Outline
+
++ Research approaches
+  + Causal Analysis
+  + Prediction Analysis
+  
+
+ 

@@ -29,28 +29,32 @@
     <lastmod>2024-08-28T08:17:01.760Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/lectures/lec03_corr_regress.html</loc>
-    <lastmod>2024-08-28T08:17:01.760Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/lectures/lec01_data_with_R.html</loc>
-    <lastmod>2024-08-28T08:17:01.760Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/index.html</loc>
-    <lastmod>2024-09-18T15:34:42.102Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/install.html</loc>
-    <lastmod>2024-08-28T08:17:01.759Z</lastmod>
+    <loc>{{< var websites.live_site >}}/lectures/lec04_caus_pred.html</loc>
+    <lastmod>2024-09-19T15:09:26.103Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/lectures/lec02_inference.html</loc>
     <lastmod>2024-08-28T08:17:01.760Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/lectures/lec04_intro_ML.html</loc>
+    <loc>{{< var websites.live_site >}}/install.html</loc>
+    <lastmod>2024-08-28T08:17:01.759Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/index.html</loc>
+    <lastmod>2024-09-18T15:34:42.102Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/lectures/lec01_data_with_R.html</loc>
     <lastmod>2024-08-28T08:17:01.760Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/lectures/lec03_corr_regress.html</loc>
+    <lastmod>2024-08-28T08:17:01.760Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/lectures/lec05_intro_ML.html</loc>
+    <lastmod>2024-09-19T14:58:42.793Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/license_etc.html</loc>
@@ -74,6 +78,6 @@
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab04.html</loc>
-    <lastmod>2024-08-28T08:17:01.882Z</lastmod>
+    <lastmod>2024-09-19T14:58:36.041Z</lastmod>
   </url>
 </urlset>
