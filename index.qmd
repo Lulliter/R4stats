@@ -32,6 +32,6 @@ format:
 
 This website collects the materials used for teaching **Introductory Statistics** with R.  
 
-This (ongoing) work collected here originated from the preparation of a Summer workshop in July 2024 that my sister taught to a group of EU PhD students in the life science fields: see [{{< var websites.R4biostats >}}]({{< var websites.R4biostats >}}).
+The (ongoing) project hosted here originated from the preparation of a Summer workshop in July 2024 that my sister taught to a group of EU PhD students in the life science fields: see [{{< var websites.R4biostats >}}]({{< var websites.R4biostats >}}).
 
  
