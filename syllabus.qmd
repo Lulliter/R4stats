@@ -79,7 +79,7 @@ Detailed [instructions](https://r4biostats.com/install.html) are provided to com
 
 # Course Outline
 
-### Module 1: Introduction to R and data analysis
+## Module 1: Introduction to R and data analysis
 
 + **Introduction to reproducible end-to-end analysis using R** 
   + Why use R?
@@ -101,7 +101,7 @@ Detailed [instructions](https://r4biostats.com/install.html) are provided to com
 
 
 
-### Module 2: Statistical inference and classical hypothesis testing
+## Module 2: Statistical inference and classical hypothesis testing
 
 + **Purpose and foundations of inferential statistics**
   + Probability and random variables 
@@ -124,7 +124,7 @@ Detailed [instructions](https://r4biostats.com/install.html) are provided to com
   + Testing samples *without* homogeneous variance of observations
   
 
-### Module 3: Modeling correlation and regression
+## Module 3: Modeling correlation and regression
 
 + Testing and summarizing relationship between 2 variables (**correlation**)
   + Pearson $r$ analysis (parametric)
@@ -143,9 +143,16 @@ Detailed [instructions](https://r4biostats.com/install.html) are provided to com
   + Introduction to Machine Learning (ML)
   + Distinction between Supervised and Unsupervised algorithms 
   
+## Module 4: Mapping causal & predictive approaches
 
+⚠️ ... currently under review ...  ⚠️
 
-### Module 4: Introduction to machine learning
++ Overview of two different research approaches:
+
+  + Causal Analysis
+  + Prediction Analysis
+
+## Module 5: Introduction to machine learning
 
 + Examples of Machine Learning algorithms 
   + **PCA** -- "unsupervised" ML algorithm for dimensionality reduction
@@ -163,9 +170,9 @@ Detailed [instructions](https://r4biostats.com/install.html) are provided to com
   + Understanding the test's *statistical power* in connection to the *effect size* of an experiment  
 
 
-::: {style="color:#77501a"}
+::: {style="color:#5d1421 "}
 
-### [{{< fa brands r-project >}}]{style="color:#005ca1"} programming labs
+# [{{< fa brands r-project >}}]{style="color:#14455d"} Programming Labs
 
 Each of the above module is accompanied by a matching practical session intended to consolidate the theoretical concepts via hands-on **R coding** sessions. 
 

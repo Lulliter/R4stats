@@ -1,5 +1,5 @@
 ---
-title: "Intro to Statistics with R"
+title: "Intro to Statistics & Machine Learning with {{< fa brands r-project >}}"
 #subtitle: "Intensive summer workshop for life science PhD students"
 ## -------  general Output Options
 execute:     
@@ -27,11 +27,37 @@ format:
 <!-- Webpage construction in progress... -->
 <!-- ::: -->
 
+<br>
 
 ### Welcome! 
 
-This website collects the materials used for teaching **Introductory Statistics** with R.  
+This website hosts the teaching materials for **"Introduction to Statistics & Machine Learning with R"** — an intensive workshop that includes both Lectures and Practice Sessions to reinforce the concepts learned using {{< fa brands r-project >}} programming.
 
-The (ongoing) project hosted here originated from the preparation of a Summer workshop in July 2024 that my sister taught to a group of EU PhD students in the life science fields: see [{{< var websites.R4biostats >}}]({{< var websites.R4biostats >}}).
+This course was originally designed for a summer workshop taught by **Chiara Mimmi** (my sister 😊) to a group of PhD students from various EU universities specializing in life sciences (see [{{< var websites.R4biostats >}}]({{< var websites.R4biostats >}})).   
+I, **Luisa Mimmi**, curated the materials for the R Labs and the website, and I am currently revising and expanding these resources. 
 
- 
+<br> 
+
+
+::: {.custom-border style="border: 1px solid lightgray; padding: 10px; border-radius: 15px; background-color: #f8f9fa;"}
+:::: {.columns}
+
+::: {.column width="70%"}
+***If you have questions about this workshop and/or are interested in us organizing a similar program for you/your team, feel free to reach out:***
+:::
+
+::: {.column width="5%"}
+::: 
+::: {.column width="25%"}
+
+<!-- bootstrap buttons  -->
+<p> <a id="mail-link" href="mailto:lmm76@georgetown.edu"  class="btn btn-dark"> <i class="fa fa-envelope"></i> &nbsp;&nbsp;Email us</a></p>
+:::
+    
+::::
+:::
+
+
+
+
+

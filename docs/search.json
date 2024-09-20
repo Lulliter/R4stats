@@ -4,7 +4,42 @@
     "href": "syllabus.html",
     "title": "Course Description & Objectives",
     "section": "",
-    "text": "Course Description\n\n\nThis is an intensive course originally designed for PhD students and researchers dealing with biological datasets to help them consolidate their practical understanding of frequently implemented data analysis and statistical modeling for academic research purposes. This course focuses on empowering participants to conduct end-to-end data analyses, guiding them through reproducible data storage, cleaning, exploration, analysis, and interpretation cycle.\nBeyond the conceptual foundations, participants engage in hands-on coding sessions in the R software with real-world datasets and solved questions, validating in practice the skills needed to confidently acquire and communicate insights throughout the analytical process.\nParticular emphasis is placed on developing an understanding of the statistical methods used, when to apply them, and how to interpret them, in close connection to “real life” situations for a research scientists. \n\n\n\n\n\n\n\n\n\nTarget Audience\nThe target audience for this course is graduate students, post-doctoral fellows, and researchers in industry or academia already familiar with basic statistics (ideally in R) and looking to learn more about conducting an analysis from start to finish with more intermediate or advanced statistical techniques.\n\n\nPrerequisites\n\n\n\n\n\n\n\n\n\n\n\n\nWhile there are no specific prerequisites, because of the intensive nature of this course, participants will make the most of it if they have prior exposure to quantitative work in the biology/life science field. Similarly, some prior exposure to R programming will make the lab sessions more engaging.\nDetailed instructions are provided to complete the required installation of R and RStudio ahead of the workshop, so that participants can follow along the lab sessions.\n\n\nCourse Outline\n\nModule 1: Introduction to R and data analysis\n\nIntroduction to reproducible end-to-end analysis using R\n\nWhy use R?\nPrinciples of reproducible analysis with R + RStudio\nR objects, functions, packages\n\nDiscussion of different variable types (qualitative, quantitative) and levels of measurement (nominal, ordinal, interval, ratio)\n\nPrinciples of “tidy data”\nIntroduction to data cleaning and manipulation methods\n\nDescriptive statistics\n\nUnivariate analysis\nMeasures of central tendency, measures of variability (or spread), and frequency distributions\n\nVisual data exploration\n\nIntroduction to ggplot2 package for making graphs in R\n\n\n\n\n\n\n\nModule 2: Statistical inference and classical hypothesis testing\n\nPurpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA)\n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations\n\n\n\n\nModule 3: Modeling correlation and regression\n\nTesting and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (parametric)\n\n(numerical variables)\n\nSpearman’s test (not parametric)\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\nFisher’s Exact Test\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\nIntroduction of regression based statistical methods\n\nSimple linear regression models\nMultiple Linear Regression models\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised and Unsupervised algorithms\n\n\n\n\nModule 4: Introduction to machine learning\n\nExamples of Machine Learning algorithms\n\nPCA – “unsupervised” ML algorithm for dimensionality reduction\nPLS-Discriminant Analysis – “supervised” alternative to PCA performing simultaneous dimensionality reduction and classification    \n\nIntroduction to MetaboAnalyst software\n\nOverview of a useful, R-based resources for metabolomics\nIllustrative workflow with MetaboAnalyst\n\nElements of statistical Power Analysis\n\nBrief review of hypothesis testing framework (from Module 2)\nReview of type I and type II decision errors, contextualizing them in experimental settings\nUnderstanding the test’s statistical power in connection to the effect size of an experiment\n\n\n\n\n programming labs\nEach of the above module is accompanied by a matching practical session intended to consolidate the theoretical concepts via hands-on R coding sessions.\n\nThe illustrative examples used are based on real biology/clinical research data.\nIn each example, the student is guided through the entire process: acquiring and reading data into R, identifying the appropriate analytical method, running the analysis and, finally, interpreting the obtained outcomes.\nFor every exercise, the participant is provided with input datasets (complete with documentation) and R code source files (*.R) with solved examples for future reference.\nThe instructor will also use the lab sessions as an opportunity to discuss common questions and challenges that are normally encountered in the day-to-day life of research scientists."
+    "text": "This is an intensive course originally designed for PhD students and researchers dealing with biological datasets to help them consolidate their practical understanding of frequently implemented data analysis and statistical modeling for academic research purposes. This course focuses on empowering participants to conduct end-to-end data analyses, guiding them through reproducible data storage, cleaning, exploration, analysis, and interpretation cycle.\nBeyond the conceptual foundations, participants engage in hands-on coding sessions in the R software with real-world datasets and solved questions, validating in practice the skills needed to confidently acquire and communicate insights throughout the analytical process.\nParticular emphasis is placed on developing an understanding of the statistical methods used, when to apply them, and how to interpret them, in close connection to “real life” situations for a research scientists."
+  },
+  {
+    "objectID": "syllabus.html#module-1-introduction-to-r-and-data-analysis",
+    "href": "syllabus.html#module-1-introduction-to-r-and-data-analysis",
+    "title": "Course Description & Objectives",
+    "section": "Module 1: Introduction to R and data analysis",
+    "text": "Module 1: Introduction to R and data analysis\n\nIntroduction to reproducible end-to-end analysis using R\n\nWhy use R?\nPrinciples of reproducible analysis with R + RStudio\nR objects, functions, packages\n\nDiscussion of different variable types (qualitative, quantitative) and levels of measurement (nominal, ordinal, interval, ratio)\n\nPrinciples of “tidy data”\nIntroduction to data cleaning and manipulation methods\n\nDescriptive statistics\n\nUnivariate analysis\nMeasures of central tendency, measures of variability (or spread), and frequency distributions\n\nVisual data exploration\n\nIntroduction to ggplot2 package for making graphs in R"
+  },
+  {
+    "objectID": "syllabus.html#module-2-statistical-inference-and-classical-hypothesis-testing",
+    "href": "syllabus.html#module-2-statistical-inference-and-classical-hypothesis-testing",
+    "title": "Course Description & Objectives",
+    "section": "Module 2: Statistical inference and classical hypothesis testing",
+    "text": "Module 2: Statistical inference and classical hypothesis testing\n\nPurpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA)\n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations"
+  },
+  {
+    "objectID": "syllabus.html#module-3-modeling-correlation-and-regression",
+    "href": "syllabus.html#module-3-modeling-correlation-and-regression",
+    "title": "Course Description & Objectives",
+    "section": "Module 3: Modeling correlation and regression",
+    "text": "Module 3: Modeling correlation and regression\n\nTesting and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (parametric)\n\n(numerical variables)\n\nSpearman’s test (not parametric)\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\nFisher’s Exact Test\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\nIntroduction of regression based statistical methods\n\nSimple linear regression models\nMultiple Linear Regression models\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised and Unsupervised algorithms"
+  },
+  {
+    "objectID": "syllabus.html#module-4-mapping-causal-predictive-approaches",
+    "href": "syllabus.html#module-4-mapping-causal-predictive-approaches",
+    "title": "Course Description & Objectives",
+    "section": "Module 4: Mapping causal & predictive approaches",
+    "text": "Module 4: Mapping causal & predictive approaches\n⚠️ … currently under review … ⚠️\n\nOverview of two different research approaches:\n\nCausal Analysis\nPrediction Analysis"
+  },
+  {
+    "objectID": "syllabus.html#module-5-introduction-to-machine-learning",
+    "href": "syllabus.html#module-5-introduction-to-machine-learning",
+    "title": "Course Description & Objectives",
+    "section": "Module 5: Introduction to machine learning",
+    "text": "Module 5: Introduction to machine learning\n\nExamples of Machine Learning algorithms\n\nPCA – “unsupervised” ML algorithm for dimensionality reduction\nPLS-Discriminant Analysis – “supervised” alternative to PCA performing simultaneous dimensionality reduction and classification    \n\nIntroduction to MetaboAnalyst software\n\nOverview of a useful, R-based resources for metabolomics\nIllustrative workflow with MetaboAnalyst\n\nElements of statistical Power Analysis\n\nBrief review of hypothesis testing framework (from Module 2)\nReview of type I and type II decision errors, contextualizing them in experimental settings\nUnderstanding the test’s statistical power in connection to the effect size of an experiment"
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#topics-discussed-in-lecture-3",
@@ -1796,28 +1831,28 @@
     "href": "lectures/lec04_caus_pred.html",
     "title": "Mapping causal & predictive approaches",
     "section": "",
-    "text": "View slides in full screen"
+    "text": "⚠️ … currently under review … ⚠️"
   },
   {
-    "objectID": "lectures/lec04_caus_pred.html#lecture-4-outline",
-    "href": "lectures/lec04_caus_pred.html#lecture-4-outline",
+    "objectID": "lectures/lec04_caus_pred.html#lecture-outline",
+    "href": "lectures/lec04_caus_pred.html#lecture-outline",
     "title": "Mapping causal & predictive approaches",
-    "section": "Lecture 4 Outline",
-    "text": "Lecture 4 Outline\n\nResearch approaches\n\nCausal Analysis\nPrediction Analysis"
+    "section": "Lecture Outline",
+    "text": "Lecture Outline\n\nResearch approaches\n\nCausal Analysis\nPrediction Analysis"
   },
   {
     "objectID": "lectures/lec02_inference.html",
     "href": "lectures/lec02_inference.html",
     "title": "Statistical inference & hypothesis testing",
     "section": "",
-    "text": "View slides in full screen"
+    "text": "View lecture slides in full screen"
   },
   {
-    "objectID": "lectures/lec02_inference.html#lecture-2-outline",
-    "href": "lectures/lec02_inference.html#lecture-2-outline",
+    "objectID": "lectures/lec02_inference.html#lecture-outline",
+    "href": "lectures/lec02_inference.html#lecture-outline",
     "title": "Statistical inference & hypothesis testing",
-    "section": "Lecture 2 Outline",
-    "text": "Lecture 2 Outline\n\nPurpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA) \n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations"
+    "section": "Lecture Outline",
+    "text": "Lecture Outline\n\nPurpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA) \n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations"
   },
   {
     "objectID": "install.html",
@@ -1857,72 +1892,72 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Intro to Statistics with R",
+    "title": "Intro to Statistics & Machine Learning with ",
     "section": "",
-    "text": "Welcome!\nThis website collects the materials used for teaching Introductory Statistics with R.\nThe (ongoing) project hosted here originated from the preparation of a Summer workshop in July 2024 that my sister taught to a group of EU PhD students in the life science fields: see https://R4biostats.com/."
+    "text": "Welcome!\nThis website hosts the teaching materials for “Introduction to Statistics & Machine Learning with R” — an intensive workshop that includes both Lectures and Practice Sessions to reinforce the concepts learned using  programming.\nThis course was originally designed for a summer workshop taught by Chiara Mimmi (my sister 😊) to a group of PhD students from various EU universities specializing in life sciences (see https://R4biostats.com/).\nI, Luisa Mimmi, curated the materials for the R Labs and the website, and I am currently revising and expanding these resources.\n\n\n\n\nIf you have questions about this workshop and/or are interested in us organizing a similar program for you/your team, feel free to reach out:\n\n\n\n\n\n    Email us"
   },
   {
     "objectID": "lectures/lec01_data_with_R.html",
     "href": "lectures/lec01_data_with_R.html",
-    "title": "Lecture 1: Intro to R and data analysis",
+    "title": "Intro to R and data analysis",
     "section": "",
-    "text": "View slides in full screen"
+    "text": "View lecture slides in full screen"
   },
   {
-    "objectID": "lectures/lec01_data_with_R.html#lecture-1-outline",
-    "href": "lectures/lec01_data_with_R.html#lecture-1-outline",
-    "title": "Lecture 1: Intro to R and data analysis",
-    "section": "Lecture 1 Outline",
-    "text": "Lecture 1 Outline\n\nIntroduction to R and R-studio\n\nWhy R?\nPrinciples of reproducible analysis with R + RStudio\n\nR objects, functions, packages\nUnderstanding different types of variables\n\nPrinciples of “tidy data”\nData cleaning and manipulation\n\nDescriptive statistics\n\nMeasures of central tendency, measures of variability (or spread), and\n\nFrequency distribution\nVisual data exploration\n\n{ggplot2}"
+    "objectID": "lectures/lec01_data_with_R.html#lecture-outline",
+    "href": "lectures/lec01_data_with_R.html#lecture-outline",
+    "title": "Intro to R and data analysis",
+    "section": "Lecture Outline",
+    "text": "Lecture Outline\n\nIntroduction to R and R-studio\n\nWhy R?\nPrinciples of reproducible analysis with R + RStudio\n\nR objects, functions, packages\nUnderstanding different types of variables\n\nPrinciples of “tidy data”\nData cleaning and manipulation\n\nDescriptive statistics\n\nMeasures of central tendency, measures of variability (or spread), and\n\nFrequency distribution\nVisual data exploration\n\n{ggplot2}"
   },
   {
     "objectID": "lectures/lec03_corr_regress.html",
     "href": "lectures/lec03_corr_regress.html",
     "title": "Modeling correlation and regression",
     "section": "",
-    "text": "View slides in full screen"
+    "text": "View lecture slides in full screen"
   },
   {
-    "objectID": "lectures/lec03_corr_regress.html#lecture-3-outline",
-    "href": "lectures/lec03_corr_regress.html#lecture-3-outline",
+    "objectID": "lectures/lec03_corr_regress.html#lecture-outline",
+    "href": "lectures/lec03_corr_regress.html#lecture-outline",
     "title": "Modeling correlation and regression",
-    "section": "Lecture 3 Outline",
-    "text": "Lecture 3 Outline\n\nTesting and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (param)\n\n(numerical variables)\n\nSpearman’s test (no param)\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\nFisher’s Exact Test\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\nWidely used analytical tools\n\nSimple linear regression models\nMultiple Linear Regression models\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised & Unsupervised algorithms"
+    "section": "Lecture Outline",
+    "text": "Lecture Outline\n\nTesting and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (param)\n\n(numerical variables)\n\nSpearman’s test (no param)\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\nFisher’s Exact Test\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\nWidely used analytical tools\n\nSimple linear regression models\nMultiple Linear Regression models\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised & Unsupervised algorithms"
   },
   {
     "objectID": "lectures/lec05_intro_ML.html",
     "href": "lectures/lec05_intro_ML.html",
     "title": "Introduction to machine learning",
     "section": "",
-    "text": "View slides in full screen"
+    "text": "View lecture slides in full screen"
   },
   {
-    "objectID": "lectures/lec05_intro_ML.html#lecture-5-outline",
-    "href": "lectures/lec05_intro_ML.html#lecture-5-outline",
+    "objectID": "lectures/lec05_intro_ML.html#lecture-outline",
+    "href": "lectures/lec05_intro_ML.html#lecture-outline",
     "title": "Introduction to machine learning",
-    "section": "Lecture 5 Outline",
-    "text": "Lecture 5 Outline\n\nPCA\n\nAn example of “unsupervised” ML algorithm\n\n\n\n\n\n\n\nIntroduction to MetaboAnalyst software\n\nA useful R-based resources for metabolomics\n\nElements of statistical Power Analysis\nWorkshop Conclusions"
+    "section": "Lecture Outline",
+    "text": "Lecture Outline\n\nPCA\n\nAn example of “unsupervised” ML algorithm\n\n\n\n\n\n\n\nIntroduction to MetaboAnalyst software\n\nA useful R-based resources for metabolomics\n\nElements of statistical Power Analysis\nWorkshop Conclusions"
   },
   {
-    "objectID": "license_etc.html#acknowledgements",
-    "href": "license_etc.html#acknowledgements",
+    "objectID": "license_etc.html",
+    "href": "license_etc.html",
     "title": "Acknowledgments and resources",
-    "section": "Acknowledgements",
-    "text": "Acknowledgements\n\n\n\nBelow is a curated list of great resources (most of which free and openly accessible) you can peruse on your own.\n\nI would love to hear your feedback, questions, or suggestions about the workshop:\n\n    contact us"
+    "section": "",
+    "text": "We are genuinely grateful to many people within the Statistics, Machine Learning, Epidemiology and R programming communities, who shared their valuable work, open source software, and training resources."
   },
   {
     "objectID": "license_etc.html#licensing-and-use-of-the-workshop-materials",
     "href": "license_etc.html#licensing-and-use-of-the-workshop-materials",
     "title": "Acknowledgments and resources",
     "section": "Licensing and use of the workshop materials",
-    "text": "Licensing and use of the workshop materials\nThe workshop materials are licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. All borrowed external materials (images, worked examples, etc.), are credited with proper “Source” statements and governed by their own licenses. To my knowledge, all the consulted materials were published under “open access” or “creative commons” frameworks. If this were not the case for any content piece displayed here, please let me know and it will be removed."
+    "text": "Licensing and use of the workshop materials\nThe workshop materials are licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. All borrowed external materials (images, worked examples, etc.), are credited with proper “Source” statements and governed by their own licenses. To our knowledge, all the consulted materials were published under “open access” or “creative commons” frameworks. If this were not the case for any content piece displayed here, please let us know and it will be removed."
   },
   {
     "objectID": "license_etc.html#selected-resources-for-self-guided-learning",
     "href": "license_etc.html#selected-resources-for-self-guided-learning",
     "title": "Acknowledgments and resources",
     "section": "Selected resources for self-guided learning",
-    "text": "Selected resources for self-guided learning\n\n\nBiostatistics/Epidemiology with R examples\n\nApplied Epi Team (2024). Applied Epi - Elevating frontline epidemiology [Course]. Training, support, tools. https://www.appliedepi.org/\nApplied Epi Team (2024). R for applied epidemiology and public health The Epidemiologist R Handbook [Course]. https://epirhandbook.com/en/\nBobbitt, Z. (2024). Statology [Course]. Statology. https://www.statology.org/\nÇetinkaya-Rundel, M., & Hardim, J. (2023). Introduction to Modern Statistics (1st Ed) [Book]. https://openintro-ims.netlify.app/\nChilds, D. Z., Hindle, B. J., & Warren, P. H. (2022). Introductory Biostatistics with R [Book]. https://github.com/rstudio/bookdown\n\nSelby, D., & 2021 (2024). Analytical Epidemiology II [Course]. David Selby. https://personalpages.manchester.ac.uk/staff/david.selby/analysis/2021-03-30-inference/\n\nVu, J., & Harrington, D. (2021). Introductory Statistics for the Life and Biomedical Sciences [Book]. https://www.openintro.org/book/biostat/\nR packages & tools\n\nPOSIT (2024). POSIT resources [R]. https://posit.co/resources/.\nRStudio, & Posit (2024). Base-r-cheat-sheet.pdf [R]. https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf\nVarious contributors (2024). Bioconductor - Open source software for Bioinformatics [R]. Bioconductor - Open source software for Bioinformatics. https://www.bioconductor.org/\nWickham, H., François, R., Müller, K., & Vaughan, D. (2023). Programming with dplyr [R]. dplyr. https://dplyr.tidyverse.org/articles/programming.html#tidy-selection\nWickham, H. (2014). Tidy Data [R]. Journal of Statistical Software, 59(10). https://doi.org/10.18637/jss.v059.i10\nSources of practice datasets\n\nVanderbilt Department of Biostatistics (2023, September 17). Vanderbilt Biostatistics Datasets [Dataset]. https://hbiostat.org/data/\nChicco, D., & Jurman, G. (2020). Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone [Dataset]. BMC Medical Informatics and Decision Making, 20(1), 16. https://doi.org/10.1186/s12911-020-1023-5\nAhmad, T., Munir, A., Bhatti, S. H., Aftab, M., & Raza, M. A. (2017). Survival analysis of heart failure patients: A case study [Dataset]. PLOS ONE, 12(7), e0181001. https://doi.org/10.1371/journal.pone.0181001"
+    "text": "Selected resources for self-guided learning\nBelow is a curated list of great resources (most of which free and openly accessible) you can peruse on your own.\n\n\nBiostatistics/Epidemiology with R examples\n\nApplied Epi Team (2024). Applied Epi - Elevating frontline epidemiology [Course]. Training, support, tools. https://www.appliedepi.org/\nApplied Epi Team (2024). R for applied epidemiology and public health The Epidemiologist R Handbook [Course]. https://epirhandbook.com/en/\nBobbitt, Z. (2024). Statology [Course]. Statology. https://www.statology.org/\nÇetinkaya-Rundel, M., & Hardim, J. (2023). Introduction to Modern Statistics (1st Ed) [Book]. https://openintro-ims.netlify.app/\nChilds, D. Z., Hindle, B. J., & Warren, P. H. (2022). Introductory Biostatistics with R [Book]. https://github.com/rstudio/bookdown\n\nSelby, D., & 2021 (2024). Analytical Epidemiology II [Course]. David Selby. https://personalpages.manchester.ac.uk/staff/david.selby/analysis/2021-03-30-inference/\n\nVu, J., & Harrington, D. (2021). Introductory Statistics for the Life and Biomedical Sciences [Book]. https://www.openintro.org/book/biostat/\nR packages & tools\n\nPOSIT (2024). POSIT resources [R]. https://posit.co/resources/.\nRStudio, & Posit (2024). Base-r-cheat-sheet.pdf [R]. https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf\nVarious contributors (2024). Bioconductor - Open source software for Bioinformatics [R]. Bioconductor - Open source software for Bioinformatics. https://www.bioconductor.org/\nWickham, H., François, R., Müller, K., & Vaughan, D. (2023). Programming with dplyr [R]. dplyr. https://dplyr.tidyverse.org/articles/programming.html#tidy-selection\nWickham, H. (2014). Tidy Data [R]. Journal of Statistical Software, 59(10). https://doi.org/10.18637/jss.v059.i10\nSources of practice datasets\n\nVanderbilt Department of Biostatistics (2023, September 17). Vanderbilt Biostatistics Datasets [Dataset]. https://hbiostat.org/data/\nChicco, D., & Jurman, G. (2020). Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone [Dataset]. BMC Medical Informatics and Decision Making, 20(1), 16. https://doi.org/10.1186/s12911-020-1023-5\nAhmad, T., Munir, A., Bhatti, S. H., Aftab, M., & Raza, M. A. (2017). Survival analysis of heart failure patients: A case study [Dataset]. PLOS ONE, 12(7), e0181001. https://doi.org/10.1371/journal.pone.0181001"
   },
   {
     "objectID": "practice/lab01_data_with_R.html",

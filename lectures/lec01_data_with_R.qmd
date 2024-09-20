@@ -1,6 +1,6 @@
 ---
-title: "Lecture 1: Intro to R and data analysis"
-subtitle: "<span class='code'>2024-07-24</span>"
+title: "Intro to R and data analysis"
+subtitle: "<span class='code'>Lecture 1</span>"
 #date: "2024-07-24"
 # image: "images/01-foundations.png"
 tbl-colwidths: [5,20,75]
@@ -13,19 +13,24 @@ tbl-colwidths: [5,20,75]
 <!-- ### Lecture slides  -->
 
 <!-- 1/2 DIAPOSITIVA STD (16:9) --> 
-
+<!-- height="420" width="747"-->
+ 
+<!-- 2/2 DIAPOSITIVA STD (4:3) -->
 <!-- ```{=html} -->
-<!-- <iframe class="slide-deck" src="../lectures_slides/Lecture_01.pdf" height="420" width="747" style="border: 1px solid #2e3846;"></iframe> -->
+<!-- <div style="text-align: center;"> -->
+<!--   <iframe class="slide-deck" src="../lectures_slides/Lecture_01.pdf" height="450" width="600" style="border:border: 1px solid #2e3846; display: block; margin: auto;"></iframe> -->
+<!-- </div> -->
 <!-- ``` -->
 
-<!-- 2/2 DIAPOSITIVA STD (4:3) -->
-```{=html}
-<iframe class="slide-deck" src="../lectures_slides/Lecture_01.pdf" height="418" width="560" style="border: 1px solid #2e3846;"></iframe>
-```
 
-<a href='../lectures_slides/Lecture_01.pdf' target="_blank">View slides in full screen</a>
 
-## Lecture 1 Outline
+::: {.custom-border style="border: 1px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"}
+[**View lecture slides in full screen**](../lectures_slides/Lecture_01.pdf)
+:::
+
+<br>
+
+## Lecture Outline
 
 + Introduction to R and R-studio
   + Why R?
@@ -38,7 +43,7 @@ tbl-colwidths: [5,20,75]
   + Measures of central tendency, measures of variability (or spread), and
 + Frequency distribution
 + Visual data exploration
-  + {ggplot2}
+  + {`ggplot2`}
   
 <!-- + Foundations of inference -->
 
