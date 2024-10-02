@@ -28,7 +28,7 @@ website:
     left: |
       {{< fa brands creative-commons >}}
       {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-nc >}} {{< fa brands creative-commons-sa >}}
-      [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) <br> M. Chiara Mimmi & Luisa M. Mimmi 2024
+      [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) <br> M. Chiara Mimmi & [Luisa M. Mimmi](https://luisamimmi.org/) 2024
     right: |
       Made with {{< fa brands r-project >}} and [Quarto](https://quarto.org/) <br> 
       [Code at {{< fa brands github >}} GitHub]("{{< var websites.gh_repo >}}")
@@ -83,8 +83,10 @@ website:
             href: practice/lab02_inference.qmd
           - text: "Lab: Modeling correlation and regression"
             href: practice/lab03_corr_regress.qmd
+          - text: "Lab: Mapping causal & predictive approaches"
+            href: practice/lab04_causation.qmd
           - text: "Lab: Intro to machine learning"
-            href: practice/lab04_intro_ML.qmd
+            href: practice/lab05_intro_ML.qmd
       # - text: "About"
       #   icon: mortarboard-fill #person-circle # https://icons.getbootstrap.com/?q=home
       #   href: me.qmd

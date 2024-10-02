@@ -25,7 +25,8 @@ tbl-colwidths: [5,20,75]
 
 
 ::: {.custom-border style="border: 1px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"}
-[**View lecture slides in full screen**](../lectures_slides/Lecture_01.pdf)
+<!-- [{{< fa file-powerpoint>}}&nbsp;**View lecture slides in full screen**](../lectures_slides/Lecture_01.pdf) -->
+[**View lecture slides in full screen** &nbsp;{{< fa file-powerpoint >}}](../lectures_slides/Lecture_01.pdf)
 :::
 
 <br>

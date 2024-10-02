@@ -31,19 +31,20 @@ format:
 
 ### Welcome! 
 
-This website hosts the teaching materials for **"Introduction to Statistics & Machine Learning with R"** — an intensive workshop that includes both Lectures and Practice Sessions to reinforce the concepts learned using {{< fa brands r-project >}} programming.
+This website hosts some teaching material on **"Introduction to Statistics & Machine Learning with R"** — an intensive workshop that includes both Lectures and Practice Sessions to reinforce the concepts learned using {{< fa brands r-project >}} programming.
 
-This course was originally designed for a summer workshop taught by **Chiara Mimmi** (my sister 😊) to a group of PhD students from various EU universities specializing in life sciences (see [{{< var websites.R4biostats >}}]({{< var websites.R4biostats >}})).   
-I, **Luisa Mimmi**, curated the materials for the R Labs and the website, and I am currently revising and expanding these resources. 
-
+The course was originally designed for a summer workshop offered to a group of PhD students from various EU universities specializing in life sciences (see [{{< var websites.R4biostats >}}]({{< var websites.R4biostats >}})).
 <br> 
+
+I (*Luisa*) co-created that workshop with my sister (*Chiara* 😊) and I am currently revising and expanding the materials. 
+
 
 
 ::: {.custom-border style="border: 1px solid lightgray; padding: 10px; border-radius: 15px; background-color: #f8f9fa;"}
 :::: {.columns}
 
 ::: {.column width="70%"}
-***If you have questions about this workshop and/or are interested in us organizing a similar program for you/your team, feel free to reach out:***
+***Get in touch if you have questions and/or are interested in a similar workshop for your team!***
 :::
 
 ::: {.column width="5%"}

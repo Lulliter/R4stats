@@ -1,0 +1,63 @@
+---
+title: "Lab 4: Mapping causal & predictive approaches"
+#subtitle: "Lab 4"
+## ------  general Output Options
+execute:     
+  eval: true
+  echo: false     #  include source code in output
+  warning: false  #  include warning code in output
+  error: false    #  include error code in output
+  output: false   # include output code in output (CHG in BLOCKS)
+  # include: false   # R still runs but code and results DON"T appear in output  
+  cache: false # normalmnte false
+tbl-colwidths: [5,20,75]
+---
+
+<!-- 1/2 DIAPOSITIVA WIDE (16:9) -->
+```{=html}
+<iframe class="slide-deck" src="practice_slides/slides_lab04.html" height="420" width="747" style="border: 1px solid #2e3846;"></iframe>
+```
+
+
+::: {.custom-border style="border: 1px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"}
+<!-- [{{< fa file-powerpoint>}}&nbsp;**View lecture slides in full screen**](../lectures_slides/Lecture_01.pdf) -->
+[**View lab slides in full screen** &nbsp;{{< fa desktop >}}](practice_slides/slides_lab04.html)
+:::
+
+## Practice session input data (as `subfolder`)
+
+```{r}
+#| echo: false
+#| eval: true
+#| output: true
+
+downloadthis::download_dir(path = here::here("practice", "data_input", "04_datasets"),
+                           output_name = "labs input data",
+                           button_label = "Download input data",
+                           button_color = "success",
+                           has_icon = TRUE,
+                           icon = "fa-solid fa-folder-open",
+                           self_contained = FALSE
+)
+```
+
+## Practice session R code (as `.R` file)
+```{r}
+#| echo: false
+#| eval: true
+#| output: true
+
+library(fs) 
+
+# using a param for which file 
+downloadthis::download_file(
+  path =  here::here("practice", "Rcode", "lab04_code.R"), # param
+  output_name = fs::path_ext_remove ("lab04_code.R"), # param + no extension.... 
+  output_extension = ".R",  
+  button_label = "Download R file",
+  button_type = "primary",
+  has_icon = TRUE,
+  icon = "fa-brands fa-r-project",
+  self_contained = FALSE
+)
+```
