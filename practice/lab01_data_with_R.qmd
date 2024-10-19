@@ -90,7 +90,7 @@ library(downloadthis)
 download_dir(
   path = here::here("practice", "data_input", params$lab_data_dir),# param
   output_name = "labs input data",
-  button_label = "Download input data Lab 1",
+  button_label = "Download input data",
   button_type = "success",
   has_icon = TRUE,
   icon = "fa-solid fa-folder-open",
@@ -112,7 +112,7 @@ download_file(
   path =  here::here("practice", "Rcode", params$lab_R_code ), # param
   output_name = fs::path_ext_remove (params$lab_R_code), # param + no extension.... 
   output_extension = ".R",  
-  button_label = "Download Lab session 1 as .R file",
+  button_label = "Download R file",
   button_type = "primary",
   has_icon = TRUE,
   icon = "fa-brands fa-r-project",

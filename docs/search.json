@@ -53,56 +53,315 @@
     "href": "practice/practice_slides/slides_lab04.html#needed-r-packages",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "Needed R Packages",
-    "text": "Needed R Packages\n\n\nWe will use functions from packages base, utils, and stats (pre-installed and pre-loaded)\nWe may also use the packages below (specifying package::function for clarity).\n\n\n# Load pckgs for this R session\n\n# --- General \nlibrary(here)     # tools find your project's files, based on working directory\n\nhere() starts at /Users/luisamimmi/Github/R4stats\n\nlibrary(dplyr)    # A Grammar of Data Manipulation\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(skimr)    # Compact and Flexible Summaries of Data\nlibrary(magrittr) # A Forward-Pipe Operator for R \nlibrary(readr)    # A Forward-Pipe Operator for R \n\n# Plotting & data visualization\nlibrary(ggplot2)      # Create Elegant Data Visualisations Using the Grammar of Graphics\nlibrary(ggfortify)     # Data Visualization Tools for Statistical Analysis Results\n\n\nlibrary(dagitty)\nlibrary(ggdag)\n\n\nAttaching package: 'ggdag'\n\n\nThe following object is masked from 'package:stats':\n\n    filter\n\nlibrary(patchwork)\nlibrary(broom)\nlibrary(data.table)\n\n\nAttaching package: 'data.table'\n\n\nThe following objects are masked from 'package:dplyr':\n\n    between, first, last\n\nlibrary(simstudy)\nlibrary(gridExtra)\n\n\nAttaching package: 'gridExtra'\n\n\nThe following object is masked from 'package:dplyr':\n\n    combine\n\n#library(epiR)\n#library(tableone)\n#library(ipw)\nlibrary(sandwich) #for robust variance estimation\nlibrary(survey)\n\nLoading required package: grid\n\n\nLoading required package: Matrix\n\n\nLoading required package: survival\n\n\n\nAttaching package: 'survey'\n\n\nThe following object is masked from 'package:dagitty':\n\n    neighbours\n\n\nThe following object is masked from 'package:graphics':\n\n    dotchart\n\nlibrary(haven)\n\n#library(EValue)"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab04.html#dataset-on-.",
-    "href": "practice/practice_slides/slides_lab04.html#dataset-on-.",
-    "title": "Lab 4:Mapping causal & predictive approaches",
-    "section": "Dataset on ….",
-    "text": "Dataset on ….\n\nName: ….Documentation: See reference on the data downloaded and …. Sampling details: This …."
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab04.html#importing-dataset-...",
-    "href": "practice/practice_slides/slides_lab04.html#importing-dataset-...",
-    "title": "Lab 4:Mapping causal & predictive approaches",
-    "section": "Importing Dataset ...",
-    "text": "Importing Dataset ..."
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab04.html#variables-with-description",
-    "href": "practice/practice_slides/slides_lab04.html#variables-with-description",
-    "title": "Lab 4:Mapping causal & predictive approaches",
-    "section": ".... variables with description",
-    "text": ".... variables with description\n\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\nclass\nfactor\nbenign or malignant\n\n\n\n\n\n\nhttps://bookdown.org/jbrophy115/bookdown-clinepi/confounding.html"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab04.html#dag-to-represent-confounders",
-    "href": "practice/practice_slides/slides_lab04.html#dag-to-represent-confounders",
-    "title": "Lab 4:Mapping causal & predictive approaches",
-    "section": "DAG to represent confounders",
-    "text": "DAG to represent confounders\n\ndag &lt;- dagitty::dagitty(\"dag {\n  X -&gt; Y\n  Z -&gt; X\n  Z -&gt; Y\n  e -&gt; Y\n               }\")\n\ndagitty::coordinates(dag ) &lt;-  list(\n  x=c(X=1, Z=3, Y=5, e=5),\n  y=c(X=1, Z=3, Y=1, e=3))\n\nlibrary(ggdag)\ndag &lt;-  tidy_dagitty(dag)\nex1 &lt;-  ggdag(dag, layout = \"circle\") + \n  theme_dag_blank(plot.caption = element_text(hjust = 1)) + \n  geom_dag_node(color=\"pink\") + \n  geom_dag_text(color=\"white\") +\n  ggtitle(\"a) DAG with a confounder (Z)\") +\n  labs(caption = \"X = drug exposure\\nY = outcome\\nZ = confounder\\n e = random error\")\nex1"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab04.html#dag-to-represent-confounders-output",
-    "href": "practice/practice_slides/slides_lab04.html#dag-to-represent-confounders-output",
-    "title": "Lab 4:Mapping causal & predictive approaches",
-    "section": "DAG to represent confounders",
-    "text": "DAG to represent confounders"
+    "text": "Needed R Packages\n\n\nWe will use functions from packages base, utils, and stats (pre-installed and pre-loaded)\nWe may also use the packages below (specifying package::function for clarity).\n\n\n# Load pckgs for this R session\n\n# --- General \nlibrary(here) # A Simpler Way to Find Your Files   \nlibrary(skimr)    # Compact and Flexible Summaries of Data\nlibrary(paint)   # Fancy structure for data frames \nlibrary(janitor)  # Simple Tools for Examining and Cleaning Dirty Data\nlibrary(tidyverse) # Easily Install and Load the 'Tidyverse'\n\n# --- Plotting & data visualization\nlibrary(ggfortify)     # Data Visualization Tools for Statistical Analysis Results\nlibrary(ggpubr)        # 'ggplot2' Based Publication Ready Plots\nlibrary(dagitty) # Graphical Analysis of Structural Causal Models\nlibrary(ggdag) # Analyze and Create Elegant Directed Acyclic Graphs #\nlibrary(patchwork) # The Composer of Plots\n\n# --- Descriptive statistics and regressions\nlibrary(broom) # Convert Statistical Objects into Tidy Tibbles\nlibrary(Hmisc) # Harrell Miscellaneous\nlibrary(estimatr) # Fast Estimators for Design-Based Inference\nlibrary(modelsummary) # Summary Tables and Plots for Statistical Models and Data:\nlibrary(sandwich) #for robust variance estimation\nlibrary(survey) # Analysis of Complex Survey Samples\nlibrary(haven) # Import and Export 'SPSS', 'Stata' and 'SAS' Files\nlibrary(simstudy) # Simulation of Study Data\nlibrary(NHANES) # Data from the US National Health and Nutrition Examination Study"
   },
   {
     "objectID": "practice/practice_slides/slides_lab04.html#ite",
     "href": "practice/practice_slides/slides_lab04.html#ite",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "ITE",
-    "text": "ITE\nIndividual Treatment Effect (ITE) is defined as the difference in potential outcomes for a given individual \\(ITE_i= y_{i}^1  − y_{i}^0\\)\nThe Causal Effect (CE)\n\\(CE_i = Y_{1i} - Y_{0i}\\) where \\(Y_{1i}\\) and \\(Y_{0i}\\) are the potential outcomes for each individual \\(i\\) being both exposed and not exposed respectively (not possible in the real world).\nSimulation\n\ndef &lt;- defData(varname = \"C\", formula = 0.4, dist = \"binary\")\ndef &lt;- defData(def, \"X\", formula = \"0.3 + 0.4 * C\", dist = \"binary\")\ndef &lt;- defData(def, \"e\", formula = 0, variance = 2, dist = \"normal\")\ndef &lt;- defData(def, \"Y0\", formula = \"2 * C + e\", dist=\"nonrandom\")\ndef &lt;- defData(def, \"Y1\", formula = \"1 + 2 * C + e\", dist=\"nonrandom\")\ndef &lt;- defData(def, \"Y_obs\", formula = \"Y0 + (Y1 - Y0) * X\", dist = \"nonrandom\") #  = Y1*X + (1-X)*Y0\n\nset.seed(2017)\ndt &lt;- genData(10000, def)\n\n\npaste0(\"Calculated mean causal effect = \", mean(dt[, Y1] - dt[, Y0])) #mean difference of counterfactual outcomes\n\n[1] \"Calculated mean causal effect = 1\"\n\npaste0(\"Calculated observed difference  = \", round(dt[X == 1, mean(Y_obs)] - dt[X == 0, mean(Y_obs)],2))\n\n[1] \"Calculated observed difference  = 1.71\"\n\nlm1 &lt;- lm(Y_obs ~ X, data = dt)\ntidy(lm1)\n\n# A tibble: 2 × 5\n  term        estimate std.error statistic  p.value\n  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;\n1 (Intercept)    0.481    0.0225      21.3 8.84e-99\n2 X              1.71     0.0335      51.1 0"
+    "text": "ITE\nIndividual Treatment Effect (ITE) is defined as the difference in potential outcomes for a given individual \\(ITE_i= y_{i}^1  − y_{i}^0\\)\nThe Causal Effect (CE)\n\\(CE_i = Y_{1i} - Y_{0i}\\) where \\(Y_{1i}\\) and \\(Y_{0i}\\) are the potential outcomes for each individual \\(i\\) being both exposed and not exposed respectively (not possible in the real world).\nSimulation\n\ndef &lt;- simstudy::defData(varname = \"C\", formula = 0.4, dist = \"binary\")\ndef &lt;- simstudy::defData(def, \"X\", formula = \"0.3 + 0.4 * C\", dist = \"binary\")\ndef &lt;- simstudy::defData(def, \"e\", formula = 0, variance = 2, dist = \"normal\")\ndef &lt;- simstudy::defData(def, \"Y0\", formula = \"2 * C + e\", dist=\"nonrandom\")\ndef &lt;- simstudy::defData(def, \"Y1\", formula = \"1 + 2 * C + e\", dist=\"nonrandom\")\ndef &lt;- simstudy::defData(def, \"Y_obs\", formula = \"Y0 + (Y1 - Y0) * X\", dist = \"nonrandom\") #  = Y1*X + (1-X)*Y0\n\nset.seed(2017)\ndt &lt;- genData(10000, def)\n\n\npaste0(\"Calculated mean causal effect = \", mean(dt[, Y1] - dt[, Y0])) #mean difference of counterfactual outcomes\n\n[1] \"Calculated mean causal effect = 1\"\n\npaste0(\"Calculated observed difference  = \", round(dt[X == 1, mean(Y_obs)] - dt[X == 0, mean(Y_obs)],2))\n\n[1] \"Calculated observed difference  = 1.71\"\n\nlm1 &lt;- lm(Y_obs ~ X, data = dt)\ntidy(lm1)\n\n# A tibble: 2 × 5\n  term        estimate std.error statistic  p.value\n  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;\n1 (Intercept)    0.481    0.0225      21.3 8.84e-99\n2 X              1.71     0.0335      51.1 0"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#dag-with-collider",
+    "href": "practice/practice_slides/slides_lab04.html#dag-with-collider",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "DAG with COLLIDER",
+    "text": "DAG with COLLIDER\n\n# df DAG \ndag_collid &lt;- dagify(\n  Y ~ X + e,\n  Z ~ X + Y,\n  exposure = \"X\",\n  outcome = \"Y\",\n  #latent = \"e\",\n  # labels\n  labels = c(\n    \"Z\" = \"Collider\",\n    \"X\" = \"Exposure\",\n    \"Y\" = \"Outcome\",\n    \"e\" = \"Unobserved \\nerror\"),\n  # positions\n  coords = list(\n    x = c(X = 0, Y= 4, Z = 2 , e = 5),\n    y = c(X = 0, Y = 0, Z = 2, e = 1) \n  )) %&gt;% \n  tidy_dagitty() \n\n# Plot DAG \ndag_col_p &lt;-  dag_collid %&gt;% \n  ggdag(., layout = \"circle\") +  # decided in dagify\n  theme_dag_blank(plot.caption = element_text(hjust = 1)) +\n  # Nodes \n  geom_dag_node(aes(color = name)) +  \n  # Labels dodged to avoid overlap\n  geom_dag_label(aes(label = label), color = \"#4c4c4c\", nudge_x = 0.7, nudge_y = 0.2) +  \n  \n  geom_dag_text(color=\"white\") +\n  labs(title = \"Causal map with COLLIDER (Z)\" , \n       #subtitle = \"X = exposure, Y = outcome, Z = collider, e = random error\", \n       caption = ) +\n  # Map colors to specific nodes\n  scale_color_manual(values = c(\"X\" = \"#9b6723\", \"Y\" = \"#72aed8\", \"Z\" = \"#d02e4c\",\n                                \"e\" = \"#A6A6A6\"), \n                     guide = \"none\")    # Remove legend\n\ndag_col_p"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#dag-with-collider-output",
+    "href": "practice/practice_slides/slides_lab04.html#dag-with-collider-output",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "DAG with COLLIDER",
+    "text": "DAG with COLLIDER"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#dag-with-confounder",
+    "href": "practice/practice_slides/slides_lab04.html#dag-with-confounder",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "DAG with CONFOUNDER",
+    "text": "DAG with CONFOUNDER\n\nlibrary(dagitty) # Graphical Analysis of Structural Causal Models # Graphical Analysis of Structural Causal Models # Graphical Analysis of Structural Causal Models \nlibrary(ggdag) # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs \n\n# df DAG \ndag_confounder &lt;- dagify(\n  Y ~ X + Z + e,\n  X ~  Z,\n  exposure = \"X\",\n  outcome = \"Y\",\n  #latent = \"e\",\n  # labels\n  labels = c(\n    \"Z\" = \"Confounder\",\n    \"X\" = \"Exposure\",\n    \"Y\" = \"Outcome\",\n    \"e\" = \"Unobserved \\nerror\"),\n  # positions\n  coords = list(\n    x = c(X = 0, Y= 4, Z = 2 , e = 5),\n    y = c(X = 0, Y = 0, Z = 2, e = 1) \n  )) %&gt;% \n  tidy_dagitty()     # Add edge_type within pipe\n\n# Plot DAG \ndag_conf_p &lt;-  dag_confounder %&gt;% \n  ggdag(., layout = \"circle\") + \n  theme_dag_blank(plot.caption = element_text(hjust = 1)) +\n  # Nodes \n  geom_dag_node(aes(color = name)) +  \n  # Labels dodged to avoid overlap\n  geom_dag_label(aes(label = label), color = \"#4c4c4c\", nudge_x = 0.7, nudge_y = 0.2) +  \n  geom_dag_text(color=\"white\") +\n  labs(title = \"Causal map with CONFOUNDER (Z)\" , #subtitle = \" \",\n        caption = ) +\n  # Map colors to specific nodes\n  scale_color_manual(values = c(\"X\" = \"#9b6723\", \"Y\" = \"#72aed8\", \"Z\" = \"#d02e4c\",\n                                \"e\" = \"#A6A6A6\"), \n                     guide = \"none\")   \n\ndag_conf_p"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#dag-with-confounder-output",
+    "href": "practice/practice_slides/slides_lab04.html#dag-with-confounder-output",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "DAG with CONFOUNDER",
+    "text": "DAG with CONFOUNDER"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#dag-with-mediator",
+    "href": "practice/practice_slides/slides_lab04.html#dag-with-mediator",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "DAG with MEDIATOR",
+    "text": "DAG with MEDIATOR\n\nlibrary(dagitty) # Graphical Analysis of Structural Causal Models # Graphical Analysis of Structural Causal Models # Graphical Analysis of Structural Causal Models \nlibrary(ggdag) # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs \n\n# df DAG \ndag_med &lt;- dagify(\n  Y ~ Z + e,\n  Z ~ X,\n  \n  exposure = \"X\",\n  outcome = \"Y\",\n  #latent = \"e\",\n  # labels\n  labels = c(\n    \"Z\" = \"Mediator\",\n    \"X\" = \"Exposure\",\n    \"Y\" = \"Outcome\",\n    \"e\" = \"Unobserved \\nerror\"),\n  # positions\n  coords = list(\n    x = c(X = 0, Y= 4, Z = 2 , e = 5),\n    y = c(X = 0, Y = 0, Z = 2, e = 1) \n  )) %&gt;% \n  tidy_dagitty()     # Add edge_type within pipe\n\n# Plot DAG \ndag_med_p &lt;-  dag_med %&gt;% \n  ggdag(., layout = \"circle\") +  # decided in dagify\n  theme_dag_blank(plot.caption = element_text(hjust = 1)) +\n  # Nodes \n  geom_dag_node(aes(color = name)) +  \n  # Labels dodged to avoid overlap\n  geom_dag_label(aes(label = label), color = \"#4c4c4c\", nudge_x = 0.7, nudge_y = 0.2) +  \n  \n  geom_dag_text(color=\"white\") +\n  labs(title = \"Causal map with MEDIATOR (Z)\" , \n       #subtitle = \"X = exposure, Y = outcome, Z = collider, e = random error\", \n       caption = ) +\n  # Map colors to specific nodes\n  scale_color_manual(values = c(\"X\" = \"#9b6723\", \"Y\" = \"#72aed8\", \"Z\" = \"#d02e4c\",\n                                \"e\" = \"#A6A6A6\"), \n                     guide = \"none\")    # Remove legend\n\ndag_med_p"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#dag-with-mediator-output",
+    "href": "practice/practice_slides/slides_lab04.html#dag-with-mediator-output",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "DAG with MEDIATOR",
+    "text": "DAG with MEDIATOR"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#importing-dataset-1-nhanes",
+    "href": "practice/practice_slides/slides_lab04.html#importing-dataset-1-nhanes",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "Importing Dataset 1 (NHANES)",
+    "text": "Importing Dataset 1 (NHANES)\n\nName: NHANES, accessible from package NHANES Documentation: See reference on the data downloaded and …. Sampling details: We’ll use a subset of the NHANES dataset, focusing on variables related to smoking status (SmokeNow), systolic blood pressure (BPSysAve), Body Mass Index (BMI) and age (Age).\n\ndata(NHANES)\n# Select relevant columns and drop rows with missing values\nnhanes_data &lt;- NHANES %&gt;%\n  select(ID, Gender, Age, Race1, Height, Weight, BMI, SmokeNow, PhysActive, PhysActiveDays,\n         BPSysAve, BPSysAve, BPDiaAve, TotChol, DirectChol, Diabetes, HealthGen,\n         Education, HHIncomeMid, Poverty) %&gt;%\n  drop_na() %&gt;% \n  # make it smaller \n  slice_sample(n = 1000) # Randomly select 1000 rows using\n\n# Take a quick look at the data\n#paint(nhanes_data)"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#dataset-1-nhanes-variables-and-their-description",
+    "href": "practice/practice_slides/slides_lab04.html#dataset-1-nhanes-variables-and-their-description",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "Dataset 1 (NHANES) Variables and their description",
+    "text": "Dataset 1 (NHANES) Variables and their description\n\n[EXCERPT: see complete file in Input Data Folder]\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\nX\nint\nxxxx\n\n\nID\nint\nxxxxx\n\n\nSurveyYr\nchr\nyyyy_mm. Ex. 2011_12\n\n\nGender\nchr\nGender (sex) of study participant coded as male or female\n\n\nAge\nint\n##\n\n\nAgeDecade\nchr\nyy-yy es 20-29\n\n\nRace1\nchr\nReported race of study participant: Mexican, Hispanic, White, #Black, or Other\n\n\nEducation\nchr\n[&gt;= 20 yro]. Ex. 8thGrade, 9-11thGrade, HighSchool, SomeCollege, or CollegeGrad.\n\n\nHHIncome\nchr\nTotal annual gross income for the household in US dollars\n\n\nHHIncomeMid\nint\nNumerical version of HHIncome derived from the middle income # in each category. Ex. 12500 40000\n\n\nPoverty\ndbl\nA ratio of family income to poverty guidelines. Smaller # numbers indicate more poverty Ex.. 0.95 1.74 4.99\n\n\nWeight\ndbl\nWeight in kg\n\n\nHeight\ndbl\nStanding height in cm. Reported for participants aged 2 years or older.\n\n\nBMI\ndbl\nBody mass index (weight/height2 in kg/m2). Reported for participants aged 2 years or older\n\n\nPulse\nint\n60 second pulse rate\n\n\nBPSysAve\nint\nCombined systolic blood pressure reading, following the # procedure outlined for BPXSAR\n\n\nBPDiaAve\nint\nCombined diastolic blood pressure reading, following the # procedure outlined for BPXDAR\n\n\nDirectChol\ndbl\nDirect HDL cholesterol in mmol/L. Reported for participants aged 6 years or older\n\n\nTotChol\ndbl\nTotal HDL cholesterol in mmol/L. Reported for participants aged 6 years or older\n\n\nDiabetes\nchr\nStudy participant told by a doctor or health professional that they have diabetes\n\n\nHealthGen\nchr\nSelf-reported rating of health: Excellent, Vgood, Good, Fair, or Poor Fair\n\n\nPhysActive\nchr\nParticipant does moderate or vigorous-intensity sports, fitness or recreational activities (Yes or No).\n\n\nSmokeNow\nchr\nStudy participant currently smokes cigarettes regularly. (Yes or No)\n\n\n...\n...\n...\n\n\n\n\n\n\n\nhttps://bookdown.org/jbrophy115/bookdown-clinepi/confounding.html"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#causal-modeling-with-confounder",
+    "href": "practice/practice_slides/slides_lab04.html#causal-modeling-with-confounder",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "Causal modeling with CONFOUNDER",
+    "text": "Causal modeling with CONFOUNDER\n\nZ = Age = confounder for (X = SmokeNow) and blood pressure (Y = BPSysAve)\n\n\ndata(NHANES)\n# Select relevant columns and drop rows with missing values\nnhanes_conf &lt;- NHANES %&gt;%\n  select(ID, Age, SmokeNow, BPSysAve) %&gt;%\n  drop_na()\n  \n# Take a quick look at the data\npaint(nhanes_conf)\n\ntibble [3108, 4]\nID       int 51624 51624 51624 51630 51654 51666\nAge      int 34 34 34 49 66 58\nSmokeNow fct No No No Yes No Yes\nBPSysAve int 113 113 113 112 111 127\n\n\nIn this context:\n\n\nAge influences both smoking (SmokeNow) and blood pressure (BPSysAve), making it a confounder.\n\n\nSmokeNow directly affects BPSysAve."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#causal-modeling-with-confounder-viz",
+    "href": "practice/practice_slides/slides_lab04.html#causal-modeling-with-confounder-viz",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "Causal modeling with CONFOUNDER (viz)",
+    "text": "Causal modeling with CONFOUNDER (viz)\n\n# linear rel \nqplot (Age, BPSysAve, data = nhanes_conf, color = SmokeNow) +\n  geom_smooth(method = \"lm\", se = FALSE) +\n  labs(title = \"Scatterplot of Age and Blood Pressure by Smoking Status\",\n       x = \"Age\",\n       y = \"Blood Pressure (mmHg)\",\n       color = \"Smoking Status\")"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#causal-modeling-with-confounder-viz-output",
+    "href": "practice/practice_slides/slides_lab04.html#causal-modeling-with-confounder-viz-output",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "Causal modeling with CONFOUNDER (viz)",
+    "text": "Causal modeling with CONFOUNDER (viz)"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#regression-analysis---unadjusted-model",
+    "href": "practice/practice_slides/slides_lab04.html#regression-analysis---unadjusted-model",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Regression analysis - unadjusted model",
+    "text": "— Regression analysis - unadjusted model\n\n# Unadjusted linear model \nmodel_unadjusted &lt;- lm(BPSysAve ~ SmokeNow, data = nhanes_conf)\nsummary(model_unadjusted)\n\n\nCall:\nlm(formula = BPSysAve ~ SmokeNow, data = nhanes_conf)\n\nResiduals:\n   Min     1Q Median     3Q    Max \n-44.38 -12.12  -2.38   8.62 100.88 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  124.384      0.432  287.97  &lt; 2e-16 ***\nSmokeNowYes   -4.264      0.643   -6.64  3.8e-11 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 17.8 on 3106 degrees of freedom\nMultiple R-squared:  0.014, Adjusted R-squared:  0.0137 \nF-statistic:   44 on 1 and 3106 DF,  p-value: 3.8e-11"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#regression-analysis---adjusted-model",
+    "href": "practice/practice_slides/slides_lab04.html#regression-analysis---adjusted-model",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Regression analysis - adjusted model",
+    "text": "— Regression analysis - adjusted model\n\n# Adjusted model\nmodel_adjusted &lt;- lm(BPSysAve ~ SmokeNow + Age, data = nhanes_conf)\nsummary(model_adjusted)\n\n\nCall:\nlm(formula = BPSysAve ~ SmokeNow + Age, data = nhanes_conf)\n\nResiduals:\n   Min     1Q Median     3Q    Max \n-53.81  -9.87  -1.38   8.65  97.73 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept) 100.9969     1.0886   92.78   &lt;2e-16 ***\nSmokeNowYes   0.6840     0.6313    1.08     0.28    \nAge           0.4317     0.0187   23.09   &lt;2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 16.5 on 3105 degrees of freedom\nMultiple R-squared:  0.158, Adjusted R-squared:  0.158 \nF-statistic:  292 on 2 and 3105 DF,  p-value: &lt;2e-16"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#compare-models",
+    "href": "practice/practice_slides/slides_lab04.html#compare-models",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Compare models",
+    "text": "— Compare models\n\nadjusting for age changes the estimated effect of smoking on blood pressure\n\n\nUnadjusted Model: This model does not control for age, so any observed relationship between smoking and blood pressure might be confounded.\n\nAdjusted Model: This model controls for age, providing a more accurate estimate of the causal effect of smoking on blood pressure by accounting for the confounding influence of age.\n\n\n\n\nconf_sum &lt;- modelsummary::msummary(list( \"NO Confounder\" = model_unadjusted, \n                                         \"Confounder\" = model_adjusted), \n                                   fmt=\"%.3f\", # format\n                                   gof_omit = 'DF|Deviance|Log.Lik.|F|R2 Adj.|AIC|BIC',\n                                   stars=c('*' = .05, '**' = .01)#,\n                                   #coef_rename = cm,\n                                   #output = paste(output,\"ch19_reg-R.tex\",sep=\"\")\n)"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#compare-models-1",
+    "href": "practice/practice_slides/slides_lab04.html#compare-models-1",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Compare models",
+    "text": "— Compare models\n\nconf_sum\n\n\n\n    \n\n      \n\n \n                NO Confounder\n                Confounder\n              \n* p \n\n\n(Intercept)\n                  124.384**\n                  100.997**\n                \n\n           \n                  (0.432)  \n                  (1.089)  \n                \n\nSmokeNowYes\n                  -4.264** \n                  0.684    \n                \n\n           \n                  (0.643)  \n                  (0.631)  \n                \n\nAge        \n                           \n                  0.432**  \n                \n\n           \n                           \n                  (0.019)  \n                \n\nNum.Obs.   \n                  3108     \n                  3108     \n                \n\nR2         \n                  0.014    \n                  0.158    \n                \n\nRMSE       \n                  17.82    \n                  16.47"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#add-predicted-values-to-the-dataset",
+    "href": "practice/practice_slides/slides_lab04.html#add-predicted-values-to-the-dataset",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Add Predicted Values to the Dataset",
+    "text": "— Add Predicted Values to the Dataset\n\n# Add predicted values from the unadjusted and adjusted models\nnhanes_conf &lt;- nhanes_conf %&gt;%\n  mutate(\n    pred_unadjusted = predict(model_unadjusted),  # Predicted BPSysAve from unadjusted model\n    pred_adjusted = predict(model_adjusted)       # Predicted BPSysAve from adjusted model\n  )"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-12",
+    "href": "practice/practice_slides/slides_lab04.html#plot-results-12",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Plot results 1/2",
+    "text": "— Plot results 1/2\n\nReshape the Data Using pivot_longer()\n\nWe will reshape the dataset so we can plot the predicted values from both models in a faceted plot.\n\n# Reshape the data into long format using pivot_longer()\nnhanes_long &lt;- nhanes_conf %&gt;%\n  pivot_longer(cols = c(pred_unadjusted, pred_adjusted), \n               names_to = \"model\", values_to = \"predicted\") %&gt;%\n  mutate(model = recode(model, \n                        pred_unadjusted = \"Unadjusted: SmokeNow on BPSysAve\", \n                        pred_adjusted = \"Adjusted: SmokeNow + Age on BPSysAve\"))"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-22",
+    "href": "practice/practice_slides/slides_lab04.html#plot-results-22",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Plot results 2/2",
+    "text": "— Plot results 2/2\n\n# Violin plot with dashed line connecting the two conditions\nggplot(nhanes_long, aes(x = factor(SmokeNow), y = BPSysAve, fill = model)) +\n  \n  # Create the violin plot to show the distribution of blood pressure\n  geom_point(color = \"grey\", alpha = 0.4, position = position_dodge(width = 0.3) ) +\n  \n  # Overlay the predicted dashed line between the two smoking conditions\n  geom_line(aes(y = predicted, group = model, color = model), \n            size = 0.8, linetype = \"dashed\", position = position_dodge(width = 0.3)) +\n  \n  # Facet vertically for unadjusted and adjusted models\n  facet_wrap(model ~ ., scales = \"free_y\",ncol = 2) +\n  \n  # Add labels and title\n  labs(title = \"Confounder Analysis: Predicted values in Unadjusted vs Adjusted Regression models\",\n       subtitle = \"Age = Confounder\",\n       x = \"Smoking Status\",\n       y = \"Systolic Blood Pressure (BPSysAve)\",\n       color = \"Model\",\n       fill = \"Model\"\n       ) +\n  \n  # Customize colors for better contrast\n  scale_fill_manual(values = c(\"Unadjusted: SmokeNow on BPSysAve\" =\"lightcoral\" , \n                               \"Adjusted: SmokeNow + Age on BPSysAve\" = \"lightblue\")) +\n  scale_color_manual(values = c(\"Unadjusted: SmokeNow on BPSysAve\" = \"red\", \n                                \"Adjusted: SmokeNow + Age on BPSysAve\" = \"blue\")) +\n  \n  # Minimal theme for clarity\n  theme_minimal()+\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-22-output",
+    "href": "practice/practice_slides/slides_lab04.html#plot-results-22-output",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Plot results 2/2",
+    "text": "— Plot results 2/2"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#causal-modeling-with-mediator",
+    "href": "practice/practice_slides/slides_lab04.html#causal-modeling-with-mediator",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "Causal modeling with MEDIATOR",
+    "text": "Causal modeling with MEDIATOR\n\n\nM = BMI = mediator for the effect of X= PhysActiveDays on Y = BPSysAve\n\n\n\ndata(NHANES)\n# Select relevant columns and drop rows with missing values\nnhanes_med &lt;- NHANES %&gt;%\n  select(Gender, Age, BPSysAve, BMI, PhysActiveDays, Diabetes, SmokeNow) %&gt;%\n  drop_na()\n\n# Take a quick look at the data\nsummary(nhanes_med)\n\n    Gender         Age          BPSysAve        BMI       PhysActiveDays\n female:632   Min.   :20.0   Min.   : 81   Min.   :15.0   Min.   :1.0   \n male  :831   1st Qu.:34.0   1st Qu.:111   1st Qu.:23.6   1st Qu.:2.0   \n              Median :47.0   Median :119   Median :27.0   Median :3.0   \n              Mean   :47.8   Mean   :122   Mean   :27.9   Mean   :3.6   \n              3rd Qu.:60.0   3rd Qu.:131   3rd Qu.:31.3   3rd Qu.:5.0   \n              Max.   :80.0   Max.   :221   Max.   :59.1   Max.   :7.0   \n Diabetes   SmokeNow \n No :1312   No :834  \n Yes: 151   Yes:629"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#regression-analysis---unadjusted-total-model",
+    "href": "practice/practice_slides/slides_lab04.html#regression-analysis---unadjusted-total-model",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Regression analysis - unadjusted (total) model",
+    "text": "— Regression analysis - unadjusted (total) model\nBefore adjusting for any mediator, we fit a simple linear model to estimate the total effect total effect of BMI on Systolic Blood Pressure without considering Age.\n\n\nTotal Effect Model (Unadjusted) .\n\n\n# Unadjusted model: total effect of smoking on blood pressure\ntotal_effect_model &lt;- lm(BPSysAve ~ PhysActiveDays, data = nhanes_med)\nsummary(total_effect_model)\n\n\nCall:\nlm(formula = BPSysAve ~ PhysActiveDays, data = nhanes_med)\n\nResiduals:\n   Min     1Q Median     3Q    Max \n-43.25 -11.71  -3.07   8.11  98.52 \n\nCoefficients:\n               Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)     120.120      1.055  113.88   &lt;2e-16 ***\nPhysActiveDays    0.590      0.262    2.25    0.025 *  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 18.1 on 1461 degrees of freedom\nMultiple R-squared:  0.00345,   Adjusted R-squared:  0.00277 \nF-statistic: 5.06 on 1 and 1461 DF,  p-value: 0.0246\n\n\nThis model gives the total effect of of PhysActiveDays on Systolic Blood Pressure (including any indirect effects through M = BMI or other variables that haven’t been included.)"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#regression-analysis---mediator-model",
+    "href": "practice/practice_slides/slides_lab04.html#regression-analysis---mediator-model",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Regression analysis - MEDIATOR model",
+    "text": "— Regression analysis - MEDIATOR model\nNow we will set up the mediation models:\n\n\nMediator model: This model estimates the effect of physical activity PhysActiveDays on BMI BMI (= M). This allows us to see whether more physically active days are associated with lower BMI values (which could then affect blood pressure).\n\n\n# Mediator model: SmokeNow affects BMI\nmediator_model &lt;- lm(BMI ~ PhysActiveDays, data = nhanes_med)\nsummary(mediator_model)\n\n\nCall:\nlm(formula = BMI ~ PhysActiveDays, data = nhanes_med)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-12.705  -4.335  -0.943   3.474  31.129 \n\nCoefficients:\n               Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)     28.2176     0.3444   81.93   &lt;2e-16 ***\nPhysActiveDays  -0.0821     0.0856   -0.96     0.34    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 5.91 on 1461 degrees of freedom\nMultiple R-squared:  0.00063,   Adjusted R-squared:  -5.44e-05 \nF-statistic: 0.92 on 1 and 1461 DF,  p-value: 0.338\n\n\n\n\nOutcome Model (Adjusted for BMI): This model estimates the effect of PhysActiveDays and BMI on Systolic Blood Pressure (BPSysAve). This is the adjusted model, where we adjust for the mediator (BMI).\n\n\n# Outcome model: PhysActiveDays and BMI affect BPSysAve\noutcome_model &lt;- lm(BPSysAve ~  PhysActiveDays + BMI, data = nhanes_med)\nsummary(outcome_model)\n\n\nCall:\nlm(formula = BPSysAve ~ PhysActiveDays + BMI, data = nhanes_med)\n\nResiduals:\n   Min     1Q Median     3Q    Max \n-42.10 -11.64  -3.06   7.90 101.84 \n\nCoefficients:\n               Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)    109.3530     2.4763   44.16  &lt; 2e-16 ***\nPhysActiveDays   0.6213     0.2603    2.39    0.017 *  \nBMI              0.3816     0.0795    4.80  1.8e-06 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 18 on 1460 degrees of freedom\nMultiple R-squared:  0.0189,    Adjusted R-squared:  0.0176 \nF-statistic: 14.1 on 2 and 1460 DF,  p-value: 8.78e-07"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#compare-models-2",
+    "href": "practice/practice_slides/slides_lab04.html#compare-models-2",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Compare models",
+    "text": "— Compare models\n\nmed_sum &lt;- modelsummary::msummary(list(\"BMI ~ Mediator Effect\" = mediator_model,\n                                       \"BPSysAve ~ Total Effect\" = total_effect_model,\n                                       \"BPSysAve ~ Outcome\" = outcome_model), \n                                  fmt=\"%.3f\", # format\n                                  gof_omit = 'DF|Deviance|Log.Lik.|F|R2 Adj.|AIC|BIC',\n                                  stars=c('*' = .05, '**' = .01)#,\n                                  #coef_rename = cm,\n                                  #output = paste(output,\"ch19_reg-R.tex\",sep=\"\")\n)"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#compare-models-3",
+    "href": "practice/practice_slides/slides_lab04.html#compare-models-3",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Compare models",
+    "text": "— Compare models\n\nmed_sum\n\n\n\n    \n\n      \n\n \n                BMI ~ Mediator Effect\n                BPSysAve ~ Total Effect\n                BPSysAve ~ Outcome\n              \n* p \n\n\n(Intercept)   \n                  28.218**\n                  120.120**\n                  109.353**\n                \n\n              \n                  (0.344) \n                  (1.055)  \n                  (2.476)  \n                \n\nPhysActiveDays\n                  -0.082  \n                  0.590*   \n                  0.621*   \n                \n\n              \n                  (0.086) \n                  (0.262)  \n                  (0.260)  \n                \n\nBMI           \n                          \n                           \n                  0.382**  \n                \n\n              \n                          \n                           \n                  (0.080)  \n                \n\nNum.Obs.      \n                  1463    \n                  1463     \n                  1463     \n                \n\nR2            \n                  0.001   \n                  0.003    \n                  0.019    \n                \n\nRMSE          \n                  5.90    \n                  18.08    \n                  17.94"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#calculate-the-indirect-direct-and-total-effects",
+    "href": "practice/practice_slides/slides_lab04.html#calculate-the-indirect-direct-and-total-effects",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Calculate the Indirect, Direct, and Total Effects",
+    "text": "— Calculate the Indirect, Direct, and Total Effects\nNow that we have the coefficients from the models, we can calculate the mediation effects manually.\n\n\nDirect Effect: This is the coefficient of PhysActiveDays in the outcome model, which gives the direct effect of exercise on blood pressure (controlling for BMI = M)\n\nIndirect Effect: This is the product of the coefficient from the mediator model (PhysActiveDays → BMI) and the coefficient from the outcome model (BMI → BPSysAve).\n\nTotal Effect: This is the coefficient of PhysActiveDays in the unadjusted model (NOT controlling for BMI = M).\n\n\n# Check the names of the coefficients in models...\nnames(coef(mediator_model))     # [1] BMI ~ PhysActiveDays \n\n[1] \"(Intercept)\"    \"PhysActiveDays\"\n\nnames(coef(outcome_model))      # [1] BPSysAve ~  PhysActiveDays + BMI    \n\n[1] \"(Intercept)\"    \"PhysActiveDays\" \"BMI\"           \n\nnames(coef(total_effect_model)) # [1] BPSysAve ~ PhysActiveDays\n\n[1] \"(Intercept)\"    \"PhysActiveDays\"\n\n# BREAKING DOWN THE ESTIMATE OF PhysActiveDays COEFFICIENT \n\n# TOTAL effect: The effect of PhysActiveDays on BPSysAve without adjusting for BMI\ntotal_effect &lt;- coef(total_effect_model)[\"PhysActiveDays\"]\ntotal_effect # 0.59\n\nPhysActiveDays \n          0.59 \n\n# DIRECT effect: The effect of PhysActiveDays on BPSysAve after adjusting for BMI.\ndirect_effect &lt;- coef(outcome_model)[\"PhysActiveDays\"]  # Direct effect (controlling for BMI)\ndirect_effect # 0.621 \n\nPhysActiveDays \n         0.621 \n\n# Indirect effect: The portion of the effect on BPSysAve that is mediated through BMI\nindirect_effect &lt;- coef(mediator_model)[\"PhysActiveDays\"] * coef(outcome_model)[\"BMI\"]   \nindirect_effect # [-0.0821 X 0.382] = -0.0313 \n\nPhysActiveDays \n       -0.0313 \n\n# or \ntotal_effect - direct_effect # !!!!!!!!  -0.0313\n\nPhysActiveDays \n       -0.0313"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#proportion-mediated",
+    "href": "practice/practice_slides/slides_lab04.html#proportion-mediated",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Proportion mediated",
+    "text": "— Proportion mediated\n\n# Proportion mediated: The proportion of the total effect that is mediated through BMI\nproportion_mediated &lt;- glue::glue(\"{round(indirect_effect / total_effect *100, 2)}%\")\nproportion_mediated #  -0.0531\n\n-5.31%"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#visualise-the-indirect-direct-and-total-effects",
+    "href": "practice/practice_slides/slides_lab04.html#visualise-the-indirect-direct-and-total-effects",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Visualise the Indirect, Direct, and Total Effects",
+    "text": "— Visualise the Indirect, Direct, and Total Effects\n“+ Physical Activity” -&gt; “+ Systolic Blood Pressure (BPSysAve)” | “+ BMI -&gt; - BPSysAve” WTF ???\n\n# Create a data frame for the effects\neffects_df &lt;- data.frame(\n  Effect = c(\"Total Effect\", \"Direct Effect\", \"Indirect Effect\"),\n  Value = c(total_effect, direct_effect, indirect_effect)\n)\n\n# Load ggplot2\nlibrary(ggplot2)\n\n# Create the bar plot\nggplot(effects_df, aes(x = Effect, y = Value, fill = Effect)) +\n  geom_bar(stat = \"identity\") +\n  labs(title = \"Mediation Analysis: Total, Direct, and Indirect Effects\", \n       subtitle = \"Effect (coefficient) of Physical Activity on Systolic Blood Pressure (BPSysAve)\",\n       y = \"\", x = \"\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#interpret-results",
+    "href": "practice/practice_slides/slides_lab04.html#interpret-results",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Interpret results",
+    "text": "— Interpret results\n\nThe total effect tells us the overall relationship between PhysActiveDays and BPSysAve.\nThe direct effect represents the relationship between PhysActiveDays and BPSysAve, controlling for BMI.\nThe indirect effect (mediated effect) shows how much of the relationship between PhysActiveDays and BPSysAve is explained through BMI (AKA the coef of PhysActiveDays in the mediator model times the coef of BMI in the outcome model)\nThe proportion mediated indicates how much of the total effect is due to the mediation by BMI."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#calculate-the-indirect-direct-and-total-effects-modo2",
+    "href": "practice/practice_slides/slides_lab04.html#calculate-the-indirect-direct-and-total-effects-modo2",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Calculate the Indirect, Direct, and Total Effects (modo2)",
+    "text": "— Calculate the Indirect, Direct, and Total Effects (modo2)\n\nlibrary(mediation)\n# recall\nmediator_model[[\"call\"]][[\"formula\"]]\n\nBMI ~ PhysActiveDays\n\noutcome_model[[\"call\"]][[\"formula\"]]\n\nBPSysAve ~ PhysActiveDays + BMI\n\n# Calculate the mediation effect\nmediation_model &lt;- mediate(mediator_model, outcome_model, \n                           treat = \"PhysActiveDays\", \n                           mediator = \"BMI\", \n                           boot=TRUE, sims=500)\nsummary(mediation_model)\n\n\nCausal Mediation Analysis \n\nNonparametric Bootstrap Confidence Intervals with the Percentile Method\n\n               Estimate 95% CI Lower 95% CI Upper p-value   \nACME            -0.0313      -0.1073         0.02   0.304   \nADE              0.6213       0.1182         1.13   0.008 **\nTotal Effect     0.5899       0.0590         1.09   0.012 * \nProp. Mediated  -0.0531      -0.5684         0.04   0.308   \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nSample Size Used: 1463 \n\n\nSimulations: 500 \n\n#                Estimate 95% CI Lower 95% CI Upper p-value  \n# ACME            -0.0313      -0.1024         0.04   0.324     = indirect or mediation effect\n# ADE              0.6213       0.1479         1.16   0.024 *   = direct effect \n# Total Effect     0.5899       0.1354         1.15   0.020 *   = total effect \n# Prop. Mediated  -0.0531      -0.2969         0.10   0.344     = proportion mediated\n\n\n# Add predicted values for BMI, BPSysAve (adjusted), and BPSysAve (total effect)\nnhanes_med_pred &lt;- nhanes_med %&gt;%\n  mutate(\n    pred_bmi = predict(mediator_model),         # Predicted BMI (mediator model)\n    pred_bps_adj = predict(outcome_model),      # Predicted BPSysAve (adjusted for Age)\n    pred_bps_total = predict(total_effect_model) # Predicted BPSysAve (total effect)\n  )"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-12-1",
+    "href": "practice/practice_slides/slides_lab04.html#plot-results-12-1",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Plot results 1/2",
+    "text": "— Plot results 1/2\nNow, let’s create a plot that includes:\n\nThe total effect of BMI on blood pressure (without adjusting for Age).\nThe adjusted effect of BMI on blood pressure (controlling for Age).\nThe mediator effect (BMI’s effect on Age).\n\n\n# Check column names\ncolnames(nhanes_med_pred)\n\n [1] \"Gender\"         \"Age\"            \"BPSysAve\"       \"BMI\"           \n [5] \"PhysActiveDays\" \"Diabetes\"       \"SmokeNow\"       \"pred_bmi\"      \n [9] \"pred_bps_adj\"   \"pred_bps_total\"\n\n# Reshape the data into long format for faceting\nnhanes_long &lt;- nhanes_med_pred %&gt;%\n  gather(key = \"model\", value = \"predicted\",  pred_bps_adj, pred_bps_total) %&gt;%\n  mutate(model = recode(model, \n                        #pred_bmi = \"Mediator Effect: BPSysAve on BMI\", \n                        pred_bps_adj = \"Adjusted Effect: PhysActiveDays + BMI on BPSysAve\", \n                        pred_bps_total = \"Total Effect: PhysActiveDays on BPSysAve\"))"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-22-1",
+    "href": "practice/practice_slides/slides_lab04.html#plot-results-22-1",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Plot results 2/2",
+    "text": "— Plot results 2/2\n\n# Plot with vertically aligned facets\nggplot(nhanes_long, aes(x = BMI)) +\n  geom_point(aes(y = BPSysAve), color = \"black\", shape = 16, alpha = 0.5) +  # Actual data points for BPSysAve\n  geom_line(aes(y = predicted, color = model), size = 1) +  # Predicted values from different models\n  facet_grid(model ~ ., scales = \"free_y\") +  # Facet vertically\n  labs(title = \"Mediation Analysis: Total, Adjusted, and Mediator Effects\",\n       x = \"BMI\",\n       y = \"Outcome / Mediator\",\n       color = \"Effect Type\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-22-1-output",
+    "href": "practice/practice_slides/slides_lab04.html#plot-results-22-1-output",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Plot results 2/2",
+    "text": "— Plot results 2/2"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#importing-dataset-2-gabor",
+    "href": "practice/practice_slides/slides_lab04.html#importing-dataset-2-gabor",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "Importing Dataset 2 (Gabor)",
+    "text": "Importing Dataset 2 (Gabor)\n\nName:Documentation: .. Sampling details:\n\n# import data\ndata &lt;- read_csv(paste0(data_in,\"food-health.csv\")) # 164,848 \n\n# drop observations\ndat &lt;-  data %&gt;%\n  filter(age &gt;= 30 & age &lt;60) %&gt;% # 7930 \n  # new variables: \n  ## Fruit and vegetables per day (grams)\n  ## Blood pressure (systolic+diastolic)\n  mutate(fv=veggies_n_fruits_gr,\n         bp=blood_pressure) %&gt;%\n  filter(fv&lt;3200) %&gt;%\n  drop_na(bp) %&gt;% # 7358\n  # Days per week exercising \n  mutate(exerc=case_when(paq655 &lt;=7 ~ paq655,\n                         paq650 ==2 ~ 0)) %&gt;% \n  # Potato chips per day, grams\n  mutate(pchips=gr_potato_chips) %&gt;% \n# select variables\n  select(id = seqn, age, gender, weight, height, race, \n         fv, exerc, pchips, \n         bp_systolic, bp_diastolic, bp, bmi,  \n         smoker, total_cholesterol, hdl,\n         hh_income_usd, hh_income_percap, ln_hh_income_percap ,income_cat\n                  ) %&gt;% \n  drop_na() # 7358\n \n\n# Hmisc::describe(dat$hh_income)\npaint(dat)"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#dataset-2-gabor-variables-and-their-description",
+    "href": "practice/practice_slides/slides_lab04.html#dataset-2-gabor-variables-and-their-description",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "Dataset 2 (Gabor) Variables and their description",
+    "text": "Dataset 2 (Gabor) Variables and their description\n\n[EXCERPT: see complete file in Input Data Folder]\n\nhttps://bookdown.org/jbrophy115/bookdown-clinepi/confounding.html"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#causal-modeling-with-confounder-1",
+    "href": "practice/practice_slides/slides_lab04.html#causal-modeling-with-confounder-1",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "Causal modeling with CONFOUNDER",
+    "text": "Causal modeling with CONFOUNDER\n\n# Select relevant columns and drop rows with missing values\ndat_conf &lt;- dat %&gt;%\n  select(id, age, bp_systolic, fv, exerc, bmi, smoker, gender, hh_income_usd, ln_hh_income_percap ) %&gt;%\n  drop_na() %&gt;% \n  filter(fv &lt;=1500)\n\n# Take a quick look at the data\nsummary(dat_conf)\n\nHmisc::describe(dat_conf$bp_systolic) # Y\nHmisc::describe(dat_conf$bmi) # X\nHmisc::describe(dat_conf$age) # Z (confounder )\nHmisc::describe(dat_conf$exerc)  # Z (confounder )\nHmisc::describe(dat_conf$ln_hh_income_percap) # Z (confounder )\n\nIn this context:\n\n\nexerc influences both smoking (fv) and blood pressure (bp_systolic), making it a confounder (albeit as PROXY for socio-economic status)\n\nfv directly affects bp_systolic"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#regression-analysis",
+    "href": "practice/practice_slides/slides_lab04.html#regression-analysis",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Regression analysis",
+    "text": "— Regression analysis\n\n# Unadjusted model\nmodel_unadjusted &lt;- lm( bp_systolic ~ bmi + ln_hh_income_percap , data = dat_conf)\nsummary(model_unadjusted)\n\n# Adjusted model\nmodel_adjusted &lt;- lm(bp_systolic ~ bmi + age + ln_hh_income_percap, data = dat_conf)\nsummary(model_adjusted)\n\n\nadjusting for Z changes the estimated effect of X on Y\n\n\nUnadjusted Model: This model does not control for Z, which is a confounder of the relationship between X and Y.\n\nAdjusted Model: This model controls for Z, providing a more accurate estimate of the causal effect of X on Y."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#add-predicted-values-to-the-dataset-1",
+    "href": "practice/practice_slides/slides_lab04.html#add-predicted-values-to-the-dataset-1",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Add Predicted Values to the Dataset",
+    "text": "— Add Predicted Values to the Dataset\n\nmodel_unadjusted$coefficients \nmodel_adjusted$coefficients\n\n# Get predicted values using augment and attach to the original dataset\ndat_unadjusted &lt;- broom::augment(model_unadjusted, data = dat_conf) %&gt;%\n  select( -.resid,  -.hat, -.sigma, -.cooksd, -.std.resid ) %&gt;%\n  rename(pred_unadjusted = .fitted)\n\ndat_adjusted &lt;- broom::augment(model_adjusted, data = dat_conf) %&gt;%\n  select( -.resid,     -.hat, -.sigma, -.cooksd, -.std.resid ) %&gt;%\n  rename(pred_adjusted = .fitted)\n\n# Combine the predicted values from both models\ndat_conf_long &lt;- dat_unadjusted %&gt;%\n  left_join(dat_adjusted, by = \"id\", suffix=c(\"\",\".y\"))%&gt;%\n  select(-ends_with(\".y\")) %&gt;% \n  # Convert the data from wide to long format\n  pivot_longer(cols = c(pred_unadjusted, pred_adjusted), \n               names_to = \"model\", \n               values_to = \"predicted\")\n\n# Check the structure of the long dataset\nstr(dat_conf_long)"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-12-2",
+    "href": "practice/practice_slides/slides_lab04.html#plot-results-12-2",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Plot results 1/2",
+    "text": "— Plot results 1/2\n\nReshape the Data Using pivot_longer()\n\nWe will reshape the dataset so we can plot the predicted values from both models in a faceted plot.\n\n# check \ndat_conf_long %&gt;% group_by(model) %&gt;% \n  summarise(mean(predicted), sd(predicted))"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-22-2",
+    "href": "practice/practice_slides/slides_lab04.html#plot-results-22-2",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Plot results 2/2",
+    "text": "— Plot results 2/2\n\nggplot(dat_conf, aes(x = bmi, y = bp_systolic)) +\n  geom_point(color = \"grey\", alpha = 1) +  \n  geom_point(data = dat_unadjusted, aes(x = bmi, y = pred_unadjusted), \n             color = \"#e60066\", alpha = 0.20) +\n  geom_point(data = dat_adjusted, aes(x = bmi, y = pred_adjusted), \n             color = \"#399B23\", alpha = 0.20) +\n  # Add labels and title\n  labs(title = \"Confounder Analysis: Unadjusted (pink) vs Adjusted (green) fitted values\",\n       x = \"BMI\",\n       y = \"Systolic Blood Pressure (BPSysAve)\"\n       )  +\n    # Minimal theme for clarity\n  theme_minimal() +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-22-2-output",
+    "href": "practice/practice_slides/slides_lab04.html#plot-results-22-2-output",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Plot results 2/2",
+    "text": "— Plot results 2/2"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#different",
+    "href": "practice/practice_slides/slides_lab04.html#different",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Different",
+    "text": "— Different\nhttps://nicholasrjenkins.science/post/data_viz_r/data_visualization_r/"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#regression-analysis-1",
+    "href": "practice/practice_slides/slides_lab04.html#regression-analysis-1",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "— Regression analysis",
+    "text": "— Regression analysis\n\n# Unadjusted model\nmodel_unadjusted &lt;- lm( bp_systolic ~ bmi  , data = dat_conf)  \n # Adjusted model\nmodel_adjusted &lt;- lm(bp_systolic ~ bmi + age  , data = dat_conf)  \n\n\ntidy(model_unadjusted, conf.int = TRUE ) %&gt;% \n  ggplot(data = ., \n         mapping = aes(x = estimate, y = term, xmin = conf.low, xmax = conf.high)) +\n  geom_pointrange() +\n  labs(title = \"Model Estimates of bmi on bp_systolic\",\n       x = \"Coefficient Estimate\",\n       y = \"Predictor\",\n       caption = \"Models fit with OLS. Error bars show the 95% confidence interval.\") +\n  scale_y_discrete(labels = c(\"Intercept\",  \"bmi\")) +\n  ggpubr::theme_pubclean(flip = TRUE)\n\n\ntidy(model_adjusted, conf.int = TRUE ) %&gt;% \n  ggplot(data = ., \n         mapping = aes(x = estimate, y = term, xmin = conf.low, xmax = conf.high)) +\n  geom_pointrange() +\n  labs(title = \"Model Estimates of bmi + age on bp_systolic\",\n       x = \"Coefficient Estimate\",\n       y = \"Predictor\",\n       caption = \"Models fit with OLS. Error bars show the 95% confidence interval.\") +\n  scale_y_discrete(labels = c(\"Intercept\", \"age\", \"bmi\")) +\n  ggpubr::theme_pubclean(flip = TRUE)\n\n\nfit_unadj_results &lt;- tidy(model_unadjusted, conf.int = TRUE) %&gt;% \n  mutate(model = \"Model Unadjusted\")\n\nfit_adj_results &lt;- tidy(model_adjusted, conf.int = TRUE) %&gt;% \n  mutate(model = \"Model Adjusted\")\n\nmodel_results &lt;- bind_rows(fit_unadj_results, fit_adj_results)\n\n\nggplot(data = model_results, \n       aes(x = estimate, y = term, xmin = conf.low, xmax = conf.high, \n           color = model, shape = model)) +\n  geom_pointrange(position = position_dodge(width = 0.5)) +\n  labs(title = \"Model Estimates of BMI and age on REM Sleep\",\n       x = \"Coefficient Estimate\",\n       y = \"Predictor\",\n       caption = \"Models fit with OLS. Error bars show the 95% confidence interval.\",\n        color = \"Model:\",\n       shape = \"Model:\") +\n  scale_y_discrete(labels = c(\"Intercept\", \"age\", \"bmi\")) +\n  ggpubr::theme_pubclean(flip = FALSE)"
   },
   {
     "objectID": "practice/practice_slides/slides_lab04.html#final-thoughts",
     "href": "practice/practice_slides/slides_lab04.html#final-thoughts",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "Final thoughts",
-    "text": "Final thoughts\n\n\n\n…..\n\n\n\n\n\n\nR 4 Biostatistics | MITGEST::training(2024)"
+    "text": "Final thoughts\n\n\n\n…..\n\n\n\n\n\n\nR 4 Statistics | 2024"
   },
   {
     "objectID": "practice/practice_slides/slides_lab02.html#goal-of-todays-practice-session",
@@ -788,14 +1047,14 @@
     "href": "practice/lab02_inference.html#practice-session-2-input-data-as-subfolder",
     "title": "Lab 2: Statistical inference & hypothesis testing",
     "section": "Practice session 2: input data (as subfolder)",
-    "text": "Practice session 2: input data (as subfolder)\n\n\n\n Download input data Lab 2"
+    "text": "Practice session 2: input data (as subfolder)\n\n\n\n Download input data"
   },
   {
     "objectID": "practice/lab02_inference.html#practice-session-2-r-code-as-.r-file",
     "href": "practice/lab02_inference.html#practice-session-2-r-code-as-.r-file",
     "title": "Lab 2: Statistical inference & hypothesis testing",
     "section": "Practice session 2: R code (as .R file)",
-    "text": "Practice session 2: R code (as .R file)\n\n\n\n Download Lab session 2 as .R file"
+    "text": "Practice session 2: R code (as .R file)\n\n\n\n Download R file"
   },
   {
     "objectID": "me.html",
@@ -893,7 +1152,7 @@
     "href": "install.html#useful-keyboard-shortcuts-in-rstudio",
     "title": "Installation and setup",
     "section": "Useful keyboard shortcuts in RStudio",
-    "text": "Useful keyboard shortcuts in RStudio\n\n\n\n\n\n\nDescription\nWindows & Linux\nMac\n\n\n\nInsert code section\nCtrl+Shift+R\nShift+Command+R  or Ctrl+Shift+R\n\n\nRun current line/selection\nCtrl+Enter\nCommand+Return\n\n\nReindent lines\nCtrl+I\nCommand+I\n\n\nInsert &lt;- operator\nAlt+-\nOption+-\n\n\nInsert %&gt;% operator\nCtrl+Shift+M\nShift+Command+M\n\n\nCode completion\nTab\nTab\n\n\nFile path completion (console)\n\"+Tab\n\"+Tab\n\n\n\n\n\n\nHere you find the complete list of RStudio Keyboard Shortcuts"
+    "text": "Useful keyboard shortcuts in RStudio\n\n\n\n\n\n\nDescription\nWindows & Linux\nMac\n\n\n\nInsert code section\nCtrl+Shift+R\nShift+Command+R  or Ctrl+Shift+R\n\n\nInsert code chunk (Quarto/Rmarkdown)\nCtrl+Alt+I\nCommand+Option+I\n\n\nComment/uncomment line\nCtrl+Shift+C\nCommand+Shift+C\n\n\nReindent lines\nCtrl+I\nCommand+I\n\n\nInsert 'assign' operator &lt;-\nAlt+-\nOption+-\n\n\nInsert 'pipe' operator %&gt;% or |&gt;\nCtrl+Shift+M\nShift+Command+M\n\n\nCode completion (in source)\nTab\nTab\n\n\nFile path completion (in console)\n\"+Tab\n\"+Tab\n\n\nMultple cursor selection\nAlt+click\nAlt+click\n\n\nMultple cursor selection (next)\nAlt+Shift+click\nAlt+Shift+click\n\n\nSwitch cursor between source & console\nCtrl+1 and Ctrl+2\nCtrl+1 and Ctrl+2\n\n\nRun current line/selection\nCtrl+Enter\nCommand+Return\n\n\nRun current chunk\nCtrl+Alt+C\nCommand+Option+C\n\n\nRun entire file\nCtrl+Shift+Enter\nCommand+Shift+Return\n\n\nShow help for function at cursor\nF1\nF1\n\n\nSearch within file\nCtrl+F\nCommand+F\n\n\nSearch within project\nCtrl+Shift+F\nCommand+Shift+F\n\n\nRestart R session\nCtrl+Shift+F10\nCommand+Shift+F10\n\n\n\n\n\n\nHere you find the complete list of RStudio Keyboard Shortcuts"
   },
   {
     "objectID": "lectures/lec02_inference.html",
@@ -956,14 +1215,14 @@
     "href": "practice/lab01_data_with_R.html#practice-session-1-input-data-as-subfolder",
     "title": "Lab 1: Intro to R and data analysis",
     "section": "Practice session 1: input data (as subfolder)",
-    "text": "Practice session 1: input data (as subfolder)\n\n\n Download input data Lab 1"
+    "text": "Practice session 1: input data (as subfolder)\n\n\n Download input data"
   },
   {
     "objectID": "practice/lab01_data_with_R.html#practice-session-1-r-code-as-.r-file",
     "href": "practice/lab01_data_with_R.html#practice-session-1-r-code-as-.r-file",
     "title": "Lab 1: Intro to R and data analysis",
     "section": "Practice session 1: R code (as .R file)",
-    "text": "Practice session 1: R code (as .R file)\n\n\n Download Lab session 1 as .R file"
+    "text": "Practice session 1: R code (as .R file)\n\n\n Download R file"
   },
   {
     "objectID": "practice/lab03_corr_regress.html",
@@ -977,14 +1236,14 @@
     "href": "practice/lab03_corr_regress.html#practice-session-3-input-data-as-subfolder",
     "title": "Lab 3: Modeling correlation and regression",
     "section": "Practice session 3: input data (as subfolder)",
-    "text": "Practice session 3: input data (as subfolder)\n\n\n\n Download input data Lab 3"
+    "text": "Practice session 3: input data (as subfolder)\n\n\n\n Download input data"
   },
   {
     "objectID": "practice/lab03_corr_regress.html#practice-session-3-r-code-as-.r-file",
     "href": "practice/lab03_corr_regress.html#practice-session-3-r-code-as-.r-file",
     "title": "Lab 3: Modeling correlation and regression",
     "section": "Practice session 3: R code (as .R file)",
-    "text": "Practice session 3: R code (as .R file)\n\n\n\n Download Lab session 3 as .R file"
+    "text": "Practice session 3: R code (as .R file)\n\n\n\n Download R file"
   },
   {
     "objectID": "practice/lab05_intro_ML.html",
@@ -998,14 +1257,14 @@
     "href": "practice/lab05_intro_ML.html#practice-session-4-input-data-as-subfolder",
     "title": "Lab 5: Intro to machine learning",
     "section": "Practice session 4: input data (as subfolder)",
-    "text": "Practice session 4: input data (as subfolder)\n\n\n\n Download input data Lab 4"
+    "text": "Practice session 4: input data (as subfolder)\n\n\n\n Download input data"
   },
   {
     "objectID": "practice/lab05_intro_ML.html#practice-session-4-r-code-as-.r-file",
     "href": "practice/lab05_intro_ML.html#practice-session-4-r-code-as-.r-file",
     "title": "Lab 5: Intro to machine learning",
     "section": "Practice session 4: R code (as .R file)",
-    "text": "Practice session 4: R code (as .R file)\n\n\n\n Download Lab session 4 as .R file"
+    "text": "Practice session 4: R code (as .R file)\n\n\n\n Download R file"
   },
   {
     "objectID": "practice/practice_slides/slides_lab01.html#goal-of-todays-practice-session",
@@ -1789,21 +2048,21 @@
     "href": "practice/practice_slides/slides_lab03.html#needed-r-packages",
     "title": "Lab 3: Modeling correlation and regression",
     "section": "Needed R Packages",
-    "text": "Needed R Packages\n\n\nWe will use functions from packages base, utils, and stats (pre-installed and pre-loaded)\nWe will also use the packages below (specifying package::function for clarity).\n\n\n\n# Load pckgs for this R session\n\n# -- General \nlibrary(fs)      # file/directory interactions\nlibrary(here)    # tools find your project's files, based on working directory\nlibrary(paint) # paint data.frames summaries in colour\nlibrary(janitor) # tools for examining and cleaning data\nlibrary(dplyr)   # {tidyverse} tools for manipulating and summarizing tidy data \nlibrary(forcats) # {tidyverse} tool for handling factors\nlibrary(openxlsx) # Read, Write and Edit xlsx Files\nlibrary(flextable) # Functions for Tabular Reporting\n# -- Statistics\nlibrary(rstatix) # Pipe-Friendly Framework for Basic Statistical Tests\nlibrary(lmtest) # Testing Linear Regression Models \nlibrary(broom) # Convert Statistical Objects into Tidy Tibbles\n#library(tidymodels) # not installed on this machine\nlibrary(performance) # Assessment of Regression Models Performance \n# -- Plotting\nlibrary(ggplot2) # Create Elegant Data Visualisations Using the Grammar of Graphics"
+    "text": "Needed R Packages\n\n\nWe will use functions from packages base, utils, and stats (pre-installed and pre-loaded)\nWe will also use the packages below (specifying package::function for clarity).\n\n\n\n# Load pckgs for this R session\n\n# -- General \nlibrary(fs)      # file/directory interactions\nlibrary(here)    # tools find your project's files, based on working directory\n\nhere() starts at /Users/luisamimmi/Github/R4stats\n\nlibrary(paint) # paint data.frames summaries in colour\nlibrary(janitor) # tools for examining and cleaning data\n\n\nAttaching package: 'janitor'\n\n\nThe following objects are masked from 'package:stats':\n\n    chisq.test, fisher.test\n\nlibrary(dplyr)   # {tidyverse} tools for manipulating and summarizing tidy data \n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(forcats) # {tidyverse} tool for handling factors\nlibrary(openxlsx) # Read, Write and Edit xlsx Files\nlibrary(flextable) # Functions for Tabular Reporting\n# -- Statistics\nlibrary(rstatix) # Pipe-Friendly Framework for Basic Statistical Tests\n\n\nAttaching package: 'rstatix'\n\n\nThe following object is masked from 'package:janitor':\n\n    make_clean_names\n\n\nThe following object is masked from 'package:stats':\n\n    filter\n\nlibrary(lmtest) # Testing Linear Regression Models \n\nLoading required package: zoo\n\n\n\nAttaching package: 'zoo'\n\n\nThe following objects are masked from 'package:base':\n\n    as.Date, as.Date.numeric\n\nlibrary(broom) # Convert Statistical Objects into Tidy Tibbles\n#library(tidymodels) # not installed on this machine\nlibrary(performance) # Assessment of Regression Models Performance \n# -- Plotting\nlibrary(ggplot2) # Create Elegant Data Visualisations Using the Grammar of Graphics"
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#importing-dataset-1-nhanes",
     "href": "practice/practice_slides/slides_lab03.html#importing-dataset-1-nhanes",
     "title": "Lab 3: Modeling correlation and regression",
     "section": "Importing Dataset 1 (NHANES)",
-    "text": "Importing Dataset 1 (NHANES)\n\nName: NHANES (National Health and Nutrition Examination Survey) combines interviews and physical examinations to assess the health and nutritional status of adults and children in the United States. Sterted in the 1960s, it became a continuous program in 1999.Documentation: dataset1Sampling details: Here we use a sample of 500 adults from NHANES 2009-2010 & 2011-2012 (nhanes.samp.adult.500 in the R oibiostat package, which has been adjusted so that it can be viewed as a random sample of the US population)\n\n\n# Check my working directory location\n# here::here()\n\n# Use `here` in specifying all the subfolders AFTER the working directory \nnhanes_samp &lt;- read.csv(file = here::here(\"practice\", \"data_input\", \"03_datasets\",\n                                      \"nhanes.samp.csv\"), \n                          header = TRUE, # 1st line is the name of the variables\n                          sep = \",\", # which is the field separator character.\n                          na.strings = c(\"?\",\"NA\" ), # specific MISSING values  \n                          row.names = NULL) \n\n\nAdapting the function here to match your own folder structure"
+    "text": "Importing Dataset 1 (NHANES)\n\nName: NHANES (National Health and Nutrition Examination Survey) combines interviews and physical examinations to assess the health and nutritional status of adults and children in the United States. Started in the 1960s, it became a continuous program in 1999.Documentation: dataset1Sampling details: Here we use a sample of 500 adults from NHANES 2009-2010 & 2011-2012 (nhanes.samp.adult.500 in the R oibiostat package, which has been adjusted so that it can be viewed as a random sample of the US population)\n\n\n# Check my working directory location\n# here::here()\n\n# Use `here` in specifying all the subfolders AFTER the working directory \nnhanes_samp &lt;- read.csv(file = here::here(\"practice\", \"data_input\", \"03_datasets\",\n                                      \"nhanes.samp.csv\"), \n                          header = TRUE, # 1st line is the name of the variables\n                          sep = \",\", # which is the field separator character.\n                          na.strings = c(\"?\",\"NA\" ), # specific MISSING values  \n                          row.names = NULL) \n\n\nAdapting the function here to match your own folder structure"
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#nhanes-variables-and-their-description",
     "href": "practice/practice_slides/slides_lab03.html#nhanes-variables-and-their-description",
     "title": "Lab 3: Modeling correlation and regression",
     "section": "NHANES Variables and their description",
-    "text": "NHANES Variables and their description\n\n[EXCERPT: see complete file in Input Data Folder]\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\nX\nint\nxxxx\n\n\nID\nint\nxxxxx\n\n\nSurveyYr\nchr\nyyyy_mm. Ex. 2011_12\n\n\nGender\nchr\nGender (sex) of study participant coded as male or female\n\n\nAge\nint\n##\n\n\nAgeDecade\nchr\nyy-yy es 20-29\n\n\nEducation\nchr\n[&gt;= 20 yro]. Ex. 8thGrade, 9-11thGrade, HighSchool, SomeCollege, or CollegeGrad.\n\n\nWeight\ndbl\nWeight in kg\n\n\nHeight\ndbl\nStanding height in cm. Reported for participants aged 2 years or older.\n\n\nBMI\ndbl\nBody mass index (weight/height2 in kg/m2). Reported for participants aged 2 years or older\n\n\nPulse\nint\n60 second pulse rate\n\n\nDirectChol\ndbl\nDirect HDL cholesterol in mmol/L. Reported for participants aged 6 years or older\n\n\nTotChol\ndbl\nTotal HDL cholesterol in mmol/L. Reported for participants aged 6 years or older\n\n\nDiabetes\nchr\nStudy participant told by a doctor or health professional that they have diabetes\n\n\nDiabetesAge\nint\nAge of study participant when first told they had diabetes\n\n\nHealthGen\nchr\nSelf-reported rating of health: Excellent, Vgood, Good, Fair, or Poor Fair\n\n\nAlcohol12PlusYr\nchr\nParticipant has consumed at least 12 drinks of any type of alcoholic beverage in any one year\n\n\n...\n...\n..."
+    "text": "NHANES Variables and their description\n\n[EXCERPT: see complete file in Input Data Folder]\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\nX\nint\nxxxx\n\n\nID\nint\nxxxxx\n\n\nSurveyYr\nchr\nyyyy_mm. Ex. 2011_12\n\n\nGender\nchr\nGender (sex) of study participant coded as male or female\n\n\nAge\nint\n##\n\n\nAgeDecade\nchr\nyy-yy es 20-29\n\n\nEducation\nchr\n[&gt;= 20 yro]. Ex. 8thGrade, 9-11thGrade, HighSchool, SomeCollege, or CollegeGrad.\n\n\nWeight\ndbl\nWeight in kg\n\n\nHeight\ndbl\nStanding height in cm. Reported for participants aged 2 years or older.\n\n\nBMI\ndbl\nBody mass index (weight/height2 in kg/m2). Reported for participants aged 2 years or older\n\n\nPulse\nint\n60 second pulse rate\n\n\nBPDiaAve\nint\nCombined diastolic blood pressure reading, following the # procedure outlined for BPXDAR\n\n\nDirectChol\ndbl\nDirect HDL cholesterol in mmol/L. Reported for participants aged 6 years or older\n\n\nTotChol\ndbl\nTotal HDL cholesterol in mmol/L. Reported for participants aged 6 years or older\n\n\nDiabetes\nchr\nStudy participant told by a doctor or health professional that they have diabetes\n\n\nDiabetesAge\nint\nAge of study participant when first told they had diabetes\n\n\nHealthGen\nchr\nSelf-reported rating of health: Excellent, Vgood, Good, Fair, or Poor Fair\n\n\n...\n...\n..."
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#importing-dataset-2-prevend",
@@ -1866,14 +2125,14 @@
     "href": "practice/practice_slides/slides_lab03.html#two-numerical-variables-correlation-with-statscor.test",
     "title": "Lab 3: Modeling correlation and regression",
     "section": "Two numerical variables: correlation (with stats::cor.test)",
-    "text": "Two numerical variables: correlation (with stats::cor.test)\n\nHere we compute the Pearson rho (parametric), with the function cor.test (the same we used for testing paired samples)\n\nimplicitely takes care on NAs\n\n\n\n\n\n# using `stats` package \ncor_test_result &lt;- cor.test(x = nhanes$height, y =  nhanes$weight, \n                            method = \"pearson\")\n\n# looking at the cor estimate\ncor_test_result[[\"estimate\"]][[\"cor\"]]\n\n[1] 0.4102269\n\n\n\nThe function ggpubr::ggscatter gives us all in one (scatter plot + \\(r\\) (“R”))! 🤯\n\n\nlibrary(\"ggpubr\") # 'ggplot2' Based Publication Ready Plots\nggpubr::ggscatter(nhanes, x = \"height\", y = \"weight\", \n                  cor.coef = TRUE, cor.method = \"pearson\", #cor.coef.coord = 2,\n                  xlab = \"Height (in)\", ylab = \"Weight (lb)\")"
+    "text": "Two numerical variables: correlation (with stats::cor.test)\n\nHere we compute the Pearson rho (parametric), with the function cor.test (the same we used for testing paired samples)\n\nimplicitely takes care on NAs\n\n\n\n\n\n# using `stats` package \ncor_test_result &lt;- cor.test(x = nhanes$height, y =  nhanes$weight, \n                            method = \"pearson\")\n\n# looking at the cor estimate\ncor_test_result[[\"estimate\"]][[\"cor\"]]\n\n[1] 0.4102269\n\n\n\nThe function ggpubr::ggscatter gives us all in one (scatter plot + \\(r\\) (“R”))! 🤯\n\n\nlibrary(\"ggpubr\") # 'ggplot2' Based Publication Ready Plots"
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#two-numerical-variables-correlation-with-statscor.test-output",
     "href": "practice/practice_slides/slides_lab03.html#two-numerical-variables-correlation-with-statscor.test-output",
     "title": "Lab 3: Modeling correlation and regression",
     "section": "Two numerical variables: correlation (with stats::cor.test)",
-    "text": "Two numerical variables: correlation (with stats::cor.test)"
+    "text": "Two numerical variables: correlation (with stats::cor.test)\n\n\nAttaching package: 'ggpubr'\n\n\nThe following objects are masked from 'package:flextable':\n\n    border, font, rotate\n\nggpubr::ggscatter(nhanes, x = \"height\", y = \"weight\", \n                  cor.coef = TRUE, cor.method = \"pearson\", #cor.coef.coord = 2,\n                  xlab = \"Height (in)\", ylab = \"Weight (lb)\")\n\nWarning: Removed 3 rows containing non-finite outside the scale range\n(`stat_cor()`).\n\n\nWarning: Removed 3 rows containing missing values or values outside the scale range\n(`geom_point()`)."
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#spearman-rank-order-correlation",
@@ -1992,7 +2251,7 @@
     "href": "practice/practice_slides/slides_lab03.html#visualize-the-data-bmi-and-age-output",
     "title": "Lab 3: Modeling correlation and regression",
     "section": "Visualize the data: BMI and age",
-    "text": "Visualize the data: BMI and age"
+    "text": "Visualize the data: BMI and age\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\nWarning: Removed 3 rows containing non-finite outside the scale range\n(`stat_smooth()`).\n\n\nWarning: Removed 3 rows containing missing values or values outside the scale range\n(`geom_point()`)."
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#linear-regression-model",
@@ -2265,14 +2524,14 @@
     "href": "practice/practice_slides/slides_lab03.html#assumption-of-no-multicollinearity",
     "title": "Lab 3: Modeling correlation and regression",
     "section": "Assumption of NO MULTICOLLINEARITY",
-    "text": "Assumption of NO MULTICOLLINEARITY\n\n\nASSUMPTION 5: Each set of observations \\((y, x_1, x_2, \\dots, x_p)\\) is independent.\n\nThe R package performance actually provides a very helpful function check_model() which tests these assumptions all at the same time\n\n\nMulticollinearity is not an issue (based on a general threshold of 10 for VIF, all of them are below 10)\n\n\n# return and store a list of single plots\ndiagnostic_plots &lt;- plot(performance::check_model(model_2, panel = FALSE))\n\n# see multicollinearity plot \ndiagnostic_plots[[5]]"
+    "text": "Assumption of NO MULTICOLLINEARITY\n\n\nASSUMPTION 5: Each set of observations \\((y, x_1, x_2, \\dots, x_p)\\) is independent.\n\nThe R package performance actually provides a very helpful function check_model() which tests these assumptions all at the same time\n\n\nMulticollinearity is not an issue (based on a general threshold of 10 for VIF, all of them are below 10)\n\n\n# return and store a list of single plots\ndiagnostic_plots &lt;- plot(performance::check_model(model_2, panel = FALSE))"
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#assumption-of-no-multicollinearity-output",
     "href": "practice/practice_slides/slides_lab03.html#assumption-of-no-multicollinearity-output",
     "title": "Lab 3: Modeling correlation and regression",
     "section": "Assumption of NO MULTICOLLINEARITY",
-    "text": "Assumption of NO MULTICOLLINEARITY"
+    "text": "Assumption of NO MULTICOLLINEARITY\n\nFor confidence bands, please install `qqplotr`.\n\n# see multicollinearity plot \ndiagnostic_plots[[5]]"
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#checking-out-the-performance-r-package",
@@ -2342,7 +2601,7 @@
     "href": "practice/practice_slides/slides_lab03.html#interaction-in-regression---visual-output",
     "title": "Lab 3: Modeling correlation and regression",
     "section": "Interaction in regression - visual",
-    "text": "Interaction in regression - visual\n\n\nUsers in two categories are represented points; linear relationship is representated by ONE golden line for ALL SAMPLE"
+    "text": "Interaction in regression - visual\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\nWarning: Removed 27 rows containing non-finite outside the scale range\n(`stat_smooth()`).\n\n\nWarning: Removed 27 rows containing missing values or values outside the scale range\n(`geom_point()`).\n\n\n\nUsers in two categories are represented points; linear relationship is representated by ONE golden line for ALL SAMPLE"
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#interaction-in-regression---visual-rethinking",
@@ -2356,7 +2615,7 @@
     "href": "practice/practice_slides/slides_lab03.html#interaction-in-regression---visual-rethinking-output",
     "title": "Lab 3: Modeling correlation and regression",
     "section": "Interaction in regression - visual (RETHINKING)",
-    "text": "Interaction in regression - visual (RETHINKING)\n\n\nUsers in two categories are represented points; linear relationship is representated by 2 respective line according to diabetes status… the association has DIFFERENT DIRECTION!"
+    "text": "Interaction in regression - visual (RETHINKING)\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\nWarning: Removed 27 rows containing non-finite outside the scale range\n(`stat_smooth()`).\n\n\nWarning: Removed 27 rows containing missing values or values outside the scale range\n(`geom_point()`).\n\n\n\nUsers in two categories are represented points; linear relationship is representated by 2 respective line according to diabetes status… the association has DIFFERENT DIRECTION!"
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#interaction-in-regression---adding-term-in-model",

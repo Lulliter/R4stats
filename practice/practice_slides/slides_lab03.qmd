@@ -167,7 +167,7 @@ write.csv(famuss, file = here::here("practice", "data_input", "03_datasets",
 ## [Importing Dataset 1 (NHANES)]{.r-fit-text}
 
 ::: {style="font-size: 85%;"}
-**Name**: NHANES (National Health and Nutrition Examination Survey) combines interviews and physical examinations to assess the health and nutritional status of adults and children in the United States. Sterted in the 1960s, it became a continuous program in 1999.  
+**Name**: NHANES (National Health and Nutrition Examination Survey) combines interviews and physical examinations to assess the health and nutritional status of adults and children in the United States. Started in the 1960s, it became a continuous program in 1999.  
 **Documentation**: [dataset1](https://wwwn.cdc.gov/nchs/nhanes/Default.aspx)  
 **Sampling details**: Here we use a sample of 500 adults from NHANES 2009-2010 & 2011-2012 (`nhanes.samp.adult.500` in the R `oibiostat` package, which has been adjusted so that it can be viewed as a random sample of the US population)
 ::: 
@@ -226,7 +226,7 @@ nhanes_desc <- tribble(
 # "BMI_WHO"          ,"chr",  "Body mass index category. Reported for participants aged 2 years or older", 
 "Pulse"            ,"int",  "60 second pulse rate",
 # "BPSysAve"         ,"int", "Combined systolic blood pressure reading, following the # procedure outlined for BPXSAR",
-# "BPDiaAve"         ,"int", "Combined diastolic blood pressure reading, following the # procedure outlined for BPXDAR",
+"BPDiaAve"         ,"int", "Combined diastolic blood pressure reading, following the # procedure outlined for BPXDAR",
 #"BPSys1"           ,"int", "Systolic blood pressure in mm Hg – first reading",
 #"BPDia1"           ,"int", "Diastolic blood pressure in mm Hg – second reading (consecutive readings)",
 #"BPSys2"           ,"int", "Systolic blood pressure in mm Hg – second reading (consecutive readings)",
@@ -261,7 +261,7 @@ nhanes_desc <- tribble(
 #"CompHrsDay"       ,"chr", "Number of hours per day on average participant used a computer or gaming device over the past 30 day", 
 #"TVHrsDayChild"    ,"lgl", "[2-11 yro] Number of hours per day on average participant watched TV over the past 30 days.",
 #"CompHrsDayChild"  ,"lgl", "[2-11 yro] Number of hours per day on average participant used a computer or gaming device over the past 30 #day", 
-"Alcohol12PlusYr"  ,"chr",  "Participant has consumed at least 12 drinks of any type of alcoholic beverage in any one year", 
+# "Alcohol12PlusYr"  ,"chr",  "Participant has consumed at least 12 drinks of any type of alcoholic beverage in any one year", 
 #"AlcoholDay"       ,"int",  "Average number of drinks consumed on days that participant drank alcoholic beverages", 
 #"AlcoholYear"      ,"int",  "[>+ 18yro] Estimated number of days over the past year that participant drank alcoholic beverages", 
 #"SmokeNow"         ,"chr", "Study participant currently smokes cigarettes regularly. (Yes or No)",  

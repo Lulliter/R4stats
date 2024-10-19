@@ -1,7 +1,7 @@
 ---
 title: "Lab 4:Mapping causal & predictive approaches"
-subtitle: "<span style='font-size:2em;'> Practice session covering topics discussed in Lecture 4 </span>"
-author: "<a href='https://r4biostats.com/me.html' style='color:#72aed8;font-weight:600;'>M. Chiara Mimmi, Ph.D.</a>&ensp;|&ensp;Università degli Studi di Pavia"
+subtitle: "<span style='font-size:2em;'> Practice session</span>"
+author: "<a href='https://lulliter.github.io/R4stats/' style='color:#72aed8;font-weight:600;'>Luisa M. Mimmi</a>&ensp;|&ensp;[https://luisamimmi.org/](https://luisamimmi.org/)"
 date: 2024-07-27
 date-format: long
 code-link: true
@@ -11,7 +11,7 @@ format:
     scrollable: true
     theme: ../../theme/slidesMine.scss # QUARTO LOOKS IN SAME FOLDER 
 #    logo: imgs_slides/mitgest_logo.png
-    footer: '[R 4 Biostatistics](https://r4biostats.com/) | MITGEST::training(2024)'
+    footer: '[R 4 Statistics](https://lulliter.github.io/R4stats/) | 2024'
 #    footer: <https://lulliter.github.io/R4biostats/lectures.html>
 ## ------------- x salvare come PDF 
     standalone: false
@@ -34,6 +34,45 @@ bibliography: ../../bib/R4biostats.bib
 csl: ../../bib/apa-6th-edition.csl 
 suppress-bibliography: true
 ---
+
+
+```{r}
+#| echo: FALSE
+
+# set data dir, data used   -----------------------------------------------------------
+data_in <- fs::path(here::here("practice","data_input", "04_datasets", "Gabor"))
+
+# load theme and functions
+#source( here::here(data_in ,"helper.R"))
+options(digits = 3)
+
+
+# Functions for saving plots -----------------------------------------------------------
+f_save_plot <- function(plot_name, plot_object) {
+   # Print the plot, save as PDF and PNG
+   plot_object %T>%
+      print() %T>%
+      ggsave(., filename = here("practice", "practice_slides", "figures", paste0(plot_name, ".pdf")),
+             # width = 4, height = 2.25, units = "in",
+             device = cairo_pdf) %>%
+      ggsave(., filename = here("practice", "practice_slides", "figures", paste0(plot_name, ".png")),
+             # width = 4, height = 2.25, units = "in",
+             type = "cairo", dpi = 300)
+}
+
+f_descr_table <- function(var) {
+  workfile %>%
+    summarise(mean=mean(var),
+              median=median(var),
+              std_dev=sd(var),
+              minimum=min(var),
+              maximum=max(var), 
+              observations=n())
+}
+# Example of using the function
+# f_save_plot("proj_wrd_freq", proj_wrd_freq)
+
+```
 
 # [GOAL OF TODAY'S PRACTICE SESSION]{.r-fit-text}
 
@@ -81,108 +120,62 @@ The examples and datasets in this Lab session follow very closely two sources:
 # Load pckgs for this R session
 
 # --- General 
-library(here)     # tools find your project's files, based on working directory
-library(dplyr)    # A Grammar of Data Manipulation
+library(here) # A Simpler Way to Find Your Files   
 library(skimr)    # Compact and Flexible Summaries of Data
-library(magrittr) # A Forward-Pipe Operator for R 
-library(readr)    # A Forward-Pipe Operator for R 
+library(paint)   # Fancy structure for data frames 
+library(janitor)  # Simple Tools for Examining and Cleaning Dirty Data
+library(tidyverse) # Easily Install and Load the 'Tidyverse'
 
-# Plotting & data visualization
-library(ggplot2)      # Create Elegant Data Visualisations Using the Grammar of Graphics
+# --- Plotting & data visualization
 library(ggfortify)     # Data Visualization Tools for Statistical Analysis Results
+library(ggpubr)        # 'ggplot2' Based Publication Ready Plots
+library(dagitty) # Graphical Analysis of Structural Causal Models
+library(ggdag) # Analyze and Create Elegant Directed Acyclic Graphs #
+library(patchwork) # The Composer of Plots
 
-
-library(dagitty)
-library(ggdag)
-library(patchwork)
-library(broom)
-library(data.table)
-library(simstudy)
-library(gridExtra)
-#library(epiR)
-#library(tableone)
-#library(ipw)
+# --- Descriptive statistics and regressions
+library(broom) # Convert Statistical Objects into Tidy Tibbles
+library(Hmisc) # Harrell Miscellaneous
+library(estimatr) # Fast Estimators for Design-Based Inference
+library(modelsummary) # Summary Tables and Plots for Statistical Models and Data:
 library(sandwich) #for robust variance estimation
-library(survey)
-library(haven)
-
-#library(EValue)
-```
-
-<!-- # Data  -->
-<!-- # devtools::install_github("OI-Biostat/oi_biostat_data") -->
-<!-- #library(oibiostat) # Data Package for OpenIntro Biostatistics  -->
-:::
-
-# DATASETS for today
-
-<br>
-
-::: {style="font-size: 80%;"}
-In this tutorial, we will use: 
-
-+ ....
-
-:::
-
-
-## [Dataset on ....]{.r-fit-text}
-
-::: {style="font-size: 95%;"}
-**Name**: ....  
-**Documentation**: See reference on the data downloaded and ....
-**Sampling details**: This .... 
-::: 
-
-## [Importing Dataset `...`]{.r-fit-text}
- 
-## [`....` variables with description]{.r-fit-text}
-
-::: {style="font-size: 80%;"}
-<!-- [[EXCERPT: see complete file in Input Data Folder]]{style="color:#77501a"} -->
-
-```{r}
-#| output: true
-#| echo: false
-
-biopsy_desc <- tibble::tribble(
-  ~Variable, ~ Type, ~Description,
-#"X" ,  "integer" ,         "row counter ", 
-        
-"class", "factor"     ,        "benign or malignant" )                 
-
-kableExtra::kable(biopsy_desc)
+library(survey) # Analysis of Complex Survey Samples
+library(haven) # Import and Export 'SPSS', 'Stata' and 'SAS' Files
+library(simstudy) # Simulation of Study Data
+library(NHANES) # Data from the US National Health and Nutrition Examination Study  
 ```
 :::
 
-https://bookdown.org/jbrophy115/bookdown-clinepi/confounding.html
 
-## DAG to represent confounders
+<!-- ## DAG to represent confounders -->
 
-```{r}
-#| output-location: slide
- 
-dag <- dagitty::dagitty("dag {
-  X -> Y
-  Z -> X
-  Z -> Y
-  e -> Y
-               }")
+<!-- ```{r} -->
+<!-- #| output-location: slide -->
 
-dagitty::coordinates(dag ) <-  list(
-  x=c(X=1, Z=3, Y=5, e=5),
-  y=c(X=1, Z=3, Y=1, e=3))
+<!-- dag <- dagitty::dagitty("dag { -->
+<!--   X -> Y -->
+<!--   Z -> X -->
+<!--   Z -> Y -->
+<!--   e -> Y -->
+<!-- }") -->
 
-library(ggdag)
-dag <-  tidy_dagitty(dag)
-ex1 <-  ggdag(dag, layout = "circle") + 
-  theme_dag_blank(plot.caption = element_text(hjust = 1)) + 
-  geom_dag_node(color="pink") + 
-  geom_dag_text(color="white") +
-  ggtitle("a) DAG with a confounder (Z)") +
-  labs(caption = "X = drug exposure\nY = outcome\nZ = confounder\n e = random error")
-ex1
-```
+<!-- dagitty::coordinates(dag ) <-  list( -->
+<!--   x=c(X=1, Z=3, Y=5, e=5), -->
+<!--   y=c(X=1, Z=3, Y=1, e=2)) -->
+
+<!-- library(ggdag) # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs -->
+<!-- dag <-  tidy_dagitty(dag) -->
+<!-- ex1 <-  ggdag(dag, layout = "circle") +  -->
+<!--   theme_dag_blank(plot.caption = element_text(hjust = 1)) +  -->
+<!--   geom_dag_node(color="pink") +  -->
+<!--   geom_dag_text(color="white") + -->
+<!--   ggtitle("a) DAG with a confounder (Z)") + -->
+<!--   labs(caption = "X = drug exposure\nY = outcome\nZ = confounder\n e = random error") -->
+<!-- ex1 -->
+<!-- ``` -->
+
+
+# --- 
 
 ## ITE 
 
@@ -196,12 +189,12 @@ $CE_i = Y_{1i} - Y_{0i}$ where $Y_{1i}$ and $Y_{0i}$ are the potential outcomes 
 Simulation 
 
 ```{r}
-def <- defData(varname = "C", formula = 0.4, dist = "binary")
-def <- defData(def, "X", formula = "0.3 + 0.4 * C", dist = "binary")
-def <- defData(def, "e", formula = 0, variance = 2, dist = "normal")
-def <- defData(def, "Y0", formula = "2 * C + e", dist="nonrandom")
-def <- defData(def, "Y1", formula = "1 + 2 * C + e", dist="nonrandom")
-def <- defData(def, "Y_obs", formula = "Y0 + (Y1 - Y0) * X", dist = "nonrandom") #  = Y1*X + (1-X)*Y0
+def <- simstudy::defData(varname = "C", formula = 0.4, dist = "binary")
+def <- simstudy::defData(def, "X", formula = "0.3 + 0.4 * C", dist = "binary")
+def <- simstudy::defData(def, "e", formula = 0, variance = 2, dist = "normal")
+def <- simstudy::defData(def, "Y0", formula = "2 * C + e", dist="nonrandom")
+def <- simstudy::defData(def, "Y1", formula = "1 + 2 * C + e", dist="nonrandom")
+def <- simstudy::defData(def, "Y_obs", formula = "Y0 + (Y1 - Y0) * X", dist = "nonrandom") #  = Y1*X + (1-X)*Y0
 
 set.seed(2017)
 dt <- genData(10000, def)
@@ -215,7 +208,1006 @@ lm1 <- lm(Y_obs ~ X, data = dt)
 tidy(lm1)
 ```
 
+## DAG with COLLIDER
 
+```{r}
+#| output-location: slide
+
+# df DAG 
+dag_collid <- dagify(
+  Y ~ X + e,
+  Z ~ X + Y,
+  exposure = "X",
+  outcome = "Y",
+  #latent = "e",
+  # labels
+  labels = c(
+    "Z" = "Collider",
+    "X" = "Exposure",
+    "Y" = "Outcome",
+    "e" = "Unobserved \nerror"),
+  # positions
+  coords = list(
+    x = c(X = 0, Y= 4, Z = 2 , e = 5),
+    y = c(X = 0, Y = 0, Z = 2, e = 1) 
+  )) %>% 
+  tidy_dagitty() 
+
+# Plot DAG 
+dag_col_p <-  dag_collid %>% 
+  ggdag(., layout = "circle") +  # decided in dagify
+  theme_dag_blank(plot.caption = element_text(hjust = 1)) +
+  # Nodes 
+  geom_dag_node(aes(color = name)) +  
+  # Labels dodged to avoid overlap
+  geom_dag_label(aes(label = label), color = "#4c4c4c", nudge_x = 0.7, nudge_y = 0.2) +  
+  
+  geom_dag_text(color="white") +
+  labs(title = "Causal map with COLLIDER (Z)" , 
+       #subtitle = "X = exposure, Y = outcome, Z = collider, e = random error", 
+       caption = ) +
+  # Map colors to specific nodes
+  scale_color_manual(values = c("X" = "#9b6723", "Y" = "#72aed8", "Z" = "#d02e4c",
+                                "e" = "#A6A6A6"), 
+                     guide = "none")    # Remove legend
+
+dag_col_p
+```
+
+
+```{r}
+#| echo: FALSE
+f_save_plot("dag_col_p", dag_col_p)
+```
+
+
+## DAG with CONFOUNDER  
+
+```{r}
+#| output-location: slide
+library(dagitty) # Graphical Analysis of Structural Causal Models # Graphical Analysis of Structural Causal Models # Graphical Analysis of Structural Causal Models 
+library(ggdag) # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs 
+
+# df DAG 
+dag_confounder <- dagify(
+  Y ~ X + Z + e,
+  X ~  Z,
+  exposure = "X",
+  outcome = "Y",
+  #latent = "e",
+  # labels
+  labels = c(
+    "Z" = "Confounder",
+    "X" = "Exposure",
+    "Y" = "Outcome",
+    "e" = "Unobserved \nerror"),
+  # positions
+  coords = list(
+    x = c(X = 0, Y= 4, Z = 2 , e = 5),
+    y = c(X = 0, Y = 0, Z = 2, e = 1) 
+  )) %>% 
+  tidy_dagitty()     # Add edge_type within pipe
+
+# Plot DAG 
+dag_conf_p <-  dag_confounder %>% 
+  ggdag(., layout = "circle") + 
+  theme_dag_blank(plot.caption = element_text(hjust = 1)) +
+  # Nodes 
+  geom_dag_node(aes(color = name)) +  
+  # Labels dodged to avoid overlap
+  geom_dag_label(aes(label = label), color = "#4c4c4c", nudge_x = 0.7, nudge_y = 0.2) +  
+  geom_dag_text(color="white") +
+  labs(title = "Causal map with CONFOUNDER (Z)" , #subtitle = " ",
+        caption = ) +
+  # Map colors to specific nodes
+  scale_color_manual(values = c("X" = "#9b6723", "Y" = "#72aed8", "Z" = "#d02e4c",
+                                "e" = "#A6A6A6"), 
+                     guide = "none")   
+
+dag_conf_p
+```
+
+
+```{r}
+#| echo: FALSE
+f_save_plot("dag_conf_p", dag_conf_p)
+```
+
+## DAG with MEDIATOR
+
+```{r}
+#| output-location: slide
+library(dagitty) # Graphical Analysis of Structural Causal Models # Graphical Analysis of Structural Causal Models # Graphical Analysis of Structural Causal Models 
+library(ggdag) # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs 
+
+# df DAG 
+dag_med <- dagify(
+  Y ~ Z + e,
+  Z ~ X,
+  
+  exposure = "X",
+  outcome = "Y",
+  #latent = "e",
+  # labels
+  labels = c(
+    "Z" = "Mediator",
+    "X" = "Exposure",
+    "Y" = "Outcome",
+    "e" = "Unobserved \nerror"),
+  # positions
+  coords = list(
+    x = c(X = 0, Y= 4, Z = 2 , e = 5),
+    y = c(X = 0, Y = 0, Z = 2, e = 1) 
+  )) %>% 
+  tidy_dagitty()     # Add edge_type within pipe
+
+# Plot DAG 
+dag_med_p <-  dag_med %>% 
+  ggdag(., layout = "circle") +  # decided in dagify
+  theme_dag_blank(plot.caption = element_text(hjust = 1)) +
+  # Nodes 
+  geom_dag_node(aes(color = name)) +  
+  # Labels dodged to avoid overlap
+  geom_dag_label(aes(label = label), color = "#4c4c4c", nudge_x = 0.7, nudge_y = 0.2) +  
+  
+  geom_dag_text(color="white") +
+  labs(title = "Causal map with MEDIATOR (Z)" , 
+       #subtitle = "X = exposure, Y = outcome, Z = collider, e = random error", 
+       caption = ) +
+  # Map colors to specific nodes
+  scale_color_manual(values = c("X" = "#9b6723", "Y" = "#72aed8", "Z" = "#d02e4c",
+                                "e" = "#A6A6A6"), 
+                     guide = "none")    # Remove legend
+
+dag_med_p
+```
+
+
+```{r}
+#| echo: FALSE
+f_save_plot("dag_med_p", dag_med_p)
+```
+
+# ----
+
+# DATASETS for today
+
+<!-- <br> -->
+
+<!-- ::: {style="font-size: 80%;"} -->
+<!-- In this tutorial, we will use:  -->
+
+<!-- + .... -->
+
+<!-- ::: -->
+
+
+## [Importing Dataset 1 (NHANES)]{.r-fit-text}
+
+::: {style="font-size: 95%;"}
+**Name**: NHANES, accessible from package `NHANES`
+**Documentation**: See reference on the data downloaded and ....
+**Sampling details**: We’ll use a subset of the NHANES dataset, focusing on variables related to smoking status (SmokeNow), systolic blood pressure (BPSysAve), Body Mass Index (BMI) and age (Age).
+
+```{r}
+data(NHANES)
+# Select relevant columns and drop rows with missing values
+nhanes_data <- NHANES %>%
+  select(ID, Gender, Age, Race1, Height, Weight, BMI, SmokeNow, PhysActive, PhysActiveDays,
+         BPSysAve, BPSysAve, BPDiaAve, TotChol, DirectChol, Diabetes, HealthGen,
+         Education, HHIncomeMid, Poverty) %>%
+  drop_na() %>% 
+  # make it smaller 
+  slice_sample(n = 1000) # Randomly select 1000 rows using
+
+# Take a quick look at the data
+#paint(nhanes_data)
+```
+
+::: 
+
+## [Dataset 1 (NHANES) Variables and their description]{.r-fit-text}
+
+::: {style="font-size: 60%;"}
+[[EXCERPT: see complete file in Input Data Folder]]{style="color:#77501a"}
+
+```{r}
+#| eval: true
+#| output: true
+#| echo: false
+
+nhanes_desc <- tribble(
+  ~Variable, ~ Type, ~Description,
+"X"                ,"int", "xxxx", 
+"ID"               ,"int", "xxxxx", 
+"SurveyYr"         ,"chr", "yyyy_mm. Ex. 2011_12",    
+"Gender"           ,"chr", "Gender (sex) of study participant coded as male or female",
+"Age"              ,"int", "##", 
+"AgeDecade"        ,"chr", "yy-yy es 20-29",   
+# "AgeMonths"        ,"int", "### es 471", 
+"Race1"            ,"chr", "Reported race of study participant: Mexican, Hispanic, White, #Black, or Other",
+#"Race3"            ,"chr", "Reported race of study participant... Not availale for #2009-10", 
+
+"Education"        ,"chr", "[>= 20 yro]. Ex. 8thGrade, 9-11thGrade, HighSchool, SomeCollege, or CollegeGrad.", 
+# "MaritalStatus"    ,"chr", "[>= 20 yro]. Ex. Married, Widowed, Divorced, Separated, # NeverMarried, or LivePartner",  
+"HHIncome"         ,"chr","Total annual gross income for the household in US dollars", 
+"HHIncomeMid"      ,"int", "Numerical version of HHIncome derived from the middle income # in each category. Ex. 12500 40000" ,   
+"Poverty"          ,"dbl", "A ratio of family income to poverty guidelines. Smaller # numbers indicate more poverty Ex.. 0.95 1.74 4.99" , 
+# "HomeRooms"        ,"int", "How many rooms are in home of study participant (counting # kitchen but not bath room).", 
+# "HomeOwn"          ,"chr", "One of Home, Rent, or Other", 
+# "Work"             ,"chr", "NotWorking Working" ,
+"Weight"           ,"dbl", "Weight in kg",
+# "Length"           ,"lgl", "Recumbent length in cm. Reported for participants aged 0 - 3 years", 
+# "HeadCirc"         ,"lgl", "Head circumference in cm. Reported for participants aged 0 years (0 - 6 months)", 
+"Height"           ,"dbl",  "Standing height in cm. Reported for participants aged 2 years or older.",
+"BMI"              ,"dbl",  "Body mass index (weight/height2 in kg/m2). Reported for participants aged 2 years or older", 
+# "BMICatUnder20yrs" ,"lgl",  "Body mass index category. Reported for participants aged 2 to 19 years", 
+# "BMI_WHO"          ,"chr",  "Body mass index category. Reported for participants aged 2 years or older", 
+"Pulse"            ,"int",  "60 second pulse rate",
+"BPSysAve"         ,"int", "Combined systolic blood pressure reading, following the # procedure outlined for BPXSAR",
+"BPDiaAve"         ,"int", "Combined diastolic blood pressure reading, following the # procedure outlined for BPXDAR",
+#"BPSys1"           ,"int", "Systolic blood pressure in mm Hg – first reading",
+#"BPDia1"           ,"int", "Diastolic blood pressure in mm Hg – second reading (consecutive readings)",
+#"BPSys2"           ,"int", "Systolic blood pressure in mm Hg – second reading (consecutive readings)",
+#"BPDia2"           ,"int", "Diastolic blood pressure in mm Hg – second reading",
+#"BPSys3"           ,"int", "Systolic blood pressure in mm Hg third reading (consecutive readings)",
+#"BPDia3"           ,"int", "Diastolic blood pressure in mm Hg – third reading (consecutive readings)",
+#"Testosterone"     ,"dbl", "Testerone total (ng/dL). Reported for participants aged 6 years or older. Not available for 2009-2010",
+#
+"DirectChol"       ,"dbl","Direct HDL cholesterol in mmol/L. Reported for participants aged 6 years or older", 
+"TotChol"          ,"dbl","Total HDL cholesterol in mmol/L. Reported for participants aged 6 years or older", 
+#"UrineVol1"        ,"int", "Urine volume in mL – first test. Reported for participants aged 6 years or older", 
+#"UrineFlow1"       ,"dbl", "Urine flow rate in mL/min – first test. Reported for participants aged 6 years or older", 
+#"UrineVol2"        ,"int", "Urine volume in mL – second test",
+#"UrineFlow2"       ,"dbl","Urine flow rate (urine volume/time since last urination) in mL/min – second test",
+"Diabetes"         ,"chr","Study participant told by a doctor or health professional that they have diabetes", 
+#"DiabetesAge"      ,"int", "Age of study participant when first told they had diabetes", 
+"HealthGen"        ,"chr", "Self-reported rating of health: Excellent, Vgood, Good, Fair, or Poor Fair" , 
+#"DaysPhysHlthBad"  ,"int", "Self-reported # of days participant’s physical health was not good out of the past 30 days", 
+#"DaysMentHlthBad " ,"int", "Self-reported # of days participant’s mental health was not good out of the past 30 days", 
+#"LittleInterest"   ,"chr", "Self-reported # of days where participant had little interest in doing things. Among: None, Several, Majority, #or AlmostAll", 
+#"Depressed"        ,"chr", "Self-reported # of days where participant felt down, depressed or hopeless. Among: None, Several, Majority, or #AlmostAll", 
+#"nPregnancies"     ,"int", "# times participant has been pregnant",
+#"nBabies"          ,"int", "# deliveries resulted in live births", 
+#"PregnantNow"      ,"chr", "Pregnancy status ascertained for females 8-59 years of age", 
+#
+#"Age1stBaby"       ,"int",  "Age of participant at time of first live birth",
+#"SleepHrsNight"    ,"int",  "Self-reported # of hours study participant gets at night on weekdays or workdays. For participants aged 16 #years and older", 
+#"SleepTrouble"     ,"chr", "Participant [16 years and older] has had trouble sleeping. Coded as Yes or No." ,  
+"PhysActive"       ,"chr", "Participant does moderate or vigorous-intensity sports, fitness or recreational activities (Yes or No)." ,  
+#"PhysActiveDays"   ,"int", "Number of days in a typical week that participant does moderate or vigorous intensity activity. ", 
+#"TVHrsDay"         ,"chr", "Number of hours per day on average participant watched TV over the past 30 days.",
+#"CompHrsDay"       ,"chr", "Number of hours per day on average participant used a computer or gaming device over the past 30 day", 
+#"TVHrsDayChild"    ,"lgl", "[2-11 yro] Number of hours per day on average participant watched TV over the past 30 days.",
+#"CompHrsDayChild"  ,"lgl", "[2-11 yro] Number of hours per day on average participant used a computer or gaming device over the past 30 #day", 
+# "Alcohol12PlusYr"  ,"chr",  "Participant has consumed at least 12 drinks of any type of alcoholic beverage in any one year", 
+#"AlcoholDay"       ,"int",  "Average number of drinks consumed on days that participant drank alcoholic beverages", 
+#"AlcoholYear"      ,"int",  "[>+ 18yro] Estimated number of days over the past year that participant drank alcoholic beverages", 
+"SmokeNow"         ,"chr", "Study participant currently smokes cigarettes regularly. (Yes or No)",  
+#"Smoke100"         ,"chr", "Study participant has smoked at least 100 cigarettes in their entire life. (Yes pr No)",  
+#"Smoke100n"        ,"chr", " Smoker Non-Smoker" , 
+#"SmokeAge"         ,"int", "Age study participant first started to smoke cigarettes fairly regularly", 
+#"Marijuana"        ,"chr",  "Participant has tried marijuana", 
+#"AgeFirstMarij"    ,"int", "Age Participant has tried marijuana first", 
+#"RegularMarij"     ,"chr", "Participant has been/is a regular marijuana user (used at least once a month for a year) (Yes or No)",
+#"AgeRegMarij"      ,"int", "Age of participant when first started regularly using marijuana", 
+#"HardDrugs"        ,"chr", "Participant has tried cocaine, crack cocaine, heroin or methamphetamine (Yes or No)" ,
+#"SexEver"          ,"chr", "Participant had had  sex (Yes or No)" ,
+#"SexAge"           ,"int", "Age Participant had had sex first time" ,
+#"SexNumPartnLife"  ,"int", "Number of opposite sex partners participant has had",
+#"SexNumPartYear"   ,"int", "Number of opposite sex partners over the past 12 months",
+#"SameSex"          ,"chr", "Participant has had any kind of sex with a same sex partne(Yes or No)" ,
+#"SexOrientation"   ,"chr",  "Participant’s sexual orientation One of Heterosexual, Homosexual, Bisexual", 
+"..."  ,"...",  "..."#, 
+)
+
+kableExtra::kable(nhanes_desc)
+```
+:::
+
+
+https://bookdown.org/jbrophy115/bookdown-clinepi/confounding.html
+
+## Causal modeling with CONFOUNDER
++ Z = `Age` = confounder for (X = `SmokeNow`) and blood pressure (Y = `BPSysAve`)
+```{r}
+data(NHANES)
+# Select relevant columns and drop rows with missing values
+nhanes_conf <- NHANES %>%
+  select(ID, Age, SmokeNow, BPSysAve) %>%
+  drop_na()
+  
+# Take a quick look at the data
+paint(nhanes_conf)
+```
+
+
+In this context:
+
++ `Age` influences both smoking (`SmokeNow`) and blood pressure (`BPSysAve`), making it a *confounder.*
++ `SmokeNow` directly affects `BPSysAve.`
+
+## Causal modeling with CONFOUNDER (viz) 
+
+```{r}
+#| output-location: slide 
+# linear rel 
+qplot (Age, BPSysAve, data = nhanes_conf, color = SmokeNow) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Scatterplot of Age and Blood Pressure by Smoking Status",
+       x = "Age",
+       y = "Blood Pressure (mmHg)",
+       color = "Smoking Status")
+
+```
+
+
+## --- Regression analysis - unadjusted model
+```{r}
+# Unadjusted linear model 
+model_unadjusted <- lm(BPSysAve ~ SmokeNow, data = nhanes_conf)
+summary(model_unadjusted)
+ 
+```
+
+## --- Regression analysis - adjusted model
+```{r}
+
+# Adjusted model
+model_adjusted <- lm(BPSysAve ~ SmokeNow + Age, data = nhanes_conf)
+summary(model_adjusted)
+```
+
+## --- Compare models
+
++ adjusting for age changes the estimated effect of smoking on blood pressure
+  + *Unadjusted Model*: This model does not control for age, so any observed relationship between smoking and blood pressure might be confounded.
+  + *Adjusted Model*: This model controls for age, providing a more accurate estimate of the causal effect of smoking on blood pressure by accounting for the confounding influence of age.
+
+```{r}
+conf_sum <- modelsummary::msummary(list( "NO Confounder" = model_unadjusted, 
+                                         "Confounder" = model_adjusted), 
+                                   fmt="%.3f", # format
+                                   gof_omit = 'DF|Deviance|Log.Lik.|F|R2 Adj.|AIC|BIC',
+                                   stars=c('*' = .05, '**' = .01)#,
+                                   #coef_rename = cm,
+                                   #output = paste(output,"ch19_reg-R.tex",sep="")
+) 
+```
+
+## --- Compare models
+
+```{r}
+#| output: slide
+conf_sum
+```
+
+
+## --- Add Predicted Values to the Dataset
+
+```{r}
+# Add predicted values from the unadjusted and adjusted models
+nhanes_conf <- nhanes_conf %>%
+  mutate(
+    pred_unadjusted = predict(model_unadjusted),  # Predicted BPSysAve from unadjusted model
+    pred_adjusted = predict(model_adjusted)       # Predicted BPSysAve from adjusted model
+  )
+```
+
+
+## --- Plot results 1/2
+
++ **Reshape the Data Using `pivot_longer()`**
+
+We will reshape the dataset so we can plot the predicted values from both models in a faceted plot.
+
+```{r}
+# Reshape the data into long format using pivot_longer()
+nhanes_long <- nhanes_conf %>%
+  pivot_longer(cols = c(pred_unadjusted, pred_adjusted), 
+               names_to = "model", values_to = "predicted") %>%
+  mutate(model = recode(model, 
+                        pred_unadjusted = "Unadjusted: SmokeNow on BPSysAve", 
+                        pred_adjusted = "Adjusted: SmokeNow + Age on BPSysAve"))
+```
+
+```{r}
+
+
+```
+
+
+## --- Plot results 2/2
+
+```{r}
+#| output-location: slide 
+
+# Violin plot with dashed line connecting the two conditions
+ggplot(nhanes_long, aes(x = factor(SmokeNow), y = BPSysAve, fill = model)) +
+  
+  # Create the violin plot to show the distribution of blood pressure
+  geom_point(color = "grey", alpha = 0.4, position = position_dodge(width = 0.3) ) +
+  
+  # Overlay the predicted dashed line between the two smoking conditions
+  geom_line(aes(y = predicted, group = model, color = model), 
+            size = 0.8, linetype = "dashed", position = position_dodge(width = 0.3)) +
+  
+  # Facet vertically for unadjusted and adjusted models
+  facet_wrap(model ~ ., scales = "free_y",ncol = 2) +
+  
+  # Add labels and title
+  labs(title = "Confounder Analysis: Predicted values in Unadjusted vs Adjusted Regression models",
+       subtitle = "Age = Confounder",
+       x = "Smoking Status",
+       y = "Systolic Blood Pressure (BPSysAve)",
+       color = "Model",
+       fill = "Model"
+       ) +
+  
+  # Customize colors for better contrast
+  scale_fill_manual(values = c("Unadjusted: SmokeNow on BPSysAve" ="lightcoral" , 
+                               "Adjusted: SmokeNow + Age on BPSysAve" = "lightblue")) +
+  scale_color_manual(values = c("Unadjusted: SmokeNow on BPSysAve" = "red", 
+                                "Adjusted: SmokeNow + Age on BPSysAve" = "blue")) +
+  
+  # Minimal theme for clarity
+  theme_minimal()+
+  theme(legend.position = "none")
+
+```
+
+## Causal modeling with MEDIATOR
+<!-- https://tilburgsciencehub.com/topics/analyze/regression/linear-regression/mediation-analysis/ -->
+
+
++ M = `BMI` = mediator for the effect of X= `PhysActiveDays` on Y = `BPSysAve`
+     
+```{r}
+data(NHANES)
+# Select relevant columns and drop rows with missing values
+nhanes_med <- NHANES %>%
+  select(Gender, Age, BPSysAve, BMI, PhysActiveDays, Diabetes, SmokeNow) %>%
+  drop_na()
+
+# Take a quick look at the data
+summary(nhanes_med)
+```
+
+## --- Regression analysis - unadjusted (total) model
+
+Before adjusting for any mediator, we fit a simple linear model to estimate the total effect total effect of `BMI` on `Systolic Blood Pressure` without considering `Age`.
+
++ `Total Effect Model (Unadjusted)` .
+
+```{r}
+# Unadjusted model: total effect of smoking on blood pressure
+total_effect_model <- lm(BPSysAve ~ PhysActiveDays, data = nhanes_med)
+summary(total_effect_model)
+```
+
+This model gives the total effect of of `PhysActiveDays` on `Systolic Blood Pressure` (including any *indirect* effects through M = `BMI` or other variables that haven't been included.)
+
+
+## --- Regression analysis - MEDIATOR model
+
+Now we will set up the mediation models:
+ 
++ `Mediator model`: This model estimates the effect of physical activity `PhysActiveDays` on BMI `BMI` (= M). This allows us to see whether more physically active days are associated with lower BMI values (which could then affect blood pressure).
+
+```{r}
+# Mediator model: SmokeNow affects BMI
+mediator_model <- lm(BMI ~ PhysActiveDays, data = nhanes_med)
+summary(mediator_model)
+```
+
++ `Outcome Model (Adjusted for BMI)`: This model estimates the effect of `PhysActiveDays` and `BMI` on Systolic Blood Pressure (`BPSysAve`). This is the *adjusted model*, where we adjust for the mediator (`BMI`).
+
+```{r}
+# Outcome model: PhysActiveDays and BMI affect BPSysAve
+outcome_model <- lm(BPSysAve ~  PhysActiveDays + BMI, data = nhanes_med)
+summary(outcome_model)
+```
+
+
+## --- Compare models
+```{r}
+med_sum <- modelsummary::msummary(list("BMI ~ Mediator Effect" = mediator_model,
+                                       "BPSysAve ~ Total Effect" = total_effect_model,
+                                       "BPSysAve ~ Outcome" = outcome_model), 
+                                  fmt="%.3f", # format
+                                  gof_omit = 'DF|Deviance|Log.Lik.|F|R2 Adj.|AIC|BIC',
+                                  stars=c('*' = .05, '**' = .01)#,
+                                  #coef_rename = cm,
+                                  #output = paste(output,"ch19_reg-R.tex",sep="")
+) 
+```
+
+## --- Compare models
+```{r}
+#| output: slide
+med_sum
+```
+
+
+## --- Calculate the Indirect, Direct, and Total Effects
+Now that we have the coefficients from the models, we can calculate the mediation effects manually.
+
++ **Direct Effect**: This is the coefficient of `PhysActiveDays` in the outcome model, which gives the direct effect of exercise on blood pressure (*controlling* for `BMI` = M)
++ **Indirect Effect**: This is the product of the coefficient from the mediator model (`PhysActiveDays` → `BMI`) and the coefficient from the outcome model (`BMI` → `BPSysAve`).
++ **Total Effect**: This is the coefficient of `PhysActiveDays` in the unadjusted model (*NOT controlling* for `BMI` = M).
+
+```{r}
+# Check the names of the coefficients in models...
+names(coef(mediator_model))     # [1] BMI ~ PhysActiveDays 
+names(coef(outcome_model))      # [1] BPSysAve ~  PhysActiveDays + BMI    
+names(coef(total_effect_model)) # [1] BPSysAve ~ PhysActiveDays
+
+# BREAKING DOWN THE ESTIMATE OF PhysActiveDays COEFFICIENT 
+
+# TOTAL effect: The effect of PhysActiveDays on BPSysAve without adjusting for BMI
+total_effect <- coef(total_effect_model)["PhysActiveDays"]
+total_effect # 0.59
+
+# DIRECT effect: The effect of PhysActiveDays on BPSysAve after adjusting for BMI.
+direct_effect <- coef(outcome_model)["PhysActiveDays"]  # Direct effect (controlling for BMI)
+direct_effect # 0.621 
+
+# Indirect effect: The portion of the effect on BPSysAve that is mediated through BMI
+indirect_effect <- coef(mediator_model)["PhysActiveDays"] * coef(outcome_model)["BMI"]   
+indirect_effect # [-0.0821 X 0.382] = -0.0313 
+# or 
+total_effect - direct_effect # !!!!!!!!  -0.0313
+```
+
+## --- Proportion mediated
+```{r}
+# Proportion mediated: The proportion of the total effect that is mediated through BMI
+proportion_mediated <- glue::glue("{round(indirect_effect / total_effect *100, 2)}%")
+proportion_mediated #  -0.0531
+```
+ 
+## --- Visualise the Indirect, Direct, and Total Effects
+
+"+ Physical Activity" -> "+ Systolic Blood Pressure (BPSysAve)" | "+ BMI -> - BPSysAve "
+WTF ??? 
+
+```{r}
+# Create a data frame for the effects
+effects_df <- data.frame(
+  Effect = c("Total Effect", "Direct Effect", "Indirect Effect"),
+  Value = c(total_effect, direct_effect, indirect_effect)
+)
+
+# Load ggplot2
+library(ggplot2)
+
+# Create the bar plot
+ggplot(effects_df, aes(x = Effect, y = Value, fill = Effect)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Mediation Analysis: Total, Direct, and Indirect Effects", 
+       subtitle = "Effect (coefficient) of Physical Activity on Systolic Blood Pressure (BPSysAve)",
+       y = "", x = "") +
+  theme_minimal()
+```
+
+## --- Interpret results 
+
++ The **total effect** tells us the overall relationship between `PhysActiveDays` and `BPSysAve`.
+
++ The **direct effect** represents the relationship between `PhysActiveDays` and `BPSysAve`, *controlling for* `BMI`.
+
++ The **indirect effect** (mediated effect) shows how much of the relationship between `PhysActiveDays` and `BPSysAve` is explained through `BMI` (AKA the coef of `PhysActiveDays` in the mediator model times the coef of `BMI` in the outcome model)
+
++ The **proportion mediated** indicates how much of the total effect is due to the mediation by BMI.
+
+
+## --- Calculate the Indirect, Direct, and Total Effects (modo2) 
+```{r}
+library(mediation)
+# recall
+mediator_model[["call"]][["formula"]]
+outcome_model[["call"]][["formula"]]
+
+# Calculate the mediation effect
+mediation_model <- mediate(mediator_model, outcome_model, 
+                           treat = "PhysActiveDays", 
+                           mediator = "BMI", 
+                           boot=TRUE, sims=500)
+summary(mediation_model)
+
+#                Estimate 95% CI Lower 95% CI Upper p-value  
+# ACME            -0.0313      -0.1024         0.04   0.324     = indirect or mediation effect
+# ADE              0.6213       0.1479         1.16   0.024 *   = direct effect 
+# Total Effect     0.5899       0.1354         1.15   0.020 *   = total effect 
+# Prop. Mediated  -0.0531      -0.2969         0.10   0.344     = proportion mediated
+```
+
+```{r}
+# Add predicted values for BMI, BPSysAve (adjusted), and BPSysAve (total effect)
+nhanes_med_pred <- nhanes_med %>%
+  mutate(
+    pred_bmi = predict(mediator_model),         # Predicted BMI (mediator model)
+    pred_bps_adj = predict(outcome_model),      # Predicted BPSysAve (adjusted for Age)
+    pred_bps_total = predict(total_effect_model) # Predicted BPSysAve (total effect)
+  )
+```
+
+## --- Plot results 1/2
+
+Now, let's create a plot that includes:
+
++ The total effect of BMI on blood pressure (without adjusting for Age).
++ The adjusted effect of BMI on blood pressure (controlling for Age).
++ The mediator effect (BMI's effect on Age).
+
+```{r}
+# Check column names
+colnames(nhanes_med_pred)
+
+# Reshape the data into long format for faceting
+nhanes_long <- nhanes_med_pred %>%
+  gather(key = "model", value = "predicted",  pred_bps_adj, pred_bps_total) %>%
+  mutate(model = recode(model, 
+                        #pred_bmi = "Mediator Effect: BPSysAve on BMI", 
+                        pred_bps_adj = "Adjusted Effect: PhysActiveDays + BMI on BPSysAve", 
+                        pred_bps_total = "Total Effect: PhysActiveDays on BPSysAve"))
+```
+
+## --- Plot results 2/2
+
+```{r}
+#| output-location: slide 
+
+# Plot with vertically aligned facets
+ggplot(nhanes_long, aes(x = BMI)) +
+  geom_point(aes(y = BPSysAve), color = "black", shape = 16, alpha = 0.5) +  # Actual data points for BPSysAve
+  geom_line(aes(y = predicted, color = model), size = 1) +  # Predicted values from different models
+  facet_grid(model ~ ., scales = "free_y") +  # Facet vertically
+  labs(title = "Mediation Analysis: Total, Adjusted, and Mediator Effects",
+       x = "BMI",
+       y = "Outcome / Mediator",
+       color = "Effect Type") +
+  theme_minimal()
+
+
+```
+
+# ----
+# QUI
+Equitable Equations !!!!!
+
+## [Importing Dataset 2 (Gabor)]{.r-fit-text}
+
+::: {style="font-size: 95%;"}
+**Name**:  
+**Documentation**:  ..
+**Sampling details**:  
+
+```{r}
+#| eval: FALSE
+# import data
+data <- read_csv(paste0(data_in,"food-health.csv")) # 164,848 
+
+# drop observations
+dat <-  data %>%
+  filter(age >= 30 & age <60) %>% # 7930 
+  # new variables: 
+  ## Fruit and vegetables per day (grams)
+  ## Blood pressure (systolic+diastolic)
+  mutate(fv=veggies_n_fruits_gr,
+         bp=blood_pressure) %>%
+  filter(fv<3200) %>%
+  drop_na(bp) %>% # 7358
+  # Days per week exercising 
+  mutate(exerc=case_when(paq655 <=7 ~ paq655,
+                         paq650 ==2 ~ 0)) %>% 
+  # Potato chips per day, grams
+  mutate(pchips=gr_potato_chips) %>% 
+# select variables
+  select(id = seqn, age, gender, weight, height, race, 
+         fv, exerc, pchips, 
+         bp_systolic, bp_diastolic, bp, bmi,  
+         smoker, total_cholesterol, hdl,
+         hh_income_usd, hh_income_percap, ln_hh_income_percap ,income_cat
+                  ) %>% 
+  drop_na() # 7358
+ 
+
+# Hmisc::describe(dat$hh_income)
+paint(dat)
+```
+
+::: 
+
+## [Dataset 2 (Gabor) Variables and their description]{.r-fit-text}
+
+::: {style="font-size: 60%;"}
+[[EXCERPT: see complete file in Input Data Folder]]{style="color:#77501a"}
+
+```{r}
+#| eval: FALSE
+#| output: true
+#| echo: false
+
+food_health_desc <- tribble(
+  ~Variable, ~ Type, ~Description,
+"X"                ,"int", "xxxx", 
+"ID"               ,"int", "xxxxx", 
+"SurveyYr"         ,"chr", "yyyy_mm. Ex. 2011_12",    
+"Gender"           ,"chr", "Gender (sex) of study participant coded as male or female",
+"Age"              ,"int", "##", 
+"AgeDecade"        ,"chr", "yy-yy es 20-29",   
+# "AgeMonths"        ,"int", "### es 471", 
+#"Race1"            ,"chr", "Reported race of study participant: Mexican, Hispanic, White, #Black, or Other",
+#"Race3"            ,"chr", "Reported race of study participant... Not availale for #2009-10", 
+
+"Education"        ,"chr", "[>= 20 yro]. Ex. 8thGrade, 9-11thGrade, HighSchool, SomeCollege, or CollegeGrad.", 
+# "MaritalStatus"    ,"chr", "[>= 20 yro]. Ex. Married, Widowed, Divorced, Separated, # NeverMarried, or LivePartner",  
+# "HHIncome"         ,"chr","Total annual gross income for the household in US dollars", 
+# "HHIncomeMid"      ,"int", "Numerical version of HHIncome derived from the middle income # in each category. Ex. 12500 40000" ,   
+# "Poverty"          ,"dbl", "A ratio of family income to poverty guidelines. Smaller # numbers indicate more poverty Ex.. 0.95 1.74 4.99" , 
+# "HomeRooms"        ,"int", "How many rooms are in home of study participant (counting # kitchen but not bath room).", 
+# "HomeOwn"          ,"chr", "One of Home, Rent, or Other", 
+# "Work"             ,"chr", "NotWorking Working" ,
+  
+"Weight"           ,"dbl", "Weight in kg",
+# "Length"           ,"lgl", "Recumbent length in cm. Reported for participants aged 0 - 3 years", 
+# "HeadCirc"         ,"lgl", "Head circumference in cm. Reported for participants aged 0 years (0 - 6 months)", 
+"Height"           ,"dbl",  "Standing height in cm. Reported for participants aged 2 years or older.",
+"BMI"              ,"dbl",  "Body mass index (weight/height2 in kg/m2). Reported for participants aged 2 years or older", 
+# "BMICatUnder20yrs" ,"lgl",  "Body mass index category. Reported for participants aged 2 to 19 years", 
+# "BMI_WHO"          ,"chr",  "Body mass index category. Reported for participants aged 2 years or older", 
+"Pulse"            ,"int",  "60 second pulse rate",
+# "BPSysAve"         ,"int", "Combined systolic blood pressure reading, following the # procedure outlined for BPXSAR",
+"BPDiaAve"         ,"int", "Combined diastolic blood pressure reading, following the # procedure outlined for BPXDAR",
+#"BPSys1"           ,"int", "Systolic blood pressure in mm Hg – first reading",
+#"BPDia1"           ,"int", "Diastolic blood pressure in mm Hg – second reading (consecutive readings)",
+#"BPSys2"           ,"int", "Systolic blood pressure in mm Hg – second reading (consecutive readings)",
+#"BPDia2"           ,"int", "Diastolic blood pressure in mm Hg – second reading",
+#"BPSys3"           ,"int", "Systolic blood pressure in mm Hg third reading (consecutive readings)",
+#"BPDia3"           ,"int", "Diastolic blood pressure in mm Hg – third reading (consecutive readings)",
+#"Testosterone"     ,"dbl", "Testerone total (ng/dL). Reported for participants aged 6 years or older. Not available for 2009-2010",
+#
+"DirectChol"       ,"dbl","Direct HDL cholesterol in mmol/L. Reported for participants aged 6 years or older", 
+"TotChol"          ,"dbl","Total HDL cholesterol in mmol/L. Reported for participants aged 6 years or older", 
+#"UrineVol1"        ,"int", "Urine volume in mL – first test. Reported for participants aged 6 years or older", 
+#"UrineFlow1"       ,"dbl", "Urine flow rate in mL/min – first test. Reported for participants aged 6 years or older", 
+#"UrineVol2"        ,"int", "Urine volume in mL – second test",
+#"UrineFlow2"       ,"dbl","Urine flow rate (urine volume/time since last urination) in mL/min – second test",
+"Diabetes"         ,"chr","Study participant told by a doctor or health professional that they have diabetes", 
+"DiabetesAge"      ,"int", "Age of study participant when first told they had diabetes", 
+"HealthGen"        ,"chr", "Self-reported rating of health: Excellent, Vgood, Good, Fair, or Poor Fair" , 
+#"DaysPhysHlthBad"  ,"int", "Self-reported # of days participant’s physical health was not good out of the past 30 days", 
+#"DaysMentHlthBad " ,"int", "Self-reported # of days participant’s mental health was not good out of the past 30 days", 
+#"LittleInterest"   ,"chr", "Self-reported # of days where participant had little interest in doing things. Among: None, Several, Majority, #or AlmostAll", 
+#"Depressed"        ,"chr", "Self-reported # of days where participant felt down, depressed or hopeless. Among: None, Several, Majority, or #AlmostAll", 
+#"nPregnancies"     ,"int", "# times participant has been pregnant",
+#"nBabies"          ,"int", "# deliveries resulted in live births", 
+#"PregnantNow"      ,"chr", "Pregnancy status ascertained for females 8-59 years of age", 
+#
+#"Age1stBaby"       ,"int",  "Age of participant at time of first live birth",
+#"SleepHrsNight"    ,"int",  "Self-reported # of hours study participant gets at night on weekdays or workdays. For participants aged 16 #years and older", 
+#"SleepTrouble"     ,"chr", "Participant [16 years and older] has had trouble sleeping. Coded as Yes or No." ,  
+#"PhysActive"       ,"chr", "Participant does moderate or vigorous-intensity sports, fitness or recreational activities (Yes or No)." ,  
+#"PhysActiveDays"   ,"int", "Number of days in a typical week that participant does moderate or vigorous intensity activity. ", 
+#"TVHrsDay"         ,"chr", "Number of hours per day on average participant watched TV over the past 30 days.",
+#"CompHrsDay"       ,"chr", "Number of hours per day on average participant used a computer or gaming device over the past 30 day", 
+#"TVHrsDayChild"    ,"lgl", "[2-11 yro] Number of hours per day on average participant watched TV over the past 30 days.",
+#"CompHrsDayChild"  ,"lgl", "[2-11 yro] Number of hours per day on average participant used a computer or gaming device over the past 30 #day", 
+# "Alcohol12PlusYr"  ,"chr",  "Participant has consumed at least 12 drinks of any type of alcoholic beverage in any one year", 
+#"AlcoholDay"       ,"int",  "Average number of drinks consumed on days that participant drank alcoholic beverages", 
+#"AlcoholYear"      ,"int",  "[>+ 18yro] Estimated number of days over the past year that participant drank alcoholic beverages", 
+#"SmokeNow"         ,"chr", "Study participant currently smokes cigarettes regularly. (Yes or No)",  
+#"Smoke100"         ,"chr", "Study participant has smoked at least 100 cigarettes in their entire life. (Yes pr No)",  
+#"Smoke100n"        ,"chr", " Smoker Non-Smoker" , 
+#"SmokeAge"         ,"int", "Age study participant first started to smoke cigarettes fairly regularly", 
+#"Marijuana"        ,"chr",  "Participant has tried marijuana", 
+#"AgeFirstMarij"    ,"int", "Age Participant has tried marijuana first", 
+#"RegularMarij"     ,"chr", "Participant has been/is a regular marijuana user (used at least once a month for a year) (Yes or No)",
+#"AgeRegMarij"      ,"int", "Age of participant when first started regularly using marijuana", 
+#"HardDrugs"        ,"chr", "Participant has tried cocaine, crack cocaine, heroin or methamphetamine (Yes or No)" ,
+#"SexEver"          ,"chr", "Participant had had  sex (Yes or No)" ,
+#"SexAge"           ,"int", "Age Participant had had sex first time" ,
+#"SexNumPartnLife"  ,"int", "Number of opposite sex partners participant has had",
+#"SexNumPartYear"   ,"int", "Number of opposite sex partners over the past 12 months",
+#"SameSex"          ,"chr", "Participant has had any kind of sex with a same sex partne(Yes or No)" ,
+#"SexOrientation"   ,"chr",  "Participant’s sexual orientation One of Heterosexual, Homosexual, Bisexual", 
+"..."  ,"...",  "..."#, 
+)
+
+kableExtra::kable(nhanes_desc)
+```
+:::
+
+
+https://bookdown.org/jbrophy115/bookdown-clinepi/confounding.html
+
+## Causal modeling with CONFOUNDER
+```{r}
+#| eval: FALSE
+# Select relevant columns and drop rows with missing values
+dat_conf <- dat %>%
+  select(id, age, bp_systolic, fv, exerc, bmi, smoker, gender, hh_income_usd, ln_hh_income_percap ) %>%
+  drop_na() %>% 
+  filter(fv <=1500)
+
+# Take a quick look at the data
+summary(dat_conf)
+
+Hmisc::describe(dat_conf$bp_systolic) # Y
+Hmisc::describe(dat_conf$bmi) # X
+Hmisc::describe(dat_conf$age) # Z (confounder )
+Hmisc::describe(dat_conf$exerc)  # Z (confounder )
+Hmisc::describe(dat_conf$ln_hh_income_percap) # Z (confounder )
+
+
+```
+
+In this context:
+
++ `exerc` influences both smoking (`fv`) and blood pressure (`bp_systolic`), making it a confounder (albeit as PROXY for socio-economic status)
++ `fv` directly affects `bp_systolic`
+
+## --- Regression analysis  
+```{r}
+#| eval: FALSE
+# Unadjusted model
+model_unadjusted <- lm( bp_systolic ~ bmi + ln_hh_income_percap , data = dat_conf)
+summary(model_unadjusted)
+
+# Adjusted model
+model_adjusted <- lm(bp_systolic ~ bmi + age + ln_hh_income_percap, data = dat_conf)
+summary(model_adjusted)
+
+```
+
++ adjusting for Z changes the estimated effect of X on Y
+  + *Unadjusted Model*: This model does not control for Z, which is a confounder of the relationship between X and Y. 
+  + *Adjusted Model*: This model controls for Z, providing a more accurate estimate of the causal effect of X on Y.
+ 
+## --- Add Predicted Values to the Dataset
+
+```{r}
+#| eval: FALSE
+model_unadjusted$coefficients 
+model_adjusted$coefficients
+
+# Get predicted values using augment and attach to the original dataset
+dat_unadjusted <- broom::augment(model_unadjusted, data = dat_conf) %>%
+  select( -.resid,  -.hat, -.sigma, -.cooksd, -.std.resid ) %>%
+  rename(pred_unadjusted = .fitted)
+
+dat_adjusted <- broom::augment(model_adjusted, data = dat_conf) %>%
+  select( -.resid,     -.hat, -.sigma, -.cooksd, -.std.resid ) %>%
+  rename(pred_adjusted = .fitted)
+
+# Combine the predicted values from both models
+dat_conf_long <- dat_unadjusted %>%
+  left_join(dat_adjusted, by = "id", suffix=c("",".y"))%>%
+  select(-ends_with(".y")) %>% 
+  # Convert the data from wide to long format
+  pivot_longer(cols = c(pred_unadjusted, pred_adjusted), 
+               names_to = "model", 
+               values_to = "predicted")
+
+# Check the structure of the long dataset
+str(dat_conf_long)
+
+```
+
+
+## --- Plot results 1/2
+
++ **Reshape the Data Using `pivot_longer()`**
+
+We will reshape the dataset so we can plot the predicted values from both models in a faceted plot.
+
+```{r}
+#| eval: FALSE
+# check 
+dat_conf_long %>% group_by(model) %>% 
+  summarise(mean(predicted), sd(predicted))
+
+```
+ 
+
+## --- Plot results 2/2
+
+```{r}
+#| eval: FALSE
+#| output-location: slide 
+
+ggplot(dat_conf, aes(x = bmi, y = bp_systolic)) +
+  geom_point(color = "grey", alpha = 1) +  
+  geom_point(data = dat_unadjusted, aes(x = bmi, y = pred_unadjusted), 
+             color = "#e60066", alpha = 0.20) +
+  geom_point(data = dat_adjusted, aes(x = bmi, y = pred_adjusted), 
+             color = "#399B23", alpha = 0.20) +
+  # Add labels and title
+  labs(title = "Confounder Analysis: Unadjusted (pink) vs Adjusted (green) fitted values",
+       x = "BMI",
+       y = "Systolic Blood Pressure (BPSysAve)"
+       )  +
+    # Minimal theme for clarity
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+
+
+## --- Different 
+https://nicholasrjenkins.science/post/data_viz_r/data_visualization_r/
+
+## --- Regression analysis  
+```{r}
+#| eval: FALSE
+# Unadjusted model
+model_unadjusted <- lm( bp_systolic ~ bmi  , data = dat_conf)  
+ # Adjusted model
+model_adjusted <- lm(bp_systolic ~ bmi + age  , data = dat_conf)  
+```
+
+ 
+```{r}
+#| eval: FALSE
+tidy(model_unadjusted, conf.int = TRUE ) %>% 
+  ggplot(data = ., 
+         mapping = aes(x = estimate, y = term, xmin = conf.low, xmax = conf.high)) +
+  geom_pointrange() +
+  labs(title = "Model Estimates of bmi on bp_systolic",
+       x = "Coefficient Estimate",
+       y = "Predictor",
+       caption = "Models fit with OLS. Error bars show the 95% confidence interval.") +
+  scale_y_discrete(labels = c("Intercept",  "bmi")) +
+  ggpubr::theme_pubclean(flip = TRUE)
+ 
+``` 
+ 
+```{r}
+#| eval: FALSE
+tidy(model_adjusted, conf.int = TRUE ) %>% 
+  ggplot(data = ., 
+         mapping = aes(x = estimate, y = term, xmin = conf.low, xmax = conf.high)) +
+  geom_pointrange() +
+  labs(title = "Model Estimates of bmi + age on bp_systolic",
+       x = "Coefficient Estimate",
+       y = "Predictor",
+       caption = "Models fit with OLS. Error bars show the 95% confidence interval.") +
+  scale_y_discrete(labels = c("Intercept", "age", "bmi")) +
+  ggpubr::theme_pubclean(flip = TRUE)
+ 
+```
+
+ 
+```{r}
+#| eval: FALSE
+fit_unadj_results <- tidy(model_unadjusted, conf.int = TRUE) %>% 
+  mutate(model = "Model Unadjusted")
+
+fit_adj_results <- tidy(model_adjusted, conf.int = TRUE) %>% 
+  mutate(model = "Model Adjusted")
+
+model_results <- bind_rows(fit_unadj_results, fit_adj_results)
+```
+ 
+```{r}
+#| eval: FALSE
+ggplot(data = model_results, 
+       aes(x = estimate, y = term, xmin = conf.low, xmax = conf.high, 
+           color = model, shape = model)) +
+  geom_pointrange(position = position_dodge(width = 0.5)) +
+  labs(title = "Model Estimates of BMI and age on REM Sleep",
+       x = "Coefficient Estimate",
+       y = "Predictor",
+       caption = "Models fit with OLS. Error bars show the 95% confidence interval.",
+        color = "Model:",
+       shape = "Model:") +
+  scale_y_discrete(labels = c("Intercept", "age", "bmi")) +
+  ggpubr::theme_pubclean(flip = FALSE)
+
+```
+ 
 ## Final thoughts
 
 ::: {style="font-size: 95%;"}
@@ -227,4 +1219,6 @@ tidy(lm1)
 :::
 
 :::
+
+
 

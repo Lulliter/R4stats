@@ -259,7 +259,7 @@ Congrats! You are all done! 🙌🏻
 # R coding tips and tricks 
 
 ## Useful keyboard shortcuts in RStudio
-
+ 
 ```{r}
 #| eval: true
 #| echo: false
@@ -269,23 +269,38 @@ library(tibble) # Simple Data Frames
 library(flextable) # Functions for Tabular Reporting
 
 key_short <- tibble::tribble (
-  ~Description, 	             ~'Windows & Linux',     ~'Mac', 
-  "Insert code section", 	     "Ctrl+Shift+R",       	"Shift+Command+R  or Ctrl+Shift+R",
-  "Run current line/selection", "Ctrl+Enter",     "Command+Return",
-  "Reindent lines", 	             "Ctrl+I", 	"Command+I",
+  ~Description, 	                        ~'Windows & Linux',          ~'Mac', 
+  "Insert code section", 	                 "Ctrl+Shift+R",       	     "Shift+Command+R  or Ctrl+Shift+R",
+  "Insert code chunk (Quarto/Rmarkdown)",  "Ctrl+Alt+I", 	             "Command+Option+I",
+
+  "Comment/uncomment line",                "Ctrl+Shift+C",             "Command+Shift+C",
+  "Reindent lines", 	                     "Ctrl+I", 	                 "Command+I",
+  "Insert 'assign' operator <-", 	         "Alt+-", 	                 "Option+-",
+  "Insert 'pipe' operator %>% or |>", 	   "Ctrl+Shift+M", 	           "Shift+Command+M",
+  "Code completion (in source)",                       "Tab",                      "Tab", 
+  "File path completion (in console)",        "\"+Tab",                   "\"+Tab",
+
+  "Multple cursor selection",              "Alt+click",                "Alt+click", 
+  "Multple cursor selection (next)",       "Alt+Shift+click",          "Alt+Shift+click",
+  "Switch cursor between source & console","Ctrl+1 and Ctrl+2",         "Ctrl+1 and Ctrl+2",
+ 
+  "Run current line/selection",            "Ctrl+Enter",               "Command+Return",
+  "Run current chunk",                         "Ctrl+Alt+C",               "Command+Option+C",
+  "Run entire file",                       "Ctrl+Shift+Enter",         "Command+Shift+Return",
   
-  "Insert <- operator", 	"Alt+-", 	"Option+-",
-  "Insert %>% operator", 	    "Ctrl+Shift+M", 	"Shift+Command+M",
+  "Show help for function at cursor",      "F1",                       "F1", 
+  "Search within file",                    "Ctrl+F",                   "Command+F",
+  "Search within project",                 "Ctrl+Shift+F",             "Command+Shift+F",
+  "Restart R session",                     "Ctrl+Shift+F10",           "Command+Shift+F10"
   
-  "Code completion",          "Tab", "Tab", 
-  "File path completion (console)",    "\"+Tab", "\"+Tab"
+
 )
 
  	
 key_short_ft <- key_short %>% 
   # adorn_percentages(  denominator = 'row', na.rm = TRUE) %>%
   flextable() %>% 
- #   flextable::set_header_labels(key_stakes_types = "Type of agencies most frequently involved", N = "N. of cases") %>% 
+#flextable::set_header_labels(key_stakes_types = "Type of agencies most frequently involved", N = "N. of cases") %>% 
   bold( bold = TRUE,   part = "header") %>% 
   color( color = "white",   part = "header") %>% 
   bg( bg = "#d8717b",   part = "header") %>% 
@@ -294,6 +309,10 @@ key_short_ft <- key_short %>%
   # bg(bg =bordeaux_light, i = ~  `Type of agencies most frequently involved` %in%  c ( "more than 1 agency involved" ), part = "body") %>% 
   fontsize(size = 14, part = "header") %>% 
   fontsize(size = 12, part = "body") %>% 
+  font(j = 2:3, fontname = "Roboto Mono for Powerline", part = "body") %>% 
+  # Add a horizontal line after a specific row (e.g., after row 3)
+  hline(i = 11,   part = "body") %>%
+  hline(i = 14,   part = "body") %>%
   autofit() 
 
 

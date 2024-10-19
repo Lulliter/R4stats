@@ -3,11 +3,10 @@
 This website collects the materials for a 4 day workshop taking place during the MIGEST Summer School in July of 2024
 
 # Quirks 
+Little things to keep in mind (because semi-automated): 
 
-Little things to keep in mind (because semi-automated) about moving form [GoogleDrive](https://drive.google.com/drive/folders/1mkits-PaRC8SGnDuMn2h_bKHAVTHXI50?usp=drive_link) (`*.pptx`) lecture files to R lecture files for sharing (`*.pdf`). Before every push to GitHub:
-
-1. I execute a script `R_resources/slides_fromDrive_2_here.R` from my shell file `___render_deploy.sh`
-2. I execute the shell commands to convert `*.pptx` slides to `*.pdf` as soon as they are ~ready... 
+~~1. I execute a script `R_resources/slides_fromDrive_2_here.R` from my shell file `___render_deploy.sh` to copy the `*.pptx` files from [GoogleDrive](https://drive.google.com/drive/folders/1mkits-PaRC8SGnDuMn2h_bKHAVTHXI50?usp=drive_link) to the `./slides/` folder.~~
+2. I execute some shell commands (in `./___render_deploy.sh`) to convert `*.pptx` slides to `*.pdf` as soon as they are ~ready... 
 
 
 ## TO DO
@@ -16,9 +15,10 @@ Little things to keep in mind (because semi-automated) about moving form [Google
   + ~~add Goggle Analytics~~ 
   + make  `_variable.yml`
     + nome sito 
-+ Cancell **parameterize** practicel slides `.qmd`  
++ Cancel **parameterize** practicel slides `.qmd`  
     + it doesn't make any sense 
 + turn re-usable practice slides code into `tidyeval` functions (plot etc) to be able to replace with different datasets 
++ add `renv` bc this is going to last 
 
 ## How this website was built
 
