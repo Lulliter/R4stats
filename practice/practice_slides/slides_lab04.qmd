@@ -71,7 +71,6 @@ f_descr_table <- function(var) {
 }
 # Example of using the function
 # f_save_plot("proj_wrd_freq", proj_wrd_freq)
-
 ```
 
 # [GOAL OF TODAY'S PRACTICE SESSION]{.r-fit-text}
@@ -214,23 +213,16 @@ tidy(lm1)
 #| output-location: slide
 
 # df DAG 
-dag_collid <- dagify(
-  Y ~ X + e,
-  Z ~ X + Y,
-  exposure = "X",
-  outcome = "Y",
-  #latent = "e",
-  # labels
-  labels = c(
-    "Z" = "Collider",
-    "X" = "Exposure",
-    "Y" = "Outcome",
-    "e" = "Unobserved \nerror"),
-  # positions
-  coords = list(
-    x = c(X = 0, Y= 4, Z = 2 , e = 5),
-    y = c(X = 0, Y = 0, Z = 2, e = 1) 
-  )) %>% 
+dag_collid <- dagify( Y ~ X + e, Z ~ X + Y, 
+                      exposure = "X",outcome = "Y", #latent = "e",
+                      # labels
+                      labels = c("Z" = "Collider",  "X" = "Exposure",
+                                 "Y" = "Outcome", "e" = "Unobserved \nerror"),
+                      # positions
+                      coords = list(
+                        x = c(X = 0, Y= 4, Z = 2 , e = 5),
+                        y = c(X = 0, Y = 0, Z = 2, e = 1) 
+                      )) %>% 
   tidy_dagitty() 
 
 # Plot DAG 
@@ -250,7 +242,6 @@ dag_col_p <-  dag_collid %>%
   scale_color_manual(values = c("X" = "#9b6723", "Y" = "#72aed8", "Z" = "#d02e4c",
                                 "e" = "#A6A6A6"), 
                      guide = "none")    # Remove legend
-
 dag_col_p
 ```
 
@@ -260,7 +251,6 @@ dag_col_p
 f_save_plot("dag_col_p", dag_col_p)
 ```
 
-
 ## DAG with CONFOUNDER  
 
 ```{r}
@@ -269,23 +259,19 @@ library(dagitty) # Graphical Analysis of Structural Causal Models # Graphical An
 library(ggdag) # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs 
 
 # df DAG 
-dag_confounder <- dagify(
-  Y ~ X + Z + e,
-  X ~  Z,
-  exposure = "X",
-  outcome = "Y",
-  #latent = "e",
-  # labels
-  labels = c(
-    "Z" = "Confounder",
-    "X" = "Exposure",
-    "Y" = "Outcome",
-    "e" = "Unobserved \nerror"),
-  # positions
-  coords = list(
-    x = c(X = 0, Y= 4, Z = 2 , e = 5),
-    y = c(X = 0, Y = 0, Z = 2, e = 1) 
-  )) %>% 
+dag_confounder <- dagify(Y ~ X + Z + e, X ~  Z, 
+                         exposure = "X", outcome = "Y", #latent = "e",
+                         # labels
+                         labels = c(
+                           "Z" = "Confounder",
+                           "X" = "Exposure",
+                           "Y" = "Outcome",
+                           "e" = "Unobserved \nerror"),
+                         # positions
+                         coords = list(
+                           x = c(X = 0, Y= 4, Z = 2 , e = 5),
+                           y = c(X = 0, Y = 0, Z = 2, e = 1) 
+                         )) %>% 
   tidy_dagitty()     # Add edge_type within pipe
 
 # Plot DAG 
@@ -317,28 +303,23 @@ f_save_plot("dag_conf_p", dag_conf_p)
 
 ```{r}
 #| output-location: slide
+
 library(dagitty) # Graphical Analysis of Structural Causal Models # Graphical Analysis of Structural Causal Models # Graphical Analysis of Structural Causal Models 
 library(ggdag) # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs # Analyze and Create Elegant Directed Acyclic Graphs 
 
 # df DAG 
-dag_med <- dagify(
-  Y ~ Z + e,
-  Z ~ X,
-  
-  exposure = "X",
-  outcome = "Y",
-  #latent = "e",
-  # labels
-  labels = c(
-    "Z" = "Mediator",
-    "X" = "Exposure",
-    "Y" = "Outcome",
-    "e" = "Unobserved \nerror"),
-  # positions
-  coords = list(
-    x = c(X = 0, Y= 4, Z = 2 , e = 5),
-    y = c(X = 0, Y = 0, Z = 2, e = 1) 
-  )) %>% 
+dag_med <- dagify( Y ~ Z + e,  Z ~ X, exposure = "X", outcome = "Y",  #latent = "e",
+                   # labels
+                   labels = c(
+                     "Z" = "Mediator",
+                     "X" = "Exposure",
+                     "Y" = "Outcome",
+                     "e" = "Unobserved \nerror"),
+                   # positions
+                   coords = list(
+                     x = c(X = 0, Y= 4, Z = 2 , e = 5),
+                     y = c(X = 0, Y = 0, Z = 2, e = 1) 
+                   )) %>% 
   tidy_dagitty()     # Add edge_type within pipe
 
 # Plot DAG 
@@ -390,6 +371,7 @@ f_save_plot("dag_med_p", dag_med_p)
 **Sampling details**: We’ll use a subset of the NHANES dataset, focusing on variables related to smoking status (SmokeNow), systolic blood pressure (BPSysAve), Body Mass Index (BMI) and age (Age).
 
 ```{r}
+set.seed(123) # Set seed for reproducibility
 data(NHANES)
 # Select relevant columns and drop rows with missing values
 nhanes_data <- NHANES %>%
@@ -408,8 +390,8 @@ nhanes_data <- NHANES %>%
 
 ## [Dataset 1 (NHANES) Variables and their description]{.r-fit-text}
 
-::: {style="font-size: 60%;"}
-[[EXCERPT: see complete file in Input Data Folder]]{style="color:#77501a"}
+::: {style="font-size: 50%;"}
+[EXCERPT: see complete file in Input Data Folder]{style="color:#77501a"}
 
 ```{r}
 #| eval: true
@@ -506,9 +488,10 @@ kableExtra::kable(nhanes_desc)
 :::
 
 
-https://bookdown.org/jbrophy115/bookdown-clinepi/confounding.html
+<!-- https://bookdown.org/jbrophy115/bookdown-clinepi/confounding.html -->
+# CAUSAL MODELING WITH CONFOUNDER
 
-## Causal modeling with CONFOUNDER
+## Example of CONFOUNDER
 + Z = `Age` = confounder for (X = `SmokeNow`) and blood pressure (Y = `BPSysAve`)
 ```{r}
 data(NHANES)
@@ -527,7 +510,7 @@ In this context:
 + `Age` influences both smoking (`SmokeNow`) and blood pressure (`BPSysAve`), making it a *confounder.*
 + `SmokeNow` directly affects `BPSysAve.`
 
-## Causal modeling with CONFOUNDER (viz) 
+## Visualisation of CONFOUNDER
 
 ```{r}
 #| output-location: slide 
@@ -542,48 +525,50 @@ qplot (Age, BPSysAve, data = nhanes_conf, color = SmokeNow) +
 ```
 
 
-## --- Regression analysis - unadjusted model
+## [Regression analysis - controlling for the confounder]{.r-fit-text}
+
+**Unadjusted model**:
 ```{r}
 # Unadjusted linear model 
 model_unadjusted <- lm(BPSysAve ~ SmokeNow, data = nhanes_conf)
-summary(model_unadjusted)
- 
+summary(model_unadjusted)$coefficients
 ```
 
-## --- Regression analysis - adjusted model
-```{r}
+**Adjusted model**:
 
+  + includes the confounder `Age` in the model
+```{r}
 # Adjusted model
 model_adjusted <- lm(BPSysAve ~ SmokeNow + Age, data = nhanes_conf)
-summary(model_adjusted)
+summary(model_adjusted)$coefficients
 ```
 
-## --- Compare models
-
-+ adjusting for age changes the estimated effect of smoking on blood pressure
-  + *Unadjusted Model*: This model does not control for age, so any observed relationship between smoking and blood pressure might be confounded.
-  + *Adjusted Model*: This model controls for age, providing a more accurate estimate of the causal effect of smoking on blood pressure by accounting for the confounding influence of age.
+## [Compare models (without and with `confounder`)]{.r-fit-text}
+::: {style="font-size: 80%;"}
++ Adjusting for `Age` changes the estimated effect of `SmokeNow` on blood pressure (`BPSysAve`)
+  + **Unadjusted Model**: This model *'does not control for age'*, so any observed relationship between smoking and blood pressure might be confounded.
+  + **Adjusted Model**: This model *'controls for age'*, providing a more accurate estimate of the causal effect of smoking on blood pressure by accounting for the confounding influence of age.
 
 ```{r}
+#| output-location: slide
+#| tbl-cap: "Adjusting for `Age` changes the estimated effect of `SmokeNow` on blood pressure (`BPSysAve`)"
+#| tbl-cap-location: top 
 conf_sum <- modelsummary::msummary(list( "NO Confounder" = model_unadjusted, 
                                          "Confounder" = model_adjusted), 
                                    fmt="%.3f", # format
-                                   gof_omit = 'DF|Deviance|Log.Lik.|F|R2 Adj.|AIC|BIC',
+                                   gof_omit = 'DF|Deviance|Log.Lik.|F|R2 Adj.|AIC|BIC|RMSE',
                                    stars=c('*' = .05, '**' = .01)#,
                                    #coef_rename = cm,
                                    #output = paste(output,"ch19_reg-R.tex",sep="")
 ) 
-```
 
-## --- Compare models
-
-```{r}
-#| output: slide
 conf_sum
 ```
+:::
 
-
-## --- Add Predicted Values to the Dataset
+## [Compare predicted values from 2 models]{.r-fit-text}
+::: {style="font-size: 80%;"}
++ With `tidyr::pivot_longer()` we will reshape the dataset so we can plot the predicted values from both models in a faceted plot.
 
 ```{r}
 # Add predicted values from the unadjusted and adjusted models
@@ -592,16 +577,7 @@ nhanes_conf <- nhanes_conf %>%
     pred_unadjusted = predict(model_unadjusted),  # Predicted BPSysAve from unadjusted model
     pred_adjusted = predict(model_adjusted)       # Predicted BPSysAve from adjusted model
   )
-```
 
-
-## --- Plot results 1/2
-
-+ **Reshape the Data Using `pivot_longer()`**
-
-We will reshape the dataset so we can plot the predicted values from both models in a faceted plot.
-
-```{r}
 # Reshape the data into long format using pivot_longer()
 nhanes_long <- nhanes_conf %>%
   pivot_longer(cols = c(pred_unadjusted, pred_adjusted), 
@@ -610,31 +586,22 @@ nhanes_long <- nhanes_conf %>%
                         pred_unadjusted = "Unadjusted: SmokeNow on BPSysAve", 
                         pred_adjusted = "Adjusted: SmokeNow + Age on BPSysAve"))
 ```
+:::
 
-```{r}
-
-
-```
-
-
-## --- Plot results 2/2
-
+## [Plot predicted values from 2 models]{.r-fit-text}
+::: {style="font-size: 90%;"}
 ```{r}
 #| output-location: slide 
 
 # Violin plot with dashed line connecting the two conditions
 ggplot(nhanes_long, aes(x = factor(SmokeNow), y = BPSysAve, fill = model)) +
-  
   # Create the violin plot to show the distribution of blood pressure
   geom_point(color = "grey", alpha = 0.4, position = position_dodge(width = 0.3) ) +
-  
   # Overlay the predicted dashed line between the two smoking conditions
   geom_line(aes(y = predicted, group = model, color = model), 
             size = 0.8, linetype = "dashed", position = position_dodge(width = 0.3)) +
-  
   # Facet vertically for unadjusted and adjusted models
   facet_wrap(model ~ ., scales = "free_y",ncol = 2) +
-  
   # Add labels and title
   labs(title = "Confounder Analysis: Predicted values in Unadjusted vs Adjusted Regression models",
        subtitle = "Age = Confounder",
@@ -643,24 +610,22 @@ ggplot(nhanes_long, aes(x = factor(SmokeNow), y = BPSysAve, fill = model)) +
        color = "Model",
        fill = "Model"
        ) +
-  
   # Customize colors for better contrast
   scale_fill_manual(values = c("Unadjusted: SmokeNow on BPSysAve" ="lightcoral" , 
                                "Adjusted: SmokeNow + Age on BPSysAve" = "lightblue")) +
   scale_color_manual(values = c("Unadjusted: SmokeNow on BPSysAve" = "red", 
                                 "Adjusted: SmokeNow + Age on BPSysAve" = "blue")) +
-  
   # Minimal theme for clarity
   theme_minimal()+
   theme(legend.position = "none")
-
 ```
+:::
 
-## Causal modeling with MEDIATOR
+# CAUSAL MODELING WITH MEDIATOR
 <!-- https://tilburgsciencehub.com/topics/analyze/regression/linear-regression/mediation-analysis/ -->
 
-
-+ M = `BMI` = mediator for the effect of X= `PhysActiveDays` on Y = `BPSysAve`
+# [The case of a mediator]{.r-fit-text}
++ M = `BMI` is a **mediator** for the effect of X = `PhysActiveDays` on Y = `BPSysAve`
      
 ```{r}
 data(NHANES)
@@ -673,63 +638,71 @@ nhanes_med <- NHANES %>%
 summary(nhanes_med)
 ```
 
-## --- Regression analysis - unadjusted (total) model
+## [Fitting unadjusted (total) model]{.r-fit-text}
+::: {style="font-size: 80%;"}
+Before adjusting for any mediator, we **fit a simple linear model to estimate the total effect** of `PhysActiveDays` on `Systolic Blood Pressure` (disregarding any possible mediation of `BMI`).
 
-Before adjusting for any mediator, we fit a simple linear model to estimate the total effect total effect of `BMI` on `Systolic Blood Pressure` without considering `Age`.
-
-+ `Total Effect Model (Unadjusted)` .
++ `Total Effect Model (Unadjusted)`
+  + This model gives the total effect of of `PhysActiveDays` on `Systolic Blood Pressure` (including any *indirect* effects through M = `BMI` or other variables that haven't been included.)
 
 ```{r}
 # Unadjusted model: total effect of smoking on blood pressure
 total_effect_model <- lm(BPSysAve ~ PhysActiveDays, data = nhanes_med)
-summary(total_effect_model)
+summary(total_effect_model)$coefficients
 ```
 
-This model gives the total effect of of `PhysActiveDays` on `Systolic Blood Pressure` (including any *indirect* effects through M = `BMI` or other variables that haven't been included.)
+:::
 
 
-## --- Regression analysis - MEDIATOR model
+## [Set up the mediation models 1/2]{.r-fit-text}
+::: {style="font-size: 90%;"}
 
-Now we will set up the mediation models:
+Then, we fit the model to estimate the effect of X = `PhysActiveDays` on M = `BMI`:
  
-+ `Mediator model`: This model estimates the effect of physical activity `PhysActiveDays` on BMI `BMI` (= M). This allows us to see whether more physically active days are associated with lower BMI values (which could then affect blood pressure).
++ `Mediator model`
+  + This model allows us to see whether more **physically active days** are associated with **(lower) BMI** values (which could *then* affect **blood pressure**).
 
 ```{r}
 # Mediator model: SmokeNow affects BMI
 mediator_model <- lm(BMI ~ PhysActiveDays, data = nhanes_med)
-summary(mediator_model)
+summary(mediator_model)$coefficients
 ```
+:::
 
-+ `Outcome Model (Adjusted for BMI)`: This model estimates the effect of `PhysActiveDays` and `BMI` on Systolic Blood Pressure (`BPSysAve`). This is the *adjusted model*, where we adjust for the mediator (`BMI`).
+## [Set up the mediation models 2/2]{.r-fit-text}
+::: {style="font-size: 90%;"}
+Lastly, we fit the model to estimate the effect of X = `PhysActiveDays` on Y = `BPSysAve` while adjusting for M = `BMI`:
+
++ `Outcome Model (Adjusted for BMI)`
+   + This model estimates the effect of `PhysActiveDays` and `BMI` on Systolic Blood Pressure (`BPSysAve`). This is the *adjusted model*.
 
 ```{r}
 # Outcome model: PhysActiveDays and BMI affect BPSysAve
 outcome_model <- lm(BPSysAve ~  PhysActiveDays + BMI, data = nhanes_med)
-summary(outcome_model)
+summary(outcome_model)$coefficients
 ```
+:::
 
 
-## --- Compare models
+## [Compare models]{.smaller}
+::: {style="font-size: 80%;"}
 ```{r}
+#| output-location: slide
+#| tab-caption: "Comparison of the three models"
 med_sum <- modelsummary::msummary(list("BMI ~ Mediator Effect" = mediator_model,
                                        "BPSysAve ~ Total Effect" = total_effect_model,
                                        "BPSysAve ~ Outcome" = outcome_model), 
-                                  fmt="%.3f", # format
-                                  gof_omit = 'DF|Deviance|Log.Lik.|F|R2 Adj.|AIC|BIC',
-                                  stars=c('*' = .05, '**' = .01)#,
+                                  fmt = "%.3f", # format
+                                  gof_omit = 'DF|Deviance|Log.Lik.|F|R2 Adj.|AIC|BIC|RMSE',
+                                  stars = c('*' = .05, '**' = .01)#,
                                   #coef_rename = cm,
                                   #output = paste(output,"ch19_reg-R.tex",sep="")
 ) 
-```
-
-## --- Compare models
-```{r}
-#| output: slide
 med_sum
 ```
+:::
 
-
-## --- Calculate the Indirect, Direct, and Total Effects
+## [Calculate the Indirect, Direct, and Total Effects (1/2)]{.r-fit-text}
 Now that we have the coefficients from the models, we can calculate the mediation effects manually.
 
 + **Direct Effect**: This is the coefficient of `PhysActiveDays` in the outcome model, which gives the direct effect of exercise on blood pressure (*controlling* for `BMI` = M)
@@ -737,49 +710,60 @@ Now that we have the coefficients from the models, we can calculate the mediatio
 + **Total Effect**: This is the coefficient of `PhysActiveDays` in the unadjusted model (*NOT controlling* for `BMI` = M).
 
 ```{r}
+#| echo: FALSE
+#| output: FALSE
+
 # Check the names of the coefficients in models...
 names(coef(mediator_model))     # [1] BMI ~ PhysActiveDays 
 names(coef(outcome_model))      # [1] BPSysAve ~  PhysActiveDays + BMI    
 names(coef(total_effect_model)) # [1] BPSysAve ~ PhysActiveDays
+```
 
-# BREAKING DOWN THE ESTIMATE OF PhysActiveDays COEFFICIENT 
+## [Calculate the Indirect, Direct, and Total Effects (2/2)]{.r-fit-text}
+
+::: {style="font-size: 90%;"}
+Breakdown of the estimated effects:
+```{r}
+#| output-location: slide
 
 # TOTAL effect: The effect of PhysActiveDays on BPSysAve without adjusting for BMI
 total_effect <- coef(total_effect_model)["PhysActiveDays"]
 total_effect # 0.59
-
 # DIRECT effect: The effect of PhysActiveDays on BPSysAve after adjusting for BMI.
 direct_effect <- coef(outcome_model)["PhysActiveDays"]  # Direct effect (controlling for BMI)
 direct_effect # 0.621 
-
 # Indirect effect: The portion of the effect on BPSysAve that is mediated through BMI
 indirect_effect <- coef(mediator_model)["PhysActiveDays"] * coef(outcome_model)["BMI"]   
 indirect_effect # [-0.0821 X 0.382] = -0.0313 
 # or 
-total_effect - direct_effect # !!!!!!!!  -0.0313
+total_effect - direct_effect #  = -0.0313
 ```
+:::
 
-## --- Proportion mediated
+## [Proportion mediated]{.r-fit-text}
 ```{r}
 # Proportion mediated: The proportion of the total effect that is mediated through BMI
 proportion_mediated <- glue::glue("{round(indirect_effect / total_effect *100, 2)}%")
 proportion_mediated #  -0.0531
 ```
- 
-## --- Visualise the Indirect, Direct, and Total Effects
+
+# _______ QUI  _______
+
+
+
+## [Visualise the Indirect, Direct, and Total Effects]{.r-fit-text}
 
 "+ Physical Activity" -> "+ Systolic Blood Pressure (BPSysAve)" | "+ BMI -> - BPSysAve "
 WTF ??? 
 
 ```{r}
+#| output: slide
+
 # Create a data frame for the effects
 effects_df <- data.frame(
   Effect = c("Total Effect", "Direct Effect", "Indirect Effect"),
   Value = c(total_effect, direct_effect, indirect_effect)
 )
-
-# Load ggplot2
-library(ggplot2)
 
 # Create the bar plot
 ggplot(effects_df, aes(x = Effect, y = Value, fill = Effect)) +
@@ -790,7 +774,7 @@ ggplot(effects_df, aes(x = Effect, y = Value, fill = Effect)) +
   theme_minimal()
 ```
 
-## --- Interpret results 
+## [Interpret results ]{.r-fit-text}
 
 + The **total effect** tells us the overall relationship between `PhysActiveDays` and `BPSysAve`.
 
@@ -801,7 +785,7 @@ ggplot(effects_df, aes(x = Effect, y = Value, fill = Effect)) +
 + The **proportion mediated** indicates how much of the total effect is due to the mediation by BMI.
 
 
-## --- Calculate the Indirect, Direct, and Total Effects (modo2) 
+## [Calculate the Indirect, Direct, and Total Effects (modo2) ]{.r-fit-text}
 ```{r}
 library(mediation)
 # recall
@@ -832,8 +816,8 @@ nhanes_med_pred <- nhanes_med %>%
   )
 ```
 
-## --- Plot results 1/2
 
+## [Plot results 1/2]{.r-fit-text}
 Now, let's create a plot that includes:
 
 + The total effect of BMI on blood pressure (without adjusting for Age).
@@ -853,7 +837,8 @@ nhanes_long <- nhanes_med_pred %>%
                         pred_bps_total = "Total Effect: PhysActiveDays on BPSysAve"))
 ```
 
-## --- Plot results 2/2
+
+## [Plot results 2/2]{.r-fit-text}
 
 ```{r}
 #| output-location: slide 
@@ -875,6 +860,7 @@ ggplot(nhanes_long, aes(x = BMI)) +
 # ----
 # QUI
 Equitable Equations !!!!!
+https://www.andrewheiss.com/blog/2024/03/21/demystifying-ate-att-atu/
 
 ## [Importing Dataset 2 (Gabor)]{.r-fit-text}
 
