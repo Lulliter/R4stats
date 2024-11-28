@@ -4,7 +4,6 @@
 
 # Variables can be either simple values or can include arbitrary markdown content
 
-
 websites:
   lulas_site: https://luisamimmi.org/ # "https://lulliter.github.io/nerd-help"
   gh_repo: https://github.com/Lulliter/R4stats
@@ -25,3 +24,10 @@ websites:
 
 #	+ in normal *.qmd        {{< var websites.R4biostats >}}
 #	+ in YAML entry        "{{< var websites.R4biostats >}}"
+
+
+### ---- DOESN"T WORK IN YAML 
+# metadata fields such as author, title, etc., in the YAML are treated as static text fields and do not support dynamic variables like {{< >}}.
+author:
+  name: Luisa M. Mimmi
+  affiliation: Independent Consultant

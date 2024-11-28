@@ -152,7 +152,8 @@ Below is a curated list of great resources (most of which free and openly access
 
 #mybib_df[mybib_df$type == "article",  1] 
 mybib_df %>% 
-  filter(!(include %in% "no") & type ==  "article") %>% 
+  #filter(!(include %in% "no")) %>% 
+  filter(type ==  "article") %>% 
    select(key)
 
 # print(mybib[type = "article"], 
@@ -163,7 +164,7 @@ mybib_df %>%
 
  <!-- + @mayne_role_1957     -->
 
-### Biostatistics/Epidemiology with R examples
+### Statistics, Biostatistics, Epidemiology with R examples
 
 ```{r course}
 #| include: false
@@ -193,7 +194,18 @@ mybib_df %>%
   )
 ```
 
-
+<!-- + @arel-bundock_vincent_2024 -->
+<!-- + @berrino_covid-19_2024     -->
++ @heiss_demystifying_2024  
+<!-- + @kozyrkov_machine_2024     -->
+<!-- + @kozyrkov_statistics_2024  -->
+<!-- + @patil_roles_2024          -->
+<!-- + @bellavite_immune_2023     -->
++ @greifer_choosing_2021
+<!-- + @kruschke_bayesian_2018    -->
+<!-- + @shmueli_explain_2010      -->
+<!-- + @mayne_role_1957           -->
+<!-- + @baker_how_nodate    -->
 + @applied_epi_team_applied_2024
 + @applied_epi_team_r_2024
 + @bobbitt_statology_2024
