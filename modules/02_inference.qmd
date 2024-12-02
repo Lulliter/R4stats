@@ -1,0 +1,96 @@
+---
+title: "Statistical inference & hypothesis testing"
+subtitle: "<span class='code'>Module 2</span>"
+# date: "2024-07-25"
+# image: "images/02-display.png"
+tbl-colwidths: [5,20,75]
+---
+
+## Outline
+
++ **Purpose and foundations of inferential statistics**
+  + Probability and random variables 
+  + Meaningful probability distributions
+  + Sampling distributions and Central Limit Theorem
++ **Getting to know the “language” of hypothesis testing**
+  + The null and alternative hypothesis
+  + The probability of error? (*α* or "significance level")
+  + The *p-value* probability and tests interpretation
+  + Confidence Intervals
+  + Types of errors (Type 1 and Type 2)
+  + Effective vs statistical significance
++ **Hypothesis tests examples**
+  + Comparing sample mean to a hypothesized population mean (Z test & t test)
+  + Comparing two independent sample means (t test)
+  + Comparing sample means from 3 or more groups (ANOVA) <!-- (esempio metabolomica Catanzaro?) -->
++ **A closer look at testing assumptions (with examples)** 
+  + Testing two groups that are *not* independent 
+  + Testing if the data are *not* normally distributed: non-parametric tests
+  + Testing samples *without* homogeneous variance of observations
+
+## Lecture slides
+::: {.custom-border style="border: 2px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"}
+<!-- [{{< fa file-powerpoint>}}&nbsp;**View lecture slides in full screen**](../lectures_slides/Lecture_01.pdf) -->
+[**View lecture slides in full screen** &nbsp;{{< fa file-powerpoint >}}](../lectures_slides/Lecture_02.pdf)
+:::
+
+## Practice slides
+
+::: {.custom-border style="border: 2px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"}
+[**View practice slides in full screen** &nbsp;{{< fa file-code >}}](../practice/practice_slides/slides_lab02.html)
+:::
+
+
+
+\pagebreak
+
+```{r}
+#| eval: true
+#| echo: false
+#| output: true
+
+library(downloadthis)
+```
+
+{{< pagebreak >}}
+
+### Practice input data (as `subfolder`)
+
+```{r}
+#| echo: false
+#| eval: true
+#| output: true
+
+download_dir(
+  path = here::here("practice", "data_input", "02_datasets"),# param
+  output_name = "labs input data",
+  button_label = "Download input data",
+  button_type = "success",
+  has_icon = TRUE,
+  icon = "fa-solid fa-folder-open",
+  self_contained = FALSE
+)
+```
+
+
+### Practice R code (as `.R` file)
+```{r}
+#| echo: false
+#| eval: true
+#| output: true
+
+library(fs) 
+
+# using a param for which file 
+download_file(
+  path =  here::here("practice", "Rcode", "lab02_code.R"  ), # param
+  output_name = fs::path_ext_remove ("lab02_code.R" ), # param + no extension.... 
+  output_extension = ".R",  
+  button_label = "Download R file",
+  button_type = "primary",
+  has_icon = TRUE,
+  icon = "fa-brands fa-r-project",
+  self_contained = FALSE
+)
+```
+

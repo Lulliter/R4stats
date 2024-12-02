@@ -46,36 +46,44 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="intro-to-biostatistics-with-r" class="level1">
-<h1>Intro to Biostatistics with R</h1>
-<p>This website collects the materials for a 4 day workshop taking place during the MIGEST Summer School in July of 2024</p>
-</section>
-<section id="quirks" class="level1">
-<h1>Quirks</h1>
-<p>Little things to keep in mind (because semi-automated): <a href="https://drive.google.com/drive/folders/1mkits-PaRC8SGnDuMn2h_bKHAVTHXI50?usp=drive_link">GoogleDrive</a> (<code>*.pptx</code>) lecture files to R lecture files, and about transforming from <code>*pptx</code> to <code>*.pdf</code>. Before every push to GitHub:</p>
-<p><del>1. I execute a script <code>R_resources/slides_fromDrive_2_here.R</code> from my shell file <code>___render_deploy.sh</code> to copy the <code>*.pptx</code> files from <a href="https://drive.google.com/drive/folders/1mkits-PaRC8SGnDuMn2h_bKHAVTHXI50?usp=drive_link">GoogleDrive</a> to the <code>./slides/</code> folder.</del> 2. I execute some shell commands (in <code>./___render_deploy.sh</code>) to convert <code>*.pptx</code> slides to <code>*.pdf</code> as soon as they are ~ready…</p>
+<section id="intro-to-statistics-with-r" class="level1">
+<h1>Intro to Statistics with R</h1>
+<p>This website hosts some teaching material on <strong>“Introduction to Statistics &amp; Machine Learning with R”</strong> — an intensive workshop that includes both Lectures and Practice Sessions to reinforce the concepts learned using programming.</p>
+<ul>
+<li>Originally designed for a summer workshop offered in July of 2024 to a group of PhD students from various EU universities specializing in life sciences —see <a href="https://R4biostats.com/">https://R4biostats.com/</a>.</li>
+</ul>
 <section id="to-do" class="level2">
 <h2 class="anchored" data-anchor-id="to-do">TO DO</h2>
 <ul>
-<li><strong>[CODE refactoring]</strong>
+<li><p>finish <code>practice/practice_slides/slides_lab04.qmd</code></p>
 <ul>
-<li><del>add Goggle Analytics</del></li>
-<li>make <code>_variable.yml</code>
+<li>(add PSM come causal approach? forse no perche e prematuro)</li>
+</ul></li>
+<li><p>restructure <code>lectures_slides/_Lulass/Lecture_05.pptx</code></p>
+<ul>
+<li>metto qui INTRO to ML (da <code>Lecture_04.pptx</code>)</li>
+<li>tolgo la parte di <strong>Metaboanalyst</strong> e <strong>Power Analysis</strong> (da <code>Lecture_05.pptx</code>) e</li>
+</ul></li>
+<li><p>Creo Bonus materials? faccio lecture/practice 6?</p></li>
+<li><p>🙄 A valle di cui sopra, ha senso ristrutturare il sito invece che Lectures Menu + Lab menu <strong>per argomenti</strong> (con sotto lezione e esercitazione)?</p></li>
+<li><p><strong>[CODE refactoring]</strong></p>
+<ul>
+<li>✅ make <code>_variable.yml</code>
 <ul>
 <li>nome sito</li>
 </ul></li>
 </ul></li>
-<li>Cancel <strong>parameterize</strong> practicel slides <code>.qmd</code>
+<li><p>✅ Cancel <strong>parameterized</strong> practicelslides <code>.qmd</code></p>
 <ul>
 <li>it doesn’t make any sense</li>
 </ul></li>
-<li>turn re-usable practice slides code into <code>tidyeval</code> functions (plot etc) to be able to replace with different datasets</li>
-<li>add <code>renv</code> bc this is going to last</li>
+<li><p>turn re-usable practice slides code into <code>tidyeval</code> functions (plot etc) to be able to replace with different datasets</p></li>
+<li><p>add <code>renv</code> bc this is going to last</p></li>
 </ul>
 </section>
 <section id="how-this-website-was-built" class="level2">
 <h2 class="anchored" data-anchor-id="how-this-website-was-built">How this website was built</h2>
-<p>This is a static website built with <a href="https://quarto.org/">Quarto</a>, shared on a Github <a href="https://github.com/Lulliter/R4biostats">repo</a> and served via <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site">Github Pages</a> <del>to be rendered at this link <a href="https://lulliter.github.io/R4biostats/">https://lulliter.github.io/R4biostats/</a></del>, or (after buying a “custom domain”), now deployed over a custom domain registered with AWS Route 53: <a href="https://r4biostats.com/" class="uri">https://r4biostats.com/</a>.</p>
+<p>This is a static website built with <a href="https://quarto.org/">Quarto</a>, shared on a Github <a href="https://github.com/Lulliter/R4biostats">repo</a> and served via <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site">Github Pages</a> to be rendered at this link <a href="https://lulliter.github.io/R4stats/">https://lulliter.github.io/R4stats/</a>, or (after buying a “custom domain”), now deployed over a custom domain registered with AWS Route 53: &lt;???&gt;.</p>
 <p>The main content of the website pages is contained in <em>Quarto Markdown</em> files (<code>*.qmd</code>). <code>*.qmd</code> files are very similar to regular Markdown (<code>*.md</code>) and R Markdown (<code>*.rmd</code>) files, except they are designed to be language agnostic.</p>
 </section>
 <section id="things-needed-to-build-the-site" class="level2">
@@ -85,7 +93,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Install <strong>git</strong> (distributed version control software)… here some <a href="https://github.com/git-guides">instructions</a></li>
 <li>Create a <strong>Github</strong> account</li>
 <li>Follow instructions/examples available <a href="https://quarto.org/docs/websites/">here</a>…</li>
-<li>Font-Awsome Icons downloaded in <code>./images/*</code> from <a href="https://github.com/FortAwesome/Font-Awesome/tree/6.x/svgs">Font-Awsome GH repo /svgs</a>. To use in:</li>
+<li>Font-Awesome Icons downloaded in <code>./images/*</code> from <a href="https://github.com/FortAwesome/Font-Awesome/tree/6.x/svgs">Font-Awsome GH repo /svgs</a>. To use in:</li>
 </ol>
 <ul>
 <li><code>*.md</code>

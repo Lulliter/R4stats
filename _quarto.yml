@@ -28,7 +28,7 @@ website:
     left: |
       {{< fa brands creative-commons >}}
       {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-nc >}} {{< fa brands creative-commons-sa >}}
-      [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) <br> M. Chiara Mimmi & [Luisa M. Mimmi](https://luisamimmi.org/) 2024
+      [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) <br> [Luisa M. Mimmi](https://luisamimmi.org/) & M. Chiara Mimmi 2024
     right: |
       Made with {{< fa brands r-project >}} and [Quarto](https://quarto.org/) <br> 
       [Code at {{< fa brands github >}} GitHub]("{{< var websites.gh_repo >}}")
@@ -60,33 +60,46 @@ website:
       - text: "Syllabus"
         icon: book-fill # code-square # https://icons.getbootstrap.com/?q=home
         href: syllabus.qmd
-      - text: "Lectures"
-        icon: easel-fill # https://icons.getbootstrap.com/?q=home
+      - text: "Modules"
+        icon: puzzle-fill # code-square # https://icons.getbootstrap.com/?q=home
         menu: 
           - text: "Intro to R and data analysis"
-            href: lectures/lec01_data_with_R.qmd
+            href: modules/01_data_with_R.qmd
           - text: "Statistical inference & hypothesis testing"
-            href: lectures/lec02_inference.qmd
+            href: modules/02_inference.qmd
           - text: "Modeling correlation and regression"
-            href: lectures/lec03_corr_regress.qmd
+            href: modules/03_corr_regress.qmd
           - text: "Mapping causal & predictive approaches"
-            href: lectures/lec04_caus_pred.qmd
+            href: modules/04_caus_pred.qmd
           - text: "Intro to machine learning"
-            href: lectures/lec05_intro_ML.qmd
-      - text: "{{< fa brands r-project >}} Labs"
-        # icon: terminal-fill #  archive-fill # https://icons.getbootstrap.com/?q=home
-        # href: practice.qmd
-        menu: 
-          - text: "Lab: Intro to R and data analysis"
-            href: practice/lab01_data_with_R.qmd
-          - text: "Lab: Statistical inference & hypothesis testing"
-            href: practice/lab02_inference.qmd
-          - text: "Lab: Modeling correlation and regression"
-            href: practice/lab03_corr_regress.qmd
-          - text: "Lab: Mapping causal & predictive approaches"
-            href: practice/lab04_causation.qmd
-          - text: "Lab: Intro to machine learning"
-            href: practice/lab05_intro_ML.qmd
+            href: modules/05_intro_ML.qmd
+          - text: "Extra materials"
+            href: modules/06_extra.qmd
+      # - text: "Lectures"
+      #   icon: easel-fill # https://icons.getbootstrap.com/?q=home
+      #   menu: 
+      #     - text: "Intro to R and data analysis"
+      #       href: lectures/lec01_data_with_R.qmd
+      #     - text: "Statistical inference & hypothesis testing"
+      #       href: lectures/lec02_inference.qmd
+      #     - text: "Modeling correlation and regression"
+      #       href: lectures/lec03_corr_regress.qmd
+      #     - text: "Mapping causal & predictive approaches"
+      #       href: lectures/lec04_caus_pred.qmd
+      #     - text: "Intro to machine learning"
+      #       href: lectures/lec05_intro_ML.qmd
+      # - text: "{{< fa brands r-project >}} Labs"
+      #   menu: 
+      #     - text: "Lab: Intro to R and data analysis"
+      #       href: practice/lab01_data_with_R.qmd
+      #     - text: "Lab: Statistical inference & hypothesis testing"
+      #       href: practice/lab02_inference.qmd
+      #     - text: "Lab: Modeling correlation and regression"
+      #       href: practice/lab03_corr_regress.qmd
+      #     - text: "Lab: Mapping causal & predictive approaches"
+      #       href: practice/lab04_causation.qmd
+      #     - text: "Lab: Intro to machine learning"
+      #       href: practice/lab05_intro_ML.qmd
       # - text: "About"
       #   icon: mortarboard-fill #person-circle # https://icons.getbootstrap.com/?q=home
       #   href: me.qmd

@@ -1,0 +1,100 @@
+---
+title: "Intro to R and data analysis"
+subtitle: "<span class='code'>Module 1</span>"
+#date: "2024-07-24"
+# image: "images/01-foundations.png"
+tbl-colwidths: [5,20,75]
+## ------  general Output Options
+execute:     
+  eval: true
+  echo: false     #  include source code in output
+  warning: false  #  include warning code in output
+  error: false    #  include error code in output
+  output: false   # include output code in output (CHG in BLOCKS)
+  # include: false   # R still runs but code and results DON"T appear in output  
+  cache: false # normalmnte false
+---
+
+
+## Outline
+
++ Introduction to R and R-studio
+  + Why R?
+  + Principles of reproducible analysis with R + RStudio
++ R objects, functions, packages
++ Understanding different types of variables
+  + Principles of “tidy data”
+  + Data cleaning and manipulation
++ Descriptive statistics
+  + Measures of central tendency, measures of variability (or spread), and
++ Frequency distribution
++ Visual data exploration
+  + {`ggplot2`}
+  
+## Lecture slides
+
+::: {.custom-border style="border: 2px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"}
+<!-- [{{< fa file-powerpoint>}}&nbsp;**View lecture slides in full screen**](../lectures_slides/Lecture_01.pdf) -->
+[**View lecture slides in full screen** &nbsp;{{< fa file-powerpoint >}}](../lectures_slides/Lecture_01.pdf)
+:::
+
+## Practice slides
+
+::: {.custom-border style="border: 2px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"}
+[**View practice slides in full screen** &nbsp;{{< fa file-code >}}](../practice/practice_slides/slides_lab01.html)
+:::
+
+
+
+\pagebreak
+
+```{r}
+#| eval: true
+#| echo: false
+#| output: true
+
+library(downloadthis)
+```
+
+{{< pagebreak >}}
+
+## Practice input data (as `subfolder`)
+
+```{r}
+#| echo: false
+#| eval: true
+#| output: true
+
+download_dir(
+  path = here::here("practice", "data_input", "01_datasets"),# param
+  output_name = "labs input data",
+  button_label = "Download input data",
+  button_type = "success",
+  has_icon = TRUE,
+  icon = "fa-solid fa-folder-open",
+  self_contained = FALSE
+)
+```
+
+
+## Practice R code (as `.R` file)
+```{r}
+#| echo: false
+#| eval: true
+#| output: true
+
+library(fs) 
+
+# using a param for which file 
+download_file(
+  path =  here::here("practice", "Rcode", "lab01_code.R"  ), # param
+  output_name = fs::path_ext_remove ("lab01_code.R" ), # param + no extension.... 
+  output_extension = ".R",  
+  button_label = "Download R file",
+  button_type = "primary",
+  has_icon = TRUE,
+  icon = "fa-brands fa-r-project",
+  self_contained = FALSE
+)
+```
+

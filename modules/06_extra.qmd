@@ -1,0 +1,83 @@
+---
+title: "Extra materials"
+subtitle: "<span class='code'>Additional topics...</span>"
+# date: "2024-07-27"
+# image: "images/04-guide.png"
+tbl-colwidths: [5,20,75]
+---
+
+
+🔴  … currently under review … 🔴
+ 
+## Topics
+
+-   Introduction to `MetaboAnalyst` software
+    -   A useful R-based resources for metabolomics
+
+-   Elements of statistical **Power Analysis**
+
+## (Extra) lecture slides
+
+<!-- ::: {.custom-border style="border: 2px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"} -->
+<!-- [**View lecture slides in full screen** &nbsp;{{< fa file-powerpoint >}}](../lectures_slides/Lecture_06.pdf) -->
+<!-- ::: -->
+
+## (Extra) practice slides
+
+<!-- ::: {.custom-border style="border: 2px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"} -->
+<!-- [**View practice slides in full screen** &nbsp;{{< fa file-code >}}](../practice/practice_slides/slides_lab06.html) -->
+<!-- ::: -->
+
+
+
+\pagebreak
+
+```{r}
+#| eval: false
+#| echo: false
+#| output: true
+
+library(downloadthis)
+```
+
+{{< pagebreak >}}
+
+### Practice input data (as `subfolder`)
+
+```{r}
+#| eval: false
+#| echo: false
+#| output: true
+
+download_dir(
+  path = here::here("practice", "data_input", "06_datasets"),# param
+  output_name = "labs input data",
+  button_label = "Download input data",
+  button_type = "success",
+  has_icon = TRUE,
+  icon = "fa-solid fa-folder-open",
+  self_contained = FALSE
+)
+```
+
+
+### Practice R code (as `.R` file)
+```{r}
+#| eval: false
+#| echo: false
+#| output: true
+
+library(fs) 
+
+# using a param for which file 
+download_file(
+  path =  here::here("practice", "Rcode", "lab06_code.R"  ), # param
+  output_name = fs::path_ext_remove ("lab06_code.R" ), # param + no extension.... 
+  output_extension = ".R",  
+  button_label = "Download R file",
+  button_type = "primary",
+  has_icon = TRUE,
+  icon = "fa-brands fa-r-project",
+  self_contained = FALSE
+)
+```

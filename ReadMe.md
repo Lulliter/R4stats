@@ -1,28 +1,31 @@
-# Intro to Biostatistics with R
+# Intro to Statistics with R
 
-This website collects the materials for a 4 day workshop taking place during the MIGEST Summer School in July of 2024
+This website hosts some teaching material on **“Introduction to Statistics & Machine Learning with R”** — an intensive workshop that includes both Lectures and Practice Sessions to reinforce the concepts learned using programming. 
 
-# Quirks 
-Little things to keep in mind (because semi-automated): 
-
-~~1. I execute a script `R_resources/slides_fromDrive_2_here.R` from my shell file `___render_deploy.sh` to copy the `*.pptx` files from [GoogleDrive](https://drive.google.com/drive/folders/1mkits-PaRC8SGnDuMn2h_bKHAVTHXI50?usp=drive_link) to the `./slides/` folder.~~
-2. I execute some shell commands (in `./___render_deploy.sh`) to convert `*.pptx` slides to `*.pdf` as soon as they are ~ready... 
++ Originally designed for a summer workshop offered in July of 2024 to a group of PhD students from various EU universities specializing in life sciences ---see [https://R4biostats.com/](https://R4biostats.com/). 
 
 
 ## TO DO
 
++ 🙄 A monte di cui sotto, ha senso ristrutturare il sito invece che Lectures Menu + Lab menu **per argomenti** (con sotto lezione e esercitazione)? 
+
++ finish `practice/practice_slides/slides_lab04.qmd`
+  + (add PSM come causal approach? forse no perche e prematuro) 
++ restructure `lectures_slides/_Lulass/Lecture_05.pptx`
+  + metto qui INTRO to ML (da `Lecture_04.pptx`)
+  + tolgo la parte di **Metaboanalyst** e **Power Analysis**  (da `Lecture_05.pptx`) e 
++ Creo Bonus materials? faccio `lecture/practice 06`?  
+
+
 + **[CODE refactoring]**
-  + ~~add Goggle Analytics~~ 
-  + make  `_variable.yml`
+  + ✅ make  `_variable.yml`
     + nome sito 
-+ Cancel **parameterize** practicel slides `.qmd`  
-    + it doesn't make any sense 
 + turn re-usable practice slides code into `tidyeval` functions (plot etc) to be able to replace with different datasets 
 + add `renv` bc this is going to last 
 
 ## How this website was built
 
-This is a static website built with [Quarto](https://quarto.org/), shared on a Github [repo](https://github.com/Lulliter/R4biostats) and served via [Github Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) ~~to be rendered at this link [https://lulliter.github.io/R4biostats/](https://lulliter.github.io/R4biostats/)~~, or (after buying a "custom domain"), now deployed over a custom domain registered with AWS Route 53: <https://r4biostats.com/>.
+This is a static website built with [Quarto](https://quarto.org/), shared on a Github [repo](https://github.com/Lulliter/R4biostats) and served via [Github Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) to be rendered at this link [https://lulliter.github.io/R4stats/](https://lulliter.github.io/R4stats/), or (after buying a "custom domain"), now deployed over a custom domain registered with AWS Route 53: <???>.
 
 The main content of the website pages is contained in *Quarto Markdown* files (`*.qmd`). `*.qmd` files are very similar to regular Markdown (`*.md`) and R Markdown (`*.rmd`) files, except they are designed to be language agnostic.
 
@@ -32,7 +35,7 @@ The main content of the website pages is contained in *Quarto Markdown* files (`
 2. Install **git** (distributed version control software)... here some [instructions](https://github.com/git-guides)
 3. Create a **Github** account
 4. Follow instructions/examples available [here](https://quarto.org/docs/websites/)...
-5. Font-Awsome Icons downloaded in `./images/*` from [Font-Awsome GH repo /svgs](https://github.com/FortAwesome/Font-Awesome/tree/6.x/svgs). To use in:
+5. Font-Awesome Icons downloaded in `./images/*` from [Font-Awsome GH repo /svgs](https://github.com/FortAwesome/Font-Awesome/tree/6.x/svgs). To use in:
 
 - `*.md`
   - ~~`![fa-crown](images/copyright-regular.svg)`~~ (no size spec!!!)
@@ -42,6 +45,15 @@ The main content of the website pages is contained in *Quarto Markdown* files (`
   - r inline code `r fontawesome::fa("fab fa-windows", fill = "steelblue")`
 
 6. (An AWS account ...) but only for the custom domain part
+
+
+# Quirks 
+Little things to keep in mind (because semi-automated): 
+
+1. ~~I execute a script `R_resources/slides_fromDrive_2_here.R` from my shell file `___render_deploy.sh` to copy the `*.pptx` files from [GoogleDrive](https://drive.google.com/drive/folders/1mkits-PaRC8SGnDuMn2h_bKHAVTHXI50?usp=drive_link) to the `./slides/` folder.~~
+
+2. I execute some shell commands (in `./___render_deploy.sh`) to convert `*.pptx` slides to `*.pdf` as soon as they are ~ready... 
+
 
 ## Attributions
 

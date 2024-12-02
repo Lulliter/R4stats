@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab04.html</loc>
-    <lastmod>2024-11-28T11:59:18.237Z</lastmod>
+    <lastmod>2024-12-02T17:06:35.005Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab02.html</loc>
@@ -17,28 +17,20 @@
     <lastmod>2024-08-28T08:17:01.821Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/practice/lab04_causation.html</loc>
-    <lastmod>2024-10-02T20:31:51.154Z</lastmod>
+    <loc>{{< var websites.live_site >}}/modules/05_intro_ML.html</loc>
+    <lastmod>2024-12-02T18:33:13.666Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/practice/lab02_inference.html</loc>
-    <lastmod>2024-10-02T20:56:12.257Z</lastmod>
+    <loc>{{< var websites.live_site >}}/modules/03_corr_regress.html</loc>
+    <lastmod>2024-12-02T18:38:28.587Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/me.html</loc>
-    <lastmod>2024-08-28T08:17:01.807Z</lastmod>
+    <loc>{{< var websites.live_site >}}/modules/01_data_with_R.html</loc>
+    <lastmod>2024-12-02T18:33:11.785Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/lectures/lec05_intro_ML.html</loc>
-    <lastmod>2024-10-02T19:50:09.106Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/lectures/lec03_corr_regress.html</loc>
-    <lastmod>2024-10-02T19:50:13.747Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/lectures/lec01_data_with_R.html</loc>
-    <lastmod>2024-10-02T19:50:13.693Z</lastmod>
+    <loc>{{< var websites.live_site >}}/license_etc.html</loc>
+    <lastmod>2024-10-22T11:11:14.104Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/index.html</loc>
@@ -49,28 +41,20 @@
     <lastmod>2024-10-19T14:04:37.577Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/lectures/lec02_inference.html</loc>
-    <lastmod>2024-10-02T19:50:13.710Z</lastmod>
+    <loc>{{< var websites.live_site >}}/me.html</loc>
+    <lastmod>2024-08-28T08:17:01.807Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/lectures/lec04_caus_pred.html</loc>
-    <lastmod>2024-10-02T19:50:13.789Z</lastmod>
+    <loc>{{< var websites.live_site >}}/modules/02_inference.html</loc>
+    <lastmod>2024-12-02T18:33:13.769Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/license_etc.html</loc>
-    <lastmod>2024-10-22T11:11:14.104Z</lastmod>
+    <loc>{{< var websites.live_site >}}/modules/04_caus_pred.html</loc>
+    <lastmod>2024-12-02T18:33:13.835Z</lastmod>
   </url>
   <url>
-    <loc>{{< var websites.live_site >}}/practice/lab01_data_with_R.html</loc>
-    <lastmod>2024-10-02T20:55:58.622Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/practice/lab03_corr_regress.html</loc>
-    <lastmod>2024-10-02T20:56:32.275Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/practice/lab05_intro_ML.html</loc>
-    <lastmod>2024-10-02T20:56:57.232Z</lastmod>
+    <loc>{{< var websites.live_site >}}/modules/06_extra.html</loc>
+    <lastmod>2024-12-02T18:33:06.431Z</lastmod>
   </url>
   <url>
     <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab01.html</loc>

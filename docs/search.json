@@ -46,14 +46,14 @@
     "href": "practice/practice_slides/slides_lab04.html#needed-r-packages",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "Needed R Packages",
-    "text": "Needed R Packages\n\n\nWe will use functions from packages base, utils, and stats (pre-installed and pre-loaded)\nWe may also use the packages below (specifying package::function for clarity).\n\n\n# Load pckgs for this R session\n\n# --- General \nlibrary(here) # A Simpler Way to Find Your Files   \nlibrary(skimr)    # Compact and Flexible Summaries of Data\nlibrary(paint)   # Fancy structure for data frames \nlibrary(janitor)  # Simple Tools for Examining and Cleaning Dirty Data\nlibrary(tidyverse) # Easily Install and Load the 'Tidyverse'\nlibrary(gt) # Easily Create Presentation-Ready Display Tables\nlibrary(marginaleffects) # Marginal Effects for Model Objects\nlibrary(WeightIt) # Weighting for Covariate Balance in Observational Studies\n# --- Plotting & data visualization\nlibrary(ggfortify)     # Data Visualization Tools for Statistical Analysis Results\nlibrary(ggpubr)        # 'ggplot2' Based Publication Ready Plots\nlibrary(patchwork) # The Composer of Plots\n# --- Descriptive statistics and regressions\nlibrary(broom) # Convert Statistical Objects into Tidy Tibbles\nlibrary(Hmisc) # Harrell Miscellaneous\nlibrary(estimatr) # Fast Estimators for Design-Based Inference\nlibrary(modelsummary) # Summary Tables and Plots for Statistical Models and Data:\nlibrary(kableExtra) # Construct Complex Table with 'kable' and Pipe Syntax\nlibrary(sandwich) #for robust variance estimation\nlibrary(survey) # Analysis of Complex Survey Samples\nlibrary(haven) # Import and Export 'SPSS', 'Stata' and 'SAS' Files\nlibrary(simstudy) # Simulation of Study Data\nlibrary(NHANES) # Data from the US National Health and Nutrition Examination Study"
+    "text": "Needed R Packages\n\n\nWe will use functions from packages base, utils, and stats (pre-installed and pre-loaded)\nWe may also use the packages below (specifying package::function for clarity).\n\n\n# Load pckgs for this R session\n\n# --- General \nlibrary(here) # A Simpler Way to Find Your Files   \nlibrary(skimr)    # Compact and Flexible Summaries of Data\nlibrary(paint)   # Fancy structure for data frames \nlibrary(janitor)  # Simple Tools for Examining and Cleaning Dirty Data\nlibrary(tidyverse) # Easily Install and Load the 'Tidyverse'\nlibrary(gt) # Easily Create Presentation-Ready Display Tables\nlibrary(marginaleffects) # Marginal Effects for Model Objects\nlibrary(WeightIt) # Weighting for Covariate Balance in Observational Studies\n# --- Plotting & data visualization\nlibrary(ggfortify)     # Data Visualization Tools for Statistical Analysis Results\nlibrary(ggpubr)        # 'ggplot2' Based Publication Ready Plots\nlibrary(patchwork) # The Composer of Plots\n# --- Descriptive statistics and regressions\nlibrary(broom) # Convert Statistical Objects into Tidy Tibbles\nlibrary(Hmisc) # Harrell Miscellaneous\nlibrary(estimatr) # Fast Estimators for Design-Based Inference\nlibrary(modelsummary) # Summary Tables and Plots for Statistical Models and Data:\nlibrary(kableExtra) # Construct Complex Table with 'kable' and Pipe Syntax\nlibrary(sandwich) #for robust variance estimation\nlibrary(survey) # Analysis of Complex Survey Samples\nlibrary(haven) # Import and Export 'SPSS', 'Stata' and 'SAS' Files\nlibrary(simstudy) # Simulation of Study Data\nlibrary(NHANES) # Data from the US National Health and Nutrition Examination Study  \nlibrary(mediation) # Causal Mediation Analysis"
   },
   {
     "objectID": "practice/practice_slides/slides_lab04.html#importing-dataset-1-nhanes",
     "href": "practice/practice_slides/slides_lab04.html#importing-dataset-1-nhanes",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "Importing Dataset 1 (NHANES)",
-    "text": "Importing Dataset 1 (NHANES)\n\nName: NHANES, accessible from package NHANESDocumentation: See reference on the data downloaded and ….Sampling details: We’ll use a subset of the NHANES dataset, focusing on variables related to smoking status (SmokeNow), systolic blood pressure (BPSysAve), Body Mass Index (BMI) and age (Age).\n\nset.seed(123) # Set seed for reproducibility\ndata(NHANES)\n# Select relevant columns and drop rows with missing values\nnhanes_data &lt;- NHANES %&gt;%\n  select(ID, Gender, Age, Race1, Height, Weight, BMI, SmokeNow, PhysActive, PhysActiveDays,\n         BPSysAve, BPSysAve, BPDiaAve, TotChol, DirectChol, Diabetes, HealthGen,\n         Education, HHIncomeMid, Poverty) %&gt;%\n  drop_na() %&gt;% \n  # make it smaller \n  slice_sample(n = 1000) # Randomly select 1000 rows using\n\n# Take a quick look at the data\n#paint(nhanes_data)"
+    "text": "Importing Dataset 1 (NHANES)\n\nName: NHANES, accessible from package NHANESDocumentation: See reference on the data downloaded and ….Sampling details: We’ll use a subset of the NHANES dataset, focusing on variables related to smoking status (SmokeNow), systolic blood pressure (BPSysAve), Body Mass Index (BMI) and age (Age).\n\nset.seed(123) # Set seed for reproducibility\ndata(NHANES)\n# Select relevant columns and drop rows with missing values\nnhanes_data &lt;- NHANES %&gt;%\n  dplyr::select(ID, Gender, Age, Race1, Height, Weight, BMI, SmokeNow, PhysActive, PhysActiveDays,\n         BPSysAve, BPDiaAve, TotChol, DirectChol, Diabetes, HealthGen,\n         Education, HHIncomeMid, Poverty) %&gt;%\n  drop_na() %&gt;% \n  # make it smaller \n  slice_sample(n = 1000) # Randomly select 1000 rows using\n\n# Take a quick look at the data\n#paint(nhanes_data)"
   },
   {
     "objectID": "practice/practice_slides/slides_lab04.html#dataset-1-nhanes-variables-and-their-description",
@@ -116,7 +116,7 @@
     "href": "practice/practice_slides/slides_lab04.html#example-of-confounder",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "Example of CONFOUNDER",
-    "text": "Example of CONFOUNDER\n\nZ = Age = confounder for the relationship between X = SmokeNow and Y = BPSysAve (blood pressure)\n\n\ndata(NHANES)\n# Select relevant columns and drop rows with missing values\nnhanes_conf &lt;- NHANES %&gt;%\n  select(ID, Age, SmokeNow, BPSysAve) %&gt;%\n  drop_na()\n  \n# Take a quick look at the data\npaint(nhanes_conf)\n\ntibble [3108, 4]\nID       int 51624 51624 51624 51630 51654 51666\nAge      int 34 34 34 49 66 58\nSmokeNow fct No No No Yes No Yes\nBPSysAve int 113 113 113 112 111 127\n\n\nIn this context:\n\n\nAge influences both smoking (SmokeNow) and blood pressure (BPSysAve), making it a confounder.\n\n\nSmokeNow directly affects BPSysAve."
+    "text": "Example of CONFOUNDER\n\nZ = Age = confounder for the relationship between X = SmokeNow and Y = BPSysAve (blood pressure)\n\n\ndata(NHANES)\n# Select relevant columns and drop rows with missing values\nnhanes_conf &lt;- NHANES %&gt;%\n  dplyr::select(ID, Age, SmokeNow, BPSysAve) %&gt;%\n  drop_na()\n  \n# Take a quick look at the data\npaint(nhanes_conf)\n\ntibble [3108, 4]\nID       int 51624 51624 51624 51630 51654 51666\nAge      int 34 34 34 49 66 58\nSmokeNow fct No No No Yes No Yes\nBPSysAve int 113 113 113 112 111 127\n\n\nIn this context:\n\n\nAge influences both smoking (SmokeNow) and blood pressure (BPSysAve), making it a confounder.\n\n\nSmokeNow directly affects BPSysAve."
   },
   {
     "objectID": "practice/practice_slides/slides_lab04.html#visualisation-of-confounder",
@@ -221,49 +221,70 @@
     "href": "practice/practice_slides/slides_lab04.html#visualise-the-indirect-direct-and-total-effects",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "Visualise the Indirect, Direct, and Total Effects",
-    "text": "Visualise the Indirect, Direct, and Total Effects\n“+ Physical Activity” -&gt; “+ Systolic Blood Pressure (BPSysAve)” | “+ BMI -&gt; - BPSysAve” WTF ???\n\n# Create a data frame for the effects\neffects_df &lt;- data.frame(\n  Effect = c(\"Total Effect\", \"Direct Effect\", \"Indirect Effect\"),\n  Value = c(total_effect, direct_effect, indirect_effect)\n)\n\n# Create the bar plot\nggplot(effects_df, aes(x = Effect, y = Value, fill = Effect)) +\n  geom_bar(stat = \"identity\") +\n  labs(title = \"Mediation Analysis: Total, Direct, and Indirect Effects\", \n       subtitle = \"Effect (coefficient) of Physical Activity on Systolic Blood Pressure (BPSysAve)\",\n       y = \"\", x = \"\") +\n  theme_minimal()"
+    "text": "Visualise the Indirect, Direct, and Total Effects\n\n\n\n# Create a data frame for the effects\neffects_df &lt;- data.frame(\n  Effect = c(\"Total Effect\", \"Direct Effect\", \n             \"Indirect Effect\"),\n  Value = c(total_effect, direct_effect, \n            indirect_effect)\n)\n\n# Create the bar plot\nggplot(effects_df, aes(x = Effect, y = Value,\n                       fill = Effect)) +\n  geom_bar(stat = \"identity\") +\n  labs(title = \"Mediation Analysis: Total, Direct, and Indirect Effects\", \n       subtitle = \"Effect (coefficient) of Physical Activity on Systolic Blood Pressure\",\n       y = \"\", x = \"\") +\n  theme_minimal()"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab04.html#interpret-results",
-    "href": "practice/practice_slides/slides_lab04.html#interpret-results",
+    "objectID": "practice/practice_slides/slides_lab04.html#visualise-the-indirect-direct-and-total-effects-output",
+    "href": "practice/practice_slides/slides_lab04.html#visualise-the-indirect-direct-and-total-effects-output",
     "title": "Lab 4:Mapping causal & predictive approaches",
-    "section": "Interpret results",
-    "text": "Interpret results\n\nThe total effect tells us the overall relationship between PhysActiveDays and BPSysAve.\nThe direct effect represents the relationship between PhysActiveDays and BPSysAve, controlling for BMI.\nThe indirect effect (mediated effect) shows how much of the relationship between PhysActiveDays and BPSysAve is explained through BMI (AKA the coef of PhysActiveDays in the mediator model times the coef of BMI in the outcome model)\nThe proportion mediated indicates how much of the total effect is due to the mediation by BMI."
+    "section": "Visualise the Indirect, Direct, and Total Effects",
+    "text": "Visualise the Indirect, Direct, and Total Effects"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab04.html#calculate-the-indirect-direct-and-total-effects-modo2",
-    "href": "practice/practice_slides/slides_lab04.html#calculate-the-indirect-direct-and-total-effects-modo2",
+    "objectID": "practice/practice_slides/slides_lab04.html#interpreting-the-results",
+    "href": "practice/practice_slides/slides_lab04.html#interpreting-the-results",
     "title": "Lab 4:Mapping causal & predictive approaches",
-    "section": "Calculate the Indirect, Direct, and Total Effects (modo2)",
-    "text": "Calculate the Indirect, Direct, and Total Effects (modo2)\n\nlibrary(mediation)\n# recall\nmediator_model[[\"call\"]][[\"formula\"]]\n\nBMI ~ PhysActiveDays\n\noutcome_model[[\"call\"]][[\"formula\"]]\n\nBPSysAve ~ PhysActiveDays + BMI\n\n# Calculate the mediation effect\nmediation_model &lt;- mediate(mediator_model, outcome_model, \n                           treat = \"PhysActiveDays\", \n                           mediator = \"BMI\", \n                           boot=TRUE, sims=500)\nsummary(mediation_model)\n\n\nCausal Mediation Analysis \n\nNonparametric Bootstrap Confidence Intervals with the Percentile Method\n\n               Estimate 95% CI Lower 95% CI Upper p-value  \nACME            -0.0313      -0.1067         0.03   0.256  \nADE              0.6213       0.1246         1.16   0.016 *\nTotal Effect     0.5899       0.0576         1.10   0.020 *\nProp. Mediated  -0.0531      -0.5263         0.06   0.276  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nSample Size Used: 1463 \n\n\nSimulations: 500 \n\n#                Estimate 95% CI Lower 95% CI Upper p-value  \n# ACME            -0.0313      -0.1024         0.04   0.324     = indirect or mediation effect\n# ADE              0.6213       0.1479         1.16   0.024 *   = direct effect \n# Total Effect     0.5899       0.1354         1.15   0.020 *   = total effect \n# Prop. Mediated  -0.0531      -0.2969         0.10   0.344     = proportion mediated\n\n\n# Add predicted values for BMI, BPSysAve (adjusted), and BPSysAve (total effect)\nnhanes_med_pred &lt;- nhanes_med %&gt;%\n  mutate(\n    pred_bmi = predict(mediator_model),         # Predicted BMI (mediator model)\n    pred_bps_adj = predict(outcome_model),      # Predicted BPSysAve (adjusted for Age)\n    pred_bps_total = predict(total_effect_model) # Predicted BPSysAve (total effect)\n  )"
+    "section": "Interpreting the results",
+    "text": "Interpreting the results\n\nThe total effect tells us the overall relationship between PhysActiveDays and BPSysAve.\nThe direct effect represents the relationship between PhysActiveDays and BPSysAve, controlling for BMI.\nThe indirect effect (mediated effect) shows how much of the relationship between PhysActiveDays and BPSysAve is explained through BMI (AKA the coef of PhysActiveDays in the mediator model times the coef of BMI in the outcome model)\nThe proportion mediated indicates how much of the total effect is due to the mediation by BMI."
   },
   {
-    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-12",
-    "href": "practice/practice_slides/slides_lab04.html#plot-results-12",
+    "objectID": "practice/practice_slides/slides_lab04.html#using-mediation-package",
+    "href": "practice/practice_slides/slides_lab04.html#using-mediation-package",
     "title": "Lab 4:Mapping causal & predictive approaches",
-    "section": "Plot results 1/2",
-    "text": "Plot results 1/2\nNow, let’s create a plot that includes:\n\nThe total effect of BMI on blood pressure (without adjusting for Age).\nThe adjusted effect of BMI on blood pressure (controlling for Age).\nThe mediator effect (BMI’s effect on Age).\n\n\n# Check column names\ncolnames(nhanes_med_pred)\n\n [1] \"Gender\"         \"Age\"            \"BPSysAve\"       \"BMI\"           \n [5] \"PhysActiveDays\" \"Diabetes\"       \"SmokeNow\"       \"pred_bmi\"      \n [9] \"pred_bps_adj\"   \"pred_bps_total\"\n\n# Reshape the data into long format for faceting\nnhanes_long &lt;- nhanes_med_pred %&gt;%\n  gather(key = \"model\", value = \"predicted\",  pred_bps_adj, pred_bps_total) %&gt;%\n  mutate(model = recode(model, \n                        #pred_bmi = \"Mediator Effect: BPSysAve on BMI\", \n                        pred_bps_adj = \"Adjusted Effect: PhysActiveDays + BMI on BPSysAve\", \n                        pred_bps_total = \"Total Effect: PhysActiveDays on BPSysAve\"))"
+    "section": "Using mediation package",
+    "text": "Using mediation package\n\nThe mediation package can be used to estimate various quantities for causal mediation analysis\n\nThe function mediate() needs two regression models: 1) \\((X → M)\\), and 2) \\((X + M → Y)\\)\n\nIt returns\n\nthe average causal mediation effect (ACME),\naverage direct effect (ADE),\nand total effect.\n\n\n\n\n# recall\n#mediator_model[[\"call\"]][[\"formula\"]]\n#outcome_model[[\"call\"]][[\"formula\"]]\n\n# Calculate the mediation effect\nmediation_model &lt;- mediate(mediator_model, outcome_model, \n                           treat = \"PhysActiveDays\", \n                           mediator = \"BMI\", \n                           boot=TRUE, sims=500)\n\nsummary(mediation_model)$d1  # Direct effect\n\n[1] -0.0313\n\nsummary(mediation_model)$z1  # Indirect effect\n\n[1] 0.621\n\nsummary(mediation_model)$tau.coef  # Total effect\n\n[1] 0.59"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-22",
-    "href": "practice/practice_slides/slides_lab04.html#plot-results-22",
+    "objectID": "practice/practice_slides/slides_lab04.html#using-mediation-pckg---results",
+    "href": "practice/practice_slides/slides_lab04.html#using-mediation-pckg---results",
     "title": "Lab 4:Mapping causal & predictive approaches",
-    "section": "Plot results 2/2",
-    "text": "Plot results 2/2\n\n# Plot with vertically aligned facets\nggplot(nhanes_long, aes(x = BMI)) +\n  geom_point(aes(y = BPSysAve), color = \"black\", shape = 16, alpha = 0.5) +  # Actual data points for BPSysAve\n  geom_line(aes(y = predicted, color = model), size = 1) +  # Predicted values from different models\n  facet_grid(model ~ ., scales = \"free_y\") +  # Facet vertically\n  labs(title = \"Mediation Analysis: Total, Adjusted, and Mediator Effects\",\n       x = \"BMI\",\n       y = \"Outcome / Mediator\",\n       color = \"Effect Type\") +\n  theme_minimal()"
+    "section": "Using mediation pckg - results",
+    "text": "Using mediation pckg - results\n\nsummary(mediation_model)\n\n\nCausal Mediation Analysis \n\nNonparametric Bootstrap Confidence Intervals with the Percentile Method\n\n               Estimate 95% CI Lower 95% CI Upper p-value  \nACME            -0.0313      -0.1067         0.03   0.256  \nADE              0.6213       0.1246         1.16   0.016 *\nTotal Effect     0.5899       0.0576         1.10   0.020 *\nProp. Mediated  -0.0531      -0.5263         0.06   0.276  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nSample Size Used: 1463 \n\n\nSimulations: 500"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-22-output",
-    "href": "practice/practice_slides/slides_lab04.html#plot-results-22-output",
+    "objectID": "practice/practice_slides/slides_lab04.html#using-mediation-pckg---prediction",
+    "href": "practice/practice_slides/slides_lab04.html#using-mediation-pckg---prediction",
     "title": "Lab 4:Mapping causal & predictive approaches",
-    "section": "Plot results 2/2",
-    "text": "Plot results 2/2"
+    "section": "Using mediation pckg - prediction",
+    "text": "Using mediation pckg - prediction\n\n\n# Add predicted values for BMI, BPSysAve (adjusted), and BPSysAve (total effect)\nnhanes_med_pred &lt;- nhanes_med %&gt;%\n  mutate(\n    pred_bmi = predict(mediator_model),         # Predicted BMI (mediator model)\n    pred_bps_adj = predict(outcome_model),      # Predicted BPSysAve (adjusted for Age)\n    pred_bps_total = predict(total_effect_model) # Predicted BPSysAve (total effect)\n  )\n\nnhanes_med_pred[1:3, c(1:2, 8:10)]\n\n# A tibble: 3 × 5\n  Gender   Age pred_bmi pred_bps_adj pred_bps_total\n  &lt;fct&gt;  &lt;int&gt;    &lt;dbl&gt;        &lt;dbl&gt;          &lt;dbl&gt;\n1 male      66     27.6         123.           124.\n2 female    58     28.1         121.           121.\n3 female    57     28.0         119.           122."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-prediction-results-12",
+    "href": "practice/practice_slides/slides_lab04.html#plot-prediction-results-12",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "Plot prediction results 1/2",
+    "text": "Plot prediction results 1/2\nNow, let’s create a plot that includes:\n\nThe total effect of BMI on blood pressure (without adjusting for Age).\nThe adjusted effect of BMI on blood pressure (controlling for Age).\nThe mediator effect (BMI’s effect on Age).\n\n\n# Check column names\ncolnames(nhanes_med_pred)\n\n [1] \"Gender\"         \"Age\"            \"BPSysAve\"       \"BMI\"           \n [5] \"PhysActiveDays\" \"Diabetes\"       \"SmokeNow\"       \"pred_bmi\"      \n [9] \"pred_bps_adj\"   \"pred_bps_total\"\n\n# Reshape the data into long format for faceting\nnhanes_long &lt;- nhanes_med_pred %&gt;%\n  gather(key = \"model\", value = \"predicted\",  pred_bps_adj, pred_bps_total) %&gt;%\n  mutate(model = recode(model, \n                        #pred_bmi = \"Mediator Effect: BPSysAve on BMI\", \n                        pred_bps_adj = \"Adj. Effect: PhysActiveDays + BMI on BPSysAve\", \n                        pred_bps_total = \"Total Effect: PhysActiveDays on BPSysAve\"))"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-prediction-results-22",
+    "href": "practice/practice_slides/slides_lab04.html#plot-prediction-results-22",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "Plot prediction results 2/2",
+    "text": "Plot prediction results 2/2\n\n# Plot with vertically aligned facets\nggplot(nhanes_long, aes(x = BMI)) +\n  # Actual data points for BPSysAve\n  geom_point(aes(y = BPSysAve), color = \"black\", shape = 16, alpha = 0.5) +  \n  # Predicted values from different models\n  geom_line(aes(y = predicted, color = model), size = 1) +  \n  # Facet vertically\n  facet_grid(model ~ ., scales = \"free_y\") +  \n  labs(title = \"Mediation Analysis: Total, Adjusted, and Mediator Effects\",\n       x = \"BMI\",\n       y = \"Blood Pressure | Age\",\n       color = \"Effect Type\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-prediction-results-22-output",
+    "href": "practice/practice_slides/slides_lab04.html#plot-prediction-results-22-output",
+    "title": "Lab 4:Mapping causal & predictive approaches",
+    "section": "Plot prediction results 2/2",
+    "text": "Plot prediction results 2/2"
   },
   {
     "objectID": "practice/practice_slides/slides_lab04.html#importing-dataset-2-gabor",
     "href": "practice/practice_slides/slides_lab04.html#importing-dataset-2-gabor",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "Importing Dataset 2 (Gabor)",
-    "text": "Importing Dataset 2 (Gabor)\n\nName:Documentation: .. Sampling details:\n\n# import data\ndata &lt;- read_csv(paste0(data_in,\"food-health.csv\")) # 164,848 \n\n# drop observations\ndat &lt;-  data %&gt;%\n  filter(age &gt;= 30 & age &lt;60) %&gt;% # 7930 \n  # new variables: \n  ## Fruit and vegetables per day (grams)\n  ## Blood pressure (systolic+diastolic)\n  mutate(fv=veggies_n_fruits_gr,\n         bp=blood_pressure) %&gt;%\n  filter(fv&lt;3200) %&gt;%\n  drop_na(bp) %&gt;% # 7358\n  # Days per week exercising \n  mutate(exerc=case_when(paq655 &lt;=7 ~ paq655,\n                         paq650 ==2 ~ 0)) %&gt;% \n  # Potato chips per day, grams\n  mutate(pchips=gr_potato_chips) %&gt;% \n# select variables\n  select(id = seqn, age, gender, weight, height, race, \n         fv, exerc, pchips, \n         bp_systolic, bp_diastolic, bp, bmi,  \n         smoker, total_cholesterol, hdl,\n         hh_income_usd, hh_income_percap, ln_hh_income_percap ,income_cat\n                  ) %&gt;% \n  drop_na() # 7358\n \n\n# Hmisc::describe(dat$hh_income)\npaint(dat)"
+    "text": "Importing Dataset 2 (Gabor)\n\nName:Documentation: .. Sampling details:\n\n# import data\ndata &lt;- read_csv(paste0(data_in,\"food-health.csv\")) # 164,848 \n\n# drop observations\ndat &lt;-  data %&gt;%\n  filter(age &gt;= 30 & age &lt;60) %&gt;% # 7930 \n  # new variables: \n  ## Fruit and vegetables per day (grams)\n  ## Blood pressure (systolic+diastolic)\n  mutate(fv=veggies_n_fruits_gr,\n         bp=blood_pressure) %&gt;%\n  filter(fv&lt;3200) %&gt;%\n  drop_na(bp) %&gt;% # 7358\n  # Days per week exercising \n  mutate(exerc=case_when(paq655 &lt;=7 ~ paq655,\n                         paq650 ==2 ~ 0)) %&gt;% \n  # Potato chips per day, grams\n  mutate(pchips=gr_potato_chips) %&gt;% \n# select variables\n  dplyr::select(id = seqn, age, gender, weight, height, race, \n         fv, exerc, pchips, \n         bp_systolic, bp_diastolic, bp, bmi,  \n         smoker, total_cholesterol, hdl,\n         hh_income_usd, hh_income_percap, ln_hh_income_percap ,income_cat\n                  ) %&gt;% \n  drop_na() # 7358\n \n\n# Hmisc::describe(dat$hh_income)\npaint(dat)"
   },
   {
     "objectID": "practice/practice_slides/slides_lab04.html#dataset-2-gabor-variables-and-their-description",
@@ -277,7 +298,7 @@
     "href": "practice/practice_slides/slides_lab04.html#causal-modeling-with-confounder-1",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "Causal modeling with CONFOUNDER",
-    "text": "Causal modeling with CONFOUNDER\n\n# Select relevant columns and drop rows with missing values\ndat_conf &lt;- dat %&gt;%\n  select(id, age, bp_systolic, fv, exerc, bmi, smoker, gender, hh_income_usd, ln_hh_income_percap ) %&gt;%\n  drop_na() %&gt;% \n  filter(fv &lt;=1500)\n\n# Take a quick look at the data\nsummary(dat_conf)\n\nHmisc::describe(dat_conf$bp_systolic) # Y\nHmisc::describe(dat_conf$bmi) # X\nHmisc::describe(dat_conf$age) # Z (confounder )\nHmisc::describe(dat_conf$exerc)  # Z (confounder )\nHmisc::describe(dat_conf$ln_hh_income_percap) # Z (confounder )\n\nIn this context:\n\n\nexerc influences both smoking (fv) and blood pressure (bp_systolic), making it a confounder (albeit as PROXY for socio-economic status)\n\nfv directly affects bp_systolic"
+    "text": "Causal modeling with CONFOUNDER\n\n# Select relevant columns and drop rows with missing values\ndat_conf &lt;- dat %&gt;%\n  dplyr::select(id, age, bp_systolic, fv, exerc, bmi, smoker, gender, hh_income_usd, ln_hh_income_percap ) %&gt;%\n  drop_na() %&gt;% \n  filter(fv &lt;=1500)\n\n# Take a quick look at the data\nsummary(dat_conf)\n\nHmisc::describe(dat_conf$bp_systolic) # Y\nHmisc::describe(dat_conf$bmi) # X\nHmisc::describe(dat_conf$age) # Z (confounder )\nHmisc::describe(dat_conf$exerc)  # Z (confounder )\nHmisc::describe(dat_conf$ln_hh_income_percap) # Z (confounder )\n\nIn this context:\n\n\nexerc influences both smoking (fv) and blood pressure (bp_systolic), making it a confounder (albeit as PROXY for socio-economic status)\n\nfv directly affects bp_systolic"
   },
   {
     "objectID": "practice/practice_slides/slides_lab04.html#regression-analysis",
@@ -291,25 +312,25 @@
     "href": "practice/practice_slides/slides_lab04.html#add-predicted-values-to-the-dataset",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "— Add Predicted Values to the Dataset",
-    "text": "— Add Predicted Values to the Dataset\n\nmodel_unadjusted$coefficients \nmodel_adjusted$coefficients\n\n# Get predicted values using augment and attach to the original dataset\ndat_unadjusted &lt;- broom::augment(model_unadjusted, data = dat_conf) %&gt;%\n  select( -.resid,  -.hat, -.sigma, -.cooksd, -.std.resid ) %&gt;%\n  rename(pred_unadjusted = .fitted)\n\ndat_adjusted &lt;- broom::augment(model_adjusted, data = dat_conf) %&gt;%\n  select( -.resid,     -.hat, -.sigma, -.cooksd, -.std.resid ) %&gt;%\n  rename(pred_adjusted = .fitted)\n\n# Combine the predicted values from both models\ndat_conf_long &lt;- dat_unadjusted %&gt;%\n  left_join(dat_adjusted, by = \"id\", suffix=c(\"\",\".y\"))%&gt;%\n  select(-ends_with(\".y\")) %&gt;% \n  # Convert the data from wide to long format\n  pivot_longer(cols = c(pred_unadjusted, pred_adjusted), \n               names_to = \"model\", \n               values_to = \"predicted\")\n\n# Check the structure of the long dataset\nstr(dat_conf_long)"
+    "text": "— Add Predicted Values to the Dataset\n\nmodel_unadjusted$coefficients \nmodel_adjusted$coefficients\n\n# Get predicted values using augment and attach to the original dataset\ndat_unadjusted &lt;- broom::augment(model_unadjusted, data = dat_conf) %&gt;%\n  dplyr::select( -.resid,  -.hat, -.sigma, -.cooksd, -.std.resid ) %&gt;%\n  rename(pred_unadjusted = .fitted)\n\ndat_adjusted &lt;- broom::augment(model_adjusted, data = dat_conf) %&gt;%\n  dplyr::select( -.resid,     -.hat, -.sigma, -.cooksd, -.std.resid ) %&gt;%\n  rename(pred_adjusted = .fitted)\n\n# Combine the predicted values from both models\ndat_conf_long &lt;- dat_unadjusted %&gt;%\n  left_join(dat_adjusted, by = \"id\", suffix=c(\"\",\".y\"))%&gt;%\n  dplyr::select( -ends_with(\".y\")) %&gt;% \n  # Convert the data from wide to long format\n  pivot_longer(cols = c(pred_unadjusted, pred_adjusted), \n               names_to = \"model\", \n               values_to = \"predicted\")\n\n# Check the structure of the long dataset\nstr(dat_conf_long)"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-12-1",
-    "href": "practice/practice_slides/slides_lab04.html#plot-results-12-1",
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-prediction-results-12-1",
+    "href": "practice/practice_slides/slides_lab04.html#plot-prediction-results-12-1",
     "title": "Lab 4:Mapping causal & predictive approaches",
-    "section": "— Plot results 1/2",
-    "text": "— Plot results 1/2\n\nReshape the Data Using pivot_longer()\n\nWe will reshape the dataset so we can plot the predicted values from both models in a faceted plot.\n\n# check \ndat_conf_long %&gt;% group_by(model) %&gt;% \n  summarise(mean(predicted), sd(predicted))"
+    "section": "— Plot prediction results 1/2",
+    "text": "— Plot prediction results 1/2\n\nReshape the Data Using pivot_longer()\n\nWe will reshape the dataset so we can plot the predicted values from both models in a faceted plot.\n\n# check \ndat_conf_long %&gt;% group_by(model) %&gt;% \n  summarise(mean(predicted), sd(predicted))"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-22-1",
-    "href": "practice/practice_slides/slides_lab04.html#plot-results-22-1",
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-22",
+    "href": "practice/practice_slides/slides_lab04.html#plot-results-22",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "— Plot results 2/2",
     "text": "— Plot results 2/2\n\nggplot(dat_conf, aes(x = bmi, y = bp_systolic)) +\n  geom_point(color = \"grey\", alpha = 1) +  \n  geom_point(data = dat_unadjusted, aes(x = bmi, y = pred_unadjusted), \n             color = \"#e60066\", alpha = 0.20) +\n  geom_point(data = dat_adjusted, aes(x = bmi, y = pred_adjusted), \n             color = \"#399B23\", alpha = 0.20) +\n  # Add labels and title\n  labs(title = \"Confounder Analysis: Unadjusted (pink) vs Adjusted (green) fitted values\",\n       x = \"BMI\",\n       y = \"Systolic Blood Pressure (BPSysAve)\"\n       )  +\n    # Minimal theme for clarity\n  theme_minimal() +\n  theme(legend.position = \"none\")"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-22-1-output",
-    "href": "practice/practice_slides/slides_lab04.html#plot-results-22-1-output",
+    "objectID": "practice/practice_slides/slides_lab04.html#plot-results-22-output",
+    "href": "practice/practice_slides/slides_lab04.html#plot-results-22-output",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "— Plot results 2/2",
     "text": "— Plot results 2/2"
@@ -1057,95 +1078,123 @@
     "text": "Final thoughts\n\n\n\n…..\n\n…\n\n\n…\n\n\n\n\n\n\nhttps://lulliter.github.io/R4stats/ | R 4 stats"
   },
   {
-    "objectID": "practice/lab04_causation.html#practice-session-input-data-as-subfolder",
-    "href": "practice/lab04_causation.html#practice-session-input-data-as-subfolder",
-    "title": "Lab 4: Mapping causal & predictive approaches",
-    "section": "Practice session input data (as subfolder)",
-    "text": "Practice session input data (as subfolder)\n\n\n Download input data"
-  },
-  {
-    "objectID": "practice/lab04_causation.html#practice-session-r-code-as-.r-file",
-    "href": "practice/lab04_causation.html#practice-session-r-code-as-.r-file",
-    "title": "Lab 4: Mapping causal & predictive approaches",
-    "section": "Practice session R code (as .R file)",
-    "text": "Practice session R code (as .R file)\n\n\n Download R file"
-  },
-  {
-    "objectID": "practice/lab02_inference.html",
-    "href": "practice/lab02_inference.html",
-    "title": "Lab 2: Statistical inference & hypothesis testing",
-    "section": "",
-    "text": "View slides in full screen"
-  },
-  {
-    "objectID": "practice/lab02_inference.html#practice-session-2-input-data-as-subfolder",
-    "href": "practice/lab02_inference.html#practice-session-2-input-data-as-subfolder",
-    "title": "Lab 2: Statistical inference & hypothesis testing",
-    "section": "Practice session 2: input data (as subfolder)",
-    "text": "Practice session 2: input data (as subfolder)\n\n\n\n Download input data"
-  },
-  {
-    "objectID": "practice/lab02_inference.html#practice-session-2-r-code-as-.r-file",
-    "href": "practice/lab02_inference.html#practice-session-2-r-code-as-.r-file",
-    "title": "Lab 2: Statistical inference & hypothesis testing",
-    "section": "Practice session 2: R code (as .R file)",
-    "text": "Practice session 2: R code (as .R file)\n\n\n\n Download R file"
-  },
-  {
-    "objectID": "me.html",
-    "href": "me.html",
-    "title": "About the Instructor",
-    "section": "",
-    "text": "Maria Chiara Mimmi, Ph.D., is a Research Fellow at University of Pavia - Dept. of Molecular Medicine, as well as NMR Expert at Fondazione IRCCS Policlinico San Matteo. She has twenty years of experience working in life science research, with a focus on NMR and Mass Spectrometry applied to metabolomics/lipidomics.\nIn 2020, she joined the University of Pavia, at the Molecular Medicine Dept., to work with the recently acquired 700 MHz NMR spectrometer. Since then she focused on NMR applied to either metabolomics and to structure/dynamics of amyloidogenic proteins.\n\n\nUniversità degli Studi di Pavia | Pavia, Italy Master of Biostatistics and Epidemiology | 2018-2019\nUniversità degli Studi di Milano | Milano, Italy Ph.D. in Chemical Sciences | 2001 - 2003\nInstitut National de la Recherche Agronomique | Versailles-Grignon, France Visiting scholar | 2003 - 2003\nUniversità degli Studi di Pavia | Pavia, Italy BSc Degree in Chemistry | 1994 - 2000\nUniversiteit Leiden | Leiden, The Netherlands Erasmus exchange student (6 months) | 1999 - 1999\n\n \n  \n   \n  \n    \n     LinkedIn\n  \n  \n    \n     Email\n  \n  \n      Google Scholar\n  \n  \n      Research Gate\n  \n  \n      Orcid"
-  },
-  {
-    "objectID": "me.html#education",
-    "href": "me.html#education",
-    "title": "About the Instructor",
-    "section": "",
-    "text": "Università degli Studi di Pavia | Pavia, Italy Master of Biostatistics and Epidemiology | 2018-2019\nUniversità degli Studi di Milano | Milano, Italy Ph.D. in Chemical Sciences | 2001 - 2003\nInstitut National de la Recherche Agronomique | Versailles-Grignon, France Visiting scholar | 2003 - 2003\nUniversità degli Studi di Pavia | Pavia, Italy BSc Degree in Chemistry | 1994 - 2000\nUniversiteit Leiden | Leiden, The Netherlands Erasmus exchange student (6 months) | 1999 - 1999"
-  },
-  {
-    "objectID": "lectures/lec05_intro_ML.html",
-    "href": "lectures/lec05_intro_ML.html",
+    "objectID": "modules/05_intro_ML.html",
+    "href": "modules/05_intro_ML.html",
     "title": "Introduction to machine learning",
     "section": "",
-    "text": "View lecture slides in full screen"
+    "text": "Introduction to Machine Learning\n\nShifting the emphasis on empirical prediction\n\nDistinction between supervised & unsupervised algorithms\n\nSupervised ML Example\n\nLogistic regression\nRandom Forest\n\n\nUnsupervised ML Example\n\nPCA"
   },
   {
-    "objectID": "lectures/lec05_intro_ML.html#lecture-outline",
-    "href": "lectures/lec05_intro_ML.html#lecture-outline",
+    "objectID": "modules/05_intro_ML.html#lecture-outline",
+    "href": "modules/05_intro_ML.html#lecture-outline",
     "title": "Introduction to machine learning",
-    "section": "Lecture Outline",
-    "text": "Lecture Outline\n\nPCA\n\nAn example of “unsupervised” ML algorithm\n\n\n\n\n\n\n\nIntroduction to MetaboAnalyst software\n\nA useful R-based resources for metabolomics\n\nElements of statistical Power Analysis\nWorkshop Conclusions"
+    "section": "",
+    "text": "Introduction to Machine Learning\n\nShifting the emphasis on empirical prediction\n\nDistinction between supervised & unsupervised algorithms\n\nSupervised ML Example\n\nLogistic regression\nRandom Forest\n\n\nUnsupervised ML Example\n\nPCA"
   },
   {
-    "objectID": "lectures/lec03_corr_regress.html",
-    "href": "lectures/lec03_corr_regress.html",
+    "objectID": "modules/05_intro_ML.html#lecture-slides",
+    "href": "modules/05_intro_ML.html#lecture-slides",
+    "title": "Introduction to machine learning",
+    "section": "Lecture slides",
+    "text": "Lecture slides\n\n\nView lecture slides in full screen"
+  },
+  {
+    "objectID": "modules/05_intro_ML.html#practice-slides",
+    "href": "modules/05_intro_ML.html#practice-slides",
+    "title": "Introduction to machine learning",
+    "section": "Practice slides",
+    "text": "Practice slides\n\nView practice slides in full screen  \n\n\n\n\n\n\nPractice input data (as subfolder)\n\n\n Download input data\n\n\nPractice R code (as .R file)\n\n\n Download R file"
+  },
+  {
+    "objectID": "modules/03_corr_regress.html",
+    "href": "modules/03_corr_regress.html",
     "title": "Modeling correlation and regression",
     "section": "",
-    "text": "View lecture slides in full screen"
+    "text": "Testing and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (param)\n\n(numerical variables)\n\n\nSpearman’s test (no param)\n\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\n\nFisher’s Exact Test\n\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\n\nWidely used analytical tools\n\nSimple linear regression models\nMultiple Linear Regression models\n\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised & Unsupervised algorithms"
   },
   {
-    "objectID": "lectures/lec03_corr_regress.html#lecture-outline",
-    "href": "lectures/lec03_corr_regress.html#lecture-outline",
+    "objectID": "modules/03_corr_regress.html#outline",
+    "href": "modules/03_corr_regress.html#outline",
     "title": "Modeling correlation and regression",
-    "section": "Lecture Outline",
-    "text": "Lecture Outline\n\nTesting and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (param)\n\n(numerical variables)\n\nSpearman’s test (no param)\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\nFisher’s Exact Test\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\nWidely used analytical tools\n\nSimple linear regression models\nMultiple Linear Regression models\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised & Unsupervised algorithms"
+    "section": "",
+    "text": "Testing and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (param)\n\n(numerical variables)\n\n\nSpearman’s test (no param)\n\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\n\nFisher’s Exact Test\n\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\n\nWidely used analytical tools\n\nSimple linear regression models\nMultiple Linear Regression models\n\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised & Unsupervised algorithms"
   },
   {
-    "objectID": "lectures/lec01_data_with_R.html",
-    "href": "lectures/lec01_data_with_R.html",
+    "objectID": "modules/03_corr_regress.html#lecture-slides",
+    "href": "modules/03_corr_regress.html#lecture-slides",
+    "title": "Modeling correlation and regression",
+    "section": "Lecture slides",
+    "text": "Lecture slides\n\n\nView lecture slides in full screen"
+  },
+  {
+    "objectID": "modules/03_corr_regress.html#practice-slides",
+    "href": "modules/03_corr_regress.html#practice-slides",
+    "title": "Modeling correlation and regression",
+    "section": "Practice slides",
+    "text": "Practice slides\n\nView practice slides in full screen  \n\n\n\n\nPractice input data (as subfolder)\n\n\n Download input data\n\n\nPractice R code (as .R file)\n\n\n Download R file"
+  },
+  {
+    "objectID": "modules/01_data_with_R.html",
+    "href": "modules/01_data_with_R.html",
     "title": "Intro to R and data analysis",
     "section": "",
-    "text": "View lecture slides in full screen"
+    "text": "Introduction to R and R-studio\n\nWhy R?\nPrinciples of reproducible analysis with R + RStudio\n\n\nR objects, functions, packages\nUnderstanding different types of variables\n\nPrinciples of “tidy data”\nData cleaning and manipulation\n\n\nDescriptive statistics\n\nMeasures of central tendency, measures of variability (or spread), and\n\n\nFrequency distribution\nVisual data exploration\n\n{ggplot2}"
   },
   {
-    "objectID": "lectures/lec01_data_with_R.html#lecture-outline",
-    "href": "lectures/lec01_data_with_R.html#lecture-outline",
+    "objectID": "modules/01_data_with_R.html#outline",
+    "href": "modules/01_data_with_R.html#outline",
     "title": "Intro to R and data analysis",
-    "section": "Lecture Outline",
-    "text": "Lecture Outline\n\nIntroduction to R and R-studio\n\nWhy R?\nPrinciples of reproducible analysis with R + RStudio\n\nR objects, functions, packages\nUnderstanding different types of variables\n\nPrinciples of “tidy data”\nData cleaning and manipulation\n\nDescriptive statistics\n\nMeasures of central tendency, measures of variability (or spread), and\n\nFrequency distribution\nVisual data exploration\n\n{ggplot2}"
+    "section": "",
+    "text": "Introduction to R and R-studio\n\nWhy R?\nPrinciples of reproducible analysis with R + RStudio\n\n\nR objects, functions, packages\nUnderstanding different types of variables\n\nPrinciples of “tidy data”\nData cleaning and manipulation\n\n\nDescriptive statistics\n\nMeasures of central tendency, measures of variability (or spread), and\n\n\nFrequency distribution\nVisual data exploration\n\n{ggplot2}"
+  },
+  {
+    "objectID": "modules/01_data_with_R.html#lecture-slides",
+    "href": "modules/01_data_with_R.html#lecture-slides",
+    "title": "Intro to R and data analysis",
+    "section": "Lecture slides",
+    "text": "Lecture slides\n\n\nView lecture slides in full screen"
+  },
+  {
+    "objectID": "modules/01_data_with_R.html#practice-slides",
+    "href": "modules/01_data_with_R.html#practice-slides",
+    "title": "Intro to R and data analysis",
+    "section": "Practice slides",
+    "text": "Practice slides\n\nView practice slides in full screen"
+  },
+  {
+    "objectID": "modules/01_data_with_R.html#practice-input-data-as-subfolder",
+    "href": "modules/01_data_with_R.html#practice-input-data-as-subfolder",
+    "title": "Intro to R and data analysis",
+    "section": "Practice input data (as subfolder)",
+    "text": "Practice input data (as subfolder)\n\n\n Download input data"
+  },
+  {
+    "objectID": "modules/01_data_with_R.html#practice-r-code-as-.r-file",
+    "href": "modules/01_data_with_R.html#practice-r-code-as-.r-file",
+    "title": "Intro to R and data analysis",
+    "section": "Practice R code (as .R file)",
+    "text": "Practice R code (as .R file)\n\n\n Download R file"
+  },
+  {
+    "objectID": "license_etc.html",
+    "href": "license_etc.html",
+    "title": "Acknowledgments and resources",
+    "section": "",
+    "text": "We are genuinely grateful to many people within the Statistics, Machine Learning, Epidemiology and R programming communities, who shared their valuable work, open source software, and training resources."
+  },
+  {
+    "objectID": "license_etc.html#licensing-and-use-of-the-workshop-materials",
+    "href": "license_etc.html#licensing-and-use-of-the-workshop-materials",
+    "title": "Acknowledgments and resources",
+    "section": "Licensing and use of the workshop materials",
+    "text": "Licensing and use of the workshop materials\nThe workshop materials are licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. All borrowed external materials (images, worked examples, etc.), are credited with proper “Source” statements and governed by their own licenses. To our knowledge, all the consulted materials were published under “open access” or “creative commons” frameworks. If this were not the case for any content piece displayed here, please let us know and it will be removed."
+  },
+  {
+    "objectID": "license_etc.html#selected-resources-for-self-guided-learning",
+    "href": "license_etc.html#selected-resources-for-self-guided-learning",
+    "title": "Acknowledgments and resources",
+    "section": "Selected resources for self-guided learning",
+    "text": "Selected resources for self-guided learning\nBelow is a curated list of great resources (most of which free and openly accessible) you can peruse on your own.\n\n\nStatistics, Biostatistics, Epidemiology with R examples\n\n\n\n\nHeiss, A. (2024, March 21). Demystifying causal inference estimands: ATE, ATT, and ATU [Article]. Andrew Heiss’s blog. https://www.andrewheiss.com/blog/2024/03/21/demystifying-ate-att-atu\n\n\nGreifer, N., & Stuart, E. A. (2021). Choosing the Causal Estimand for Propensity Score Analysis of Observational Studies [Article]. https://doi.org/10.48550/ARXIV.2106.10577    \n\nApplied Epi Team (2024). Applied Epi - Elevating frontline epidemiology [Course]. Training, support, tools. https://www.appliedepi.org/\nApplied Epi Team (2024). R for applied epidemiology and public health The Epidemiologist R Handbook [Course]. https://epirhandbook.com/en/\nBobbitt, Z. (2024). Statology [Course]. Statology. https://www.statology.org/\nÇetinkaya-Rundel, M., & Hardim, J. (2023). Introduction to Modern Statistics (1st Ed) [Book]. https://openintro-ims.netlify.app/\nchilds_introductory_2022-1?\n\nSelby, D., & 2021 (2024). Analytical Epidemiology II [Course]. David Selby. https://personalpages.manchester.ac.uk/staff/david.selby/analysis/2021-03-30-inference/\n\nVu, J., & Harrington, D. (2021). Introductory Statistics for the Life and Biomedical Sciences [Book]. https://www.openintro.org/book/biostat/\nR packages & tools\n\nPOSIT (2024). POSIT resources [R]. https://posit.co/resources/.\nRStudio, & Posit (2024). Base-r-cheat-sheet.pdf [R]. https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf\nVarious contributors (2024). Bioconductor - Open source software for Bioinformatics [R]. Bioconductor - Open source software for Bioinformatics. https://www.bioconductor.org/\nWickham, H., François, R., Müller, K., & Vaughan, D. (2023). Programming with dplyr [R]. dplyr. https://dplyr.tidyverse.org/articles/programming.html#tidy-selection\nWickham, H. (2014). Tidy Data [R]. Journal of Statistical Software, 59(10). https://doi.org/10.18637/jss.v059.i10\nSources of practice datasets\n\nVanderbilt Department of Biostatistics (2023, September 17). Vanderbilt Biostatistics Datasets [Dataset]. https://hbiostat.org/data/\nChicco, D., & Jurman, G. (2020). Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone [Dataset]. BMC Medical Informatics and Decision Making, 20(1), 16. https://doi.org/10.1186/s12911-020-1023-5\nAhmad, T., Munir, A., Bhatti, S. H., Aftab, M., & Raza, M. A. (2017). Survival analysis of heart failure patients: A case study [Dataset]. PLOS ONE, 12(7), e0181001. https://doi.org/10.1371/journal.pone.0181001"
   },
   {
     "objectID": "index.html",
@@ -1190,116 +1239,102 @@
     "text": "Useful keyboard shortcuts in RStudio\n\n\n\n\n\n\nDescription\nWindows & Linux\nMac\n\n\n\nInsert code section\nCtrl+Shift+R\nShift+Command+R  or Ctrl+Shift+R\n\n\nInsert code chunk (Quarto/Rmarkdown)\nCtrl+Alt+I\nCommand+Option+I\n\n\nComment/uncomment line\nCtrl+Shift+C\nCommand+Shift+C\n\n\nReindent lines\nCtrl+I\nCommand+I\n\n\nInsert 'assign' operator &lt;-\nAlt+-\nOption+-\n\n\nInsert 'pipe' operator %&gt;% or |&gt;\nCtrl+Shift+M\nShift+Command+M\n\n\nCode completion (in source)\nTab\nTab\n\n\nFile path completion (in console)\n\"+Tab\n\"+Tab\n\n\nMultple cursor selection\nAlt+click\nAlt+click\n\n\nMultple cursor selection (next)\nAlt+Shift+click\nAlt+Shift+click\n\n\nSwitch cursor between source & console\nCtrl+1 and Ctrl+2\nCtrl+1 and Ctrl+2\n\n\nRun current line/selection\nCtrl+Enter\nCommand+Return\n\n\nRun current chunk\nCtrl+Alt+C\nCommand+Option+C\n\n\nRun entire file\nCtrl+Shift+Enter\nCommand+Shift+Return\n\n\nShow help for function at cursor\nF1\nF1\n\n\nSearch within file\nCtrl+F\nCommand+F\n\n\nSearch within project\nCtrl+Shift+F\nCommand+Shift+F\n\n\nRestart R session\nCtrl+Shift+F10\nCommand+Shift+F10\n\n\n\n\n\n\nHere you find the complete list of RStudio Keyboard Shortcuts"
   },
   {
-    "objectID": "lectures/lec02_inference.html",
-    "href": "lectures/lec02_inference.html",
+    "objectID": "me.html",
+    "href": "me.html",
+    "title": "About the Instructor",
+    "section": "",
+    "text": "Maria Chiara Mimmi, Ph.D., is a Research Fellow at University of Pavia - Dept. of Molecular Medicine, as well as NMR Expert at Fondazione IRCCS Policlinico San Matteo. She has twenty years of experience working in life science research, with a focus on NMR and Mass Spectrometry applied to metabolomics/lipidomics.\nIn 2020, she joined the University of Pavia, at the Molecular Medicine Dept., to work with the recently acquired 700 MHz NMR spectrometer. Since then she focused on NMR applied to either metabolomics and to structure/dynamics of amyloidogenic proteins.\n\n\nUniversità degli Studi di Pavia | Pavia, Italy Master of Biostatistics and Epidemiology | 2018-2019\nUniversità degli Studi di Milano | Milano, Italy Ph.D. in Chemical Sciences | 2001 - 2003\nInstitut National de la Recherche Agronomique | Versailles-Grignon, France Visiting scholar | 2003 - 2003\nUniversità degli Studi di Pavia | Pavia, Italy BSc Degree in Chemistry | 1994 - 2000\nUniversiteit Leiden | Leiden, The Netherlands Erasmus exchange student (6 months) | 1999 - 1999\n\n \n  \n   \n  \n    \n     LinkedIn\n  \n  \n    \n     Email\n  \n  \n      Google Scholar\n  \n  \n      Research Gate\n  \n  \n      Orcid"
+  },
+  {
+    "objectID": "me.html#education",
+    "href": "me.html#education",
+    "title": "About the Instructor",
+    "section": "",
+    "text": "Università degli Studi di Pavia | Pavia, Italy Master of Biostatistics and Epidemiology | 2018-2019\nUniversità degli Studi di Milano | Milano, Italy Ph.D. in Chemical Sciences | 2001 - 2003\nInstitut National de la Recherche Agronomique | Versailles-Grignon, France Visiting scholar | 2003 - 2003\nUniversità degli Studi di Pavia | Pavia, Italy BSc Degree in Chemistry | 1994 - 2000\nUniversiteit Leiden | Leiden, The Netherlands Erasmus exchange student (6 months) | 1999 - 1999"
+  },
+  {
+    "objectID": "modules/02_inference.html",
+    "href": "modules/02_inference.html",
     "title": "Statistical inference & hypothesis testing",
     "section": "",
-    "text": "View lecture slides in full screen"
+    "text": "Purpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\n\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\n\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA) \n\n\n\n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations"
   },
   {
-    "objectID": "lectures/lec02_inference.html#lecture-outline",
-    "href": "lectures/lec02_inference.html#lecture-outline",
+    "objectID": "modules/02_inference.html#outline",
+    "href": "modules/02_inference.html#outline",
     "title": "Statistical inference & hypothesis testing",
-    "section": "Lecture Outline",
-    "text": "Lecture Outline\n\nPurpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA) \n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations"
+    "section": "",
+    "text": "Purpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\n\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\n\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA) \n\n\n\n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations"
   },
   {
-    "objectID": "lectures/lec04_caus_pred.html",
-    "href": "lectures/lec04_caus_pred.html",
+    "objectID": "modules/02_inference.html#lecture-slides",
+    "href": "modules/02_inference.html#lecture-slides",
+    "title": "Statistical inference & hypothesis testing",
+    "section": "Lecture slides",
+    "text": "Lecture slides\n\n\nView lecture slides in full screen"
+  },
+  {
+    "objectID": "modules/02_inference.html#practice-slides",
+    "href": "modules/02_inference.html#practice-slides",
+    "title": "Statistical inference & hypothesis testing",
+    "section": "Practice slides",
+    "text": "Practice slides\n\nView practice slides in full screen  \n\n\n\n\n\n\nPractice input data (as subfolder)\n\n\n Download input data\n\n\nPractice R code (as .R file)\n\n\n Download R file"
+  },
+  {
+    "objectID": "modules/04_caus_pred.html",
+    "href": "modules/04_caus_pred.html",
     "title": "Mapping causal & predictive approaches",
     "section": "",
-    "text": "⚠️ … currently under review … ⚠️"
+    "text": "🔴 … currently under review … 🔴"
   },
   {
-    "objectID": "lectures/lec04_caus_pred.html#lecture-outline",
-    "href": "lectures/lec04_caus_pred.html#lecture-outline",
+    "objectID": "modules/04_caus_pred.html#outline",
+    "href": "modules/04_caus_pred.html#outline",
     "title": "Mapping causal & predictive approaches",
-    "section": "Lecture Outline",
-    "text": "Lecture Outline\n\nResearch approaches\n\nCausal Analysis\nPrediction Analysis"
+    "section": "Outline",
+    "text": "Outline\n\nResearch approaches\n\nCausal Analysis\nPrediction Analysis"
   },
   {
-    "objectID": "license_etc.html",
-    "href": "license_etc.html",
-    "title": "Acknowledgments and resources",
+    "objectID": "modules/04_caus_pred.html#lecture-slides",
+    "href": "modules/04_caus_pred.html#lecture-slides",
+    "title": "Mapping causal & predictive approaches",
+    "section": "Lecture slides",
+    "text": "Lecture slides\n\n\nView lecture slides in full screen"
+  },
+  {
+    "objectID": "modules/04_caus_pred.html#practice-slides",
+    "href": "modules/04_caus_pred.html#practice-slides",
+    "title": "Mapping causal & predictive approaches",
+    "section": "Practice slides",
+    "text": "Practice slides\n\nView practice slides in full screen  \n\n\n\n\n\n\nPractice input data (as subfolder)\n\n\n Download input data\n\n\nPractice R code (as .R file)\n\n\n Download R file"
+  },
+  {
+    "objectID": "modules/06_extra.html",
+    "href": "modules/06_extra.html",
+    "title": "Extra materials",
     "section": "",
-    "text": "We are genuinely grateful to many people within the Statistics, Machine Learning, Epidemiology and R programming communities, who shared their valuable work, open source software, and training resources."
+    "text": "🔴 … currently under review … 🔴"
   },
   {
-    "objectID": "license_etc.html#licensing-and-use-of-the-workshop-materials",
-    "href": "license_etc.html#licensing-and-use-of-the-workshop-materials",
-    "title": "Acknowledgments and resources",
-    "section": "Licensing and use of the workshop materials",
-    "text": "Licensing and use of the workshop materials\nThe workshop materials are licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. All borrowed external materials (images, worked examples, etc.), are credited with proper “Source” statements and governed by their own licenses. To our knowledge, all the consulted materials were published under “open access” or “creative commons” frameworks. If this were not the case for any content piece displayed here, please let us know and it will be removed."
+    "objectID": "modules/06_extra.html#topics",
+    "href": "modules/06_extra.html#topics",
+    "title": "Extra materials",
+    "section": "Topics",
+    "text": "Topics\n\nIntroduction to MetaboAnalyst software\n\nA useful R-based resources for metabolomics\n\n\nElements of statistical Power Analysis"
   },
   {
-    "objectID": "license_etc.html#selected-resources-for-self-guided-learning",
-    "href": "license_etc.html#selected-resources-for-self-guided-learning",
-    "title": "Acknowledgments and resources",
-    "section": "Selected resources for self-guided learning",
-    "text": "Selected resources for self-guided learning\nBelow is a curated list of great resources (most of which free and openly accessible) you can peruse on your own.\n\n\nStatistics, Biostatistics, Epidemiology with R examples\n\n\n\n\nHeiss, A. (2024, March 21). Demystifying causal inference estimands: ATE, ATT, and ATU [Article]. Andrew Heiss’s blog. https://www.andrewheiss.com/blog/2024/03/21/demystifying-ate-att-atu\n\n\nGreifer, N., & Stuart, E. A. (2021). Choosing the Causal Estimand for Propensity Score Analysis of Observational Studies [Article]. https://doi.org/10.48550/ARXIV.2106.10577    \n\nApplied Epi Team (2024). Applied Epi - Elevating frontline epidemiology [Course]. Training, support, tools. https://www.appliedepi.org/\nApplied Epi Team (2024). R for applied epidemiology and public health The Epidemiologist R Handbook [Course]. https://epirhandbook.com/en/\nBobbitt, Z. (2024). Statology [Course]. Statology. https://www.statology.org/\nÇetinkaya-Rundel, M., & Hardim, J. (2023). Introduction to Modern Statistics (1st Ed) [Book]. https://openintro-ims.netlify.app/\nchilds_introductory_2022-1?\n\nSelby, D., & 2021 (2024). Analytical Epidemiology II [Course]. David Selby. https://personalpages.manchester.ac.uk/staff/david.selby/analysis/2021-03-30-inference/\n\nVu, J., & Harrington, D. (2021). Introductory Statistics for the Life and Biomedical Sciences [Book]. https://www.openintro.org/book/biostat/\nR packages & tools\n\nPOSIT (2024). POSIT resources [R]. https://posit.co/resources/.\nRStudio, & Posit (2024). Base-r-cheat-sheet.pdf [R]. https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf\nVarious contributors (2024). Bioconductor - Open source software for Bioinformatics [R]. Bioconductor - Open source software for Bioinformatics. https://www.bioconductor.org/\nWickham, H., François, R., Müller, K., & Vaughan, D. (2023). Programming with dplyr [R]. dplyr. https://dplyr.tidyverse.org/articles/programming.html#tidy-selection\nWickham, H. (2014). Tidy Data [R]. Journal of Statistical Software, 59(10). https://doi.org/10.18637/jss.v059.i10\nSources of practice datasets\n\nVanderbilt Department of Biostatistics (2023, September 17). Vanderbilt Biostatistics Datasets [Dataset]. https://hbiostat.org/data/\nChicco, D., & Jurman, G. (2020). Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone [Dataset]. BMC Medical Informatics and Decision Making, 20(1), 16. https://doi.org/10.1186/s12911-020-1023-5\nAhmad, T., Munir, A., Bhatti, S. H., Aftab, M., & Raza, M. A. (2017). Survival analysis of heart failure patients: A case study [Dataset]. PLOS ONE, 12(7), e0181001. https://doi.org/10.1371/journal.pone.0181001"
+    "objectID": "modules/06_extra.html#extra-lecture-slides",
+    "href": "modules/06_extra.html#extra-lecture-slides",
+    "title": "Extra materials",
+    "section": "(Extra) lecture slides",
+    "text": "(Extra) lecture slides"
   },
   {
-    "objectID": "practice/lab01_data_with_R.html",
-    "href": "practice/lab01_data_with_R.html",
-    "title": "Lab 1: Intro to R and data analysis",
-    "section": "",
-    "text": "View slides in full screen"
-  },
-  {
-    "objectID": "practice/lab01_data_with_R.html#practice-session-1-input-data-as-subfolder",
-    "href": "practice/lab01_data_with_R.html#practice-session-1-input-data-as-subfolder",
-    "title": "Lab 1: Intro to R and data analysis",
-    "section": "Practice session 1: input data (as subfolder)",
-    "text": "Practice session 1: input data (as subfolder)\n\n\n Download input data"
-  },
-  {
-    "objectID": "practice/lab01_data_with_R.html#practice-session-1-r-code-as-.r-file",
-    "href": "practice/lab01_data_with_R.html#practice-session-1-r-code-as-.r-file",
-    "title": "Lab 1: Intro to R and data analysis",
-    "section": "Practice session 1: R code (as .R file)",
-    "text": "Practice session 1: R code (as .R file)\n\n\n Download R file"
-  },
-  {
-    "objectID": "practice/lab03_corr_regress.html",
-    "href": "practice/lab03_corr_regress.html",
-    "title": "Lab 3: Modeling correlation and regression",
-    "section": "",
-    "text": "View slides in full screen"
-  },
-  {
-    "objectID": "practice/lab03_corr_regress.html#practice-session-3-input-data-as-subfolder",
-    "href": "practice/lab03_corr_regress.html#practice-session-3-input-data-as-subfolder",
-    "title": "Lab 3: Modeling correlation and regression",
-    "section": "Practice session 3: input data (as subfolder)",
-    "text": "Practice session 3: input data (as subfolder)\n\n\n\n Download input data"
-  },
-  {
-    "objectID": "practice/lab03_corr_regress.html#practice-session-3-r-code-as-.r-file",
-    "href": "practice/lab03_corr_regress.html#practice-session-3-r-code-as-.r-file",
-    "title": "Lab 3: Modeling correlation and regression",
-    "section": "Practice session 3: R code (as .R file)",
-    "text": "Practice session 3: R code (as .R file)\n\n\n\n Download R file"
-  },
-  {
-    "objectID": "practice/lab05_intro_ML.html",
-    "href": "practice/lab05_intro_ML.html",
-    "title": "Lab 5: Intro to machine learning",
-    "section": "",
-    "text": "View slides in full screen"
-  },
-  {
-    "objectID": "practice/lab05_intro_ML.html#practice-session-4-input-data-as-subfolder",
-    "href": "practice/lab05_intro_ML.html#practice-session-4-input-data-as-subfolder",
-    "title": "Lab 5: Intro to machine learning",
-    "section": "Practice session 4: input data (as subfolder)",
-    "text": "Practice session 4: input data (as subfolder)\n\n\n\n Download input data"
-  },
-  {
-    "objectID": "practice/lab05_intro_ML.html#practice-session-4-r-code-as-.r-file",
-    "href": "practice/lab05_intro_ML.html#practice-session-4-r-code-as-.r-file",
-    "title": "Lab 5: Intro to machine learning",
-    "section": "Practice session 4: R code (as .R file)",
-    "text": "Practice session 4: R code (as .R file)\n\n\n\n Download R file"
+    "objectID": "modules/06_extra.html#extra-practice-slides",
+    "href": "modules/06_extra.html#extra-practice-slides",
+    "title": "Extra materials",
+    "section": "(Extra) practice slides",
+    "text": "(Extra) practice slides\n\n\n\n\n\n\n\n\nPractice input data (as subfolder)\n\n\n\nPractice R code (as .R file)"
   },
   {
     "objectID": "practice/practice_slides/slides_lab01.html#goal-of-todays-practice-session",
