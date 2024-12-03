@@ -7,14 +7,10 @@ This website hosts some teaching material on **“Introduction to Statistics & M
 
 ## TO DO
 
-+ 🙄 A monte di cui sotto, ha senso ristrutturare il sito invece che Lectures Menu + Lab menu **per argomenti** (con sotto lezione e esercitazione)? 
-
 + finish `practice/practice_slides/slides_lab04.qmd`
   + (add PSM come causal approach? forse no perche e prematuro) 
-+ restructure `lectures_slides/_Lulass/Lecture_05.pptx`
-  + metto qui INTRO to ML (da `Lecture_04.pptx`)
-  + tolgo la parte di **Metaboanalyst** e **Power Analysis**  (da `Lecture_05.pptx`) e 
-+ Creo Bonus materials? faccio `lecture/practice 06`?  
++ make sure it matches the lecture in `lecture/lecture_slides/slides_lecture04.qmd`  
++ ✅ Creo Bonus materials? faccio `lecture/practice 06`?  
 
 
 + **[CODE refactoring]**
@@ -25,7 +21,7 @@ This website hosts some teaching material on **“Introduction to Statistics & M
 
 ## How this website was built
 
-This is a static website built with [Quarto](https://quarto.org/), shared on a Github [repo](https://github.com/Lulliter/R4biostats) and served via [Github Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) to be rendered at this link [https://lulliter.github.io/R4stats/](https://lulliter.github.io/R4stats/), or (after buying a "custom domain"), now deployed over a custom domain registered with AWS Route 53: <???>.
+This is a static website built with [Quarto](https://quarto.org/), shared on a Github [repo](https://github.com/Lulliter/R4biostats) and served via [Github Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) to be rendered at this link [https://lulliter.github.io/R4stats/](https://lulliter.github.io/R4stats/), or (after buying a "custom domain"), now deployed over a custom domain registered with AWS Route 53: <`???`>.
 
 The main content of the website pages is contained in *Quarto Markdown* files (`*.qmd`). `*.qmd` files are very similar to regular Markdown (`*.md`) and R Markdown (`*.rmd`) files, except they are designed to be language agnostic.
 

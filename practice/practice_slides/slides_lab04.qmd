@@ -142,7 +142,6 @@ library(mediation) # Causal Mediation Analysis
 ```{r}
 #| echo: FALSE
 #### ------ ERROR ------- ####
-library(dagitty) # Graphical Analysis of Structural Causal Models
 library(ggdag) # Analyze and Create Elegant Directed Acyclic Graphs #
 ```
 
@@ -201,8 +200,8 @@ mosquito_nets_v2 <- read_csv(here("practice", "data_input", "04_datasets", "mosq
 
 ::: {style="font-size: 90%;"}
 **Name**: NHANES, accessible from package `NHANES`  
-**Documentation**: See reference on the data downloaded and ....  
-**Sampling details**: We’ll use a subset of the NHANES dataset, focusing on variables related to smoking status (SmokeNow), systolic blood pressure (BPSysAve), Body Mass Index (BMI) and age (Age).
+**Documentation**: See reference on the data downloaded with `?NHANES`  
+**Sampling details**: We’ll use a subset of the NHANES dataset, focusing on variables related to smoking status (`SmokeNow`), systolic blood pressure (`BPSysAve`), Body Mass Index (`BMI`) and age (`Age`).
 
 ```{r}
 set.seed(123) # Set seed for reproducibility
@@ -321,8 +320,14 @@ kableExtra::kable(nhanes_desc)
 ```
 :::
 
- 
+
 # VISUALLY EXPLORE CAUSAL PATHWAYS WITH DAGS
+
+::: {style="font-size: 70%;"}
++ using R packages:
+  - `dagitty` for creating and analyzing DAGs
+  - `ggdag` for plotting DAGs
+:::
 
 ## DAG with `collider`
 ::: {style="font-size: 75%;"}
@@ -333,8 +338,7 @@ kableExtra::kable(nhanes_desc)
 #| output-location: slide
 
 # df DAG 
-library(ggdag)
-dag_collid <- dagify( Y ~ X + e, Z ~ X + Y, 
+dag_collid <- ggdag::dagify( Y ~ X + e, Z ~ X + Y, 
                       exposure = "X",outcome = "Y", #latent = "e",
                       # labels
                       labels = c("Z" = "Collider",  "X" = "Exposure",
@@ -344,23 +348,23 @@ dag_collid <- dagify( Y ~ X + e, Z ~ X + Y,
                         x = c(X = 0, Y= 4, Z = 2 , e = 5),
                         y = c(X = 0, Y = 0, Z = 2, e = 1) 
                       )) %>% 
-  tidy_dagitty() 
+  ggdag::tidy_dagitty() 
 
 # Plot DAG 
 dag_col_p <-  dag_collid %>% 
-  ggdag(., layout = "circle") +  # decided in dagify
+  ggdag::ggdag(., layout = "circle") +  # decided in dagify
   theme_dag_blank(plot.caption = element_text(hjust = 1)) +
   # Nodes 
-  geom_dag_node(aes(color = name)) +  
+   ggdag::geom_dag_node(aes(color = name)) +  
   # Labels dodged to avoid overlap
-  geom_dag_label(aes(label = label), color = "#4c4c4c", nudge_x = 0.7, nudge_y = 0.2) +  
+   ggdag::geom_dag_label(aes(label = label), color = "#4c4c4c", nudge_x = 0.7, nudge_y = 0.2) +  
   
-  geom_dag_text(color="white") +
-  labs(title = "Causal map with COLLIDER (Z)" , 
+   ggdag::geom_dag_text(color="white") +
+   ggplot2::labs(title = "Causal map with COLLIDER (Z)" , 
        #subtitle = "X = exposure, Y = outcome, Z = collider, e = random error", 
        caption = ) +
   # Map colors to specific nodes
-  scale_color_manual(values = c("X" = "#9b6723", "Y" = "#72aed8", "Z" = "#d02e4c",
+   ggplot2::scale_color_manual(values = c("X" = "#9b6723", "Y" = "#72aed8", "Z" = "#d02e4c",
                                 "e" = "#A6A6A6"), 
                      guide = "none")    # Remove legend
 
@@ -374,8 +378,6 @@ f_save_plot("dag_col_p", dag_col_p)
 ```
 
 
-
-
 ## DAG with `confounder`  
 ::: {style="font-size: 75%;"}
 ```{r}
@@ -385,34 +387,34 @@ f_save_plot("dag_col_p", dag_col_p)
 #| output-location: slide
 
 # df DAG 
-dag_confounder <- dagify(Y ~ X + Z + e, X ~  Z, 
-                         exposure = "X", outcome = "Y", #latent = "e",
-                         # labels
-                         labels = c(
-                           "Z" = "Confounder",
-                           "X" = "Exposure",
-                           "Y" = "Outcome",
-                           "e" = "Unobserved \nerror"),
-                         # positions
-                         coords = list(
-                           x = c(X = 0, Y= 4, Z = 2 , e = 5),
-                           y = c(X = 0, Y = 0, Z = 2, e = 1) 
-                         )) %>% 
-  tidy_dagitty()     # Add edge_type within pipe
+dag_confounder <- ggdag::dagify(Y ~ X + Z + e, X ~  Z, 
+                                exposure = "X", outcome = "Y", #latent = "e",
+                                # labels
+                                labels = c(
+                                  "Z" = "Confounder",
+                                  "X" = "Exposure",
+                                  "Y" = "Outcome",
+                                  "e" = "Unobserved \nerror"),
+                                # positions
+                                coords = list(
+                                  x = c(X = 0, Y= 4, Z = 2 , e = 5),
+                                  y = c(X = 0, Y = 0, Z = 2, e = 1) 
+                                )) %>% 
+  ggdag::tidy_dagitty()     # Add edge_type within pipe
 
 # Plot DAG 
-dag_conf_p <-  dag_confounder %>% 
-  ggdag(., layout = "circle") + 
-  theme_dag_blank(plot.caption = element_text(hjust = 1)) +
+dag_conf_p <- dag_confounder %>% 
+  ggdag::ggdag(., layout = "circle") + 
+  ggdag::theme_dag_blank(plot.caption = element_text(hjust = 1)) +
   # Nodes 
-  geom_dag_node(aes(color = name)) +  
+  ggdag::geom_dag_node(aes(color = name)) +  
   # Labels dodged to avoid overlap
-  geom_dag_label(aes(label = label), color = "#4c4c4c", nudge_x = 0.7, nudge_y = 0.2) +  
-  geom_dag_text(color="white") +
-  labs(title = "Causal map with CONFOUNDER (Z)" , #subtitle = " ",
+  ggdag::geom_dag_label(aes(label = label), color = "#4c4c4c", nudge_x = 0.7, nudge_y = 0.2) +  
+  ggdag::geom_dag_text(color="white") +
+  ggplot2::labs(title = "Causal map with CONFOUNDER (Z)" , #subtitle = " ",
         caption = ) +
   # Map colors to specific nodes
-  scale_color_manual(values = c("X" = "#9b6723", "Y" = "#72aed8", "Z" = "#d02e4c",
+  ggplot2::scale_color_manual(values = c("X" = "#9b6723", "Y" = "#72aed8", "Z" = "#d02e4c",
                                 "e" = "#A6A6A6"), 
                      guide = "none")   
 dag_conf_p
@@ -435,7 +437,7 @@ f_save_plot("dag_conf_p", dag_conf_p)
 #| output-location: slide
 
 # df DAG 
-dag_med <- dagify( Y ~ Z + e,  Z ~ X, exposure = "X", outcome = "Y",  #latent = "e",
+dag_med <- ggdag::dagify( Y ~ Z + e,  Z ~ X, exposure = "X", outcome = "Y",  #latent = "e",
                    # labels
                    labels = c(
                      "Z" = "Mediator",
@@ -447,26 +449,24 @@ dag_med <- dagify( Y ~ Z + e,  Z ~ X, exposure = "X", outcome = "Y",  #latent = 
                      x = c(X = 0, Y= 4, Z = 2 , e = 5),
                      y = c(X = 0, Y = 0, Z = 2, e = 1) 
                    )) %>% 
-  tidy_dagitty()     # Add edge_type within pipe
+  ggdag::tidy_dagitty()     # Add edge_type within pipe
 
 # Plot DAG 
 dag_med_p <-  dag_med %>% 
-  ggdag(., layout = "circle") +  # decided in dagify
-  theme_dag_blank(plot.caption = element_text(hjust = 1)) +
+  ggdag::ggdag(., layout = "circle") +  # decided in dagify
+  ggdag::theme_dag_blank(plot.caption = element_text(hjust = 1)) +
   # Nodes 
-  geom_dag_node(aes(color = name)) +  
+  ggdag::geom_dag_node(aes(color = name)) +  
   # Labels dodged to avoid overlap
-  geom_dag_label(aes(label = label), color = "#4c4c4c", nudge_x = 0.7, nudge_y = 0.2) +  
+  ggdag::geom_dag_label(aes(label = label), color = "#4c4c4c", nudge_x = 0.7, nudge_y = 0.2) +  
   
-  geom_dag_text(color="white") +
-  labs(title = "Causal map with MEDIATOR (Z)" , 
+  ggdag::geom_dag_text(color="white") +
+  ggplot2::labs(title = "Causal map with MEDIATOR (Z)" , 
        #subtitle = "X = exposure, Y = outcome, Z = collider, e = random error", 
        caption = ) +
   # Map colors to specific nodes
-  scale_color_manual(values = c("X" = "#9b6723", "Y" = "#72aed8", "Z" = "#d02e4c",
-                                "e" = "#A6A6A6"), 
-                     guide = "none")    # Remove legend
-
+  ggplot2::scale_color_manual(values = c("X" = "#9b6723", "Y" = "#72aed8", "Z" = "#d02e4c",
+                                "e" = "#A6A6A6"), guide = "none")    # Remove legend
 dag_med_p
 ```
 :::
@@ -482,7 +482,6 @@ f_save_plot("dag_med_p", dag_med_p)
 <!-- https://bookdown.org/jbrophy115/bookdown-clinepi/confounding.html -->
 
 ## DAG with `confounder`  
-
 
 :::: {.columns}
 ::: {.column width="30%"}
@@ -513,10 +512,10 @@ data(NHANES)
 # Select relevant columns and drop rows with missing values
 nhanes_conf <- NHANES %>%
   dplyr::select(ID, Age, SmokeNow, BPSysAve) %>%
-  drop_na()
+  tidyr::drop_na()
   
 # Take a quick look at the data
-paint(nhanes_conf)
+paint::paint(nhanes_conf)
 ```
 
 
@@ -529,13 +528,21 @@ In this context:
 
 ```{r}
 #| output-location: slide 
-# linear rel 
-qplot (Age, BPSysAve, data = nhanes_conf, color = SmokeNow) +
-  geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "Scatterplot of Age and Blood Pressure by Smoking Status",
-       x = "Age",
-       y = "Blood Pressure (mmHg)",
-       color = "Smoking Status")
+
+# Scatterplot of Age and Blood Pressure by Smoking Status
+ggplot2::ggplot(nhanes_conf, aes(x = Age, y = BPSysAve, color = SmokeNow)) +
+  geom_point(alpha = 0.6) +
+  # linear rel 
+  geom_smooth(method = "lm", se = FALSE,  size = 1.5,  linetype = "dashed", color = "black") +
+  scale_color_manual(
+    values = c("No" = "#1b9e77", "Yes" = "#d95f02")) +
+  facet_wrap(~ SmokeNow) + 
+  labs(
+    title = "Scatterplot of Age and Blood Pressure by Smoking Status",
+    x = "Age",
+    y = "Blood Pressure (mmHg)",
+    color = "Smokers"
+  )
 
 ```
 
@@ -560,9 +567,8 @@ summary(model_adjusted)$coefficients
 
 ## [Compare models (without and with `confounder`)]{.r-fit-text}
 ::: {style="font-size: 65%;"}
-+ Adjusting for `Age` changes the estimated effect of `SmokeNow` on blood pressure (`BPSysAve`):
-  + in the **Unadjusted Model** any observed relationship between smoking and blood pressure might be confounded.
-  + in the **Adjusted Model** (which *'controls for age'*) a more accurate estimate of the causal effect of smoking on blood pressure accounts for the confounding influence of age.
++ In the **Unadjusted Model** any observed relationship between smoking and blood pressure might be confounded.
++ In the **Adjusted Model** (which *'controls for' `Age`*) a more accurate estimate of the causal effect of smoking (`SmokeNowYes`) on blood pressure (`BPSysAve`) accounts for the confounding influence of `Age`.
 
 ```{r}
 #| output-location: column
@@ -598,30 +604,47 @@ conf_sum  %>%    # text and background color
 
 ## [Compare predicted values from 2 models]{.r-fit-text}
 ::: {style="font-size: 80%;"}
-+ With `tidyr::pivot_longer()` we will reshape the dataset so we can plot the predicted values from both models in a faceted plot.
++ With `tidyr::pivot_longer()` we reshape the dataset so we can plot the predicted values from both models in a faceted plot.
 
 ```{r}
 # Add predicted values from the unadjusted and adjusted models
 nhanes_conf <- nhanes_conf %>%
-  mutate(
+  dplyr::mutate(
     pred_unadjusted = predict(model_unadjusted),  # Predicted BPSysAve from unadjusted model
     pred_adjusted = predict(model_adjusted)       # Predicted BPSysAve from adjusted model
   )
 
 # Reshape the data into long format using pivot_longer()
 nhanes_long <- nhanes_conf %>%
-  pivot_longer(cols = c(pred_unadjusted, pred_adjusted), 
+  tidyr::pivot_longer(cols = c(pred_unadjusted, pred_adjusted), 
                names_to = "model", values_to = "predicted") %>%
-  mutate(model = recode(model, 
+  dplyr::mutate(model = recode(model, 
                         pred_unadjusted = "Unadjusted: SmokeNow on BPSysAve", 
-                        pred_adjusted = "Adjusted: SmokeNow + Age on BPSysAve"))
+                        pred_adjusted = "Adjusted: SmokeNow + Age on BPSysAve")) %>% 
+  #Reorder the 'model' factor to change the order of the facets
+  dplyr::mutate(model = factor(
+   model,   levels = c("Unadjusted: SmokeNow on BPSysAve", "Adjusted: SmokeNow + Age on BPSysAve")
+))
 ```
+
++ check the df new size
+```{r}
+dim(nhanes_conf)
+dim(nhanes_long)
+```
+
 :::
 
 ## [Plot predicted values from 2 models]{.r-fit-text}
-::: {style="font-size: 90%;"}
+::: {style="font-size: 80%;"}
+<!-- https://quantifyinghealth.com/confounding-example/ -->
+
++ Using `nhanes_long` df in "long shape" 
 ```{r}
+#| label: fig-pred_conf
 #| output-location: slide 
+#| fig-cap: "As age causes high blood pressure, but also determines smoking status, the Adjusted model (*right*) gives us a more credible relationship between smoking and blood pressure."  
+#| fig-cap-location: bottom
 
 # Violin plot with dashed line connecting the two conditions
 ggplot(nhanes_long, aes(x = factor(SmokeNow), y = BPSysAve, fill = model)) +
@@ -749,7 +772,7 @@ summary(outcome_model)$coefficients
 + The `Mediator model` estimates the effect of `PhysActiveDays` on `BMI` (M). 
 + The `Outcome model estimates` the effect of (`PhysActiveDays` + `BMI`) on BPSysAve.
 ```{r}
-#| echo: FALSE
+#| echo: TRUE
 #| eval: TRUE
 #| output: TRUE
 #| output-location: slide

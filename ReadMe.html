@@ -59,13 +59,9 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>(add PSM come causal approach? forse no perche e prematuro)</li>
 </ul></li>
-<li><p>restructure <code>lectures_slides/_Lulass/Lecture_05.pptx</code></p>
-<ul>
-<li>metto qui INTRO to ML (da <code>Lecture_04.pptx</code>)</li>
-<li>tolgo la parte di <strong>Metaboanalyst</strong> e <strong>Power Analysis</strong> (da <code>Lecture_05.pptx</code>) e</li>
-</ul></li>
-<li><p>Creo Bonus materials? faccio lecture/practice 6?</p></li>
-<li><p>🙄 A valle di cui sopra, ha senso ristrutturare il sito invece che Lectures Menu + Lab menu <strong>per argomenti</strong> (con sotto lezione e esercitazione)?</p></li>
+<li><p>make sure it matches the lecture in <code>lecture/lecture_slides/slides_lecture04.qmd</code><br>
+</p></li>
+<li><p>✅ Creo Bonus materials? faccio <code>lecture/practice 06</code>?</p></li>
 <li><p><strong>[CODE refactoring]</strong></p>
 <ul>
 <li>✅ make <code>_variable.yml</code>
@@ -73,17 +69,13 @@ ul.task-list li input[type="checkbox"] {
 <li>nome sito</li>
 </ul></li>
 </ul></li>
-<li><p>✅ Cancel <strong>parameterized</strong> practicelslides <code>.qmd</code></p>
-<ul>
-<li>it doesn’t make any sense</li>
-</ul></li>
 <li><p>turn re-usable practice slides code into <code>tidyeval</code> functions (plot etc) to be able to replace with different datasets</p></li>
 <li><p>add <code>renv</code> bc this is going to last</p></li>
 </ul>
 </section>
 <section id="how-this-website-was-built" class="level2">
 <h2 class="anchored" data-anchor-id="how-this-website-was-built">How this website was built</h2>
-<p>This is a static website built with <a href="https://quarto.org/">Quarto</a>, shared on a Github <a href="https://github.com/Lulliter/R4biostats">repo</a> and served via <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site">Github Pages</a> to be rendered at this link <a href="https://lulliter.github.io/R4stats/">https://lulliter.github.io/R4stats/</a>, or (after buying a “custom domain”), now deployed over a custom domain registered with AWS Route 53: &lt;???&gt;.</p>
+<p>This is a static website built with <a href="https://quarto.org/">Quarto</a>, shared on a Github <a href="https://github.com/Lulliter/R4biostats">repo</a> and served via <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site">Github Pages</a> to be rendered at this link <a href="https://lulliter.github.io/R4stats/">https://lulliter.github.io/R4stats/</a>, or (after buying a “custom domain”), now deployed over a custom domain registered with AWS Route 53: &lt;<code>???</code>&gt;.</p>
 <p>The main content of the website pages is contained in <em>Quarto Markdown</em> files (<code>*.qmd</code>). <code>*.qmd</code> files are very similar to regular Markdown (<code>*.md</code>) and R Markdown (<code>*.rmd</code>) files, except they are designed to be language agnostic.</p>
 </section>
 <section id="things-needed-to-build-the-site" class="level2">
