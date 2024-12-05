@@ -196,6 +196,7 @@ mybib_df %>%
 
 <!-- + @arel-bundock_vincent_2024 -->
 <!-- + @berrino_covid-19_2024     -->
++ @choueiry_8_2024  
 + @heiss_demystifying_2024  
 <!-- + @kozyrkov_machine_2024     -->
 <!-- + @kozyrkov_statistics_2024  -->
@@ -254,7 +255,7 @@ mybib_df %>%
 + @vanderbilt_department_of_biostatistics_vanderbilt_2023
 + @chicco_machine_2020
 + @ahmad_survival_2017
-
++ @joosten_cardiovascular_2013
 <!-- <!-- For HTML output -->  
 <!-- ::: {.content-hidden when-format="html"} -->
 <!-- ## References -->

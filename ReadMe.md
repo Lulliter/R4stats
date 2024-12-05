@@ -7,17 +7,23 @@ This website hosts some teaching material on **“Introduction to Statistics & M
 
 ## TO DO
 
-+ finish `practice/practice_slides/slides_lab04.qmd`
-  + (add PSM come causal approach? forse no perche e prematuro) 
-+ make sure it matches the lecture in `lecture/lecture_slides/slides_lecture04.qmd`  
 + ✅ Creo Bonus materials? faccio `lecture/practice 06`?  
 
++ ️🔳 finish `practice/practice_slides/slides_lab04.qmd`
+  + 🟠 (add PSM come causal approach? forse no perche e prematuro) 
+    + ☑️ make sure it matches the lecture in `lecture/lecture_slides/slides_lecture04.qmd`  
+
++ ️🔳 rivedere `practice/practice_slides/slides_lab05.qmd`
+  + ML 
+  + aggiungere logistic regression???
+  + aggiungere decision trees??? 
+  + make sure it matches the lecture in `lecture/lecture_slides/slides_lecture05.qmd`  
 
 + **[CODE refactoring]**
   + ✅ make  `_variable.yml`
     + nome sito 
-+ turn re-usable practice slides code into `tidyeval` functions (plot etc) to be able to replace with different datasets 
-+ add `renv` bc this is going to last 
++  ️🔳 turn re-usable practice slides code into `tidyeval` functions (plot etc) to be able to replace with different datasets 
++  ️🔳 add `renv` bc this is going to last 
 
 ## How this website was built
 
@@ -87,7 +93,7 @@ https://info5940.infosci.cornell.edu/slides/publishing-reproducible-documents/#/
 ## Web input attributions
 
 <!-- - Favicon1 (giallo) <a target="_blank" href="https://icons8.com/icon/110187/grafico-combinato">Grafico combinato</a> icona di <a target="_blank" href="https://icons8.com">Icons8</a> -->
-- Website favicon Flip Chart icon by [icons8](https://icons8.com/icon/7emdDeJ5w6gv/flip-chart)
+- Website favicon R-project icon by [icons8](https://icons8.com/icon/xJd_7yBGvl5J/r-project)
 - Google Scholar icon from [icons8.com](https://icons8.com/icon/pU44R9xgF3wq/google-scholar)
 - Font-Awsome Icons downloaded in `./images/*` from [Font-Awsome svgs](https://github.com/FortAwesome/Font-Awesome/tree/6.x/svgs)
 - Great tutorial on "Customizing Quarto Websites" by Sam Csik: [slides](https://ucsb-meds.github.io/customizing-quarto-websites/#/title-slide)

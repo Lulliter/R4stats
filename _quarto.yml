@@ -21,7 +21,7 @@ website:
   # google-analytics: "G-51QEQ3S83R"
   repo-url: "{{< var websites.gh_repo >}}" #  "https://github.com/Lulliter/R4stats"
 #  repo-actions: [edit, issue]
-  favicon: images/icons8-flip-chart-96.png
+  favicon: images/icons8-r-project-120.png
   search: false # no magnifier on navbar 
 
   page-footer:
@@ -69,7 +69,7 @@ website:
             href: modules/02_inference.qmd
           - text: "Modeling correlation and regression"
             href: modules/03_corr_regress.qmd
-          - text: "Mapping causal & predictive approaches"
+          - text: "Causal analysis essentials"
             href: modules/04_caus_pred.qmd
           - text: "Intro to machine learning"
             href: modules/05_intro_ML.qmd

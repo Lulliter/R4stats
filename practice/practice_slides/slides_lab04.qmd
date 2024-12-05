@@ -8,6 +8,7 @@ date-format: long
 code-link: true
 format:
   revealjs:
+    math: mathjax
     smaller: true
     scrollable: true
     theme: ../../theme/slidesMine.scss # QUARTO LOOKS IN SAME FOLDER 
@@ -76,17 +77,21 @@ f_descr_table <- function(var) {
 
 # [GOAL OF TODAY'S PRACTICE SESSION]{.r-fit-text}
 
-::: {style="font-size: 80%;"}
+::: {style="font-size: 70%;"}
 ::: {style="color:#77501a"}
 + **Delve into causal analysis** and the association between `exposure` and `outcome`
 + **Visually explore causal pathways** and influential variables with *Directed Acyclic Graphs (DAGs)*:
+  + `Collider`: a variable that is influenced by both the exposure and the outcome
   + `Confounder`: a variable that influences both the exposure and the dependent variable outcome
   + `Mediator`: a variable that lies on the causal path between the exposure and the outcome 
-  + `Collider`: a variable that is influenced by both the exposure and the outcome
-+ **Practically illustrate causal modeling** in the presence of influential causal variables
-  + `Confounders` must be adjusted for, as they distort the association between exposure and outcome (source of *bias*)
-  + `Mediators` require careful consideration in analyses depending on the effect of interest (total vs. direct)
-  + `Colliders` can introduce bias if conditioned upon, distorting the relationship by inducing spurious associations
++ **Practically illustrate causal modeling** in the presence of influential causal variables:
+  + [`Colliders` can introduce bias if conditioned upon]
+<!-- , distorting the relationship by inducing spurious associations -->
+  + `Confounders` must be adjusted for
+<!-- , as they distort the association between exposure and outcome (source of *bias*) -->
+  + `Mediators` require careful consideration in analyses
+<!-- depending on the effect of interest (total vs. direct) -->
++ **Calculate commonly used estimands**: ATE, ATT, ATU
 
 :::
 :::
@@ -598,7 +603,11 @@ conf_sum  %>%    # text and background color
   tab_style(style = cell_text(weight = "bold"),
             locations = cells_body(rows = c(1,4,7))) %>% 
   tab_style(style = cell_fill(color = 'lightblue'),
-            locations = cells_body(rows = 4:5))
+            locations = cells_body(rows = 4:5)) %>% 
+  # Make 'Age' font color red
+  tab_style(style = cell_text(color = "#d02e4c"),
+    locations = cells_body(rows = c(7,8,9))
+  )
 ```
 :::
 
@@ -802,8 +811,12 @@ med_sum %>%
     locations = cells_column_labels(columns = c(2,4))) %>% 
   tab_style(style = cell_text(weight = "bold"),
             locations = cells_body(rows = c(1,4,7))) %>% 
+  # Highlight X 
    tab_style(style = cell_fill(color = 'lightblue'),
-            locations = cells_body(rows = 7:9))
+            locations = cells_body(rows = 4:6)) %>% 
+  # Make 'MEdiator' font color red
+  tab_style(style = cell_text(color = "#d02e4c"),
+    locations = cells_body(rows = 7:9)) 
 ```
 :::
 
@@ -987,349 +1000,11 @@ ggplot(nhanes_long, aes(x = BMI)) +
 
 ```
 
-# ----
-# QUI
-# ----
+
+# DEFINING POPULAR CAUSAL OUTCOME EFFECTS 
 
 
-+ Equitable Equations !!!!!
-+ https://www.andrewheiss.com/blog/2024/03/21/demystifying-ate-att-atu/
-+ https://forloopsandpiepkicks.wordpress.com/2022/01/05/simple-examples-to-understand-what-confounders-colliders-mediators-and-moderators-are-and-how-to-control-for-variables-in-r-with-regression-and-propensity-score-matching/
-
-## [Importing Dataset 2 (Gabor)]{.r-fit-text}
-
-::: {style="font-size: 95%;"}
-**Name**:  
-**Documentation**:  ..
-**Sampling details**:  
-
-```{r}
-#| eval: FALSE
-# import data
-data <- read_csv(paste0(data_in,"food-health.csv")) # 164,848 
-
-# drop observations
-dat <-  data %>%
-  filter(age >= 30 & age <60) %>% # 7930 
-  # new variables: 
-  ## Fruit and vegetables per day (grams)
-  ## Blood pressure (systolic+diastolic)
-  mutate(fv=veggies_n_fruits_gr,
-         bp=blood_pressure) %>%
-  filter(fv<3200) %>%
-  drop_na(bp) %>% # 7358
-  # Days per week exercising 
-  mutate(exerc=case_when(paq655 <=7 ~ paq655,
-                         paq650 ==2 ~ 0)) %>% 
-  # Potato chips per day, grams
-  mutate(pchips=gr_potato_chips) %>% 
-# select variables
-  dplyr::select(id = seqn, age, gender, weight, height, race, 
-         fv, exerc, pchips, 
-         bp_systolic, bp_diastolic, bp, bmi,  
-         smoker, total_cholesterol, hdl,
-         hh_income_usd, hh_income_percap, ln_hh_income_percap ,income_cat
-                  ) %>% 
-  drop_na() # 7358
- 
-
-# Hmisc::describe(dat$hh_income)
-paint(dat)
-```
-
-::: 
-
-## [Dataset 2 (Gabor) Variables and their description]{.r-fit-text}
-
-::: {style="font-size: 60%;"}
-[[EXCERPT: see complete file in Input Data Folder]]{style="color:#77501a"}
-
-```{r}
-#| eval: FALSE
-#| output: true
-#| echo: false
-
-food_health_desc <- tribble(
-  ~Variable, ~ Type, ~Description,
-"X"                ,"int", "xxxx", 
-"ID"               ,"int", "xxxxx", 
-"SurveyYr"         ,"chr", "yyyy_mm. Ex. 2011_12",    
-"Gender"           ,"chr", "Gender (sex) of study participant coded as male or female",
-"Age"              ,"int", "##", 
-"AgeDecade"        ,"chr", "yy-yy es 20-29",   
-# "AgeMonths"        ,"int", "### es 471", 
-#"Race1"            ,"chr", "Reported race of study participant: Mexican, Hispanic, White, #Black, or Other",
-#"Race3"            ,"chr", "Reported race of study participant... Not availale for #2009-10", 
-
-"Education"        ,"chr", "[>= 20 yro]. Ex. 8thGrade, 9-11thGrade, HighSchool, SomeCollege, or CollegeGrad.", 
-# "MaritalStatus"    ,"chr", "[>= 20 yro]. Ex. Married, Widowed, Divorced, Separated, # NeverMarried, or LivePartner",  
-# "HHIncome"         ,"chr","Total annual gross income for the household in US dollars", 
-# "HHIncomeMid"      ,"int", "Numerical version of HHIncome derived from the middle income # in each category. Ex. 12500 40000" ,   
-# "Poverty"          ,"dbl", "A ratio of family income to poverty guidelines. Smaller # numbers indicate more poverty Ex.. 0.95 1.74 4.99" , 
-# "HomeRooms"        ,"int", "How many rooms are in home of study participant (counting # kitchen but not bath room).", 
-# "HomeOwn"          ,"chr", "One of Home, Rent, or Other", 
-# "Work"             ,"chr", "NotWorking Working" ,
-  
-"Weight"           ,"dbl", "Weight in kg",
-# "Length"           ,"lgl", "Recumbent length in cm. Reported for participants aged 0 - 3 years", 
-# "HeadCirc"         ,"lgl", "Head circumference in cm. Reported for participants aged 0 years (0 - 6 months)", 
-"Height"           ,"dbl",  "Standing height in cm. Reported for participants aged 2 years or older.",
-"BMI"              ,"dbl",  "Body mass index (weight/height2 in kg/m2). Reported for participants aged 2 years or older", 
-# "BMICatUnder20yrs" ,"lgl",  "Body mass index category. Reported for participants aged 2 to 19 years", 
-# "BMI_WHO"          ,"chr",  "Body mass index category. Reported for participants aged 2 years or older", 
-"Pulse"            ,"int",  "60 second pulse rate",
-# "BPSysAve"         ,"int", "Combined systolic blood pressure reading, following the # procedure outlined for BPXSAR",
-"BPDiaAve"         ,"int", "Combined diastolic blood pressure reading, following the # procedure outlined for BPXDAR",
-#"BPSys1"           ,"int", "Systolic blood pressure in mm Hg – first reading",
-#"BPDia1"           ,"int", "Diastolic blood pressure in mm Hg – second reading (consecutive readings)",
-#"BPSys2"           ,"int", "Systolic blood pressure in mm Hg – second reading (consecutive readings)",
-#"BPDia2"           ,"int", "Diastolic blood pressure in mm Hg – second reading",
-#"BPSys3"           ,"int", "Systolic blood pressure in mm Hg third reading (consecutive readings)",
-#"BPDia3"           ,"int", "Diastolic blood pressure in mm Hg – third reading (consecutive readings)",
-#"Testosterone"     ,"dbl", "Testerone total (ng/dL). Reported for participants aged 6 years or older. Not available for 2009-2010",
-#
-"DirectChol"       ,"dbl","Direct HDL cholesterol in mmol/L. Reported for participants aged 6 years or older", 
-"TotChol"          ,"dbl","Total HDL cholesterol in mmol/L. Reported for participants aged 6 years or older", 
-#"UrineVol1"        ,"int", "Urine volume in mL – first test. Reported for participants aged 6 years or older", 
-#"UrineFlow1"       ,"dbl", "Urine flow rate in mL/min – first test. Reported for participants aged 6 years or older", 
-#"UrineVol2"        ,"int", "Urine volume in mL – second test",
-#"UrineFlow2"       ,"dbl","Urine flow rate (urine volume/time since last urination) in mL/min – second test",
-"Diabetes"         ,"chr","Study participant told by a doctor or health professional that they have diabetes", 
-"DiabetesAge"      ,"int", "Age of study participant when first told they had diabetes", 
-"HealthGen"        ,"chr", "Self-reported rating of health: Excellent, Vgood, Good, Fair, or Poor Fair" , 
-#"DaysPhysHlthBad"  ,"int", "Self-reported # of days participant’s physical health was not good out of the past 30 days", 
-#"DaysMentHlthBad " ,"int", "Self-reported # of days participant’s mental health was not good out of the past 30 days", 
-#"LittleInterest"   ,"chr", "Self-reported # of days where participant had little interest in doing things. Among: None, Several, Majority, #or AlmostAll", 
-#"Depressed"        ,"chr", "Self-reported # of days where participant felt down, depressed or hopeless. Among: None, Several, Majority, or #AlmostAll", 
-#"nPregnancies"     ,"int", "# times participant has been pregnant",
-#"nBabies"          ,"int", "# deliveries resulted in live births", 
-#"PregnantNow"      ,"chr", "Pregnancy status ascertained for females 8-59 years of age", 
-#
-#"Age1stBaby"       ,"int",  "Age of participant at time of first live birth",
-#"SleepHrsNight"    ,"int",  "Self-reported # of hours study participant gets at night on weekdays or workdays. For participants aged 16 #years and older", 
-#"SleepTrouble"     ,"chr", "Participant [16 years and older] has had trouble sleeping. Coded as Yes or No." ,  
-#"PhysActive"       ,"chr", "Participant does moderate or vigorous-intensity sports, fitness or recreational activities (Yes or No)." ,  
-#"PhysActiveDays"   ,"int", "Number of days in a typical week that participant does moderate or vigorous intensity activity. ", 
-#"TVHrsDay"         ,"chr", "Number of hours per day on average participant watched TV over the past 30 days.",
-#"CompHrsDay"       ,"chr", "Number of hours per day on average participant used a computer or gaming device over the past 30 day", 
-#"TVHrsDayChild"    ,"lgl", "[2-11 yro] Number of hours per day on average participant watched TV over the past 30 days.",
-#"CompHrsDayChild"  ,"lgl", "[2-11 yro] Number of hours per day on average participant used a computer or gaming device over the past 30 #day", 
-# "Alcohol12PlusYr"  ,"chr",  "Participant has consumed at least 12 drinks of any type of alcoholic beverage in any one year", 
-#"AlcoholDay"       ,"int",  "Average number of drinks consumed on days that participant drank alcoholic beverages", 
-#"AlcoholYear"      ,"int",  "[>+ 18yro] Estimated number of days over the past year that participant drank alcoholic beverages", 
-#"SmokeNow"         ,"chr", "Study participant currently smokes cigarettes regularly. (Yes or No)",  
-#"Smoke100"         ,"chr", "Study participant has smoked at least 100 cigarettes in their entire life. (Yes pr No)",  
-#"Smoke100n"        ,"chr", " Smoker Non-Smoker" , 
-#"SmokeAge"         ,"int", "Age study participant first started to smoke cigarettes fairly regularly", 
-#"Marijuana"        ,"chr",  "Participant has tried marijuana", 
-#"AgeFirstMarij"    ,"int", "Age Participant has tried marijuana first", 
-#"RegularMarij"     ,"chr", "Participant has been/is a regular marijuana user (used at least once a month for a year) (Yes or No)",
-#"AgeRegMarij"      ,"int", "Age of participant when first started regularly using marijuana", 
-#"HardDrugs"        ,"chr", "Participant has tried cocaine, crack cocaine, heroin or methamphetamine (Yes or No)" ,
-#"SexEver"          ,"chr", "Participant had had  sex (Yes or No)" ,
-#"SexAge"           ,"int", "Age Participant had had sex first time" ,
-#"SexNumPartnLife"  ,"int", "Number of opposite sex partners participant has had",
-#"SexNumPartYear"   ,"int", "Number of opposite sex partners over the past 12 months",
-#"SameSex"          ,"chr", "Participant has had any kind of sex with a same sex partne(Yes or No)" ,
-#"SexOrientation"   ,"chr",  "Participant’s sexual orientation One of Heterosexual, Homosexual, Bisexual", 
-"..."  ,"...",  "..."#, 
-)
-
-kableExtra::kable(nhanes_desc)
-```
-:::
-
-
-https://bookdown.org/jbrophy115/bookdown-clinepi/confounding.html
-
-## Causal modeling with CONFOUNDER
-```{r}
-#| eval: FALSE
-# Select relevant columns and drop rows with missing values
-dat_conf <- dat %>%
-  dplyr::select(id, age, bp_systolic, fv, exerc, bmi, smoker, gender, hh_income_usd, ln_hh_income_percap ) %>%
-  drop_na() %>% 
-  filter(fv <=1500)
-
-# Take a quick look at the data
-summary(dat_conf)
-
-Hmisc::describe(dat_conf$bp_systolic) # Y
-Hmisc::describe(dat_conf$bmi) # X
-Hmisc::describe(dat_conf$age) # Z (confounder )
-Hmisc::describe(dat_conf$exerc)  # Z (confounder )
-Hmisc::describe(dat_conf$ln_hh_income_percap) # Z (confounder )
-
-
-```
-
-In this context:
-
-+ `exerc` influences both smoking (`fv`) and blood pressure (`bp_systolic`), making it a confounder (albeit as PROXY for socio-economic status)
-+ `fv` directly affects `bp_systolic`
-
-## --- Regression analysis  
-```{r}
-#| eval: FALSE
-# Unadjusted model
-model_unadjusted <- lm( bp_systolic ~ bmi + ln_hh_income_percap , data = dat_conf)
-summary(model_unadjusted)
-
-# Adjusted model
-model_adjusted <- lm(bp_systolic ~ bmi + age + ln_hh_income_percap, data = dat_conf)
-summary(model_adjusted)
-
-```
-
-+ adjusting for Z changes the estimated effect of X on Y
-  + *Unadjusted Model*: This model does not control for Z, which is a confounder of the relationship between X and Y. 
-  + *Adjusted Model*: This model controls for Z, providing a more accurate estimate of the causal effect of X on Y.
- 
-## --- Add Predicted Values to the Dataset
-
-```{r}
-#| eval: FALSE
-model_unadjusted$coefficients 
-model_adjusted$coefficients
-
-# Get predicted values using augment and attach to the original dataset
-dat_unadjusted <- broom::augment(model_unadjusted, data = dat_conf) %>%
-  dplyr::select( -.resid,  -.hat, -.sigma, -.cooksd, -.std.resid ) %>%
-  rename(pred_unadjusted = .fitted)
-
-dat_adjusted <- broom::augment(model_adjusted, data = dat_conf) %>%
-  dplyr::select( -.resid,     -.hat, -.sigma, -.cooksd, -.std.resid ) %>%
-  rename(pred_adjusted = .fitted)
-
-# Combine the predicted values from both models
-dat_conf_long <- dat_unadjusted %>%
-  left_join(dat_adjusted, by = "id", suffix=c("",".y"))%>%
-  dplyr::select( -ends_with(".y")) %>% 
-  # Convert the data from wide to long format
-  pivot_longer(cols = c(pred_unadjusted, pred_adjusted), 
-               names_to = "model", 
-               values_to = "predicted")
-
-# Check the structure of the long dataset
-str(dat_conf_long)
-
-```
-
-
-## --- Plot prediction results 1/2
-
-+ **Reshape the Data Using `pivot_longer()`**
-
-We will reshape the dataset so we can plot the predicted values from both models in a faceted plot.
-
-```{r}
-#| eval: FALSE
-# check 
-dat_conf_long %>% group_by(model) %>% 
-  summarise(mean(predicted), sd(predicted))
-
-```
- 
-
-## --- Plot results 2/2
-
-```{r}
-#| eval: FALSE
-#| output-location: slide 
-
-ggplot(dat_conf, aes(x = bmi, y = bp_systolic)) +
-  geom_point(color = "grey", alpha = 1) +  
-  geom_point(data = dat_unadjusted, aes(x = bmi, y = pred_unadjusted), 
-             color = "#e60066", alpha = 0.20) +
-  geom_point(data = dat_adjusted, aes(x = bmi, y = pred_adjusted), 
-             color = "#399B23", alpha = 0.20) +
-  # Add labels and title
-  labs(title = "Confounder Analysis: Unadjusted (pink) vs Adjusted (green) fitted values",
-       x = "BMI",
-       y = "Systolic Blood Pressure (BPSysAve)"
-       )  +
-    # Minimal theme for clarity
-  theme_minimal() +
-  theme(legend.position = "none")
-
-```
-
-
-
-## --- Different 
-https://nicholasrjenkins.science/post/data_viz_r/data_visualization_r/
-
-## --- Regression analysis  
-```{r}
-#| eval: FALSE
-# Unadjusted model
-model_unadjusted <- lm( bp_systolic ~ bmi  , data = dat_conf)  
- # Adjusted model
-model_adjusted <- lm(bp_systolic ~ bmi + age  , data = dat_conf)  
-```
-
- 
-```{r}
-#| eval: FALSE
-tidy(model_unadjusted, conf.int = TRUE ) %>% 
-  ggplot(data = ., 
-         mapping = aes(x = estimate, y = term, xmin = conf.low, xmax = conf.high)) +
-  geom_pointrange() +
-  labs(title = "Model Estimates of bmi on bp_systolic",
-       x = "Coefficient Estimate",
-       y = "Predictor",
-       caption = "Models fit with OLS. Error bars show the 95% confidence interval.") +
-  scale_y_discrete(labels = c("Intercept",  "bmi")) +
-  ggpubr::theme_pubclean(flip = TRUE)
- 
-``` 
- 
-```{r}
-#| eval: FALSE
-tidy(model_adjusted, conf.int = TRUE ) %>% 
-  ggplot(data = ., 
-         mapping = aes(x = estimate, y = term, xmin = conf.low, xmax = conf.high)) +
-  geom_pointrange() +
-  labs(title = "Model Estimates of bmi + age on bp_systolic",
-       x = "Coefficient Estimate",
-       y = "Predictor",
-       caption = "Models fit with OLS. Error bars show the 95% confidence interval.") +
-  scale_y_discrete(labels = c("Intercept", "age", "bmi")) +
-  ggpubr::theme_pubclean(flip = TRUE)
- 
-```
-
- 
-```{r}
-#| eval: FALSE
-fit_unadj_results <- tidy(model_unadjusted, conf.int = TRUE) %>% 
-  mutate(model = "Model Unadjusted")
-
-fit_adj_results <- tidy(model_adjusted, conf.int = TRUE) %>% 
-  mutate(model = "Model Adjusted")
-
-model_results <- bind_rows(fit_unadj_results, fit_adj_results)
-```
- 
-```{r}
-#| eval: FALSE
-ggplot(data = model_results, 
-       aes(x = estimate, y = term, xmin = conf.low, xmax = conf.high, 
-           color = model, shape = model)) +
-  geom_pointrange(position = position_dodge(width = 0.5)) +
-  labs(title = "Model Estimates of BMI and age on REM Sleep",
-       x = "Coefficient Estimate",
-       y = "Predictor",
-       caption = "Models fit with OLS. Error bars show the 95% confidence interval.",
-        color = "Model:",
-       shape = "Model:") +
-  scale_y_discrete(labels = c("Intercept", "age", "bmi")) +
-  ggpubr::theme_pubclean(flip = FALSE)
-
-```
- 
- 
-# CALCULATING OUTCOME EFFECTS 
+# [CALCULATE COMMONLY USED ESTIMANDs (ATE, ATT, ATU)]{.smaller}
 
 <!-- ESTIMANDS  -->
 
@@ -1345,7 +1020,7 @@ The explanation and examples below follow very closely two sources:
 :::
 
 <!-- COPY FROM https://www.andrewheiss.com/blog/2024/03/21/demystifying-ate-att-atu/ -->
-## [Recalling some vocabulary]{.r-fit-text}
+## [Establishing some common symbols]{.r-fit-text}
 
 + $X$ = treatment or intervention
 + $Y^1$ = potential outcome if treated
@@ -1353,7 +1028,7 @@ The explanation and examples below follow very closely two sources:
 + $\delta$ = difference $(Y^1 - Y^0)$, or the individual-level causal effect.
  
 ## [EXAMPLE with toy case]{.r-fit-text}
-
+Assuming we could observe the `potential outcomes` for each individual:
 ```{r}
 basic_po <- tribble(
   ~id, ~age,    ~treated, ~outcome_1, ~outcome_0,
@@ -1372,16 +1047,18 @@ basic_po <- tribble(
   )
 ```
 
-## [ITE in example]{.r-fit-text}
+## [ITE in toy example example (*all* outcomes!)]{.r-fit-text}
 
-+ Each person has two ***potential*** outcomes and an *individual causal effect* ($ITE_i= Y_{i}^1  − Y_{i}^0$ = $\delta_i$).
-+ $\delta_i$ it's only measurable with a time machine or some way to observe parallel universes.
+::: {style="font-size: 70%;"}
++ Each person has `two` ***potential*** outcomes and an `individual causal effect`  ($ITE_i= Y_{i}^1  − Y_{i}^0$ = $\delta_i$).
++ $\delta_i$ would in fact be measurable only with a *parallel universe*!
+:::
 
 ```{r}
 #| label: tbl-basic-po
-#| tbl-cap: "Standard table showing potential outcomes, individual causal effects, and realized outcomes"
-#| classes: no-stripe
+#| tbl-cap: ""
 #| echo: FALSE
+#| classes: no-stripe
 
 basic_po <- tribble(
   ~id, ~age,    ~treated, ~outcome_1, ~outcome_0,
@@ -1402,64 +1079,53 @@ basic_po <- tribble(
 # FORMAT TABLE 
 basic_po |> 
   dplyr::select(
-    id, age, treated, outcome_1, outcome_0, ice, outcome
-  ) |> 
+    id, age, treated, outcome_1, outcome_0, ice, outcome) |> 
   gt() |> 
   sub_missing(missing_text = "…") |>
   fmt_number(
     columns = c(starts_with("outcome"), ice),
-    decimals = 0
-  ) |> 
+    decimals = 0) |> 
 
   # Column labels
   cols_label(
     id = "ID",
-    age = md("$Z_i$"),
-    treated = md("$X_i$"),
-    outcome_0 = md("$Y^0_i$"),
-    outcome_1 = md("$Y^1_i$"),
-    outcome = md("$Y_i$"),
-    ice = md("$Y^1_i - Y^0_i$")
-  ) |>
+    age = md("$$Z_i$$"),
+    treated = md("$$X_i$$"),
+    outcome_0 = md("$$Y^0_i$$"),
+    outcome_1 = md("$$Y^1_i$$"),
+    outcome = md("$$Y_i$$"),
+    ice = md("$$Y^1_i - Y^0_i$$")) |>
   
   # Level 1 spanner labels
   tab_spanner(
     label = "Age", columns = age, 
-    level = 1, id = "level1_a_po"
-  ) |> 
+    level = 1, id = "level1_a_po") |> 
   tab_spanner(
     label = "Treated", columns = treated, 
-    level = 1, id = "level1_b_po"
-  ) |> 
+    level = 1, id = "level1_b_po") |> 
   tab_spanner(
     label = "Potential outcomes",
     columns = c(outcome_1, outcome_0),
-    level = 1, id = "level1_c_po"
-  ) |> 
+    level = 1, id = "level1_c_po") |> 
   tab_spanner(
     label = "ITE or \\(\\delta_i\\)", columns = ice, 
-    level = 1, id = "level1_d_po"
-  ) |> 
+    level = 1, id = "level1_d_po") |> 
   tab_spanner(
     label = "Outcome", columns = outcome, 
-    level = 1, id = "level1_e_po"
-  ) |> 
+    level = 1, id = "level1_e_po") |> 
   
   # Level 2 spanner labels
   tab_spanner(
     label = "Confounder",
     columns = age,
-    level = 2, id = "level2_a_po"
-  ) |> 
+    level = 2, id = "level2_a_po") |> 
   tab_spanner(
     label = "Treatment", columns = treated, 
-    level = 2, id = "level2_b_po"
-  ) |> 
+    level = 2, id = "level2_b_po") |> 
   tab_spanner(
     label = "Unobservable",
     columns = c(outcome_1, outcome_0, ice), 
-    level = 2, id = "level2_c_po"
-  ) |> 
+    level = 2, id = "level2_c_po") |> 
   tab_spanner(
     label = "Realized", columns = outcome, 
     level = 2, id = "level2_d_po") |> 
@@ -1467,43 +1133,37 @@ basic_po |>
   # Style stuff
   tab_style(
     style = cell_text(align = "center"),
-    locations = cells_column_labels()
-  ) |> 
+    locations = cells_column_labels()) |> 
   tab_style(
     style = cell_text(align = "center"),
-    locations = cells_body()
-  ) |> 
+    locations = cells_body()) |> 
   tab_style(
     style = cell_text(weight = "bold"),
     locations = list(
       cells_column_spanners(spanners = starts_with("level1")),
       cells_column_labels(columns = "id")
-    )
-  ) |> 
+    )) |> 
   tab_style(
     style = cell_text(style = "italic"),
-    locations = cells_column_spanners(spanners = starts_with("level2"))
-  ) |> 
-  
+    locations = cells_column_spanners(spanners = starts_with("level2"))) |> 
   tab_style(
     style = list(
-      cell_fill(color = clrs[2], alpha = 0.5)
-    ),
-    locations = cells_body(rows = treated == 1)
-  ) |> 
-  tab_footnote(
-    footnote = "ITE = individual causal effect",
-    locations = cells_column_spanners(spanners = "level1_d_po")
-  ) |> 
+      cell_fill(color = clrs[2], alpha = 0.5)),
+    locations = cells_body(rows = treated == 1)) |> 
+  # tab_footnote(
+  #   footnote = "ITE = individual causal effect",
+  #   locations = cells_column_spanners(spanners = "level1_d_po")) |> 
   opt_footnote_marks(marks = "standard") |> 
-  opt_horizontal_padding(scale = 3) |> 
-  opt_table_font(font = "Jost")
+  opt_horizontal_padding(scale = 3)
 ```
 
 
 ## [ATE  = Average Treatment Effect]{.r-fit-text}
 
-If we could compare all these people in Universe A and Universe B and measure their individual causal effects, we could calculate the *Average Treatment Effect* (ATE), or the effect of the intervention across the whole population. Officially, the ATE is the average of the $\delta$ column, or the average of $Y^1 - Y^0$:
+If we could compare all the same people in different universes and measure their ITE, we could calculate the **Average Treatment Effect** (`ATE`), or the effect of the intervention across the whole population. 
+
+<br>
+<!-- Officially, the ATE is the average of the $\delta$ column, or the average of $Y^1 - Y^0$: -->
 
 $$
 \begin{aligned}
@@ -1512,7 +1172,7 @@ $$
 \end{aligned}
 $$
 
-Given the data in @tbl-basic-po, the ATE is 5—it's the average of the $\delta$ column:
+Given the data of the $\delta$ column in @tbl-basic-po, the ATE is 5.
 
 $$
 \text{ATE} = \frac{20 + 5 + 5 + 5 + 10 + 0 + -10 + 5}{8} = 5
@@ -1521,7 +1181,9 @@ $$
 
 ## [ATT = Average Treatment Effect on Treated]{.r-fit-text}
 
-There are a couple other causal effects we can measure. We might want to know how big the effect is just for those who received the treatment. This is called the *Average Treatment effect on the Treated* (ATT), and is the average of the individual causal effects just among those who were treated. Officially, it's defined like this:
+We might want to know how big the effect is just for those who received the treatment.   
+
+This is called the **Average Treatment effect on the Treated** (`ATT`), and is the average of the individual causal effects *just among those who were treated*.
 
 $$
 \begin{aligned}
@@ -1538,7 +1200,7 @@ $$
 
 
 ## [ATU = Average Treatment Effect on Untreated]{.r-fit-text}
-We can also calculate the *Average Treatment effect on the Untreated* (ATU; sometimes called the ATC (for effect on the control group)) by finding the average of the individual causal effects among those who were not treated:
+We can also calculate the **Average Treatment effect on the Untreated** (`ATU`; sometimes called the ATC (for effect on the control group)) by finding the average of the individual causal effects *among those who were not treated*.
 
 $$
 \begin{aligned}
@@ -1573,6 +1235,8 @@ $$
 
 > Decomposing the ATE into these two parts like this shows that there's some systematic difference between the treated and untreated people. This difference is called *selection bias*.
 
+## [Relation among ATE, ATT and ATU]{.r-fit-text}
+
 We can see the selection bias in an alternative decomposition of the ATE:
 
 $$
@@ -1590,76 +1254,52 @@ $$
 ## [Relation among ATE, ATT and ATU (R)]{.r-fit-text}
 
 ```{r}
+# OBTAIN ATT, ATU
 effect_types <- basic_po |> 
   dplyr::group_by(treated) |> 
-  dplyr::summarize(
-    effect = mean(ice),
-    n = n()
-  ) |> 
-  dplyr::mutate(
-    prop = n / sum(n),
-    weighted_effect = effect * prop
-  ) |> 
+  dplyr::summarize(effect = mean(ice), n = n() ) |> 
+  dplyr::mutate(prop = n / sum(n),
+    weighted_effect = effect * prop) |> 
   dplyr::mutate(estimand = case_match(treated, 0 ~ "ATU", 1 ~ "ATT"), .before = 1)
 
 effect_types
-# # A tibble: 2 × 6
-#   estimand treated effect     n  prop weighted_effect
-#   <chr>      <dbl>  <dbl> <int> <dbl>           <dbl>
-# 1 ATU            0   1.25     4   0.5           0.625
-# 2 ATT            1   8.75     4   0.5           4.38 
 
-effect_types |> 
-  dplyr::summarize(ATE = sum(weighted_effect))
-# # A tibble: 1 × 1
-#     ATE
-#   <dbl>
-# 1     5
+# OBTAIN ATE
+effect_types |> dplyr::summarize(ATE = sum(weighted_effect))
 ```
 
-## []{.r-fit-text}
 
 
-## []{.r-fit-text}
-
-
-## []{.r-fit-text}
-
-
-## [ITE = Simulation]{.r-fit-text}
-
- 
-
-```{r}
-def <- simstudy::defData(varname = "C", formula = 0.4, dist = "binary")
-def <- simstudy::defData(def, "X", formula = "0.3 + 0.4 * C", dist = "binary")
-def <- simstudy::defData(def, "e", formula = 0, variance = 2, dist = "normal")
-def <- simstudy::defData(def, "Y0", formula = "2 * C + e", dist="nonrandom")
-def <- simstudy::defData(def, "Y1", formula = "1 + 2 * C + e", dist="nonrandom")
-def <- simstudy::defData(def, "Y_obs", formula = "Y0 + (Y1 - Y0) * X", dist = "nonrandom") #  = Y1*X + (1-X)*Y0
-
-set.seed(2017)
-dt <- genData(10000, def)
-```
-
-```{r}
-paste0("Calculated mean causal effect = ", mean(dt[, Y1] - dt[, Y0])) #mean difference of counterfactual outcomes
-paste0("Calculated observed difference  = ", round(dt[X == 1, mean(Y_obs)] - dt[X == 0, mean(Y_obs)],2))
-
-lm1 <- lm(Y_obs ~ X, data = dt)
-tidy(lm1)
-```
-
-## []{.r-fit-text}
+<!-- ## [ITE = Simulation]{.r-fit-text} -->
 
 
 
+<!-- ```{r} -->
+<!-- def <- simstudy::defData(varname = "C", formula = 0.4, dist = "binary") -->
+<!-- def <- simstudy::defData(def, "X", formula = "0.3 + 0.4 * C", dist = "binary") -->
+<!-- def <- simstudy::defData(def, "e", formula = 0, variance = 2, dist = "normal") -->
+<!-- def <- simstudy::defData(def, "Y0", formula = "2 * C + e", dist="nonrandom") -->
+<!-- def <- simstudy::defData(def, "Y1", formula = "1 + 2 * C + e", dist="nonrandom") -->
+<!-- def <- simstudy::defData(def, "Y_obs", formula = "Y0 + (Y1 - Y0) * X", dist = "nonrandom") #  = Y1*X + (1-X)*Y0 -->
+
+<!-- set.seed(2017) -->
+<!-- dt <- genData(10000, def) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- paste0("Calculated mean causal effect = ", mean(dt[, Y1] - dt[, Y0])) #mean difference of counterfactual outcomes -->
+<!-- paste0("Calculated observed difference  = ", round(dt[X == 1, mean(Y_obs)] - dt[X == 0, mean(Y_obs)],2)) -->
+
+<!-- lm1 <- lm(Y_obs ~ X, data = dt) -->
+<!-- tidy(lm1) -->
+<!-- ``` -->
 
 
 
-
-
-
+<!-- ## [References]{.r-fit-text} -->
+<!-- + Equitable Equations !!!!! -->
+<!-- + https://www.andrewheiss.com/blog/2024/03/21/demystifying-ate-att-atu/ -->
+<!-- + https://forloopsandpiepkicks.wordpress.com/2022/01/05/simple-examples-to-understand-what-confounders-colliders-mediators-and-moderators-are-and-how-to-control-for-variables-in-r-with-regression-and-propensity-score-matching/ -->
 
 
 ## Final thoughts
