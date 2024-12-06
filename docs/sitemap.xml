@@ -1,71 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>{{< var websites.live_site >}}/syllabus.html</loc>
-    <lastmod>2024-09-19T20:36:45.312Z</lastmod>
-  </url>
-  <url>
     <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab04.html</loc>
-    <lastmod>2024-12-05T19:53:05.800Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab02.html</loc>
-    <lastmod>2024-08-28T08:17:01.856Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_extra_01.html</loc>
-    <lastmod>2024-08-28T08:17:01.821Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/modules/05_intro_ML.html</loc>
-    <lastmod>2024-12-02T18:33:13.666Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/modules/03_corr_regress.html</loc>
-    <lastmod>2024-12-02T18:38:28.587Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/modules/01_data_with_R.html</loc>
-    <lastmod>2024-12-02T18:33:11.785Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/license_etc.html</loc>
-    <lastmod>2024-12-05T15:13:21.606Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/index.html</loc>
-    <lastmod>2024-12-03T22:42:33.116Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/install.html</loc>
-    <lastmod>2024-10-19T14:04:37.577Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/me.html</loc>
-    <lastmod>2024-08-28T08:17:01.807Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/modules/02_inference.html</loc>
-    <lastmod>2024-12-02T18:33:13.769Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/modules/04_caus_pred.html</loc>
-    <lastmod>2024-12-02T18:33:13.835Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/modules/06_extra.html</loc>
-    <lastmod>2024-12-03T17:57:37.761Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab01.html</loc>
-    <lastmod>2024-08-28T08:17:01.843Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab03.html</loc>
-    <lastmod>2024-10-07T20:29:00.067Z</lastmod>
-  </url>
-  <url>
-    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab05.html</loc>
-    <lastmod>2024-10-02T14:50:57.421Z</lastmod>
+    <lastmod>2024-12-06T15:36:23.979Z</lastmod>
   </url>
 </urlset>

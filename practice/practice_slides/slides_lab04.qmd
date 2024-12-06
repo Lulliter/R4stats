@@ -79,7 +79,7 @@ f_descr_table <- function(var) {
 
 ::: {style="font-size: 70%;"}
 ::: {style="color:#77501a"}
-+ **Delve into causal analysis** and the association between `exposure` and `outcome`
++ **Causal analysis**: how experimental studies uncover the association between `exposure` and `outcome`
 + **Visually explore causal pathways** and influential variables with *Directed Acyclic Graphs (DAGs)*:
   + `Collider`: a variable that is influenced by both the exposure and the outcome
   + `Confounder`: a variable that influences both the exposure and the dependent variable outcome
@@ -180,12 +180,6 @@ theme_set(theme_nice())
 # update_geom_defaults("label", list(family = "Mulish", fontface = "plain"))
 # update_geom_defaults(ggdag:::GeomDagText, list(family = "Mulish", fontface = "plain"))
 # update_geom_defaults(ggtext::GeomRichText, list(family = "Mulish", fontface = "plain"))
-```
-
-
-```{r}
-#| echo: FALSE
-mosquito_nets_v2 <- read_csv(here("practice", "data_input", "04_datasets", "mosquito_nets_v2.csv"))
 ```
 
 
@@ -483,7 +477,7 @@ f_save_plot("dag_med_p", dag_med_p)
 
  
  
-# CAUSAL MODELING WITH CONFOUNDER
+# CAUSAL MODELING WITH `CONFOUNDER`
 <!-- https://bookdown.org/jbrophy115/bookdown-clinepi/confounding.html -->
 
 ## DAG with `confounder`  
@@ -550,6 +544,17 @@ ggplot2::ggplot(nhanes_conf, aes(x = Age, y = BPSysAve, color = SmokeNow)) +
   )
 
 ```
+
+# [ONE WAY OF DEALING WITH CONFOUNDERS]{.smaller}
+ <!-- https://tilburgsciencehub.com/topics/analyze/regression/linear-regression/mediation-analysis/ -->
+
++ introducing the `confounder variable` as a term in the regression model to `control for` its effect on the outcome.
+
+<br><br>
+
+::: aside
+[As discussed in Lecture #4 there  are several other approaches...]
+:::  
 
 
 ## [Regression analysis: `controlling for` the confounder]{.r-fit-text}
@@ -684,7 +689,7 @@ ggplot(nhanes_long, aes(x = factor(SmokeNow), y = BPSysAve, fill = model)) +
 :::
 
  
-# CAUSAL MODELING WITH MEDIATOR
+# CAUSAL MODELING WITH `MEDIATOR`
 <!-- https://tilburgsciencehub.com/topics/analyze/regression/linear-regression/mediation-analysis/ -->
 
 
@@ -896,8 +901,13 @@ ggplot(effects_df, aes(x = Effect, y = Value,
 
 + The **proportion mediated** indicates how much of the total effect is due to the mediation by BMI.
 
-# Causal mediation analysis using `mediation` pckg
+# [Causal mediation analysis using `mediation`]{.smaller}
 
+<br><br>
+
+::: aside
+[This can be a handy R package to use...]
+:::  
 ## [Using `mediation` package]{.r-fit-text}
 
 :::: {style="font-size: 75%;"}
@@ -1050,8 +1060,8 @@ basic_po <- tribble(
 ## [ITE in toy example example (*all* outcomes!)]{.r-fit-text}
 
 ::: {style="font-size: 70%;"}
-+ Each person has `two` ***potential*** outcomes and an `individual causal effect`  ($ITE_i= Y_{i}^1  − Y_{i}^0$ = $\delta_i$).
-+ $\delta_i$ would in fact be measurable only with a *parallel universe*!
++ Each person (`ID`) has `two` ***potential*** outcomes and an `individual causal effect`  ($ITE_i= Y_{i}^1  − Y_{i}^0$ = $\delta_i$).
++ $\delta_i$ would in fact be measurable only with 2 *parallel universes*!
 :::
 
 ```{r}
@@ -1108,7 +1118,9 @@ basic_po |>
     columns = c(outcome_1, outcome_0),
     level = 1, id = "level1_c_po") |> 
   tab_spanner(
-    label = "ITE or \\(\\delta_i\\)", columns = ice, 
+    label = "ITE or \\(\\delta_i\\)", 
+    #label = "ITE", 
+  columns = ice, 
     level = 1, id = "level1_d_po") |> 
   tab_spanner(
     label = "Outcome", columns = outcome, 
@@ -1178,6 +1190,13 @@ $$
 \text{ATE} = \frac{20 + 5 + 5 + 5 + 10 + 0 + -10 + 5}{8} = 5
 $$
 
+```{r}
+#| echo: false
+#| eval: false
+
+# ATE upon stratification by Age
+(4/8*(20)) + (4/8*(-11.667))
+```
 
 ## [ATT = Average Treatment Effect on Treated]{.r-fit-text}
 
@@ -1235,6 +1254,15 @@ $$
 
 > Decomposing the ATE into these two parts like this shows that there's some systematic difference between the treated and untreated people. This difference is called *selection bias*.
 
+
+<!-- # ALTRO ESEMPIO MOSQUITO NETS -->
+<!-- Qui volendo si poteva anche fare un esempio con 2 confounders  -->
+
+<!-- vedi andrew Heiss [https://www.andrewheiss.com/blog/2024/03/21/demystifying-ate-att-atu/#moving-beyond-the-ate](https://www.andrewheiss.com/blog/2024/03/21/demystifying-ate-att-atu/#moving-beyond-the-ate) 
+
+che usa it dati qui `_EXTRA_gabors/mosquito_nets_v2.csv` -->
+
+
 ## [Relation among ATE, ATT and ATU]{.r-fit-text}
 
 We can see the selection bias in an alternative decomposition of the ATE:
@@ -1247,9 +1275,6 @@ $$
 
 > Those who were untreated have a really low ATU (1.25)—they likely didn't sign up for the intervention because they knew that it wouldn't do much for them.
 
-```{r}
-(4/8*20) + (4/8*(-11.667))
-```
 
 ## [Relation among ATE, ATT and ATU (R)]{.r-fit-text}
 
@@ -1302,17 +1327,17 @@ effect_types |> dplyr::summarize(ATE = sum(weighted_effect))
 <!-- + https://forloopsandpiepkicks.wordpress.com/2022/01/05/simple-examples-to-understand-what-confounders-colliders-mediators-and-moderators-are-and-how-to-control-for-variables-in-r-with-regression-and-propensity-score-matching/ -->
 
 
-## Final thoughts
+<!-- ## Final thoughts -->
 
-::: {style="font-size: 95%;"}
-::: {style="color:#77501a"}
+<!-- ::: {style="font-size: 95%;"} -->
+<!-- ::: {style="color:#77501a"} -->
 
 
-+ .....
+<!-- + ..... -->
 
-:::
+<!-- ::: -->
 
-:::
+<!-- ::: -->
 
 
 

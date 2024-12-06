@@ -15,15 +15,21 @@ execute:
   cache: false # normalmnte false
 ---
 
-🔴  … currently under review … 🔴
+🟠  … currently under review … 🟠
 
 
 ## Outline
 
-+ Research approaches
-  + Causal Analysis
-  + Prediction Analysis
-  
++ Recall the essential features of experimental study designs
+  + Learning the **vocabulary** of causal analysis 
++ Get a **visual intuition** of causal pathways, including challenging elements:
+  + `Collider` variables
+  + `Confounder` variables
+  + `Mediator` variables
++ Discuss the correct **causal model** to capture the association among exposure, outcome  and other covariates, (including challenging ones) 
++ Define causal outcomes and choosing the appropriate “estimands”:
+  + `ATE`, `ATT`, or `ATU`?
++ Devise **statistical methods** to estimate ATE, ATT, and ATU based on research question and (sub)population of interest
 
 ## Lecture slides
 

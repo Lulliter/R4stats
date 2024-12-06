@@ -7,17 +7,18 @@ This website hosts some teaching material on **“Introduction to Statistics & M
 
 ## TO DO
 
-+ ✅ Creo Bonus materials? faccio `lecture/practice 06`?  
++ ✅ Must do manual 
+  + ~~\*.PPTX 2 \*.PDF LOOSES THE EQUATIONS!!!!!~~
 
-+ ️🔳 finish `practice/practice_slides/slides_lab04.qmd`
-  + 🟠 (add PSM come causal approach? forse no perche e prematuro) 
-    + ☑️ make sure it matches the lecture in `lecture/lecture_slides/slides_lecture04.qmd`  
++ ✅  Finish RCODE 04
 
 + ️🔳 rivedere `practice/practice_slides/slides_lab05.qmd`
   + ML 
   + aggiungere logistic regression???
   + aggiungere decision trees??? 
   + make sure it matches the lecture in `lecture/lecture_slides/slides_lecture05.qmd`  
+
++ ️🔳 rivedere `practice/practice_slides/slides_lab65.qmd`
 
 + **[CODE refactoring]**
   + ✅ make  `_variable.yml`

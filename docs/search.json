@@ -305,7 +305,7 @@
     "href": "practice/practice_slides/slides_lab04.html#ite-in-toy-example-example-all-outcomes",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "ITE in toy example example (all outcomes!)",
-    "text": "ITE in toy example example (all outcomes!)\n\n\nEach person has two potential outcomes and an individual causal effect (\\(ITE_i= Y_{i}^1  − Y_{i}^0\\) = \\(\\delta_i\\)).\n\n\\(\\delta_i\\) would in fact be measurable only with a parallel universe!\n\n\n\n\n\nTable 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConfounder\n\n\nTreatment\n\n\nUnobservable\n\n\nRealized\n\n\n\nID\n\nAge\n\n\nTreated\n\n\nPotential outcomes\n\n\nITE or \\(\\delta_i\\)\n\n\nOutcome\n\n\n\n\\[Z_i\\]\n\\[X_i\\]\n\\[Y^1_i\\]\n\\[Y^0_i\\]\n\\[Y^1_i - Y^0_i\\]\n\\[Y_i\\]\n\n\n\n\n1\nOld\n1\n80\n60\n20\n80\n\n\n2\nOld\n1\n75\n70\n5\n75\n\n\n3\nOld\n1\n85\n80\n5\n85\n\n\n4\nOld\n0\n70\n60\n10\n60\n\n\n5\nYoung\n1\n75\n70\n5\n75\n\n\n6\nYoung\n0\n80\n80\n0\n80\n\n\n7\nYoung\n0\n90\n100\n−10\n100\n\n\n8\nYoung\n0\n85\n80\n5\n80"
+    "text": "ITE in toy example example (all outcomes!)\n\n\nEach person (ID) has two potential outcomes and an individual causal effect (\\(ITE_i= Y_{i}^1  − Y_{i}^0\\) = \\(\\delta_i\\)).\n\n\\(\\delta_i\\) would in fact be measurable only with 2 parallel universes!\n\n\n\n\n\nTable 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nConfounder\n\n\nTreatment\n\n\nUnobservable\n\n\nRealized\n\n\n\nID\n\nAge\n\n\nTreated\n\n\nPotential outcomes\n\n\nITE or \\(\\delta_i\\)\n\n\nOutcome\n\n\n\n\\[Z_i\\]\n\\[X_i\\]\n\\[Y^1_i\\]\n\\[Y^0_i\\]\n\\[Y^1_i - Y^0_i\\]\n\\[Y_i\\]\n\n\n\n\n1\nOld\n1\n80\n60\n20\n80\n\n\n2\nOld\n1\n75\n70\n5\n75\n\n\n3\nOld\n1\n85\n80\n5\n85\n\n\n4\nOld\n0\n70\n60\n10\n60\n\n\n5\nYoung\n1\n75\n70\n5\n75\n\n\n6\nYoung\n0\n80\n80\n0\n80\n\n\n7\nYoung\n0\n90\n100\n−10\n100\n\n\n8\nYoung\n0\n85\n80\n5\n80"
   },
   {
     "objectID": "practice/practice_slides/slides_lab04.html#ate-average-treatment-effect",
@@ -340,21 +340,14 @@
     "href": "practice/practice_slides/slides_lab04.html#relation-among-ate-att-and-atu-1",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "Relation among ATE, ATT and ATU",
-    "text": "Relation among ATE, ATT and ATU\nWe can see the selection bias in an alternative decomposition of the ATE:\n\\[\n\\text{ATE} = \\text{ATT} + \\text{Selection bias}\n\\]\n\nThe fact that the ATT (8.75) is bigger than the ATE (5) here is a sign the two groups are different. This intervention, whatever it is, has a big effect on the treated people who signed up for it, likely because they somehow knew that the intervention would be helpful for them.\n\n\nThose who were untreated have a really low ATU (1.25)—they likely didn’t sign up for the intervention because they knew that it wouldn’t do much for them.\n\n\n(4/8*20) + (4/8*(-11.667))\n\n[1] 4.17"
+    "text": "Relation among ATE, ATT and ATU\nWe can see the selection bias in an alternative decomposition of the ATE:\n\\[\n\\text{ATE} = \\text{ATT} + \\text{Selection bias}\n\\]\n\nThe fact that the ATT (8.75) is bigger than the ATE (5) here is a sign the two groups are different. This intervention, whatever it is, has a big effect on the treated people who signed up for it, likely because they somehow knew that the intervention would be helpful for them.\n\n\nThose who were untreated have a really low ATU (1.25)—they likely didn’t sign up for the intervention because they knew that it wouldn’t do much for them."
   },
   {
     "objectID": "practice/practice_slides/slides_lab04.html#relation-among-ate-att-and-atu-r",
     "href": "practice/practice_slides/slides_lab04.html#relation-among-ate-att-and-atu-r",
     "title": "Lab 4:Mapping causal & predictive approaches",
     "section": "Relation among ATE, ATT and ATU (R)",
-    "text": "Relation among ATE, ATT and ATU (R)\n\n# OBTAIN ATT, ATU\neffect_types &lt;- basic_po |&gt; \n  dplyr::group_by(treated) |&gt; \n  dplyr::summarize(effect = mean(ice), n = n() ) |&gt; \n  dplyr::mutate(prop = n / sum(n),\n    weighted_effect = effect * prop) |&gt; \n  dplyr::mutate(estimand = case_match(treated, 0 ~ \"ATU\", 1 ~ \"ATT\"), .before = 1)\n\neffect_types\n\n# A tibble: 2 × 6\n  estimand treated effect     n  prop weighted_effect\n  &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;           &lt;dbl&gt;\n1 ATU            0   1.25     4   0.5           0.625\n2 ATT            1   8.75     4   0.5           4.38 \n\n# OBTAIN ATE\neffect_types |&gt; dplyr::summarize(ATE = sum(weighted_effect))\n\n# A tibble: 1 × 1\n    ATE\n  &lt;dbl&gt;\n1     5"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab04.html#final-thoughts",
-    "href": "practice/practice_slides/slides_lab04.html#final-thoughts",
-    "title": "Lab 4:Mapping causal & predictive approaches",
-    "section": "Final thoughts",
-    "text": "Final thoughts\n\n\n\n…..\n\n\n\n\n\n\n\nR 4 Statistics | 2024"
+    "text": "Relation among ATE, ATT and ATU (R)\n\n# OBTAIN ATT, ATU\neffect_types &lt;- basic_po |&gt; \n  dplyr::group_by(treated) |&gt; \n  dplyr::summarize(effect = mean(ice), n = n() ) |&gt; \n  dplyr::mutate(prop = n / sum(n),\n    weighted_effect = effect * prop) |&gt; \n  dplyr::mutate(estimand = case_match(treated, 0 ~ \"ATU\", 1 ~ \"ATT\"), .before = 1)\n\neffect_types\n\n# A tibble: 2 × 6\n  estimand treated effect     n  prop weighted_effect\n  &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;           &lt;dbl&gt;\n1 ATU            0   1.25     4   0.5           0.625\n2 ATT            1   8.75     4   0.5           4.38 \n\n# OBTAIN ATE\neffect_types |&gt; dplyr::summarize(ATE = sum(weighted_effect))\n\n# A tibble: 1 × 1\n    ATE\n  &lt;dbl&gt;\n1     5\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nR 4 Statistics | 2024"
   },
   {
     "objectID": "practice/practice_slides/slides_lab02.html#goal-of-todays-practice-session",
@@ -1222,14 +1215,14 @@
     "href": "modules/04_caus_pred.html",
     "title": "Mapping causal & predictive approaches",
     "section": "",
-    "text": "🔴 … currently under review … 🔴"
+    "text": "🟠 … currently under review … 🟠"
   },
   {
     "objectID": "modules/04_caus_pred.html#outline",
     "href": "modules/04_caus_pred.html#outline",
     "title": "Mapping causal & predictive approaches",
     "section": "Outline",
-    "text": "Outline\n\nResearch approaches\n\nCausal Analysis\nPrediction Analysis"
+    "text": "Outline\n\nRecall the essential features of experimental study designs\n\nLearning the vocabulary of causal analysis\n\n\nGet a visual intuition of causal pathways, including challenging elements:\n\n\nCollider variables\n\nConfounder variables\n\nMediator variables\n\n\nDiscuss the correct causal model to capture the association among exposure, outcome and other covariates, (including challenging ones)\nDefine causal outcomes and choosing the appropriate “estimands”:\n\n\nATE, ATT, or ATU?\n\n\nDevise statistical methods to estimate ATE, ATT, and ATU based on research question and (sub)population of interest"
   },
   {
     "objectID": "modules/04_caus_pred.html#lecture-slides",
