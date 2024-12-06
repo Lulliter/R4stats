@@ -143,24 +143,34 @@ Detailed [instructions](https://r4biostats.com/install.html) are provided to com
   + Introduction to Machine Learning (ML)
   + Distinction between Supervised and Unsupervised algorithms 
   
-## Module 4: Mapping causal & predictive approaches
+## Module 4: Causal analysis essentials
 
-⚠️ ... currently under review ...  ⚠️
-
-+ Overview of two different research approaches:
-
-  + Causal Analysis
-  + Prediction Analysis
++ Recall the essential features of experimental study designs
+  + Learning the **vocabulary** of causal analysis 
++ Get a **visual intuition** of causal pathways, including challenging elements:
+  + *Collider* variables
+  + *Confounder* variables
+  + *Mediator* variables
++ Discuss the correct **causal model** to capture the association among exposure, outcome and other covariates, (including challenging ones) 
++ Define causal outcomes and choosing the appropriate “estimands”:
+  + **ATE**, **ATT**, or **ATU**?
++ Devise **statistical methods** to estimate ATE, ATT, and ATU based on research question and (sub)population of interest
 
 ## Module 5: Introduction to machine learning
 
-+ Examples of Machine Learning algorithms 
-  + **PCA** -- "unsupervised" ML algorithm for dimensionality reduction
-  + **PLS-Discriminant Analysis** -- "supervised" alternative to PCA performing simultaneous dimensionality reduction and classification
-<!-- + Shifting the emphasis on **empirical prediction**  -->
-<!--   + Distinction between supervised & **unsupervised** algorithms -->
-<!--     + Unsupervised ML Example -->
-<!--       + PCA  -->
++ Introduction to **Machine Learning**
++ Shifting the emphasis on **empirical prediction**
++ Distinction between **supervised** & **unsupervised** algorithms
+  + Supervised ML Example
+    + Logistic regression
+    + Random Forest
+  + Unsupervised ML Example
+    + **PCA** -- "unsupervised" ML algorithm for dimensionality reduction
+    + **PLS-Discriminant Analysis** -- "supervised" alternative to PCA performing simultaneous dimensionality reduction and classification 
+   
+   
+## Module 6: Bonus materials 
+
 + **Introduction to `MetaboAnalyst` software**
   + Overview of a useful, R-based resources for metabolomics 
   + Illustrative workflow with `MetaboAnalyst` 
@@ -168,6 +178,8 @@ Detailed [instructions](https://r4biostats.com/install.html) are provided to com
   + Brief review of hypothesis testing framework (from Module 2)
   + Review of *type I* and *type II* decision errors, contextualizing them in experimental settings
   + Understanding the test's *statistical power* in connection to the *effect size* of an experiment  
+
+
 
 
 ::: {style="color:#5d1421 "}

@@ -7,6 +7,9 @@ tbl-colwidths: [5,20,75]
 ---
 
 
+🟠  … currently under review … 🟠
+
+
 ## Lecture Outline
 
 + Introduction to **Machine Learning**

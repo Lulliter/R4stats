@@ -177,8 +177,9 @@ window.Quarto = {
   <li><a href="#module-1-introduction-to-r-and-data-analysis" id="toc-module-1-introduction-to-r-and-data-analysis" class="nav-link" data-scroll-target="#module-1-introduction-to-r-and-data-analysis">Module 1: Introduction to R and data analysis</a></li>
   <li><a href="#module-2-statistical-inference-and-classical-hypothesis-testing" id="toc-module-2-statistical-inference-and-classical-hypothesis-testing" class="nav-link" data-scroll-target="#module-2-statistical-inference-and-classical-hypothesis-testing">Module 2: Statistical inference and classical hypothesis testing</a></li>
   <li><a href="#module-3-modeling-correlation-and-regression" id="toc-module-3-modeling-correlation-and-regression" class="nav-link" data-scroll-target="#module-3-modeling-correlation-and-regression">Module 3: Modeling correlation and regression</a></li>
-  <li><a href="#module-4-mapping-causal-predictive-approaches" id="toc-module-4-mapping-causal-predictive-approaches" class="nav-link" data-scroll-target="#module-4-mapping-causal-predictive-approaches">Module 4: Mapping causal &amp; predictive approaches</a></li>
+  <li><a href="#module-4-causal-analysis-essentials" id="toc-module-4-causal-analysis-essentials" class="nav-link" data-scroll-target="#module-4-causal-analysis-essentials">Module 4: Causal analysis essentials</a></li>
   <li><a href="#module-5-introduction-to-machine-learning" id="toc-module-5-introduction-to-machine-learning" class="nav-link" data-scroll-target="#module-5-introduction-to-machine-learning">Module 5: Introduction to machine learning</a></li>
+  <li><a href="#module-6-bonus-materials" id="toc-module-6-bonus-materials" class="nav-link" data-scroll-target="#module-6-bonus-materials">Module 6: Bonus materials</a></li>
   </ul></li>
   <li><a href="#programming-labs" id="toc-programming-labs" class="nav-link" data-scroll-target="#programming-labs"><span style="color:#14455d"><i class="fa-brands fa-r-project" aria-label="r-project"></i></span> Programming Labs</a></li>
   </ul>
@@ -343,25 +344,50 @@ window.Quarto = {
 </ul></li>
 </ul>
 </section>
-<section id="module-4-mapping-causal-predictive-approaches" class="level2">
-<h2 class="anchored" data-anchor-id="module-4-mapping-causal-predictive-approaches">Module 4: Mapping causal &amp; predictive approaches</h2>
-<p>⚠️ … currently under review … ⚠️</p>
+<section id="module-4-causal-analysis-essentials" class="level2">
+<h2 class="anchored" data-anchor-id="module-4-causal-analysis-essentials">Module 4: Causal analysis essentials</h2>
 <ul>
-<li><p>Overview of two different research approaches:</p>
+<li>Recall the essential features of experimental study designs
 <ul>
-<li>Causal Analysis</li>
-<li>Prediction Analysis</li>
+<li>Learning the <strong>vocabulary</strong> of causal analysis</li>
 </ul></li>
+<li>Get a <strong>visual intuition</strong> of causal pathways, including challenging elements:
+<ul>
+<li><em>Collider</em> variables</li>
+<li><em>Confounder</em> variables</li>
+<li><em>Mediator</em> variables</li>
+</ul></li>
+<li>Discuss the correct <strong>causal model</strong> to capture the association among exposure, outcome and other covariates, (including challenging ones)</li>
+<li>Define causal outcomes and choosing the appropriate “estimands”:
+<ul>
+<li><strong>ATE</strong>, <strong>ATT</strong>, or <strong>ATU</strong>?</li>
+</ul></li>
+<li>Devise <strong>statistical methods</strong> to estimate ATE, ATT, and ATU based on research question and (sub)population of interest</li>
 </ul>
 </section>
 <section id="module-5-introduction-to-machine-learning" class="level2">
 <h2 class="anchored" data-anchor-id="module-5-introduction-to-machine-learning">Module 5: Introduction to machine learning</h2>
 <ul>
-<li>Examples of Machine Learning algorithms
+<li>Introduction to <strong>Machine Learning</strong></li>
+<li>Shifting the emphasis on <strong>empirical prediction</strong></li>
+<li>Distinction between <strong>supervised</strong> &amp; <strong>unsupervised</strong> algorithms
+<ul>
+<li>Supervised ML Example
+<ul>
+<li>Logistic regression</li>
+<li>Random Forest</li>
+</ul></li>
+<li>Unsupervised ML Example
 <ul>
 <li><strong>PCA</strong> – “unsupervised” ML algorithm for dimensionality reduction</li>
-<li><strong>PLS-Discriminant Analysis</strong> – “supervised” alternative to PCA performing simultaneous dimensionality reduction and classification <!-- + Shifting the emphasis on **empirical prediction**  --> <!--   + Distinction between supervised & **unsupervised** algorithms --> <!--     + Unsupervised ML Example --> <!--       + PCA  --></li>
+<li><strong>PLS-Discriminant Analysis</strong> – “supervised” alternative to PCA performing simultaneous dimensionality reduction and classification</li>
 </ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="module-6-bonus-materials" class="level2">
+<h2 class="anchored" data-anchor-id="module-6-bonus-materials">Module 6: Bonus materials</h2>
+<ul>
 <li><strong>Introduction to <code>MetaboAnalyst</code> software</strong>
 <ul>
 <li>Overview of a useful, R-based resources for metabolomics</li>

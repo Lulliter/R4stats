@@ -1,5 +1,5 @@
 ---
-title: "Mapping causal & predictive approaches"
+title: "Causal analysis essentials"
 subtitle: "<span class='code'>Module 4</span>"
 # date: "2024-07-27"
 # image: "images/04-guide.png"
@@ -14,9 +14,6 @@ execute:
   # include: false   # R still runs but code and results DON"T appear in output  
   cache: false # normalmnte false
 ---
-
-🟠  … currently under review … 🟠
-
 
 ## Outline
 

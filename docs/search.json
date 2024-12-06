@@ -28,18 +28,25 @@
     "text": "Module 3: Modeling correlation and regression\n\nTesting and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (parametric)\n\n(numerical variables)\n\nSpearman’s test (not parametric)\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\nFisher’s Exact Test\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\nIntroduction of regression based statistical methods\n\nSimple linear regression models\nMultiple Linear Regression models\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised and Unsupervised algorithms"
   },
   {
-    "objectID": "syllabus.html#module-4-mapping-causal-predictive-approaches",
-    "href": "syllabus.html#module-4-mapping-causal-predictive-approaches",
+    "objectID": "syllabus.html#module-4-causal-analysis-essentials",
+    "href": "syllabus.html#module-4-causal-analysis-essentials",
     "title": "Course Description & Objectives",
-    "section": "Module 4: Mapping causal & predictive approaches",
-    "text": "Module 4: Mapping causal & predictive approaches\n⚠️ … currently under review … ⚠️\n\nOverview of two different research approaches:\n\nCausal Analysis\nPrediction Analysis"
+    "section": "Module 4: Causal analysis essentials",
+    "text": "Module 4: Causal analysis essentials\n\nRecall the essential features of experimental study designs\n\nLearning the vocabulary of causal analysis\n\nGet a visual intuition of causal pathways, including challenging elements:\n\nCollider variables\nConfounder variables\nMediator variables\n\nDiscuss the correct causal model to capture the association among exposure, outcome and other covariates, (including challenging ones)\nDefine causal outcomes and choosing the appropriate “estimands”:\n\nATE, ATT, or ATU?\n\nDevise statistical methods to estimate ATE, ATT, and ATU based on research question and (sub)population of interest"
   },
   {
     "objectID": "syllabus.html#module-5-introduction-to-machine-learning",
     "href": "syllabus.html#module-5-introduction-to-machine-learning",
     "title": "Course Description & Objectives",
     "section": "Module 5: Introduction to machine learning",
-    "text": "Module 5: Introduction to machine learning\n\nExamples of Machine Learning algorithms\n\nPCA – “unsupervised” ML algorithm for dimensionality reduction\nPLS-Discriminant Analysis – “supervised” alternative to PCA performing simultaneous dimensionality reduction and classification    \n\nIntroduction to MetaboAnalyst software\n\nOverview of a useful, R-based resources for metabolomics\nIllustrative workflow with MetaboAnalyst\n\nElements of statistical Power Analysis\n\nBrief review of hypothesis testing framework (from Module 2)\nReview of type I and type II decision errors, contextualizing them in experimental settings\nUnderstanding the test’s statistical power in connection to the effect size of an experiment"
+    "text": "Module 5: Introduction to machine learning\n\nIntroduction to Machine Learning\nShifting the emphasis on empirical prediction\nDistinction between supervised & unsupervised algorithms\n\nSupervised ML Example\n\nLogistic regression\nRandom Forest\n\nUnsupervised ML Example\n\nPCA – “unsupervised” ML algorithm for dimensionality reduction\nPLS-Discriminant Analysis – “supervised” alternative to PCA performing simultaneous dimensionality reduction and classification"
+  },
+  {
+    "objectID": "syllabus.html#module-6-bonus-materials",
+    "href": "syllabus.html#module-6-bonus-materials",
+    "title": "Course Description & Objectives",
+    "section": "Module 6: Bonus materials",
+    "text": "Module 6: Bonus materials\n\nIntroduction to MetaboAnalyst software\n\nOverview of a useful, R-based resources for metabolomics\nIllustrative workflow with MetaboAnalyst\n\nElements of statistical Power Analysis\n\nBrief review of hypothesis testing framework (from Module 2)\nReview of type I and type II decision errors, contextualizing them in experimental settings\nUnderstanding the test’s statistical power in connection to the effect size of an experiment"
   },
   {
     "objectID": "practice/practice_slides/slides_lab04.html#needed-r-packages",
@@ -1012,14 +1019,14 @@
     "href": "modules/05_intro_ML.html",
     "title": "Introduction to machine learning",
     "section": "",
-    "text": "Introduction to Machine Learning\n\nShifting the emphasis on empirical prediction\n\nDistinction between supervised & unsupervised algorithms\n\nSupervised ML Example\n\nLogistic regression\nRandom Forest\n\n\nUnsupervised ML Example\n\nPCA"
+    "text": "🟠 … currently under review … 🟠"
   },
   {
     "objectID": "modules/05_intro_ML.html#lecture-outline",
     "href": "modules/05_intro_ML.html#lecture-outline",
     "title": "Introduction to machine learning",
-    "section": "",
-    "text": "Introduction to Machine Learning\n\nShifting the emphasis on empirical prediction\n\nDistinction between supervised & unsupervised algorithms\n\nSupervised ML Example\n\nLogistic regression\nRandom Forest\n\n\nUnsupervised ML Example\n\nPCA"
+    "section": "Lecture Outline",
+    "text": "Lecture Outline\n\nIntroduction to Machine Learning\n\nShifting the emphasis on empirical prediction\n\nDistinction between supervised & unsupervised algorithms\n\nSupervised ML Example\n\nLogistic regression\nRandom Forest\n\n\nUnsupervised ML Example\n\nPCA"
   },
   {
     "objectID": "modules/05_intro_ML.html#lecture-slides",
@@ -1213,28 +1220,28 @@
   {
     "objectID": "modules/04_caus_pred.html",
     "href": "modules/04_caus_pred.html",
-    "title": "Mapping causal & predictive approaches",
+    "title": "Causal analysis essentials",
     "section": "",
-    "text": "🟠 … currently under review … 🟠"
+    "text": "Recall the essential features of experimental study designs\n\nLearning the vocabulary of causal analysis\n\n\nGet a visual intuition of causal pathways, including challenging elements:\n\n\nCollider variables\n\nConfounder variables\n\nMediator variables\n\n\nDiscuss the correct causal model to capture the association among exposure, outcome and other covariates, (including challenging ones)\nDefine causal outcomes and choosing the appropriate “estimands”:\n\n\nATE, ATT, or ATU?\n\n\nDevise statistical methods to estimate ATE, ATT, and ATU based on research question and (sub)population of interest"
   },
   {
     "objectID": "modules/04_caus_pred.html#outline",
     "href": "modules/04_caus_pred.html#outline",
-    "title": "Mapping causal & predictive approaches",
-    "section": "Outline",
-    "text": "Outline\n\nRecall the essential features of experimental study designs\n\nLearning the vocabulary of causal analysis\n\n\nGet a visual intuition of causal pathways, including challenging elements:\n\n\nCollider variables\n\nConfounder variables\n\nMediator variables\n\n\nDiscuss the correct causal model to capture the association among exposure, outcome and other covariates, (including challenging ones)\nDefine causal outcomes and choosing the appropriate “estimands”:\n\n\nATE, ATT, or ATU?\n\n\nDevise statistical methods to estimate ATE, ATT, and ATU based on research question and (sub)population of interest"
+    "title": "Causal analysis essentials",
+    "section": "",
+    "text": "Recall the essential features of experimental study designs\n\nLearning the vocabulary of causal analysis\n\n\nGet a visual intuition of causal pathways, including challenging elements:\n\n\nCollider variables\n\nConfounder variables\n\nMediator variables\n\n\nDiscuss the correct causal model to capture the association among exposure, outcome and other covariates, (including challenging ones)\nDefine causal outcomes and choosing the appropriate “estimands”:\n\n\nATE, ATT, or ATU?\n\n\nDevise statistical methods to estimate ATE, ATT, and ATU based on research question and (sub)population of interest"
   },
   {
     "objectID": "modules/04_caus_pred.html#lecture-slides",
     "href": "modules/04_caus_pred.html#lecture-slides",
-    "title": "Mapping causal & predictive approaches",
+    "title": "Causal analysis essentials",
     "section": "Lecture slides",
     "text": "Lecture slides\n\n\nView lecture slides in full screen"
   },
   {
     "objectID": "modules/04_caus_pred.html#practice-slides",
     "href": "modules/04_caus_pred.html#practice-slides",
-    "title": "Mapping causal & predictive approaches",
+    "title": "Causal analysis essentials",
     "section": "Practice slides",
     "text": "Practice slides\n\nView practice slides in full screen  \n\n\n\n\n\n\nPractice input data (as subfolder)\n\n\n Download input data\n\n\nPractice R code (as .R file)\n\n\n Download R file"
   },
