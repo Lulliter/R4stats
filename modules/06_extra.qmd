@@ -24,9 +24,9 @@ tbl-colwidths: [5,20,75]
 
 ## (Extra) practice slides
 
-<!-- ::: {.custom-border style="border: 2px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"} -->
-<!-- [**View practice slides in full screen** &nbsp;{{< fa file-code >}}](../practice/practice_slides/slides_lab06.html) -->
-<!-- ::: -->
+::: {.custom-border style="border: 2px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"}
+[**View practice slides in full screen** &nbsp;{{< fa file-code >}}](../practice/practice_slides/slides_lab06.html)
+:::
 
 
 

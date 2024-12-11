@@ -1,0 +1,983 @@
+---
+title: "Lab 6: Bonus practice materials"
+subtitle: "<span style='font-size:2em;'> Practice session</span>"
+#author: "Luisa M. Mimmi | [https://luisamimmi.org/](https://luisamimmi.org/)"
+author: "<span style='font-size:1.3em; font-weight: bold; color:#77501a'> Luisa M. Mimmi — &ensp;</span>  <a href='https://luisamimmi.org/' style='color:#72aed8; font-weight:600; font-size:1.3em;'>https://luisamimmi.org/</a>"
+date: today
+date-format: long
+code-link: true
+format:
+  revealjs:
+    math: mathjax
+    smaller: true
+    scrollable: true
+    theme: ../../theme/slidesMine.scss # QUARTO LOOKS IN SAME FOLDER 
+#    logo: imgs_slides/mitgest_logo.png
+    footer: '[R 4 Statistics]({{< var websites.live_site >}}) | 2024'
+#    footer: <https://lulliter.github.io/R4biostats/lectures.html>
+## ------------- x salvare come PDF 
+    standalone: false
+    ## -------Produce a standalone HTML file with no external dependencies,
+    embed-resources: true
+    transition: fade
+    background-transition: fade
+    highlight-style: ayu-mirage
+    slide-number: true
+    fig-cap-location: top
+    # fig-format: svg
+    pdf-separate-fragments: false
+    # fig-align: center
+execute:
+  # Quarto pre code blocks do not echo their source code by default
+  echo: true
+  include: true
+  freeze: auto
+bibliography: ../../bib/R4biostats.bib
+csl: ../../bib/apa-6th-edition.csl 
+suppress-bibliography: true
+---
+
+
+# [GOAL OF TODAY'S PRACTICE SESSION]{.r-fit-text}
+
+::: {style="font-size: 100%;"}
+::: {style="color:#77501a"}
++ Revisit PCA algorithm explored via MetaboAnalyst, to learn how we can compute it with R 
++ Understand some key elements of statistical Power Analysis
++ Introduce how ML approaches deal with available data  
+:::
+:::
+
+<br><br>
+
+::: {style="font-size: 70%;"}
+The examples and datasets in this Lab session follow very closely two sources:
+
+1. The tutorial on "Principal Component Analysis (PCA) in R" by: [Statistics Globe](https://statisticsglobe.com/principal-component-analysis-r)
+2. The materials in support of the "Core Statistics using R" course by: [Martin van Rongen](https://github.com/mvanrongen/corestats-in-r_tidyverse)
+<!-- https://mvanrongen.github.io/corestats-in-r_tidyverse/power-analysis.html -->
+:::
+
+
+## Topics discussed in Lecture # 6
+
+
+::: {style="font-size: 95%;"}
+<!-- **Lecture 6: topics**  -->
+<!-- + Shifting the emphasis on **empirical prediction**  -->
+<!--   + Distinction between supervised & **unsupervised** algorithms -->
+<!--     + Unsupervised ML Example -->
+<!--       + PCA  -->
+
++ Introduction to `MetaboAnalyst` software
+  + A useful R-based resources for metabolomics 
++ Elements of statistical Power Analysis
+
+<!-- + Workshop Conclusions -->
+
+:::  
+
+# R ENVIRONMENT SET UP & DATA
+
+## Needed R Packages
+::: {style="font-size: 85%;"}
+
++ We will use functions from packages `base`, `utils`, and `stats` (pre-installed and pre-loaded) 
++ We may also use the packages below (specifying `package::function` for clarity).
+
+
+```{r}
+# Load pckgs for this R session
+
+# --- General 
+library(here)     # tools find your project's files, based on working directory
+library(dplyr)    # A Grammar of Data Manipulation
+library(skimr)    # Compact and Flexible Summaries of Data
+library(magrittr) # A Forward-Pipe Operator for R 
+library(readr)    # A Forward-Pipe Operator for R 
+
+# Plotting & data visualization
+library(ggplot2)      # Create Elegant Data Visualisations Using the Grammar of Graphics
+library(ggfortify)     # Data Visualization Tools for Statistical Analysis Results
+library(scatterplot3d) # 3D Scatter Plot
+
+# --- Statistics
+library(MASS)       # Support Functions and Datasets for Venables and Ripley's MASS
+library(factoextra) # Extract and Visualize the Results of Multivariate Data Analyses
+library(FactoMineR) # Multivariate Exploratory Data Analysis and Data Mining
+library(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests
+
+# --- Tidymodels (meta package)
+library(rsample)    # General Resampling Infrastructure  
+library(broom)      # Convert Statistical Objects into Tidy Tibbles
+```
+
+<!-- # Data  -->
+<!-- # devtools::install_github("OI-Biostat/oi_biostat_data") -->
+<!-- #library(oibiostat) # Data Package for OpenIntro Biostatistics  -->
+:::
+
+
+# POWER ANALYSIS 
+
+# DATASETS for today
+
+<br>
+
+::: {style="font-size: 80%;"}
+In this section, we will use: 
+
++ the *NHANES* clinical data, we already analysed in Lab # 3 
++ a few, tidy *"fish-related"* datasets 🍥🦑 🐠 🍤 🎏  that we will load on the go
+  + Source: the materials of the "Core Statistics using R" by: [Martin van Rongen](https://github.com/mvanrongen/corestats-in-r_tidyverse)
+
+:::
+
+
+
+
+## Sample Size determination in Inferential statistics 
+
+<br><br>
+
+::: {.r-fit-text}
+::: {style="font-size: 80%;"}
+
+> *"OK, so how big of a sample do I need?"* <br><br>
+> ...the 1,000,000 $ question"! 🙀
+
+:::
+:::
+
+<!-- http://www.biostathandbook.com/power.html -->
+
+## [Purpose and challenges of Power Analysis]{.r-fit-text}
+
+::: {style="font-size: 85%;"}
+
++ `Power analysis` helps with the key question **How many observations/subjects do I need for my experiment?** (= $n$)
+  + **Too small** of a sample size can under detect the effect of interest in your experiment
+  + **Too large** of a sample size may lead to unnecessary wasting of resources
+  + We strive to have **just the sufficient** number of observations needed to have a good chance of detecting the effect researched. (Even more so in a very time-consuming or expensive experiment.)
+
++ **When** should we do power analysis?
+
+  + (Ideally), *before* the experiment:  `a priori power analysis` allows *to determine the necessary sample size $n$ of a test*, given a desired $\alpha$ level, a desired power level ($1- \beta$), and the size of the effect to be detected (a measure of difference between $H_o$ and $H_1$)
+  + In reality, sometimes you can only do  `post-hoc power analysis` *after* the experiment, so the sample size $n$ is already given. 
+    + In this case, given $n$, $\alpha$, and a specified effect size, the analysis will return the power ($1- \beta$) of the test, or $\beta$ (i.e. the probability of Type II error = incorrectly retaining $H_o$).
+
+<!-- +  $\alpha$ = type I error = probability of incorrectly rejecting $H_o$ (false positive) -->
+<!-- +  $\beta$  = type II error = probability of incorrectly retaining $H_o$ (false negative) -->
+
+:::
+
+
+## [Required inputs to define the sample size `n`]{.r-fit-text}
+
+::: {style="font-size: 90%;"}
+ 
++ A specified **effect size** (i.e. the minimum deviation from $H_o$ that you hope to detect for a meaningful result)
+  + The larger the effect size, the easier it is to detect an effect and require fewer obs
++ [**Standard \ deviation**]: For *measurement variables*, you also need an estimate of the standard deviation. 
+  + As $standard deviation$ gets bigger, it is harder to detect a significant difference, so you'll need a bigger sample size. 
+
+<!-- Your estimate of the standard deviation can come from pilot experiments or from similar experiments in the published literature. Your standard deviation once you do the experiment is unlikely to be exactly the same, so your experiment will actually be somewhat more or less powerful than you had predicted. For *nominal variables*, the standard deviation is a simple function of the sample size, so you don't need to estimate it separately. -->
++ $\alpha$ is the **significance level** of the test (i.e. *the probability of incorrectly rejecting the null hypothesis (a false positive)*. 
+  + Understanding if the test is one-tailed (difference has a direction) or two-tailed
++ $\beta$ is *the probability of accepting the null hypothesis, even though it is false (a false negative)*, when the real difference is equal to the minimum effect size. 
+  + $1- \beta$ is the **power of a test** is *the probability of correctly rejecting the null hypothesis (getting a significant result) when the real difference is equal to the minimum effect size*.  
+    + a power of 80% (equivalent to a beta of 20%) is probably the most common, while some people use 50% or 90%
+
+:::
+
+## [Specifying effect size]{.r-fit-text}
+
+::: {style="font-size: 75%;"}
+So (since $\alpha$ and $1-\beta$ are normally set) the key piece of information we need is the **effect size**, which is essentially a function of the difference between the means of the null and alternative hypotheses over the variation (standard deviation) in the data. 
+
+> The tricky part is that effect size is related to biological/practical significance rather than statistical significance
+
+How should you estimate a meaningful `Effect Size`?
+
++ Use preliminary information in the form of pilot study
++ Use background information in the form of similar studies in the literature
++ (With no prior information), make an estimated guess on the effect size expected (see guidelines next)
+
+> Most R functions for sample size only allow you to enter effect size as input
+
+:::
+
+## [Specifying effect size: general guidelines]{.r-fit-text}
+
+As a general indicative reference, below are the **"Cohen's Standard Effect Sizes"** (from statistician Jacob Cohen who came up with a rough set of numerical measures for `“small”`, `“medium”` and `“large”` effect sizes that are still in use today)  
+
+![](../../images/EffSize.png)
+
+## The `pwr` package  
+::: {style="font-size: 80%;"}
+The `pwr` package (develped by Stéphane Champely), implements power analysis as outlined by Cohen (1988). 
+The key arguments of the function `pwr.t.test` are 4 quantities, plus 2 for the test description:
+
+1. `n` = sample size
+2. `d` = effect size (based on Cohen's)
+3. `sig.level` = the desired significance level 
+  + The significance level ($\alpha$)  defaults to 0.05. Therefore, to calculate the significance level, given an effect size, sample size, and power ($1- \beta$), use the option `"sig.level=NULL"`.
+4. `power` = the desired power 
+5. `type` =  the type of t-test you will eventually be carrying out (one of `two.sample`, `one.sample` or `paired`)
+6. `alternative` = the type of alternative hypothesis you want to test (one of `two.sided`, `less` or `greater`)
+
++ The core idea behind its functions is that **you enter 3 of the 4 quantities** (effect size, sample size, significance level, power) **and the 4th is calculated**.
+
+:::
+
+## [One Sample Mean: EXE data]{.r-fit-text}
+::: {style="font-size: 95%;"}
+<!-- https://mvanrongen.github.io/corestats-in-r_tidyverse/power-analysis.html#exercise-one-sample -->
+GOAL: Imagine this is a *pilot study*, in which we tested fish is (on average) different form 20 cm in length. 
+
+The `guanapo_data` dataset contains information on fish lengths from the Guanapo river pilot
+
+```{r}
+# Load data on river fish length 
+fishlength_data <- readr::read_csv(here::here("practice", "data_input", "05_datasets", 
+                                              "fishlength.csv"),
+                              show_col_types = FALSE)
+
+# Select a portion of the data (i.e. out "pilot" experiment) 
+guanapo_data <- fishlength_data %>% 
+  dplyr::filter(river == "Guanapo")
+
+# Pilot experiment data 
+names(guanapo_data)
+mean_H1 <-  mean(guanapo_data$length) # 18.29655
+mean_H1
+sd_sample <- sd(guanapo_data$length)  # 2.584636
+sd_sample
+```
+:::
+
+## [One Sample Mean t-test: EXAMPLE cont.]{.r-fit-text}
+::: {style="font-size: 85%;"}
+Let's compute the one sample t-test with `stats::t.test` against a hypothetical average fish length ($mean\_H_o = 20$ )
+```{r}
+# Hypothetical fish population length mean (H0)
+mean_H0 <- 20
+# one-sample mean t-test 
+t_stat <- stats::t.test(x = guanapo_data$length,
+                        mu = mean_H0,
+                        alternative = "two.sided")
+# one-sample t-test results
+t_stat
+```
+
++ There appear to be a statistically significant result here: the mean length of the fish appears to be different from 20 cm.
+
+QUESTION: In a new study of the same fish, what sample size `n` would you need to get a comparable result? 
+
+:::
+
+## [One Sample Mean t-test: POWER ANALYSIS (`n`)]{.r-fit-text}
+
+::: {style="font-size: 90%;"}
++ We input Cohen's d (after calculating it manually) following: 
+$effect\ size\ \approx \frac{{Mean}_{H_1}\ -{\ Mean}_{H_0}}{Std\ Dev}$
+
++ We use `pwr::pwr.t.test` to calculate the minimum sample size `n` required:
+<!-- + I  use `d= 0.50` following Cohen's guidance for a *medium* effect size -->
+ 
+
+```{r}
+# Cohen's d formula 
+eff_size <- (mean_H1 - mean_H0) / sd_sample # -0.6590669
+
+# power analysis to actually calculate the minimum sample size required:
+pwr::pwr.t.test(d = eff_size, 
+                sig.level = 0.05, 
+                power = 0.8,
+                type = "one.sample")
+```
+  
+> We would need `n = 21` (rounding up) observations for an experiment (e.g. in different river) to detect an effect size as the pilot study at a 5% significance level and 80% power.  
+
+:::
+
+## [One Sample Mean t-test: POWER ANALYSIS, stricter conditions]{.r-fit-text}
+What if we wanted the results to be even more stringent? 
+
+  + e.g. require higher significance level (0.01) and power (0.90) with the same effect?
+
+```{r}
+# power analysis to actually calculate the minimum sample size required:
+pwr::pwr.t.test(d = eff_size, 
+                sig.level = 0.01, 
+                power = 0.9,
+                type = "one.sample")
+```
+  
+> This time, we would need `n = 38` observations for an experiment to detect the same effect size at the stricter level of significance and power.
+
+
+## [Two Independent Samples: EXE data]{.r-fit-text}
+<!-- https://mvanrongen.github.io/corestats-in-r_tidyverse/power-analysis.html -->
+::: {style="font-size: 90%;"}
+Let’s look at the entire `fishlength_data` with the lengths of fish from 2 separate rivers.
+```{r}
+# Explore complete data 
+fishlength_data %>% 
+  dplyr::group_by (river) %>% 
+  dplyr::summarise (N = n(), 
+                    mean_len = mean(length),
+                    sd_len = sd(length)) 
+```
+
+Visualize quickly the 2 samples (rivers) with a boxplot
+
+```{r}
+#| output-location: slide
+#| fig-cap: "The fish in the 2 samples appear to have different mean length" 
+
+# visualize the data
+fishlength_data %>% 
+  ggplot(aes(x = river, y = length)) +
+  geom_boxplot()
+```
+:::
+
+
+## [Two Independent Samples: t-test]{.r-fit-text}
+Let's confirm it with a two sample t-test against $𝑯_𝟎$: *The two population means are equal*
+
+```{r}
+# Perform two-samples unpaired test
+fishlength_data %>% 
+  rstatix::t_test(length ~ river,
+                  paired = FALSE
+                    )
+```
+
+> The t-test analysis confirms that the difference is significant.
+
+<br>
+QUESTION: Can we use this information to design a more `efficient` experiment? I.e. run an experiment powerful enough to pick up the same observed difference in means but with **fewer observations**?
+
+## [Two Independent Samples: POWER ANALYSIS 1/2]{.r-fit-text}
+
+1. Let's work out exactly the **effect size** of this study by estimating Cohen’s d using this data.
+  + (We use a function from the package `rstatix::cohens_d` to estimate Cohen's d)
+
+```{r}
+# Estimate cohen's d 
+fishlength_data %>%
+  rstatix::cohens_d(length ~ river, var.equal = TRUE)
+```
+
+> The `effsize` column contains the information that we want, in this case **0.94**
+
+## [Two Independent Samples: POWER ANALYSIS 2/2  (`n`)]{.r-fit-text}
+2. Actually answer the question about **how many fish** we really need to catch in the future
+ 
+```{r}
+# run power analysis 
+pwr::pwr.t.test(d = 0.94, power = 0.8, sig.level = 0.05,
+           type = "two.sample", alternative = "two.sided")
+```
+ 
+> The `n` output ( = **19 observations per group**) -as opposed to 39 + 29- would be sufficient if we wanted to confidently detect the difference observed in the previous study  
+
+## [Two Paired Samples: EXE data]{.r-fit-text}
+::: {style="font-size: 85%;"}
+The `cortisol_data` dataset contains information about cortisol levels measured on 20 participants in the morning and evening
+
+```{r}
+# Load data 
+cortisol_data <- read.csv(file = here::here("practice", "data_input", "05_datasets", 
+                                        "cortisol.csv"), 
+                          header = TRUE, # 1st line is the name of the variables
+                          sep = ",", # which is the field separator character.
+                          na.strings = c("?","NA" ), # specific MISSING values  
+                          row.names = NULL) 
+
+# Explore data 
+names(cortisol_data)
+
+cortisol_data %>% 
+  dplyr::group_by (time) %>% 
+  dplyr::summarise (
+    N = n(), 
+    mean_cort = mean(cortisol),
+    sd_cort = sd(cortisol)) 
+```
+
+> Notice the difference in the paired sample means is quite large
+
+:::
+
+## [Two Paired Samples t-test: visualization]{.r-fit-text}
+
+Visualize quickly the 2 paired samples (morning and evening) with a boxplot
+
+```{r}
+#| fig-cap: "The cortisol levels in the 2 paired amples appear quite different" 
+
+# visualize the data
+cortisol_data %>% 
+  ggplot(aes(x = time, y = cortisol)) +
+  geom_boxplot()
+```
+
+
+## [Two Paired Samples: POWER ANALYSIS (`d`)]{.r-fit-text}
+::: {style="font-size: 85%;"}
+GOAL: Flipping the question, if we know the given `n` (20 patients observed twice): How big should the `effect size` be to be detected at `power` of 0.8 and `significance level` 0.05? 
+
++ We use `pwr::pwr.t.test`, with the argument specification `type = "paired"`, but this time to estimate the **effect size**
+<!-- + I  use `d= 0.50` following Cohen's guidance for a *medium* effect size -->
+
+```{r}
+# power analysis to actually calculate the effect size at the desired conditions:
+pwr::pwr.t.test(n = 20, 
+                #d =  eff_size, 
+                sig.level = 0.05, 
+                power = 0.8,
+                type = "paired")
+```
+  
+> The functions returns the effect size (Cohen’s metric): `d = 0.6604413`. So, with this experimental design we would be able to detect a **medium-large effect size**.
+
+:::
+
+## [Two Paired Samples t-test: POWER ANALYSIS on given `n`]{.r-fit-text}
+
+Looking instead at the **actual sample data**, what would be the observed effect size?
+
++ To compute "observed `d`" we can use the function `rstatix::cohens_d` 
+```{r}
+d <- cortisol_data %>% 
+  # estimate cohen's d
+  rstatix::cohens_d(cortisol ~ time, paired = TRUE)
+
+d
+```
+
+The obtained `d` (-1.16) is extremely large, so ***we likely have more participants in this study than actually needed*** given such a large effect. 
+
+## [Two Paired Samples t-test: POWER ANALYSIS gives sufficient `n`]{.r-fit-text}
+
+Let's re-compute the power analysis, but leave `n` as the unknown quantity, given the effect size (`d`) we have observed  
+```{r}
+# power analysis to calculate minimunm n given the observed effect size in the sample 
+pwr::pwr.t.test(# n = 20, 
+                d =  -1.16, 
+                sig.level = 0.05, 
+                power = 0.8,
+                type = "paired")
+
+```
+
+> As a matter of fact, ` n = 8` pairs of observations would have sufficed in this study, given the size of effect we were trying to detect.
+
+
+## [One-way ANOVA test: EXE data]{.r-fit-text}
+::: {style="font-size: 85%;"}
+The `mussels_data` dataset contains information about the length of the *anterior adductor muscle scar* in the mussel `Mytilus trossulus` across five locations around the world!  
+
+```{r}
+# Load data 
+mussels_data <- read.csv(file = here::here("practice", "data_input", "05_datasets", 
+                                        "mussels.csv"), 
+                          header = TRUE, # 1st line is the name of the variables
+                          sep = ",", # which is the field separator character.
+                          na.strings = c("?","NA" ), # specific MISSING values  
+                          row.names = NULL) 
+
+# Explore data 
+names(mussels_data)
+
+stats <- mussels_data %>% 
+  dplyr::group_by (location) %>% 
+  dplyr::summarise (
+    N = n(), 
+    mean_len = mean(length),
+    sd_len = sd(length)) 
+
+stats
+```
+:::
+
+## [One-way ANOVA test: visualization]{.r-fit-text}
+::: {style="font-size: 90%;"}
+> There appears to be a noticeable difference in lenght at average measurements *at least* between some of the locations
+
+:::
+
+<!-- ```{r} -->
+<!-- # Levene test for variance equality -->
+<!-- levene <- mussels_data %>%                       # name of the data -->
+<!--   car::leveneTest(length ~ as.factor(location),   # continuous DV ~  group IV -->
+<!--                   data = .,            # pipe the data from above -->
+<!--                   center = mean)       # default is median  -->
+<!-- levene -->
+<!-- ``` -->
+
+```{r}
+#| output-location: slide
+
+# Visualize the data with a boxplot
+mussels_data %>% 
+  ggplot(aes(x = location, y = length)) +
+  geom_boxplot()
+```
+
+
+
+## [One-way ANOVA test: EXAMPLE cont.]{.r-fit-text}
+
+::: {style="font-size: 75%;"}
+Assuming we verified the required assumptions, let's run the ANOVA test to confirm the visual intuition 
+
++ With the `stats::aov` followed by the command `summary`  
+
+```{r}
+# Summary of test outputs: 
+summary_ANOVA <- summary(stats::aov(length ~ location,
+                   data = mussels_data))
+
+# From which we extract all the output elements 
+# F value 
+summary_ANOVA[[1]][["F value"]] # 7.121019
+# p value 
+summary_ANOVA[[1]][["Pr(>F)"]]  # 0.0002812242
+# df of numerator and denominator
+summary_ANOVA[[1]][["Df"]]      # 4, 34 
+# Sum of Square BETWEEN groups
+SSB <- summary_ANOVA[[1]][["Sum Sq"]][1]  # 0.004519674
+# Sum of Square WITHIN groups
+SSW <- summary_ANOVA[[1]][["Sum Sq"]][2]  # 0.005394906
+```
+
++ A one-way ANOVA test confirms that **the mean lengths of muscle scar differed significantly between locations** ( F = 7.121, with df = [4, 34], and p = 0.000281).
+
+:::
+
+
+## [One-way ANOVA test: POWER ANALYSIS (`effect`)]{.r-fit-text}
+::: {style="font-size: 90%;"}
+
+In ANOVA it may be tricky to decide what kind of effect size we are looking for: 
+  
+  + if we care about an overall significance test, the sample size needed is a function of the standard deviation of the group means
+  + if we're interested in the comparisons of means, there are other ways of expressing the effect size (e.g. a difference between the smallest and largest means)
+
+Here let's consider an overall test in which we could reasonably collect the same n. of observations in each group 
+
+```{r}
+n_loc <- nrow(stats)
+
+means_by_loc <- c(0.0780, 0.0748, 0.103, 0.0802, 0.0957)
+overall_mean <-  mean(means_by_loc)
+sd_by_loc <- c(0.0129, 0.00860, 0.0162, 0.0120, 0.0130)
+overall_sd <-  mean(sd_by_loc)
+```
+:::
+
+## [One-way ANOVA test: POWER ANALYSIS (`effect`)]{.r-fit-text}
+::: {style="font-size: 90%;"}
+```{r}
+# Effect Size f formula
+Cohen_f = sqrt( sum( (1/n_loc) * (means_by_loc - overall_mean)^2) ) /overall_sd
+Cohen_f # EXTREMELY BIG 
+
+# Power analysis with given f 
+pwr::pwr.anova.test(k = n_loc,
+                    n = NULL,
+                    f = Cohen_f,
+                    sig.level = 0.05,
+                    power = 0.80)
+```
+
+> The `n` output ( = **5 observations per group**) -as opposed to >6 per group- would be sufficient if we wanted to confidently detect the difference observed in the previous study  
+
+:::
+
+<!-- ## [One-way ANOVA test: POWER ANALYSIS]{.r-fit-text} -->
+<!-- ::: {style="font-size: 95%;"} -->
+<!-- The effect size for power analysis in ANOVA is the $f$ metric, indicating respectively a small = 0.10, medium = 0.25 and large = 0.40 effect.  -->
+
+<!-- + Let's check out what would be the needed `n` to find a "medium" effect in an experiment like the one at hand:   -->
+
+<!-- ```{r} -->
+<!-- pwr::pwr.anova.test(k = 5 , f = 0.25, sig.level = 0.05, power = 0.80) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- ## Assume we have prior knowledge of the group means: -->
+<!-- groupmeans <- c(0.0780, 0.0748, 0.103, 0.0802, 0.0957) -->
+<!-- power.anova.test(groups = length(groupmeans), -->
+<!--                  between.var = var(groupmeans), -->
+<!--                  within.var = 500, power = .90) # n = 15.18834 -->
+<!-- ``` -->
+
+<!-- ::: -->
+
+<!-- ## [Balanced one way ANOVA (`pwr.anova.test`)]{.r-fit-text} -->
+
+<!-- ## [Two samples with unequal n t-test (`pwr.t2n.test`)]{.r-fit-text} -->
+
+## [Linear Regression with grouped data: EXE data]{.r-fit-text}
+
+::: {style="font-size: 75%;"}
+
+The ideas covered before apply also to **linear models**, although here:
+
++ we use `pwr.f2.test()` to do the power calculation
++ the `effect sizes` ($f^2$) is based on $R^2$
+
+$$ f^2=\ \frac{R^2}{1-\ R^2}$$ 
+```{r}
+# define the linear model
+lm_mussels <- lm(length ~ location, 
+                 data = mussels_data)
+```
+
+```{r}
+#| output-location: slide
+
+# summarise the model
+summary(lm_mussels)
+```
+:::
+
+
+## [Linear Regression with grouped data: POWER ANALYSIS]{.r-fit-text}
+::: {style="font-size: 95%;"}
+From the linear model we get that the $R^2$ value is 0.4559 and we can use this to calculate Cohen’s $f^2$ value using the formula 
+
+```{r}
+# Extract R squared
+R_2 <- summary(lm_mussels)$r.squared
+# compute f squared
+f_2 <- R_2 / (1 - R_2)
+f_2
+```
+
+Our model has 5 parameters (because we have 5 groups) and so the numerator degrees of freedom $u$ will be 4 (5−1=4). 
+
+Hence, we carry out the power analysis with the function `pwr.f2.test`:
+
+```{r}
+# power analysis for overall linear model 
+pwr::pwr.f2.test(u = 4, v = NULL, 
+                 f2 = 0.8378974,
+                 sig.level = 0.05 , power = 0.8)
+```
+
+:::
+
+## [Linear Regression with grouped data: POWER ANALYSIS interpret.]{.r-fit-text}
+::: {style="font-size: 90%;"}
+
+Recall that, in the F statistic evaluating the model, 
+
++ **u** the df for the numerator: $df_{between} =k−1 = 5-1 = 4$ 
++ **v** the df for the denominator: $df_{within} = n-k = ?$ 
+  + so $n = v+5$ 
+
+```{r}
+pwr::pwr.f2.test(u = 4, f2 = 0.8378974,
+            sig.level = 0.05 , power = 0.8)
+```
+
+> This tells us that the denominator degrees of freedom **v** should be 15 (14.62 rounded up), and this means that we would only need 20 observations **n = v+5** in total across all 5 groups to detect this effect size 
+
+<!-- (Remember: number of observations = numerator d.f. + denominator d.f. + 1) -->
+:::
+
+
+# SAMPLE SPLITTING IN MACHINE LEARNING
+
+::: {.r-fit-text}
+> Embracing a different philosophical approach... 
+
+:::
+
+ 
+## [2 different approaches with different takes on empirical data]{.r-fit-text}
+::: {style="font-size: 90%;"}
+[*(Simplifying a little)*]{style="color:#77501a"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+#### Inferential statistics
++ `GOAL`: Convincingly explain
+
++ `APPROACH`: Strong emphasis on defining assumptions (about variables distributions) and/or hypotheses on the relationship between them 
+
++ `DATA`: 
+  + The **collection strategy is designed *ex-ante* **, according to the experiment goal
+  + Usually, ALL AVAILABLE DATA are used to estimate effect of interest (as `sampling` was designed to be representative of a population).
+  
+:::
+  
+::: {.column width="50%"}
+#### Machine Learning
++ `GOAL`: Accurately predict
+
++ `APPROACH`: Focus on labeling observations or uncovering ("learn") a pattern, without worrying about explaining them
+
++ `DATA`: 
+  + Data drives the search for patterns, but there is a huge risk of *"overfitting"* models (too specific to initial data!)
+  + It is critical to SPLIT THE DATA (usually 75% for `training` and 25% for `testing` the algorithms) **leaving aside a sub-sample to test the model** with unseen new data
+
+:::
+  
+::::
+:::
+
+
+## [Data Splitting in ML approaches]{.r-fit-text}
+
+::: {style="font-size: 65%;"}
+
+Consistent with the ML approach (**learning from (data) examples**), it is critical to split the available data to obtain: 
+
+1. 60-80% ➜ `training sample` for *fitting a model* and making prediction on the training data itself 
+2. 20-40% ➜ `testing sample` for *evaluating the performance* of the selected model(s) and test it works on new data too
+  + [*Since in ML we don't claim to know _what works_ in advance, it is essential to "test" a candidate predictive model on fresh new data and see if it holds*]{style="color:#77501a"}
+
+![](../../images/split_data.png)
+
+:::
+
+
+
+
+<!-- ## [Correlation: EXE data]{.r-fit-text} -->
+<!-- ::: {style="font-size: 95%;"} -->
+<!-- ::: -->
+<!-- ## [Correlation: EXAMPLE cont.]{.r-fit-text} -->
+<!-- ::: {style="font-size: 95%;"} -->
+<!-- ::: -->
+<!-- ## [Correlation: POWER ANALYSIS]{.r-fit-text} -->
+<!-- ::: {style="font-size: 95%;"} -->
+<!-- ::: -->
+<!-- ## [Chi-Squared Test: EXE data]{.r-fit-text} -->
+<!-- ::: {style="font-size: 95%;"} -->
+<!-- ::: -->
+<!-- ## [Chi-Squared Test: EXAMPLE cont.]{.r-fit-text} -->
+<!-- ::: {style="font-size: 95%;"} -->
+<!-- ::: -->
+<!-- ## [Chi-Squared Test: POWER ANALYSIS]{.r-fit-text} -->
+<!-- ::: {style="font-size: 95%;"} -->
+<!-- ::: -->
+
+## [Introducing R (metapackage) `tidymodels` for modeling and ML]{.r-fit-text}
+
+:::: {.columns}
+
+::: {.column width="35%"}
+The package `tidymodels` (much like the `tidyverse`) is an ecosystem of packages meant to enable a wide variety of approaches for modeling and statistical analysis.
+
++ One package in this system is `rsample` is one of its building blocks for resampling data 
+<!-- (@fig-tidymodels) -->
+:::
+  
+::: {.column width="65%"}
+![Tidymodels ecosystem](../../images/tidymodels.png)
+<!-- ![Tidymodels ecosystem](../../images/tidymodels.png){#fig-tidymodels} -->
+:::
+::::
+
+
+## [Revisiting NHANES for a quick demonstration of predictive modeling]{.r-fit-text}
+
+::: {style="font-size: 95%;"}
+Let's re-load a dataset from Lab # 3 (the NHANES dataset) for a quick demonstration of data splitting in an ML predictive modeling scenario 
+
++ We can try predicting `BMI` from `age` (in years), `PhysActive`, and `gender`, using linear regression model (which is a `Supervised ML algorithm`)
+
++ (we already saved this dataset)
+```{r}
+# (we already saved this dataset in our project folders)
+
+# Use `here` in specifying all the subfolders AFTER the working directory 
+nhanes <- read.csv(file = here::here("practice", "data_input", "03_datasets",
+                                      "nhanes.samp.csv"), 
+                          header = TRUE, # 1st line is the name of the variables
+                          sep = ",", # which is the field separator character.
+                          na.strings = c("?","NA" ), # specific MISSING values  
+                          row.names = NULL) 
+```
+:::
+
+## Splitting the dataset into training and testing samples
+<!-- Julia Silge https://supervised-ml-course.netlify.app/ -->
+
++ With this approach, it is best practice to **"hold back" some data for testing** to get a better estimate of how models will perform on new data
+ 
++ We can easily specify training and testing sets using `rsample`'s function `initial_split`
+
+  <!-- So, when you evaluate your model on data that *it was not trained on*, you get a better estimate of how it will perform on new data. -->
+
+```{r}
+# ensure we always get the same result when sampling (for convenience )
+set.seed(12345)
+
+nhanes_split <- nhanes %>%
+  # define the training proportion as 75%
+  rsample::initial_split(prop = 0.75,
+  # ensuring both sets are balanced in gender
+                         strata = Gender)
+
+# resulting datasets
+nhanes_train <- rsample::training(nhanes_split)
+dim(nhanes_train)
+nhanes_test <- rsample::testing(nhanes_split)
+dim(nhanes_test)
+```
+
+<!-- https://supervised-ml-course.netlify.app/chapter1 -->
+
+
+## [Fitting a linear model on the training data]{.r-fit-text}
+::: {style="font-size: 90%;"}
+
+In this case the **regression models** serves for predicting numeric, continuous quantities 
+```{r}
+# fitting  linear regression model specification
+lin_mod <- lm(BMI ~ Age + Gender + PhysActive, data = nhanes_train)
+
+summary(lin_mod)
+```
+
+:::
+
+## [Predicting BMI estimates for new data set]{.r-fit-text}
+::: {style="font-size: 95%;"}
+Using the above model, we can predict the BMI for different individuals (those left in the testing data)
+
+  + with the function `predict`, where we specify the argument `newdata = nhanes_test`)
+  + adding the prediction `interval` (the 95% CI), which gives uncertainty around a single value of the prediction
+
+```{r}
+# Obtain predictions from the results of a model fitting function
+pred_bmi <- stats::predict(lin_mod, 
+               newdata = nhanes_test,
+               interval = "confidence" )
+head(pred_bmi)
+```
+
+:::
+
+
+<!-- ## [TIdy]{.r-fit-text} -->
+<!-- ::: {style="font-size: 95%;"} -->
+
+
+<!-- ```{r} -->
+<!-- broom::tidy(lin_mod) -->
+<!-- broom::glance(lin_mod) -->
+<!-- broom::augment(lin_mod) -->
+<!-- ``` -->
+
+<!-- ::: -->
+
+
+## [Evaluating the predictive performance in testing data]{.r-fit-text}
+::: {style="font-size: 95%;"}
+
+The ultimate goal of holding data back from the model training process was to **evaluate its predictive performance on new data**. 
+<!-- We want to be able to estimate how well our model will perform on new data, and the best way to do that is to use data that was not an input to training the model at all.  -->
+
+<!-- + *Specifically, Holding out testing data allows you to assess if your model is overfitting.*  -->
+
+A common measure used is the `RMSE (Root Mean Square Error)` = a measure of the distance between observed values and predicted values **in the testing dataset**  
+
+```{r}
+# Computing the Root Mean Square Error
+RMSE_test <- sqrt(mean((nhanes_test$BMI - predict(lin_mod, nhanes_test))^2, na.rm = T))
+RMSE_test # 6.170518
+```
+
+> The RMSE (= 6.170518) tells us, (roughly speaking) by how much, on average, the new observed BMI values differ from those predicted by our model
+:::
+
+
+## [... and what about RMSE in training data?]{.r-fit-text}
+Let's see the RMSE in the training dataset (for comparison)
+
+```{r}
+RMSE_train <- sqrt(mean((nhanes_train$BMI - predict(lin_mod, nhanes_train))^2, na.rm = T))
+RMSE_train # 6.866044
+
+# R squared is also quite low 
+summary(lin_mod)$r.squared     # R^2 0.0341589
+```
+
+> This is not what expected 🤔, since RMSE on the training data is sliglthly bigger that in the testing data! 
+
+A possible explanation is that out model is `underfitting` in the first place (model's ${R}^2$ was quite low too), so we should definitely try different models...  
+
+
+# WRAPPING UP TODAY'S KEY MESSAGE 
+
+<!-- ## [A conceptual map to understand this sampling size/sample splitting endeavour]{.r-fit-text}  -->
+<!-- ::: {style="font-size: 90%;"} -->
+
+<!-- Without going too in depth, these days have introduced 2 fundamentally different approaches, and (hopefully) given you a general conceptual frame:  -->
+
+<!-- 1. **[Inferential Statistics & classical Hypothesis testing]{style="color:#1c7c6b"}** -->
+<!-- 2. **[Machine Learning for prediction]{style="color:#9b4923"}**   -->
+
+<!-- The 2 approaches: -->
+
+<!-- + operate under diverse `assumptions` (*[1. strict and explicit]{style="color:#1c7c6b"} v. [2. relaxed if at all present]{style="color:#9b4923"}*),  -->
+<!-- + have different `goals` (*[1. explaining with statistical certainty]{style="color:#1c7c6b"} v. [2. uncovering a pattern/classification from data]{style="color:#9b4923"}*)  -->
+<!-- + (therefore) treat `available data` differently (*[1. curate a data generation process that matches hypothesis]{style="color:#1c7c6b"} v. [2. saves a portion of untouched data to test plausible model]{style="color:#9b4923"}*) -->
+
+<!-- ::: -->
+
+
+
+
+## [Recap of the workshop's content]{.r-fit-text}
+
+::: {style="font-size: 95%;"}
+
+**TOPICS WE COVERED**
+
+1. Motivated the choice of learning/using **R for scientific quantitative analysis**, and lay out some fundamental concepts in biostatistics with concrete R coding examples.
+
+2. Consolidated understanding of **inferential statistic**, through R coding examples conducted on real biostatistics research data.
+
+3. Discussed the **relationship between any two variables**, and introduce a widely used analytical tool: **regression**.
+ 
+4. Presented a popular ML technique for dimensionality reduction (**PCA**), performed both with `MetaboAnalyst` and `R`. 
+
+5. Introduction to **power analysis** to define the correct sample size for hypotheses testing and discussion of how ML approaches deal with available data.
+
+
+:::
+
+
+## Final thoughts
+
+::: {style="font-size: 95%;"}
+::: {style="color:#77501a"}
+
+
++ While the workshop only allowed for a synthetic overview of fundamental ideas, it hopefully provided a solid foundation on the most common statistical analysis you will likely run in your daily work: 
+  + Thorough **understanding of the input data** and the data collection process 
+  + Univariate and bivariate **exploratory analysis** (accompanied by visual intuition) to form hypothesis 
+  + Upon verifying the assumptions, we **fit data** to hypothesized model(s)
+  + **Assessment of the model performance** ($R^2$, $Adj. R^2$, $F-Statistic$, etc.)
+
+
++ You should now have a solid grasp on the R language to keep using and exploring the huge potential of this programming ecosystem
+
++ We only scratched the surface in terms of ML classification and prediction models, but we got a hang of the **fundamental steps** and some **useful tools** that might serve us also in more advanced analysis 
+
+:::
+
+:::
+

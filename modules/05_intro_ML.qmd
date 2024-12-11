@@ -17,9 +17,10 @@ tbl-colwidths: [5,20,75]
   + Distinction between **supervised** & **unsupervised** algorithms
     + Supervised ML Example
       + Logistic regression
-      + Random Forest
+      + 🌳 Random Forest / decision trees 🌲
     + Unsupervised ML Example
-      + PCA
+      + PCA for dimension reduction
+      + K-means Clustering
       
 <!-- -   Introduction to `MetaboAnalyst` software -->
 <!--     -   A useful R-based resources for metabolomics -->

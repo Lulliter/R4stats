@@ -33,10 +33,8 @@ format:
 
 This website hosts some teaching material on **"Introduction to Statistics & Machine Learning with R"** — an intensive workshop that includes both Lectures and Practice Sessions to reinforce the concepts learned using {{< fa brands r-project >}} programming.
 
-The course was originally designed for a summer workshop offered to a group of PhD students from various EU universities specializing in life sciences (see [{{< var websites.R4biostats >}}]({{< var websites.R4biostats >}})).
-<br> 
-
-I (*Luisa*) co-created that workshop with my sister 😊 (*Chiara*) and I am currently revising and expanding the materials. 
+The course was originally designed for a summer workshop offered to a group of PhD students from various EU universities specializing in life sciences (see [{{< var websites.R4biostats >}}]({{< var websites.R4biostats >}})).  
+I (*Luisa*) co-created that workshop with my sister 😊 (*Chiara*) and I am currently revising and expanding the materials here. 
 
 
 

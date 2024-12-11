@@ -1,17 +1,19 @@
 ---
 title: "Lab 1: Intro to R and data analysis"
-subtitle: "<span style='font-size:2em;'> Practice session covering topics discussed in Lecture 1 </span>"
-author: "<a href='https://r4biostats.com/me.html' style='color:#72aed8;font-weight:600;'>M. Chiara Mimmi, Ph.D.</a>&ensp;|&ensp;Università degli Studi di Pavia"
-date: 2024-07-24
+subtitle: "<span style='font-size:2em;'> Practice session</span>"
+#author: "Luisa M. Mimmi | [https://luisamimmi.org/](https://luisamimmi.org/)"
+author: "<span style='font-size:1.3em; font-weight: bold; color:#77501a'> Luisa M. Mimmi — &ensp;</span>  <a href='https://luisamimmi.org/' style='color:#72aed8; font-weight:600; font-size:1.3em;'>https://luisamimmi.org/</a>"
+date: today
 date-format: long
 code-link: true
 format:
   revealjs:
+    math: mathjax
     smaller: true
     scrollable: true
     theme: ../../theme/slidesMine.scss # QUARTO LOOKS IN SAME FOLDER 
 #    logo: imgs_slides/mitgest_logo.png
-    footer: '[R 4 Biostatistics](https://r4biostats.com/) | MITGEST::training(2024)'
+    footer: '[R 4 Statistics]({{< var websites.live_site >}}) | 2024'
 #    footer: <https://lulliter.github.io/R4biostats/lectures.html>
 ## ------------- x salvare come PDF 
     standalone: false
@@ -30,6 +32,9 @@ execute:
   echo: true
   include: true
   freeze: auto
+bibliography: ../../bib/R4biostats.bib
+csl: ../../bib/apa-6th-edition.csl 
+suppress-bibliography: true
 ---
 
 ## GOAL OF TODAY'S PRACTICE SESSION

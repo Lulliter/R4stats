@@ -10,15 +10,13 @@ This website hosts some teaching material on **“Introduction to Statistics & M
 + ✅ Must do manual 
   + ~~\*.PPTX 2 \*.PDF LOOSES THE EQUATIONS!!!!!~~
 
-+ ✅  Finish RCODE 04
-
-+ ️🔳 rivedere `practice/practice_slides/slides_lab05.qmd`
++ ️🔳 rivedere `practice/practice_slides/slides_lab05.qmd` + practice/RCODE 5 
   + ML 
   + aggiungere logistic regression???
   + aggiungere decision trees??? 
-  + make sure it matches the lecture in `lecture/lecture_slides/slides_lecture05.qmd`  
+  + make sure it matches the lecture in `lecture/lecture_slides/slides_lecture05.qmd` 
 
-+ ️🔳 rivedere `practice/practice_slides/slides_lab65.qmd`
++ ️🔳 rivedere `practice/practice_slides/slides_lab65.qmd` + practice/RCODE 6  
 
 + **[CODE refactoring]**
   + ✅ make  `_variable.yml`
