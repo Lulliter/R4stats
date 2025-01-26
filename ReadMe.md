@@ -1,6 +1,6 @@
 # Intro to Statistics with R
 
-This website hosts some teaching material on **“Introduction to Statistics & Machine Learning with R”** — an intensive workshop that includes both Lectures and Practice Sessions to reinforce the concepts learned using programming. 
+This website [https://r4statistics.com/](https://r4statistics.com/) hosts some teaching material on **“Introduction to Statistics & Machine Learning with R”** — an intensive workshop that includes both Lectures and Practice Sessions to teach & consolidate the concepts learned using programming. 
 
 + Originally designed for a summer workshop offered in July of 2024 to a group of PhD students from various EU universities specializing in life sciences ---see [https://R4biostats.com/](https://R4biostats.com/). 
 
@@ -14,9 +14,12 @@ This website hosts some teaching material on **“Introduction to Statistics & M
   + ML 
   + aggiungere logistic regression???
   + aggiungere decision trees??? 
-  + make sure it matches the lecture in `lecture/lecture_slides/slides_lecture05.qmd` 
+  + practice/RCODE 5  
 
-+ ️🔳 rivedere `practice/practice_slides/slides_lab65.qmd` + practice/RCODE 6  
++ ️🔳 then match the lecture in `lecture/lecture_slides/slides_lecture05.qmd` 
+
++ ️🔳 rivedere `practice/practice_slides/slides_lab5.qmd`
+  + practice/RCODE 6  
 
 + **[CODE refactoring]**
   + ✅ make  `_variable.yml`
@@ -26,7 +29,7 @@ This website hosts some teaching material on **“Introduction to Statistics & M
 
 ## How this website was built
 
-This is a static website built with [Quarto](https://quarto.org/), shared on a Github [repo](https://github.com/Lulliter/R4biostats) and served via [Github Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) to be rendered at this link [https://lulliter.github.io/R4stats/](https://lulliter.github.io/R4stats/), or (after buying a "custom domain"), now deployed over a custom domain registered with AWS Route 53: <`???`>.
+This is a static website built with [Quarto](https://quarto.org/), shared on a Github [repo](https://github.com/Lulliter/R4biostats) and served via [Github Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) ~~rendered at this link [https://lulliter.github.io/R4stats/](https://lulliter.github.io/R4stats/), or (after buying a "custom domain")~~ now deployed over a custom domain registered with AWS Route 53: [https://r4statistics.com/](https://r4statistics.com/).
 
 The main content of the website pages is contained in *Quarto Markdown* files (`*.qmd`). `*.qmd` files are very similar to regular Markdown (`*.md`) and R Markdown (`*.rmd`) files, except they are designed to be language agnostic.
 

@@ -73,7 +73,7 @@ website:
             href: modules/04_caus_pred.qmd
           - text: "Intro to machine learning"
             href: modules/05_intro_ML.qmd
-          - text: "Extra materials"
+          - text: "Bonus topics"
             href: modules/06_extra.qmd
       # - text: "Lectures"
       #   icon: easel-fill # https://icons.getbootstrap.com/?q=home

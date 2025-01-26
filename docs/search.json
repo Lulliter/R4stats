@@ -4,14 +4,14 @@
     "href": "syllabus.html",
     "title": "Course Description & Objectives",
     "section": "",
-    "text": "This is an intensive course originally designed for PhD students and researchers dealing with biological datasets to help them consolidate their practical understanding of frequently implemented data analysis and statistical modeling for academic research purposes. This course focuses on empowering participants to conduct end-to-end data analyses, guiding them through reproducible data storage, cleaning, exploration, analysis, and interpretation cycle.\nBeyond the conceptual foundations, participants engage in hands-on coding sessions in the R software with real-world datasets and solved questions, validating in practice the skills needed to confidently acquire and communicate insights throughout the analytical process.\nParticular emphasis is placed on developing an understanding of the statistical methods used, when to apply them, and how to interpret them, in close connection to “real life” situations for a research scientists."
+    "text": "This is an intensive course originally designed for students and researchers dealing with biological datasets to help them consolidate their practical understanding of frequently implemented data analysis and statistical modeling for academic research purposes. This course focuses on empowering participants to conduct end-to-end data analyses, guiding them through reproducible data storage, cleaning, exploration, analysis, and interpretation cycle.\nBeyond the conceptual foundations, participants engage in hands-on coding sessions in the R software with real-world datasets and solved questions, validating in practice the skills needed to confidently acquire and communicate insights throughout the analytical process.\nParticular emphasis is placed on developing an understanding of the statistical methods used, when to apply them, and how to interpret them, in close connection to “real life” situations for a research scientists."
   },
   {
-    "objectID": "syllabus.html#module-1-introduction-to-r-and-data-analysis",
-    "href": "syllabus.html#module-1-introduction-to-r-and-data-analysis",
+    "objectID": "syllabus.html#module-1-introduction-to-and-data-analysis",
+    "href": "syllabus.html#module-1-introduction-to-and-data-analysis",
     "title": "Course Description & Objectives",
-    "section": "Module 1: Introduction to R and data analysis",
-    "text": "Module 1: Introduction to R and data analysis\n\nIntroduction to reproducible end-to-end analysis using R\n\nWhy use R?\nPrinciples of reproducible analysis with R + RStudio\nR objects, functions, packages\n\nDiscussion of different variable types (qualitative, quantitative) and levels of measurement (nominal, ordinal, interval, ratio)\n\nPrinciples of “tidy data”\nIntroduction to data cleaning and manipulation methods\n\nDescriptive statistics\n\nUnivariate analysis\nMeasures of central tendency, measures of variability (or spread), and frequency distributions\n\nVisual data exploration\n\nIntroduction to ggplot2 package for making graphs in R"
+    "section": "Module 1: Introduction to  and data analysis",
+    "text": "Module 1: Introduction to  and data analysis\n\nIntroduction to reproducible end-to-end analysis using R\n\nWhy use R?\nPrinciples of reproducible analysis with R + RStudio\nR objects, functions, packages\n\nDiscussion of different variable types (qualitative, quantitative) and levels of measurement (nominal, ordinal, interval, ratio)\n\nPrinciples of “tidy data”\nIntroduction to data cleaning and manipulation methods\n\nDescriptive statistics\n\nUnivariate analysis\nMeasures of central tendency, measures of variability (or spread), and frequency distributions\n\nVisual data exploration\n\nIntroduction to ggplot2 package for making graphs in R"
   },
   {
     "objectID": "syllabus.html#module-2-statistical-inference-and-classical-hypothesis-testing",
@@ -39,14 +39,14 @@
     "href": "syllabus.html#module-5-introduction-to-machine-learning",
     "title": "Course Description & Objectives",
     "section": "Module 5: Introduction to machine learning",
-    "text": "Module 5: Introduction to machine learning\n\nIntroduction to Machine Learning\nShifting the emphasis on empirical prediction\nDistinction between supervised & unsupervised algorithms\n\nSupervised ML Example\n\nLogistic regression\nRandom Forest\n\nUnsupervised ML Example\n\nPCA – “unsupervised” ML algorithm for dimensionality reduction\nPLS-Discriminant Analysis – “supervised” alternative to PCA performing simultaneous dimensionality reduction and classification"
+    "text": "Module 5: Introduction to machine learning\n\nIntroduction to Machine Learning\nShifting the emphasis on empirical prediction\nDistinction between supervised & unsupervised algorithms\n\nSupervised ML Examples\n\nLogistic regression – for classification\nClassification and regression trees (CART) – for prediction\nRandom forest classification – for prediction\n\nUnsupervised ML Examples\n\nK-means clustering – for clustering\nPCA – for dimensionality reduction\nPLS-Discriminant Analysis – “supervised” alternative to PCA performing simultaneous dimensionality reduction and classification"
   },
   {
-    "objectID": "syllabus.html#module-6-bonus-materials",
-    "href": "syllabus.html#module-6-bonus-materials",
+    "objectID": "syllabus.html#module-6-bonus-topics",
+    "href": "syllabus.html#module-6-bonus-topics",
     "title": "Course Description & Objectives",
-    "section": "Module 6: Bonus materials",
-    "text": "Module 6: Bonus materials\n\nIntroduction to MetaboAnalyst software\n\nOverview of a useful, R-based resources for metabolomics\nIllustrative workflow with MetaboAnalyst\n\nElements of statistical Power Analysis\n\nBrief review of hypothesis testing framework (from Module 2)\nReview of type I and type II decision errors, contextualizing them in experimental settings\nUnderstanding the test’s statistical power in connection to the effect size of an experiment"
+    "section": "Module 6: Bonus topics",
+    "text": "Module 6: Bonus topics\n\nIntroduction to MetaboAnalyst software\n\nOverview of a useful, R-based resources for metabolomics\nIllustrative workflow with MetaboAnalyst\n\nElements of statistical Power Analysis\n\nBrief review of hypothesis testing framework (from Module 2)\nReview of type I and type II decision errors, contextualizing them in experimental settings\nUnderstanding the test’s statistical power in connection to the effect size of an experiment"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#acknowledgements",
@@ -60,7 +60,7 @@
     "href": "practice/practice_slides/slides_lab05.html#needed-r-packages",
     "title": "Lab 5: Intro to Machine Learning",
     "section": "Needed R Packages",
-    "text": "Needed R Packages\n\n\nWe will use functions from packages base, utils, and stats (pre-installed and pre-loaded)\nWe may also use the packages below (specifying package::function for clarity).\n\n\n# Load pckgs for this R session\n\n# --- General \nlibrary(here)     # tools find your project's files, based on working directory\nlibrary(dplyr)    # A Grammar of Data Manipulation\nlibrary(skimr)    # Compact and Flexible Summaries of Data\nlibrary(magrittr) # A Forward-Pipe Operator for R \nlibrary(readr)    # A Forward-Pipe Operator for R \n\n# Plotting & data visualization\nlibrary(ggplot2)      # Create Elegant Data Visualisations Using the Grammar of Graphics\nlibrary(ggfortify)     # Data Visualization Tools for Statistical Analysis Results\nlibrary(scatterplot3d) # 3D Scatter Plot\n\n# --- Statistics\nlibrary(MASS)       # Support Functions and Datasets for Venables and Ripley's MASS\nlibrary(factoextra) # Extract and Visualize the Results of Multivariate Data Analyses\nlibrary(FactoMineR) # Multivariate Exploratory Data Analysis and Data Mining\nlibrary(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests\n\n# --- Tidymodels (meta package)\nlibrary(rsample)    # General Resampling Infrastructure  \nlibrary(broom)      # Convert Statistical Objects into Tidy Tibbles"
+    "text": "Needed R Packages\n\n\nWe will use functions from packages base, utils, and stats (pre-installed and pre-loaded)\nWe may also use the packages below (specifying package::function for clarity).\n\n\n# Load pckgs for this R session\n\n# --- General \nlibrary(here)     # tools find your project's files, based on working directory\n\nhere() starts at /Users/luisamimmi/Github/R4stats\n\nlibrary(dplyr)    # A Grammar of Data Manipulation\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(skimr)    # Compact and Flexible Summaries of Data\nlibrary(magrittr) # A Forward-Pipe Operator for R \nlibrary(readr)    # A Forward-Pipe Operator for R \nlibrary(tidyr)    # Tidy Messy Data\n\n\nAttaching package: 'tidyr'\n\n\nThe following object is masked from 'package:magrittr':\n\n    extract\n\nlibrary(kableExtra) # Construct Complex Table with 'kable' and Pipe Syntax\n\n\nAttaching package: 'kableExtra'\n\n\nThe following object is masked from 'package:dplyr':\n\n    group_rows\n\n# ---Plotting & data visualization\nlibrary(ggplot2)      # Create Elegant Data Visualisations Using the Grammar of Graphics\nlibrary(ggfortify)     # Data Visualization Tools for Statistical Analysis Results\nlibrary(scatterplot3d) # 3D Scatter Plot\n\n# --- Statistics\nlibrary(MASS)       # Support Functions and Datasets for Venables and Ripley's MASS\n\n\nAttaching package: 'MASS'\n\n\nThe following object is masked from 'package:dplyr':\n\n    select\n\nlibrary(factoextra) # Extract and Visualize the Results of Multivariate Data Analyses\n\nWelcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa\n\nlibrary(FactoMineR) # Multivariate Exploratory Data Analysis and Data Mining\nlibrary(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests\n\n\nAttaching package: 'rstatix'\n\n\nThe following object is masked from 'package:MASS':\n\n    select\n\n\nThe following object is masked from 'package:stats':\n\n    filter\n\nlibrary(car)        # Companion to Applied Regression\n\nLoading required package: carData\n\n\n\nAttaching package: 'car'\n\n\nThe following object is masked from 'package:dplyr':\n\n    recode\n\nlibrary(ROCR)       # Visualizing the Performance of Scoring Classifiers\n\n# --- Tidymodels (meta package)\nlibrary(rsample)    # General Resampling Infrastructure  \nlibrary(broom)      # Convert Statistical Objects into Tidy Tibbles"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#dataset-on-breast-cancer-biopsy",
@@ -84,18 +84,172 @@
     "text": "biopsy variables with description\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\nID\ncharacter\nSample ID\n\n\nV1\ninteger 1 - 10\nclump thickness\n\n\nV2\ninteger 1 - 10\nuniformity of cell size\n\n\nV3\ninteger 1 - 10\nuniformity of cell shape\n\n\nV4\ninteger 1 - 10\nmarginal adhesion\n\n\nV5\ninteger 1 - 10\nsingle epithelial cell size\n\n\nV6\ninteger 1 - 10\nbare nuclei (16 values are missing)\n\n\nV7\ninteger 1 - 10\nbland chromatin\n\n\nV8\ninteger 1 - 10\nnormal nucleoli\n\n\nV9\ninteger 1 - 10\nmitoses\n\n\nclass\nfactor\nbenign or malignant"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-variables-exploration-12",
-    "href": "practice/practice_slides/slides_lab05.html#biopsy-variables-exploration-12",
+    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-variables-exploration",
+    "href": "practice/practice_slides/slides_lab05.html#biopsy-variables-exploration",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "biopsy variables exploration 1/2",
-    "text": "biopsy variables exploration 1/2\n\nThe biopsy data contains 699 observations of 11 variables.\nThe dataset also contains a character variable: ID, and a factor variable: class, with two levels (“benign” and “malignant”).\n\n# check variable types\nstr(biopsy)\n\n'data.frame':   699 obs. of  11 variables:\n $ ID   : chr  \"1000025\" \"1002945\" \"1015425\" \"1016277\" ...\n $ V1   : int  5 5 3 6 4 8 1 2 2 4 ...\n $ V2   : int  1 4 1 8 1 10 1 1 1 2 ...\n $ V3   : int  1 4 1 8 1 10 1 2 1 1 ...\n $ V4   : int  1 5 1 1 3 8 1 1 1 1 ...\n $ V5   : int  2 7 2 3 2 7 2 2 2 2 ...\n $ V6   : int  1 10 2 4 1 10 10 1 1 1 ...\n $ V7   : int  3 3 3 3 3 9 3 3 1 2 ...\n $ V8   : int  1 2 1 7 1 7 1 1 1 1 ...\n $ V9   : int  1 1 1 1 1 1 1 1 5 1 ...\n $ class: Factor w/ 2 levels \"benign\",\"malignant\": 1 1 1 1 1 2 1 1 1 1 ..."
+    "section": "biopsy variables exploration",
+    "text": "biopsy variables exploration\n\nThe biopsy data contains 699 observations of 9 continuous variables, V1, V2, …, V9.\nThe dataset also contains a character variable: ID, and a factor variable: class, with two levels (“benign” and “malignant”).\n\n# check variable types\nstr(biopsy)\n\n'data.frame':   699 obs. of  11 variables:\n $ ID   : chr  \"1000025\" \"1002945\" \"1015425\" \"1016277\" ...\n $ V1   : int  5 5 3 6 4 8 1 2 2 4 ...\n $ V2   : int  1 4 1 8 1 10 1 1 1 2 ...\n $ V3   : int  1 4 1 8 1 10 1 2 1 1 ...\n $ V4   : int  1 5 1 1 3 8 1 1 1 1 ...\n $ V5   : int  2 7 2 3 2 7 2 2 2 2 ...\n $ V6   : int  1 10 2 4 1 10 10 1 1 1 ...\n $ V7   : int  3 3 3 3 3 9 3 3 1 2 ...\n $ V8   : int  1 2 1 7 1 7 1 1 1 1 ...\n $ V9   : int  1 1 1 1 1 1 1 1 5 1 ...\n $ class: Factor w/ 2 levels \"benign\",\"malignant\": 1 1 1 1 1 2 1 1 1 1 ..."
   },
   {
-    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-variables-exploration-22",
-    "href": "practice/practice_slides/slides_lab05.html#biopsy-variables-exploration-22",
+    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-missing-data",
+    "href": "practice/practice_slides/slides_lab05.html#biopsy-missing-data",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "biopsy variables exploration 2/2",
-    "text": "biopsy variables exploration 2/2\n\nThere is also one incomplete variable V6\n\nremember the package skimr for exploring a dataframe?\n\n\n# check if vars have missing values\nbiopsy %&gt;% \n  # select only variables starting with \"V\"\n  skimr::skim(starts_with(\"V\")) %&gt;%\n  dplyr::select(skim_variable, \n                n_missing)\n\n# A tibble: 9 × 2\n  skim_variable n_missing\n  &lt;chr&gt;             &lt;int&gt;\n1 V1                    0\n2 V2                    0\n3 V3                    0\n4 V4                    0\n5 V5                    0\n6 V6                   16\n7 V7                    0\n8 V8                    0\n9 V9                    0"
+    "section": "biopsy missing data",
+    "text": "biopsy missing data\n\nThere is one incomplete variable V6 = “bare nuclei” with 16 missing values.\n\nremember the package skimr for exploring a dataframe?\n\n\n# check if vars have missing values\nbiopsy %&gt;% \n  # select only variables starting with \"V\"\n  skimr::skim(starts_with(\"V\")) %&gt;%\n  dplyr::select(skim_variable, \n                n_missing)\n\n# A tibble: 9 × 2\n  skim_variable n_missing\n  &lt;chr&gt;             &lt;int&gt;\n1 V1                    0\n2 V2                    0\n3 V3                    0\n4 V4                    0\n5 V5                    0\n6 V6                   16\n7 V7                    0\n8 V8                    0\n9 V9                    0"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-review",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-review",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: review",
+    "text": "Logistic Regr.: review\n\n\n\nLogistic regression is used to model a binary response variable, e.g. yes|no, or benign|malignant in the biopsy dataset.\nLogistic regression is a type of Generalized Linear Model (GLM): is a more flexible version of linear regression that can work also for categorical response variables (e.g. logistic regression) or count data (e.g. poisson regression).\n\nGLMs (introduced in 1972) provide a unified framework to accommodate response variables that come from a wide range of distributions:\n\nthe error distribution (or family) of the response variable can be a normal distribution (continuous response), but also a binomial distribution (binary response), a Poisson distribution (count data), etc.\nthe link function is used to model the relationship between the predictors and the response variable. For example, in logistic regression, the link function is the logit function."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-logit-function",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-logit-function",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: logit function",
+    "text": "Logistic Regr.: logit function\n\nIf we have predictor variables like \\(x_{1,i}\\), \\(x_{2,i}\\), …, \\(x_{k,i}\\) and a binary response variable \\(y_i\\) (where \\(y_i = 0\\) or \\(y_i = 1\\)), we need a “special” function (or link function) able to transform the expected value of the response variable into the outcome we’re trying to predict. So:\nIf \\(p_i\\) is the probability that \\(y_i = 1\\)… \\[\nlogit (p_i) = \\beta_0 + \\beta_1 x_{1,i} + \\beta_2 x_{2,i} + \\cdots + \\beta_k x_{k,i}\n\\]\n…the logit function is defined as:\n\\[\nlogit(p_i) = \\ln\\left( \\frac{p_i}{1-p_i} \\right)\n\\]\nR fits the coefficients \\(\\beta_0\\), \\(\\beta_1\\), …, \\(\\beta_k\\) to the data using the maximum likelihood estimation method.\n\n\n\n\nPredicting probabilities without a logit function could give values over 1, which doesn’t make sense."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-dataset-exploration",
+    "href": "practice/practice_slides/slides_lab05.html#biopsy-dataset-exploration",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Biopsy dataset exploration",
+    "text": "Biopsy dataset exploration\n\n\nBiopsied cells of 700 breast cancer tumors, used to determine if the tumors were benign or malignant.\nThis determination was based on 9 characteristics of the cells, ranked from 1(benign) to 10(malignant):\n\n\n1) Clump Thickness – How the cells aggregate. If monolayered they are benign and if clumped on top of each other they are malignant\n\n2) Uniform Size – All cells of the same type should be the same size.\n\n3) Uniform Shape If cells vary in cell shape they could be malignant\n\n4) Marginal Adhesion – Healthy cells have a strong ability to stick together whereas cancerous cells do not\n\n5) Single Epithelial Size – If epithelial cells are not equal in size, it could be a sign of cancer\n\n6) Bare nuclei – If the nucleus of the cell is not surrounded by cytoplasm, the cell could be malignant\n\n7) Bland Chromatin – If the chromatin’s texture is coarse the cell could be malignant\n\n8) Normal Nucleoli – In a healthy cell the nucleoli is small and hard detect via imagery. Enlarged nucleoli could be a sign of cancer\n\n9) Mitosis – cells that multiply at an uncontrollable rate could be malignant"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-dataset-cleaning",
+    "href": "practice/practice_slides/slides_lab05.html#biopsy-dataset-cleaning",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Biopsy dataset cleaning",
+    "text": "Biopsy dataset cleaning\n\n\n\nID is the patient ID to ensure anonymity (not used in the analysis)\n\nClass represents the diagnosis, either benign or malignant, of the patient.\nOur goal is to understand which variables affect the malignancy of a breast cancer tumor.\n\nThis will help to predict a diagnosis with the least amount of false positives and false negatives.\n\n\n\n\n\n# remove rows with missing values\nbiopsy_clean = na.omit(biopsy)\n# rename the columns\ncolnames(biopsy_clean) &lt;- c(\"ID\",\"Clump_Thickness\", \n                  \"Uniform_Size\", \n                  \"Uniform_Shape\",\n                  \"Marginal_Adhesion\", \n                  \"Single_Epith_Size\", \n                  \"Bare_Nuclei\",\n                  \"Bland_Chromatin\", \n                  \"Normal_Nuclei\",\n                  \"Mitosis\", \n                  \"Class\")\n# check the structure of the dataset\npaint::paint(biopsy_clean)\n\n\ndata.frame [683, 11]\nID                chr 1000025 1002945 1015425 1016277 10170~\nClump_Thickness   int 5 5 3 6 4 8\nUniform_Size      int 1 4 1 8 1 10\nUniform_Shape     int 1 4 1 8 1 10\nMarginal_Adhesion int 1 5 1 1 3 8\nSingle_Epith_Size int 2 7 2 3 2 7\nBare_Nuclei       int 1 10 2 4 1 10\nBland_Chromatin   int 3 3 3 3 3 9\nNormal_Nuclei     int 1 2 1 7 1 7\nMitosis           int 1 1 1 1 1 1\nClass             fct benign benign benign benign benign ma~\n\n# remove the ID column\nbiopsy_clean$ID = NULL"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-sample-splitting",
+    "href": "practice/practice_slides/slides_lab05.html#biopsy-sample-splitting",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Biopsy sample splitting",
+    "text": "Biopsy sample splitting\nIn ML, it is good practice to split the data into training and testing sets.\n\nWe will use the training set to fit the model and the testing set to evaluate the model’s performance.\n\n\nset.seed(123)\n\nsplit  &lt;-  sample(nrow(biopsy_clean), 0.8*nrow(biopsy_clean))\nbiopsy_train  &lt;-  biopsy_clean[split,]\nbiopsy_test  &lt;-  biopsy_clean[-split,]"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#indipendent-variables-visualization",
+    "href": "practice/practice_slides/slides_lab05.html#indipendent-variables-visualization",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Indipendent variables’ visualization",
+    "text": "Indipendent variables’ visualization\n\nThe plot (fig-boxplot) shows the distribution of each variables between the 2 classes of the tumor.\n\nAll variables behave similarly, with values between 1 and 2 classified as benign and values greater than 2 classified as malignant.\nThe spread for malignancy is much larger than benign patients so we will keep it in mind when testing our data.\n\n\nggdf = data.frame(\"Level\" = c(biopsy_train$Clump_Thickness, biopsy_train$Uniform_Size,\n                              biopsy_train$Uniform_Shape, biopsy_train$Marginal_Adhesion,\n                              biopsy_train$Single_Epith_Size, biopsy_train$Bare_Nuclei,\n                              biopsy_train$Bland_Chromatin, biopsy_train$Normal_Nuclei,\n                              biopsy_train$Mitosis),\n                  \"Type\" = c(\"Clump Thickness\", \"Uniform Size\", \"Unifrom Shape\",\n                             \"Marginal Adhesion\", \"Single Epithilial Size\", \"Bare Nuclei\",\n                             \"Bland Chromatin\", \"Normal Nuclei\", \"Mitosis\"), \n                  \"class\" = C(biopsy_train$Class))\n\n# Plot\nggplot(ggdf, aes(x = Level, y = class , colour = class)) + \n  geom_boxplot(fill = NA) +\n  scale_color_manual(values = c(\"#005ca1\", \"#9b2339\")) + \n  geom_jitter(aes(fill = class), alpha = 0.25, shape = 21, width = 0.2) +  \n  scale_fill_manual(values = c(\"#57b7ff\", \"#e07689\")) +  \n  facet_wrap(~Type, scales = \"free\") +  \n  theme(plot.title = element_text(size = 13,face=\"bold\", color = \"#873c4a\"),\n        axis.text.x = element_text(size=12,face=\"italic\"), \n        axis.text.y = element_text(size=12,face=\"italic\"),\n        legend.position = \"none\") + \n  labs(title = \"Distribution of each explanatory variable by tumor class (benign/malignant) in samples\" ) + \n  ylab(label = \"\") + xlab(label = \"\")"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#indipendent-variables-visualization-output",
+    "href": "practice/practice_slides/slides_lab05.html#indipendent-variables-visualization-output",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Indipendent variables’ visualization",
+    "text": "Indipendent variables’ visualization\n\n\n\nFigure 1: Boxplot of the independent variables  - each of the 9 variables is plotted against the class of the tumor  - values are consitently higher & more dispersed for malignant tumors"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-model-fitting",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-model-fitting",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: model fitting",
+    "text": "Logistic Regr.: model fitting\n\n\nWe fit a logistic regression model to the biopsy_train data using:\n\nthe glm function with argument family = binomial to specify the logistic regression model;\nand with Class ~ . to specify an initial model that uses all the variables as predictors (backward elimination approach).\n\n\n\n\n# Building initial model \nmodel = stats::glm(Class ~ . , family = binomial, data=biopsy_train)\n\n\n\nTable 1 shows the model summary, with the coefficient estimate for each predictor.\n\nthe broom::tidy function converts the model summary into a data frame.\n\n\n\n\nbroom::tidy(model) %&gt;% \n  mutate('Sign.lev' = case_when(\n    `p.value` &lt; 0.001 ~ \"***\",\n    `p.value` &lt; 0.01 ~ \"**\",\n    `p.value` &lt; 0.05 ~ \"*\",\n    TRUE ~ \"\"))%&gt;%\n  mutate(across(where(is.numeric), ~ round(.x, 4))) %&gt;%\n  knitr::kable()"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-summary",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-summary",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: summary",
+    "text": "Logistic Regr.: summary\n\n\n\nTable 1: Complete logistic regression model  + coefficients are in the form of natural logarithm of the odds of the event happening  + positive estimate indicates an increase in the odds of finding a malignant tumor\n\n\n\n\n\n\n\n\n\n\n\n\nterm\nestimate\nstd.error\nstatistic\np.value\nsignif. lev.\n\n\n\n(Intercept)\n-9.8386\n1.2709\n-7.7414\n0.0000\n***\n\n\nClump_Thickness\n0.3935\n0.1583\n2.4857\n0.0129\n*\n\n\nUniform_Size\n0.1624\n0.2417\n0.6719\n0.5017\n\n\n\nUniform_Shape\n0.2693\n0.2509\n1.0735\n0.2830\n\n\n\nMarginal_Adhesion\n0.3163\n0.1412\n2.2405\n0.0251\n*\n\n\nSingle_Epith_Size\n0.0414\n0.2001\n0.2066\n0.8363\n\n\n\nBare_Nuclei\n0.4122\n0.1060\n3.8877\n0.0001\n***\n\n\nBland_Chromatin\n0.5573\n0.2105\n2.6472\n0.0081\n**\n\n\nNormal_Nuclei\n0.1498\n0.1275\n1.1745\n0.2402\n\n\n\nMitosis\n0.5065\n0.3474\n1.4578\n0.1449"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-coefficients-interpretation",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-coefficients-interpretation",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: coefficients’ interpretation",
+    "text": "Logistic Regr.: coefficients’ interpretation\n\nAs discussed before, in logistic regression, the coefficients are in the form of the natural logarithm of the odds of the response event happening (i.e. \\(Y_i = 1\\)):\n\\[logit(p_i) = \\ln\\left( \\frac{p_i}{1-p_i} \\right) = -9.5063 + 0.3935 \\times Clump\\_Thickness + ... + 0.5065 \\times Mitosis\\]\nHowever, with some algebraic transformation, the logit function can be inverted to obtain the probability of the response event happening as a function of the predictors:\n\\[p_i = \\frac{1}{1 + e^{-(-9.5063 + 0.3935 \\times Clump\\_Thickness + ... + 0.5065 \\times Mitosis)}}\\]\nThis equation represents the logistic regression model’s best-fit line.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n–&gt;"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-multicollinearity",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-multicollinearity",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: multicollinearity",
+    "text": "Logistic Regr.: multicollinearity\nLet’s check for collinearity using the VIF function from the ‘car’ package.\n\nA Variance Inflation Factor \\(VIF &gt; 5\\) indicates that there could be severe correlation between predictor variables.\nThe VIF values are all less than 5, which indicates that there is no severe correlation between predictor variables in the model.\n\n\ncar::vif(model)\n\n  Clump_Thickness      Uniform_Size     Uniform_Shape Marginal_Adhesion \n         1.251164          2.686457          2.662796          1.120309 \nSingle_Epith_Size       Bare_Nuclei   Bland_Chromatin     Normal_Nuclei \n         1.496135          1.136493          1.135896          1.315500 \n          Mitosis \n         1.070308"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-improving-the-model",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-improving-the-model",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: improving the model",
+    "text": "Logistic Regr.: improving the model\n\n\nWe can use a statistic called the Akaike Information Criterion (AIC) to compare models.\n\nIn AIC, a penalty is given for including additional variables.\nThe model with the lowest AIC is considered the best model.\n\n\nTry fitting more parsimonious models by removing variables that are not significant.\n\n\n# For example let's fit a model without the variable `Uniform_Size`\nmodel2 = glm(Class~ .-Uniform_Size, family = binomial, data=biopsy_train)\n \n# Compare the AIC values of the 2 models\ntibble(Model = c(\"model\", \"model2\"), \n       AIC = c(AIC(model), AIC(model2) )) \n\n# A tibble: 2 × 2\n  Model    AIC\n  &lt;chr&gt;  &lt;dbl&gt;\n1 model  100. \n2 model2  98.5\n\n\nAccording to the AIC values, the model2 seems better (AIC is lower)."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-systematic-model-selection",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-systematic-model-selection",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: systematic model selection",
+    "text": "Logistic Regr.: systematic model selection\n\n\nThe MASS package’s function stepAIC enables to perform a systematic model selection (by AIC):\n\nThe direction argument specifies the direction of the stepwise search.\nThe trace argument (if set to TRUE) prints out all the steps.\n\n\nThe best_model has removed these variables:\n\nUniform_Shape\nSingle_Epith_Size\nNormal_Nuclei\n\n\nThe best_model has the lowest AIC value (from 100 to 98.5), despite a higher Residual Deviance than the full model (from 80 to 80.6), albeit by a very slight amount.\n\n\n# Select the best model based on AIC\nbest_model &lt;- MASS::stepAIC(model, direction = \"both\", trace = FALSE)\n\n# Compare the AIC values of full and best model\ntibble(Model = c(\"model\", \"best_model\"), \n       AIC = c(AIC(model), AIC(model2)),\n       Deviance = c(deviance(model), deviance(best_model))) %&gt;% kable()\n\n\n\nModel\nAIC\nDeviance\n\n\n\nmodel\n100.00985\n80.00985\n\n\nbest_model\n98.49005\n80.60701"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-model-evaluation-on-test-data",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-model-evaluation-on-test-data",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: model evaluation on test data",
+    "text": "Logistic Regr.: model evaluation on test data\n\n\nWe can use the predict function to predict the class of the test data using the best model.\nThen we use the ROCR package evaluate and visualize the classification\n\nthe performance function calculates the True Positive Rate (TPR) and False Positive Rate (FPR) for various thresholds. From it we can get:\n\n\ntpr = True Positive Rate (TPR) is the proportion of actual positive cases that are correctly predicted as positive.\n\nfpr = False Positive Rate (FPR) is the proportion of actual negative cases that are incorrectly predicted as positive.\n\nthresholds = the list of thresholds used to calculate the TPR and FPR.\n\n\n\n\n\n\n# Fitted value for the test data 205 samples based on model\npred = stats::predict(best_model, biopsy_test, type = \"response\")\n# Create a prediction object for the ROCR package\nROCRPRed &lt;- ROCR::prediction(predictions = pred, labels = biopsy_test$Class)\n# Create a performance object (True Positive Rate and False Positive Rate) for various thresholds.\nROCRPerf &lt;- ROCR::performance(ROCRPRed, \"tpr\", \"fpr\")\n# Extract TPR and FPR data\nfpr &lt;- ROCRPerf@x.values[[1]] # x\ntpr &lt;- ROCRPerf@y.values[[1]] # y\n# List of thresholds used to calculate the TPR and FPR in the performance object\nthresholds &lt;- ROCRPerf@alpha.values[[1]]"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-visualization-of-model-performance-at-varying-thresholds",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-visualization-of-model-performance-at-varying-thresholds",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "🙄🤔 Logistic Regr.: visualization of model performance at varying thresholds\n",
+    "text": "🙄🤔 Logistic Regr.: visualization of model performance at varying thresholds\n\n\n# Create a data frame for ggplot2\nperf_data &lt;- data.frame(FPR = fpr, TPR = tpr, Threshold = thresholds)\n\n# Plot using ggplot2\nlibrary(ggplot2)\nggplot(perf_data, aes(x = FPR, y = TPR, color = Threshold)) +\n  geom_line(linewidth = 1) +\n  scale_color_viridis_c(option = \"C\") +  # Optional: better color scale\n  labs(title = \"TPR vs FPR\",\n       x = \"False Positive Rate [0, 0.1]\",\n       y = \"True Positive Rate [0.8, 1]\",\n       color = \"Threshold \") +\n  coord_cartesian(xlim = c(0, 0.1), ylim = c(0.8, 1)) +\n  theme_minimal()\n\n\nThe practical use of this is to identify a threshold where the True Positive Rate (TPR) is acceptably high, without a significant increase in False Positive Rate (FPR)."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-visualization-of-model-performance-at-varying-thresholds-output",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-visualization-of-model-performance-at-varying-thresholds-output",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "🙄🤔 Logistic Regr.: visualization of model performance at varying thresholds\n",
+    "text": "🙄🤔 Logistic Regr.: visualization of model performance at varying thresholds\n\n\n\nThreshold color gradient: YELLOW = the model predicts positive only for very confident cases, PURPLE: the model predicts positive for many cases, even with lower confidence."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-confusion-matrix",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-confusion-matrix",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: confusion matrix",
+    "text": "Logistic Regr.: confusion matrix\nWe create a confusion matrix with diﬀerent acceptance rates so we can see how it aﬀects the true and false positivity rates.\n\nSince our data involves diagnosing malignant tumors, it is important to keep the false negative rate low as this would be telling someone who has a malignant tumor that it is benign.\n\n\nWe found that a cutoﬀ of 0.4 gives a good balance of low false negatives while still maintaining a high true positive rate.\n\n\ntable(ActualValue=biopsy_test$Class, PredictedValue=pred&gt;0.4)\n\n           PredictedValue\nActualValue FALSE TRUE\n  benign       88    2\n  malignant     3   44\n\ntable(ActualValue=biopsy_test$Class, PredictedValue=pred&gt;0.7)\n\n           PredictedValue\nActualValue FALSE TRUE\n  benign       88    2\n  malignant     6   41"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-roc-curve",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-roc-curve",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: ROC curve",
+    "text": "Logistic Regr.: ROC curve\n\n\npredicted.test &lt;- predict(best_model, biopsy_test, type = \"response\")\n\npredicted.data &lt;- data.frame(prob.of.malig=predicted.test, malig = biopsy_test$Class)\n\npredicted.data &lt;- predicted.data[order(predicted.data$prob.of.malig, decreasing = F),]\n\npredicted.data$rank &lt;- 1:nrow(predicted.data)\n\nplot_ROC &lt;- ggplot(data=predicted.data, aes(x=rank, y=prob.of.malig)) +\n  geom_point(aes(color=malig), alpha=1, shape=4, stroke=2) +\n  xlab(\"Index\") + \n  ylab(\"Predicted Probability of Tumor Being Malignant\")  \n\nplot_ROC"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-roc-curve-output",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-roc-curve-output",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: ROC curve",
+    "text": "Logistic Regr.: ROC curve\n\n\nThis shows why lowering the cutoﬀ improves the accuracy of the model as some malignant tumors are being underestimated which would cause false negatives."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-conclusions",
+    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-conclusions",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Logistic Regr.: conclusions",
+    "text": "Logistic Regr.: conclusions\n\nUniform Size and Single Epithithial Size were not significant in predicting the malignancy of tumor cells so our model does not include these variables.\nOur fitted model reduces the null deviance and AIC without impacting the residual deviance by a significant amount and is able to predict the testing dataset with &gt;90% accuracy.\nFor further analysis, we could run the model multiple times because our original and revised model are similar.\nNew training and testing data would help confirm our results and help identify possible overfitting."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#section-1",
+    "href": "practice/practice_slides/slides_lab05.html#section-1",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "…",
+    "text": "…"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#section-2",
+    "href": "practice/practice_slides/slides_lab05.html#section-2",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "…",
+    "text": "…"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#biopsy-dataset-manipulation",
@@ -1782,7 +1936,7 @@
     "href": "index.html",
     "title": "Intro to Statistics & Machine Learning with ",
     "section": "",
-    "text": "Welcome!\nThis website hosts some teaching material on “Introduction to Statistics & Machine Learning with R” — an intensive workshop that includes both Lectures and Practice Sessions to reinforce the concepts learned using  programming.\nThe course was originally designed for a summer workshop offered to a group of PhD students from various EU universities specializing in life sciences (see https://R4biostats.com/).\nI (Luisa) co-created that workshop with my sister 😊 (Chiara) and I am currently revising and expanding the materials here.\n\n\n\nGet in touch if you have questions and/or are interested in a similar workshop for your team!\n\n\n\n\n\n    Email us"
+    "text": "Welcome!\nThis website hosts some teaching material on “Introduction to Statistics & Machine Learning with R” — an intensive workshop that offers a few lectures accompanied by matching practice sessions – to reinforce the concepts learned using  programming.\nThe course was originally designed for a summer workshop offered to a group of PhD students from various EU universities specializing in life sciences (see https://R4biostats.com/).\nI (Luisa) co-created that workshop with my sister 😊 (Chiara) and I am currently revising and expanding the materials presented here.\n\n\n\nGet in touch if you have questions and/or are interested in a similar workshop for your team!\n\n\n\n\n\n    Email us"
   },
   {
     "objectID": "license_etc.html",
@@ -1936,7 +2090,7 @@
     "href": "practice/practice_slides/slides_extra_01.html#final-thoughts",
     "title": "Diving deeper into Causal Analysis",
     "section": "Final thoughts",
-    "text": "Final thoughts\n\n\n\n…..\n\n…\n\n\n…\n\n\n\n\n\n\nhttps://lulliter.github.io/R4stats/ | R 4 stats"
+    "text": "Final thoughts\n\n\n\n…..\n\n…\n\n\n…\n\n\n\n\n\n\nhttps://r4statistics.com | R 4 stats"
   },
   {
     "objectID": "practice/practice_slides/slides_lab02.html#goal-of-todays-practice-session",

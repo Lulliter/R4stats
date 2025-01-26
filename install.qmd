@@ -80,7 +80,7 @@ R, which is a command line driven program, can be executed via its native interf
 
 + Quarto is not an R package so it has to be downloaded separately. However Rstudio v2022.07.1 or later come with Quarto included
 
-+ The [www.R4biostats.com]({{< var websites.live_site >}}) is actually a quarto website 😊
++ The [www.r4statistics.com]({{< var websites.live_site >}}) is actually a quarto website 😊
  
 :::
 

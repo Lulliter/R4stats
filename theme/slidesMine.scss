@@ -93,4 +93,10 @@ details>summary {
   //font-family: "Source Sans Pro", Helvetica, sans-serif;
 }
 
- 
+// make title of slide adjust dinamically to fit in one line  
+.reveal .slide.fit-title h1 {
+  font-size: calc(1.5vw + 1em); /* Adjust the size dynamically */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
