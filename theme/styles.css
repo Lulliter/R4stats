@@ -1,1 +1,25 @@
 /* css styles */
+
+/* LULA's: asking that the title adjusts its size dynamically */
+.reveal h2 {
+  font-size: min(4vw, 1.8em); /* Adjusts dynamically based on viewport */
+  white-space: nowrap; /* Prevents multi-line titles */
+  overflow: hidden; /* Ensures no scrolling */
+  text-overflow: ellipsis; /* Optional: truncates with "..." if too long */
+  text-align: left; /* Ensures proper alignment */
+
+}
+
+
+/* LULA's: asking that Figure Caption Alignment is LEFT*/
+.reveal figcaption {
+  text-align: left !important; /* Aligns figure captions to the left */
+  /*font-size: 0.9em; /* Optional: Adjust font size */
+  margin-left: 0; /* Ensures alignment starts from the left */
+}
+
+.reveal table caption {
+  text-align: left !important; /* Left-aligns table captions */
+  /*font-size: 0.9em; /* Optional: Adjust caption font size */
+  margin-left: 0; /* Ensures alignment starts from the left */
+}

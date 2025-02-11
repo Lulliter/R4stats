@@ -12,6 +12,7 @@ format:
     smaller: true
     scrollable: true
     theme: ../../theme/slidesMine.scss # QUARTO LOOKS IN SAME FOLDER 
+    css: ../../theme/styles.css
 #    logo: imgs_slides/mitgest_logo.png
     footer: '[R 4 Statistics]({{< var websites.live_site >}}) | 2024'
 #    footer: <https://lulliter.github.io/R4biostats/lectures.html>
@@ -38,19 +39,21 @@ suppress-bibliography: true
 ---
 
 
-# [GOAL OF TODAY'S PRACTICE SESSION]{.fit-title}
+# GOAL OF TODAY'S PRACTICE SESSION
 
+## Lab # 5
 ::: {style="font-size: 100%;"}
 ::: {style="color:#77501a"}
 
 + In this Lab session, we will focus on **Machine Learning** (ML), as introduced in Lecture 5
 + We will review examples of both **supervised** and **unsupervised** ML algorithms
-  +  **Supervised ML algorithms** examples
-    + Logistic regression
-    + 🌳 Random Forest / decision trees 🌲
-  + **Unsupervised ML algorithms** examples
-    + K-means Clustering
-    + PCA for dimension reduction
+  +  **Supervised ML algorithms** examples:
+      + Logistic regression
+      + Classification and regression trees (CART)
+      + 🌳 Random Forest classifier
+  + **Unsupervised ML algorithms** examples:
+      + K-means Clustering
+      + PCA for dimension reduction
   + (optional) PLS-DA for classification, a supervised ML alternative to PCA
     
 :::
@@ -65,8 +68,9 @@ suppress-bibliography: true
  
 The examples and datasets in this Lab session follow very closely two sources:
 
-1. The tutorial on "Principal Component Analysis (PCA) in R" by: [Statistics Globe](https://statisticsglobe.com/principal-component-analysis-r)
-2. 
+1. The tutorial on ***"Data Analytics with R"*** by: [Brian Machut, Nathan Cornwell](https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/#acknowledgements)  
+ 
+2. The tutorial on ***"Principal Component Analysis (PCA) in R"*** by: [Statistics Globe](https://statisticsglobe.com/principal-component-analysis-r)
 
 <!-- The materials in support of the "Core Statistics using R" course by: [Martin van Rongen](https://github.com/mvanrongen/corestats-in-r_tidyverse) -->
 <!-- POWER ANALYSIS https://mvanrongen.github.io/corestats-in-r_tidyverse/power-analysis.html -->
@@ -116,6 +120,60 @@ library(broom)      # Convert Statistical Objects into Tidy Tibbles
 <!-- #library(oibiostat) # Data Package for OpenIntro Biostatistics  -->
 :::
 
+# LOGISTIC REGRESSION 
+
+(EXAMPLE of SUPERVISED ML ALGORITHM)
+<!-- https://openintro-ims.netlify.app/regression-modeling -->
+<!-- STATQUEST YT https://www.youtube.com/watch?v=C4N3_XJJ-jU -->
+<!-- STATQUEST GH  https://github.com/StatQuest/logistic_regression_demo/blob/master/logistic_regression_demo.R -->
+<!-- EQUITABLE EQUATIONS = https://youtu.be/E7J3M1oYVlc?si=zmBIfoqvErliFqU3 -->
+
+<!-- (biopsy) ROTTO!!! https://github.com/sws8/biopsy-analysis/blob/main/biopsy_analysis.pdf -->
+<!-- (biopsy) OK!!! https://www.linkedin.com/pulse/logistic-regression-dataset-biopsy-giancarlo-ronci-twpke/ -->
+
+
+## Logistic regr.: review
+<!-- GLM intro https://medium.com/@sahin.samia/a-comprehensive-introduction-to-generalized-linear-models-fd773d460c1d -->
+
+::: {style="font-size: 90%;"}
++ Logistic regression is a type of **`Generalized Linear Model (GLM)`**: a more flexible version of linear regression that can work also for `categorical response` variables or `count data` (e.g. poisson regression).
+
++ Logistic regression is used to model a **binary response variable**: e.g. `yes|no` (or `benign|malignant` in the `biopsy` dataset).
+
++ Logistic regression fits the coefficients $\beta_0$, $\beta_1$, ..., $\beta_k$ to the data using the **`Maximum Likelihood Estimation`** method (unlike linear regression, which uses the `Least Squares Estimation` method).
+
+
+<!-- + `GLMs` (introduced in 1972) provide a unified framework to accommodate response variables that come from a wide range of distributions: -->
+
+<!--   + the `error distribution` (or `family`) of the response variable can be a `normal distribution` (continuous response), but also a `binomial distribution` (binary response), a `Poisson distribution` (count data), etc.  -->
+<!--   + the `link function` is used to model the relationship between the predictors and the response variable. For example, in logistic regression, the link function is the `logit` function. -->
+
+  <!-- + GLM can be thought of as a two-stage modeling approach. We first model the response variable using a probability distribution. Second, we model the parameter of the distribution using a collection of predictors and a special form of multiple regression.  -->
+  
+  <!-- Ultimately, the application of a GLM will feel very similar to multiple regression, even if some of the details are different. -->
+:::
+
+## Logistic regr.: `logit` function
+::: {style="font-size: 90%;"}
+If we have predictor variables like $x_{1,i}$, $x_{2,i}$, ..., $x_{k,i}$ and a binary response variable $y_i$ (where $y_i = 0$ or $y_i = 1$), we need a **"special" function** (or `link function`) able to transform the expected value of the response variable into the outcome we’re trying to predict.
+
+If $p_i$ is the probability that $y_i = 1$...
+$$
+logit (p_i) = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \cdots + \beta_k x_{k,i}
+$$
+
+...the **`logit` function** is defined as:
+
+$$
+logit(p_i) = \ln\left( \frac{p_i}{1-p_i} \right)
+$$
+
+::: aside
++ Predicting probabilities without a `logit` function could give values over 1, which doesn’t make sense.
+<!-- + Predicting counts without a `log link` could result in negative numbers, which are impossible. -->
+::: 
+:::
+
 # DATASETS for today
 
 <br>
@@ -123,13 +181,344 @@ library(broom)      # Convert Statistical Objects into Tidy Tibbles
 ::: {style="font-size: 80%;"}
 In this tutorial, we will use: 
 
-+ the biopsy data attached to the [`MASS` package](https://cran.r-project.org/web/packages/MASS/MASS.pdf). 
++ a (toy) `heart` dataset from the book by: Brian Machut, Nathan Cornwell [Data Analytics with R](https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/#acknowledgements)  
+
++ the `biopsy` dataset attached to the [`MASS` package](https://cran.r-project.org/web/packages/MASS/MASS.pdf). 
+
 + a few clean datasets used in the "Core Statistics using R" course by: [Martin van Rongen](https://github.com/mvanrongen/corestats-in-r_tidyverse)
 
 :::
 
+## Dataset on Heart Disease
 
-## [Dataset on Breast Cancer Biopsy]{.fit-title}
+::: {style="font-size: 95%;"}
+
+**Name**: `heart_data.csv`  
+**Documentation**: Toy dataset prepared for teaching purposes. See reference on the data here [Data Analytics with R](https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/#acknowledgements)  
+**Sampling details**: This dataset contains 10,000 observations on 4 variables.  
+
+```{r}
+# Use `here` in specifying all the subfolders AFTER the working directory 
+heart_data <- read.csv(file = here::here("practice", "data_input", "05_datasets",
+                                      "heart_data.csv"), 
+                          header = TRUE, # 1st line is the name of the variables
+                          sep = ",", # which is the field separator character.
+                          na.strings = c("?","NA" ), # specific MISSING values  
+                          row.names = NULL) 
+```
+::: 
+
+## `heart_data` variables with description
+
+::: {style="font-size: 80%;"}
+<!-- [[EXCERPT: see complete file in Input Data Folder]]{style="color:#77501a"} -->
+
+```{r}
+#| output: true
+#| echo: false
+
+heart_data_desc <- tibble::tribble(
+  ~Variable, ~ Type, ~Description,
+#"X" ,  "integer" ,         "row counter ", 
+"heart_disease",    "int",  "whether an individual has heart disease (1 = yes; 0 = no)", 
+"coffee_drinker",   "int",  "whether an individual drinks coffee regularly (1 = yes; 0 = no)", 
+"fast_food_spend",  "dbl",  "a numerical field corresponding to the annual spend of each individual on fast food", 
+"income",           "dbl",   "a numerical field corresponding to the individual’s annual income"
+
+)                 
+
+kableExtra::kable(heart_data_desc)
+```
+:::
+
+## `heart` dataset splitting
+
+In Machine Learning, it is good practice to split the data into `training` and `testing` sets.
+
++ We will use the **training set** (80%) to fit the model and then the **testing set** (20%) to evaluate the model's performance.
+```{r}
+set.seed(123)
+
+# Obtain 2 sub-samples from the dataset: training and testing
+sample  <-  sample(c(TRUE, FALSE), nrow(heart_data), replace = TRUE , prob = c(0.7, 0.3) )
+heart_train  <-  heart_data[sample,]
+heart_test  <-  heart_data[!sample,]
+```
+
++ Which results in:
+```{r}
+# check the structure of the resulting datasets
+dim(heart_train)
+dim(heart_test)
+```
+
+## Convert binary variables to factors
+
+We now examine the training dataset `heart_train`, after converting the binary variables `heart_disease` and `coffee_drinker` to factors.
+
+```{r}
+heart_train <- heart_train %>% 
+  # convert to factor with levels "Yes" and "No"
+  mutate(heart_disease = factor(heart_disease, levels = c(0, 1),
+                                labels = c("No_HD", "Yes_HD")),
+         coffee_drinker = factor(coffee_drinker, levels = c(0, 1),
+                                 labels = c("No_Coffee", "Yes_Coffee")) 
+  )  
+```
+
+## Plotting `Y` by `X1` (continuous variable)
+
+We now examine visualize the relationship between the binary outcome variable `heart_disease` and the continuous predictor variable `fast_food_spend`.
+
+<!-- https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/logreg.html -->
+
+```{r}
+#| output: true
+#| output-location: slide
+#| fig.cap: 'The boxplots indicate that subjects who spend higher amounts annually on fast food show higher likelihood of heart disease (HD =1)'
+
+# plot the distribution of heart disease status by fast food spend
+heart_train %>% 
+  ggplot(aes(x = heart_disease, y = fast_food_spend, fill = heart_disease)) + 
+  geom_jitter(aes(fill = heart_disease), alpha = 0.3, shape = 21, width = 0.25) +  
+  scale_color_manual(values = c("#005ca1", "#9b2339")) + 
+  scale_fill_manual(values = c("#57b7ff", "#e07689")) + 
+  geom_boxplot(fill = NA, color = "black", linewidth = .7) + 
+  coord_flip() +
+    theme(plot.title = element_text(size = 13,face="bold", color = "#873c4a"),
+        axis.text.x = element_text(size=12,face="italic"), 
+        axis.text.y = element_text(size=12,face="italic"),
+        legend.position = "none") + 
+  labs(title = "Fast food expenditure by heart disease status") + 
+  xlab("Heart Disease (Y/N)") + 
+  ylab("Annual Fast Food Spend") 
+```
+
+
+## Plotting `Y` by `X2` (discrete variable)
+
+```{r}
+#| output: true
+#| output-location: slide
+#| fig.cap: 'Also drinking coffee seems associated to a higher likelihood of heart disease (HD =1)'
+
+heart_train %>% 
+  dplyr::group_by(heart_disease, coffee_drinker) %>% 
+  dplyr::summarise(count = n()) %>% 
+  ungroup() %>% 
+  dplyr::group_by(coffee_drinker) %>% 
+  dplyr::mutate(total_coffee_drinkers = sum(count)) %>% 
+  ungroup() %>% 
+  dplyr::mutate(proportion = count / total_coffee_drinkers) %>% 
+  dplyr::filter(heart_disease == "Yes_HD") %>% 
+# plot  
+  ggplot(aes(x = coffee_drinker, y = proportion, fill = coffee_drinker)) + 
+  geom_bar(stat = "identity") + 
+  scale_fill_manual(values = c("#57b7ff", "#e07689")) + 
+  theme_minimal() +
+  ylab("Percent with Heart Disease") +
+  xlab("Coffee Drinker (Y/N)") +
+  ggtitle("Figure 3: Percent of Coffee Drinkers with Heart Disease") +
+  labs(fill = "Coffee Drinker") + 
+  scale_y_continuous(labels = scales::percent)
+```
+
+## `Linear regression` wouldn'twork!
+::: {style="font-size: 80%"}
+
+We could technically use linear regression (@fig-lin-reg) to study likelihood of having `Heart Disease` in relation to `fast food spending`, but it would not work:
+
++ How should we interpret a continuous prediction when it is different from $0$ or $1$ ?
+<!-- we know that the response y is categorical, not numeric, so the interpretation of the regression coefficients is strange to say the least: what does it mean when the prediction is less than 0 or greater than 1? If the predictor is supposed to represent likelihood, or probability of having heart disease for a given observation of fast food spending, it should be constrained on [0,1].  -->
+<!-- + Second, this is not extensible to multi-class problems that have more than 2 possible categorical response values.  -->
++ Also, here the assumptions for linear model are not met:
+    + ***Linear relationship*** between `Y` and `X1`  
+<!-- (plot residuals v fitted values with no discernible pattern)-->
+    + ***Residuals*** must be 1) approximately normally distributed and 2) uncorrelated
+<!-- (QQ plot close to diagonal line for normality ) (e.g. like in time series if adjacent values have similar errors)-->
+    + ***Homoscedasticity***: residuals should have constant variance
+    + ***Non collinearity***: predictor variables should not be highly correlated with each other
+
+```{r}
+#| label: fig-lin-reg
+#| output: true
+#| output-location: slide
+#| fig.cap: 'Showing that a linear regression (red line) would fit poorly'
+
+# Hypothetical linear regression model
+lin_reg_model <- lm(heart_disease ~ fast_food_spend, data = heart_data)
+# Plot
+ggplot(heart_data) +
+  geom_point(aes(fast_food_spend, heart_disease, color = factor(heart_disease)), 
+             alpha = 0.25, size = 1.5) + 
+  scale_color_manual(values = c("0" = "#005ca1", "1" = "#9b2339")) +
+  # regression line
+  geom_abline(slope = coef(lin_reg_model)[2], 
+              intercept = coef(lin_reg_model)[1], color = "black", size = 1.2, linetype = "dashed" ) + 
+  labs(title = "Heart disease [0,1] against fast food spend (US$), with regression line") + 
+  ylab("Heart Disease (Y/N)") + 
+  xlab("Annual Fast Food Spend") 
+```
+
+:::
+
+## Fitting a `logistic regression` model
+
+::: {style="font-size: 90%"}
++ We can fit instead a **logistic regression model** to the `heart_train` data using:
+  + the `glm` function for Generalized Linear Models; 
+    + with argument `family = binomial` to specify the logistic regression model which will use `logit` as the `link` function;
+    + and after `~` we specify the predictor variables. 
+
+```{r}
+#| output: true
+
+# Fit a logistic regression model
+heart_model <- glm(heart_disease ~ coffee_drinker + fast_food_spend + income,
+                   data = heart_train, 
+                   family = binomial(link = "logit"))
+```
+:::
+
+## Model `summary` and `coefficients`
+
+::: {style="font-size: 90%"}
++ @tbl-logit_heart (next) shows the model `summary`, with the `coefficient estimate` for each  predictor.
++ the `broom::tidy` function converts the model summary into a data frame.
+
+```{r}
+#| echo: true
+#| output: true
+#| output-location: slide
+#| label: tbl-logit_heart
+#| tbl-cap: |
+#|  Complete logistic regression model <br>
+#|    + coefficients'**estimates** are `natural logarithm of the odds` of the event happening (Heart Disease) <br>
+#|    + `positive estimate` indicates an increase in the odds of finding a malignant tumor  <br>
+#|    + `negative estimate` indicates a decrease in the odds of finding a malignant tumor  <br>
+#|    + **odds_ratios** = the exponentiated coefficient estimate  <br>
+
+heart_model_coef <- broom::tidy(heart_model) %>% 
+  mutate('signif. lev.' = case_when(
+    `p.value` < 0.001 ~ "***",
+    `p.value` < 0.01 ~ "**",
+    `p.value` < 0.05 ~ "*",
+    TRUE ~ ""))%>%
+  mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  # add odds ratio
+  mutate(odds_ratio = exp(estimate)) %>%
+  relocate(odds_ratio, .after = estimate) %>%
+  # for visibility
+  #select( -statistic, -p.value) %>%
+  knitr::kable() %>% 
+  #reduce font size
+  kable_styling(font_size = 20)
+
+heart_model_coef
+```
+::: 
+
+
+## Interpreting the `logistic regression` model coefficients
+:::{style="font-size: 80%"}
+
+ 
+```{r}
+#| echo: false
+#| output: true
+
+# Extract the coefficients
+heart_model_coef 
+
+```
+
++ **Intercept**: the estimated intercept is typically not of interest
++ **Coffee Drinker**: Coffee drinking has an estimated coefficient of `-0.7296` which means that the coffee drinking is associated with a decrease in the odds that a person has heart disease. Specifically, it decreases the odds of heart disease (relative to non-coffee drinkers) by a multiplicative factor of `e-0.7296`, or `0.48`, holding all other predictors fixed. Therefore, coffee drinking is also associated with a decrease in the probability of having heart disease. This association appears to be significant.
++ **Fast Food Spend**: A one-unit increase in fast food spend is associated with a `0.0024` increase in the log odds of having heart disease. This association appears to be heavily significant.
++ **Income**: Based on a p-value of `0.8182`, we conclude that income is not significantly associated with heart disease.
+:::
+
+## So, is drinking coffee good or bad? 🤔
+
+Our **model** told us that coffee drinking is associated with a `decrease in the likelihood of having heart disease`.  
+However, our **plot** above showed that there was a `higher proportion of coffee drinkers with heart disease` as compared to non coffee drinkers. How can that be? <br><br>
+
+It’s because _coffee drinking and fast food spend are correlated_ so, on it’s own, it would appear as if coffee drinking were associated with heart disease, but this is only because coffee drinking is also associated with fast food spend, which our model tells us is the real contributor to heart disease.
+
+
+# 🖍️🖍️ qui 
+<!-- SEGUI  -->
+
+<!-- https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/logreg.html -->
+<!-- e  -->
+<!-- https://www.geeksforgeeks.org/how-to-interpret-odds-ratios-in-logistic-regression/?ref=next_article -->
+
+
+
+
+
+
+## Making predictions from `logistic regression` model
+
+```{r}
+
+# Make predictions
+heart_train$heart_disease_pred <- predict(heart_model, type = "response")
+
+
+
+```
+
+## Converting predictions into classifications
+
+```{r}
+#| output: true
+
+# Convert predictions to classifications
+heart_train$heart_disease_pred_class <- ifelse(heart_train$heart_disease_pred > 0.5, 1, 0)
+
+```
+
+
+## Evaluating the model]
+
+
+## ROC curve]
+
+```{r}
+
+# Load the pROC package
+library(pROC)
+
+# Create a ROC curve
+roc_curve <- roc(heart_train$heart_disease, heart_train$heart_disease_pred)
+
+# Plot the ROC curve
+plot(roc_curve, col = "blue", main = "ROC Curve", legacy.axes = TRUE)
+```
+
+## Confusion matrix]
+```{r}
+# Confusion matrix
+confusion_matrix <- table(heart_train$heart_disease, heart_train$heart_disease_pred_class)
+
+confusion_matrix
+```
+
+## Sensitivity and Specificity]
+
+```{r}
+# Sensitivity
+sensitivity <- confusion_matrix[2, 2] / sum(confusion_matrix[2, ])
+
+# Specificity
+specificity <- confusion_matrix[1, 1] / sum(confusion_matrix[1, ])
+
+```
+
+# 🔴🟠🟡🟢🔵🟣
+
+## Dataset on Breast Cancer Biopsy]
 
 ::: {style="font-size: 95%;"}
 **Name**: Biopsy Data on Breast Cancer Patients  
@@ -138,7 +527,7 @@ In this tutorial, we will use:
 1992; each of nine attributes has been scored on a scale of 1 to 10, and the outcome is also known. The dataset contains the original Wisconsin breast cancer data with 699 observations on 11 variables.  
 ::: 
 
-## [Importing Dataset `biopsy`]{.fit-title}
+## Importing Dataset `biopsy`]
 
 <!-- + **[Option 1]** the data can be directly obtained form the `MASS` R package -->
 <!--   + Adapting the function `here` to match your own folder structure -->
@@ -170,7 +559,7 @@ In this tutorial, we will use:
 <!-- biopsy2 <- readr::read_csv(file = here::here("practice", "data_input", "04_datasets", -->
 <!--                                       "biopsy.csv") ,  -->
 <!--                           show_col_types = FALSE, -->
-<!--                           col_types = c("c", # ID,  -->
+<!--                           col_types = c("c", # id,  -->
 <!--                                          "i", "i", "i", "i", "i", "i", "i", "i", "i",   #V1:V9  -->
 <!--                                          "f"  #class  -->
 <!-- )) -->
@@ -187,7 +576,7 @@ utils::data(biopsy)
 ```
 
  
-## [`biopsy` variables with description]{.fit-title}
+## `biopsy` variables with description]
 
 ::: {style="font-size: 80%;"}
 <!-- [[EXCERPT: see complete file in Input Data Folder]]{style="color:#77501a"} -->
@@ -199,7 +588,7 @@ utils::data(biopsy)
 biopsy_desc <- tibble::tribble(
   ~Variable, ~ Type, ~Description,
 #"X" ,  "integer" ,         "row counter ", 
-"ID" ,   "character",               "Sample ID",
+"id" ,   "character",               "Sample id",
 "V1",    "integer 1 - 10",        "clump thickness",       
 "V2",    "integer 1 - 10",        "uniformity of cell size",   
 "V3",    "integer 1 - 10",        "uniformity of cell shape",  
@@ -215,11 +604,11 @@ kableExtra::kable(biopsy_desc)
 ```
 :::
 
-## [`biopsy` variables exploration]{.fit-title}
+## `biopsy` variables exploration]
 ::: {style="font-size: 90%;"}
 The `biopsy` data contains **699 observations of 9 continuous variables**, `V1`, `V2`, ..., `V9`.  
 
-The dataset also contains a character variable: `ID`, and a factor variable: `class`, with two levels ("benign" and "malignant").
+The dataset also contains a character variable: `id`, and a factor variable: `class`, with two levels ("benign" and "malignant").
 
 ```{r}
 # check variable types
@@ -227,7 +616,7 @@ str(biopsy)
 ```
 :::
 
-## [`biopsy` missing data]{.fit-title}
+## `biopsy` missing data]
 ::: {style="font-size: 90%;"}
 There is one incomplete variable `V6` = "bare nuclei" with 16 missing values. 
 
@@ -263,61 +652,33 @@ purrr::map (biopsy, skimr::n_missing  )
 <!-- ) -->
 <!-- ``` -->
 
-
-
-# LOGISTIC REGRESSION: 1 EXAMPLE of SUPERVISED ML ALGORITHM 
-<!-- https://openintro-ims.netlify.app/regression-modeling -->
-<!-- STATQUEST YT https://www.youtube.com/watch?v=C4N3_XJJ-jU -->
- <!-- STATQUEST GH  https://github.com/StatQuest/logistic_regression_demo/blob/master/logistic_regression_demo.R -->
-<!-- https://github.com/sws8/biopsy-analysis/blob/main/biopsy_analysis.pdf -->
-<!-- https://www.linkedin.com/pulse/logistic-regression-dataset-biopsy-giancarlo-ronci-twpke/ -->
-<!-- EQUITABLE EQUATIONS = https://youtu.be/E7J3M1oYVlc?si=zmBIfoqvErliFqU3 -->
-
-
-## [Logistic Regr.: review]{.fit-title}
-<!-- GLM intro https://medium.com/@sahin.samia/a-comprehensive-introduction-to-generalized-linear-models-fd773d460c1d -->
+## `biopsy` missing data options]
 
 ::: {style="font-size: 90%;"}
-+ Logistic regression is used to model a **binary response variable**, e.g. `yes|no`, or `benign|malignant` in the `biopsy` dataset.
+We can decide what to do in these cases (*informed by our knowledge of the dataset*): 
 
-+ Logistic regression is a type of `Generalized Linear Model (GLM)`: is a more flexible version of linear regression that can work also for `categorical response` variables (e.g. logistic regression) or `count data` (e.g. poisson regression).
++ **Option 1)** We drop the observation with incomplete data (i.e. with missing values for `V6` = **"bare nuclei"**)  with 16 missing values. 
 
-+ `GLMs` (introduced in 1972) provide a unified framework to accommodate response variables that come from a wide range of distributions:
+```{r}
+# remove rows with missing values
+biopsy_drop <- biopsy %>% 
+  dplyr::filter(!is.na(V6))
 
-  + the `error distribution` (or `family`) of the response variable can be a `normal distribution` (continuous response), but also a `binomial distribution` (binary response), a `Poisson distribution` (count data), etc. 
-  + the `link function` is used to model the relationship between the predictors and the response variable. For example, in logistic regression, the link function is the `logit` function.
-  
-  
-  
-  <!-- + GLM can be thought of as a two-stage modeling approach. We first model the response variable using a probability distribution. Second, we model the parameter of the distribution using a collection of predictors and a special form of multiple regression.  -->
-  
-  <!-- Ultimately, the application of a GLM will feel very similar to multiple regression, even if some of the details are different. -->
+mean(biopsy_drop$V6)
+```
+
++ **Option 2)** We impute the missing values with the mean of the variable `V6` = **"bare nuclei"**.
+
+```{r}
+# impute missing values with the median of the variable
+biopsy_impute <- biopsy %>% 
+  dplyr::mutate(V6 = ifelse(is.na(V6), median(V6, na.rm = TRUE), V6))
+
+mean(biopsy_impute$V6)
+```
 :::
 
-## [Logistic Regr.: `logit` function]{.fit-title}
-::: {style="font-size: 90%;"}
-If we have predictor variables like $x_{1,i}$, $x_{2,i}$, ..., $x_{k,i}$ and a binary response variable $y_i$ (where $y_i = 0$ or $y_i = 1$), we need a **"special" function** (or `link` function) able to transform the expected value of the response variable into the outcome we’re trying to predict. So:
-
-If $p_i$ is the probability that $y_i = 1$...
-$$
-logit (p_i) = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \cdots + \beta_k x_{k,i}
-$$
-
-...the **`logit` function** is defined as:
-
-$$
-logit(p_i) = \ln\left( \frac{p_i}{1-p_i} \right)
-$$
-
-R fits the coefficients $\beta_0$, $\beta_1$, ..., $\beta_k$ to the data using the `maximum likelihood estimation` method.
-
-::: aside
-+ Predicting probabilities without a `logit` function could give values over 1, which doesn’t make sense.
-<!-- + Predicting counts without a `log link` could result in negative numbers, which are impossible. -->
-::: 
-:::
-
-## [`Biopsy` dataset exploration]{.fit-title}
+## `biopsy` dataset exploration]
 
 ::: {style="font-size: 75%;"}
 + Biopsied cells of 700 breast cancer tumors, used to determine if the tumors were benign or malignant. 
@@ -335,98 +696,107 @@ R fits the coefficients $\beta_0$, $\beta_1$, ..., $\beta_k$ to the data using t
 :::
 
 
-## [`Biopsy` dataset cleaning]{.fit-title}
+## `biopsy` dataset preparation]
 
 ::: {style="font-size: 85%;"}
-+ `ID` is the patient ID to ensure anonymity (not used in the analysis)
-+ `Class` represents the diagnosis, either *benign* or *malignant*, of the patient.
-+ Our **goal** is to understand which variables affect the malignancy of a breast cancer tumor. 
-  + This will help to **predict a diagnosis** with the least amount of false positives and false negatives.
-
++ The explanatory variable(s) (`clump_thickness`, ..., `mitosis`) can be renamed for better readability
++ The observations with missing values (`bare_nuclei`) are removed for simplicity  
++ Patient ID (`id`) can be dropped as it is not used in this analysis
 
 ```{r}
 #| output-location: column
 
-# remove rows with missing values
-biopsy_clean = na.omit(biopsy)
-# rename the columns
-colnames(biopsy_clean) <- c("ID","Clump_Thickness", 
-                  "Uniform_Size", 
-                  "Uniform_Shape",
-                  "Marginal_Adhesion", 
-                  "Single_Epith_Size", 
-                  "Bare_Nuclei",
-                  "Bland_Chromatin", 
-                  "Normal_Nuclei",
-                  "Mitosis", 
-                  "Class")
+# Create a clean version of the dataset
+biopsy_clean <- biopsy %>%
+  # rename the columns (new = old)
+  rename(
+    id                = ID,
+    clump_thickness   =  V1,
+    uniform_size      =  V2,
+    uniform_shape     =  V3,
+    marginal_adhesion =  V4,
+    single_epith_size =  V5,
+    bare_nuclei       =  V6,
+    bland_chromatin   =  V7,
+    normal_nuclei     =  V8,
+    mitosis           =  V9,
+    class             =  class) %>% 
+  # remove rows with missing values
+  na.omit(bare_nuclei) %>% 
+  # remove the id column
+  select(-id)
+
 # check the structure of the dataset
 paint::paint(biopsy_clean)
-
-# remove the ID column
-biopsy_clean$ID = NULL
 ```
 ::: 
 
-## [`Biopsy` sample splitting]{.fit-title}
+## `biopsy` sample splitting]
 
-In ML, it is good practice to split the data into `training` and `testing` sets.
+In Machine Learning, it is good practice to split the data into `training` and `testing` sets.
 
-+ We will use the training set to fit the model and the testing set to evaluate the model's performance.
++ We will use the **training set** (80%) to fit the model and then the **testing set** (20%) to evaluate the model's performance.
 ```{r}
 set.seed(123)
 
-split  <-  sample(nrow(biopsy_clean), 0.8*nrow(biopsy_clean))
-biopsy_train  <-  biopsy_clean[split,]
-biopsy_test  <-  biopsy_clean[-split,]
+# Obtain 2 sub-samples from the dataset: training and testing
+sample  <-  sample(c(TRUE, FALSE), nrow(biopsy_clean), replace = TRUE , prob = c(0.8, 0.2) )
+biopsy_train  <-  biopsy_clean[sample,]
+biopsy_test  <-  biopsy_clean[!sample,]
+```
+
++ Which results in:
+```{r}
+# check the structure of the resulting datasets
+dim(biopsy_train)
+dim(biopsy_test)
 ```
 
 
-## [Indipendent variables' visualization]{.fit-title}
+## Indipendent variables' visualization]
 
 ::: {style="font-size: 80%;"}
-The plot (fig-boxplot) shows the distribution of each variables between the 2 classes of the tumor. 
- 
-+ All variables behave similarly, with values between 1 and 2 classified as benign and values greater than 2 classified as malignant. 
-
-+ The spread for malignancy is much larger than benign patients so we will keep it in mind when testing our data. 
+1. We create a new df `biopsy_train2` (with only 3 columns) 
+2. Then, in @fig-boxplot, we visualize the distribution of the explanatory variables, where each is plotted between the two classes of the tumor. 
 
 ```{r}
 #| label: fig-boxplot
 #| output-location: slide
 #| fig-cap: |
 #|  Boxplot of the independent variables <br> 
-#|   - each of the 9 variables is plotted against the class of the tumor <br>
-#|   - values are consitently higher & more dispersed for malignant tumors 
+#|   - values are consitently higher & more dispersed for malignant tumors <br>
+#|   - values between 1 and 2 are classified as benign and values greater than 2 are classified as malignant 
 
-ggdf = data.frame("Level" = c(biopsy_train$Clump_Thickness, biopsy_train$Uniform_Size,
-                              biopsy_train$Uniform_Shape, biopsy_train$Marginal_Adhesion,
-                              biopsy_train$Single_Epith_Size, biopsy_train$Bare_Nuclei,
-                              biopsy_train$Bland_Chromatin, biopsy_train$Normal_Nuclei,
-                              biopsy_train$Mitosis),
-                  "Type" = c("Clump Thickness", "Uniform Size", "Unifrom Shape",
-                             "Marginal Adhesion", "Single Epithilial Size", "Bare Nuclei",
-                             "Bland Chromatin", "Normal Nuclei", "Mitosis"), 
-                  "class" = C(biopsy_train$Class))
+# New df for plotting
+biopsy_train2 <- data.frame(
+  "level" = c(biopsy_train$clump_thickness, biopsy_train$uniform_size,
+              biopsy_train$uniform_shape, biopsy_train$marginal_adhesion,
+              biopsy_train$single_epith_size, biopsy_train$bare_nuclei,
+              biopsy_train$bland_chromatin, biopsy_train$normal_nuclei,
+              biopsy_train$mitosis),
+  "type" = c("Clump Thickness", "Uniform Size", "Unifrom Shape",
+             "Marginal Adhesion", "Single Epithilial Size", "Bare Nuclei",
+             "Bland Chromatin", "Normal Nuclei", "Mitosis"), 
+  "class" = c(biopsy_train$class))
 
 # Plot
-ggplot(ggdf, aes(x = Level, y = class , colour = class)) + 
+ggplot(biopsy_train2, aes(x = level, y = class , colour = class)) + 
   geom_boxplot(fill = NA) +
   scale_color_manual(values = c("#005ca1", "#9b2339")) + 
   geom_jitter(aes(fill = class), alpha = 0.25, shape = 21, width = 0.2) +  
   scale_fill_manual(values = c("#57b7ff", "#e07689")) +  
-  facet_wrap(~Type, scales = "free") +  
+  facet_wrap(~type, scales = "free") +  
   theme(plot.title = element_text(size = 13,face="bold", color = "#873c4a"),
         axis.text.x = element_text(size=12,face="italic"), 
         axis.text.y = element_text(size=12,face="italic"),
         legend.position = "none") + 
-  labs(title = "Distribution of each explanatory variable by tumor class (benign/malignant) in samples" ) + 
+  labs(title = "Distribution of each explanatory variable by tumor class (benign/malignant) in samples") + 
   ylab(label = "") + xlab(label = "")
 ```
 :::
 
 
-## [Logistic Regr.: model fitting]{.fit-title}
+## Logistic regr.: model fitting]
 
 ::: {style="font-size: 90%"}
 + We fit a **logistic regression model** to the `biopsy_train` data using:
@@ -435,7 +805,7 @@ ggplot(ggdf, aes(x = Level, y = class , colour = class)) +
 
 ```{r}
 # Building initial model 
-model = stats::glm(Class ~ . , family = binomial, data=biopsy_train)
+model = stats::glm(class ~ . , family = binomial, data=biopsy_train)
 ```
 
 + @tbl-logit_null shows the model `summary`, with the `coefficient estimate` for each  predictor.
@@ -458,12 +828,11 @@ broom::tidy(model) %>%
 :::
 
 
-## [Logistic Regr.: summary]{.fit-title}
+## Logistic regr.: model coefficients]
 
 ```{r}
 #| echo: false
 #| output: true
-#| output-location: default
 #| label: tbl-logit_null
 #| tbl-cap: |
 #|  Complete logistic regression model <br>
@@ -480,10 +849,14 @@ broom::tidy(model) %>%
   knitr::kable() 
 ```
 
-## [Logistic Regr.: coefficients' interpretation]{.fit-title} 
 
-::: {style="font-size: 75%"}
-As discussed before, in logistic regression, the coefficients are in the form of the `natural logarithm of the odds` of the response event happening (i.e. $Y_i = 1$):
+
+
+
+## Logistic regr.: coefficients' interpretation
+
+::: {style="font-size: 80%"}
+In logistic regression, the coefficients are in the form of the `natural logarithm of the odds` of the response event happening (i.e. $Y_i = 1$):
 
 $$logit(p_i) = \ln\left( \frac{p_i}{1-p_i} \right) = -9.5063 + 0.3935 \times Clump\_Thickness + ... + 0.5065 \times Mitosis$$
 
@@ -491,10 +864,10 @@ However, with some algebraic transformation, the `logit` function can be inverte
 
 $$p_i = \frac{1}{1 + e^{-(-9.5063 + 0.3935 \times Clump\_Thickness + ... + 0.5065 \times Mitosis)}}$$
 
-This equation represents the logistic regression model's best-fit line.
+This equation represents the **logistic regression model's best-fit line**.
 :::
 
-<!-- ## [🟡 Logistic Regr.: coefficients' interpretation]{.fit-title}  -->
+<!-- ## 🟡 Logistic Regr.: coefficients' interpretation -->
 <!-- <!-- STATS QUEST https://github.com/StatQuest/logistic_regression_demo/blob/master/logistic_regression_demo.R -->  
 
 <!-- ::: {style="font-size: 75%;"} -->
@@ -505,7 +878,7 @@ This equation represents the logistic regression model's best-fit line.
 
 <!-- + `Intercept's` (*negative* and *significant*) indicates that when all other variables are 0, the log-odds of a malignant tumor **decreases** by 9.50632.  -->
 
-<!-- + `Bare_Nuclei`, `Clump_Thickness` and `Marginal_Adhesion` have *positive* and *significant*) coefficients.  -->
+<!-- + `Bare_Nuclei`, `clump_thickness` and `Marginal_Adhesion` have *positive* and *significant*) coefficients.  -->
 <!--   + They represent the change in the log-odds of the outcome (a malignant tumor) for a one-unit increase in the predictor, holding other predictors constant.   -->
 
 <!-- ```{r} -->
@@ -527,8 +900,8 @@ This equation represents the logistic regression model's best-fit line.
 <!-- ::: -->
 
 
-<!-- ## [🚫 Logistic Regr.: model evaluation]{.fit-title}  -->
-<!-- <!-- EQUITABLE EQUATIONS = https://youtu.be/E7J3M1oYVlc?si=zmBIfoqvErliFqU3 --> -->
+<!-- ## 🚫 Logistic Regr.: model evaluation -->
+<!-- <!-- EQUITABLE EQUATIONS = https://youtu.be/E7J3M1oYVlc?si=zmBIfoqvErliFqU3 -->
 
 <!-- Here I am verifying the logit shape . . .  -->
 
@@ -546,44 +919,62 @@ This equation represents the logistic regression model's best-fit line.
 <!--   geom_point() -->
 <!-- ``` -->
 
-
-## [Logistic Regr.: multicollinearity]{.fit-title}
+## Logistic regr.: multicollinearity]
 Let’s check for **collinearity** using the `VIF` function from the ‘`car`’ package. 
 
-+ A Variance Inflation Factor $VIF > 5$ indicates that there could be severe correlation between predictor variables.
++ A Variance Inflation Factor $VIF > 5$ indicates that there could be correlation between predictor variables.
 
-+ The VIF values are all less than 5, which indicates that **there is no severe correlation** between predictor variables in the model.
++ The VIF values are all less than 5, which indicates that **there is no severe correlation** between predictor variables in the model. ✅
 ```{r}
 car::vif(model)
 ```
 
-## [Logistic Regr.: improving the model]{.fit-title}
-::: {style="font-size: 85%;"}
-+ We can use a statistic called the **Akaike Information Criterion (AIC)** to compare models.
-  + In AIC, a penalty is given for including additional variables.
-  + The model with **the lowest AIC is considered the best model**.
-+ Try fitting more parsimonious models by removing variables that are not significant.
+## Logistic regr.: model performance]
+
+Highlight key logistic model performance metrics using `broom::glance()` function: 
+
+  + `AIC`: A measure of model quality; lower values indicate a better fit with fewer parameters.
+  + `Null Deviance`: A measure of model error; how well the response variable can be predicted by a model with only an intercept term.
+  + `Deviance`: A measure of model error; how well the response variable can be predicted by a model with predictor variables.
+      + lower values mean the model fits the data better!
 
 ```{r}
-# For example let's fit a model without the variable `Uniform_Size`
-model2 = glm(Class~ .-Uniform_Size, family = binomial, data=biopsy_train)
- 
-# Compare the AIC values of the 2 models
-tibble(Model = c("model", "model2"), 
-       AIC = c(AIC(model), AIC(model2) )) 
+#| output: true
+#| label: tbl-logit_perf
+#| tbl-cap: |
+#|  Key logistic model performance metrics
+
+broom::glance(model)[, c("AIC", "null.deviance","deviance")] %>% 
+  # show only performance  metrics
+  knitr::kable() 
+```
+
+## Logistic regr.: improving the model]
+<!-- https://openintro-ims.netlify.app/model-logistic#logistic-model-with-many-variables -->
+
+::: {style="font-size: 85%;"}
++ The model includes all variables, but we could make it more *parsimonious* by removing variables that are not significant!
++ We use a statistic called the **Akaike Information Criterion (AIC)** to compare models.
+  + AIC's calculation gives a penalty for including additional variables.
+  + The model with **the lowest AIC is considered the best**.
+
+```{r}
+# For example let's fit a model without the variable `uniform_size`
+model2 = glm(class~ .-uniform_size, family = binomial, data=biopsy_train)
 ```
 
 According to the AIC values, the `model2` seems better (AIC is lower).
+```{r}
+# Compare the AIC values of the 2 models
+tibble(Model = c("model", "model2"), 
+       AIC = c(AIC(model), AIC(model2) )) %>% 
+  kable()
+```
+
+
 :::
 
-# 🖍️🖍️
-
-EQUITABLE EQUATIONS =
-https://www.youtube.com/watch?v=_yNWzP5HfGw
-
-STATQUEST https://www.youtube.com/watch?v=yIYKR4sgzI8&list=PLblh5JKOoLUKxzEP5HA2d-Li7IJkHfXSe
-
-## [Logistic Regr.: systematic model selection]{.fit-title}
+## Logistic regr.: systematic model selection]
 
 ::: {style="font-size: 75%;"}
 + The `MASS` package's function `stepAIC` enables to perform a systematic model selection (by **AIC**):
@@ -591,14 +982,14 @@ STATQUEST https://www.youtube.com/watch?v=yIYKR4sgzI8&list=PLblh5JKOoLUKxzEP5HA2
   + The `trace` argument (if set to `TRUE`) prints out all the steps.
 
 + The `best_model` has removed these variables:
-  + `Uniform_Shape`
-  + `Single_Epith_Size`
-  + `Normal_Nuclei`
+  + **uniform_shape**
+  + **single_epith_size**
+  + **normal_nuclei**
   
 + The `best_model` has the **lowest AIC value** (from 100 to 98.5), despite a **higher Residual Deviance** than the full model (from 80 to 80.6), albeit by a very slight amount.
 
 ```{r}
-#| output-location: default 
+#| output-location: slide 
 # Select the best model based on AIC
 best_model <- MASS::stepAIC(model, direction = "both", trace = FALSE)
 
@@ -626,94 +1017,71 @@ aic_manual <- sapply(list(model, stepwise_model), AIC)
 aic_manual
 ```
 
-
-
-## [Logistic Regr.: model evaluation on `test data`]{.fit-title}
-::: {style="font-size: 80%;"}
-+ We can use the `predict` function to predict the class of the `test data` using the best model.
-+ Then we use the `ROCR` package evaluate and visualize the classification 
-  + the `performance` function calculates the **True Positive Rate (TPR)** and **False Positive Rate (FPR)** for various thresholds. From it we can get:
-    + `tpr` = **True Positive Rate (TPR)** is the proportion of actual positive cases that are correctly predicted as positive.
-    + `fpr` = **False Positive Rate (FPR)** is the proportion of actual negative cases that are incorrectly predicted as positive.
-    + `thresholds` = the list of thresholds used to calculate the TPR and FPR.
-
+## Logistic regr.: predicting on `test data`]
+ 
++ We can use the `predict` function to predict the class of the `biopsy_test` using the `best_model`.
+  + `biopsy_test_pred` contains the probability that each of observation (in test data) is malignant.
++ The classification of the `PredictedValue...` can be done using different probability thresholds (0.5, 0.4, 0.3, etc.). which will aﬀect the true and false positivity rates.: 
+  + `PredictedValue_05` is the standard threshold of 0.5.
+  + `PredictedValue_04` is a more conservative threshold of 0.4.
+  + `PredictedValue_07` is a more aggressive threshold of 0.7.
+  
 ```{r}
 # Fitted value for the test data 205 samples based on model
-pred = stats::predict(best_model, biopsy_test, type = "response")
-# Create a prediction object for the ROCR package
-ROCRPRed <- ROCR::prediction(predictions = pred, labels = biopsy_test$Class)
-# Create a performance object (True Positive Rate and False Positive Rate) for various thresholds.
-ROCRPerf <- ROCR::performance(ROCRPRed, "tpr", "fpr")
-# Extract TPR and FPR data
-fpr <- ROCRPerf@x.values[[1]] # x
-tpr <- ROCRPerf@y.values[[1]] # y
-# List of thresholds used to calculate the TPR and FPR in the performance object
-thresholds <- ROCRPerf@alpha.values[[1]]
+biopsy_test_pred <- predict(best_model, newdata = biopsy_test, type = "response")
+
+# Convert the predicted probabilities into 2 predicted classes
+ActualValue <- biopsy_test$class
+
+# Different possible thresholds for the predicted probabilities
+PredictedValue_05 <- if_else(biopsy_test_pred > 0.5, "pred_malignant", "pred_benign")
+PredictedValue_04 <- if_else(biopsy_test_pred > 0.4, "pred_malignant", "pred_benign")
+PredictedValue_07 <- if_else(biopsy_test_pred > 0.7, "pred_malignant", "pred_benign")
 ```
-:::
 
+## Logistic regr. predictions: `confusion matrix`]
+> In diagnosing malignant tumors, it is important to keep the **false negative rate low** as this would be telling someone who has a malignant tumor that it is benign. 
 
-## 🙄🤔 [Logistic Regr.: visualization of model performance at varying thresholds]{.fit-title}
++ At $p = 0.7$, the model will predict more false positives than at $p = 0.4$ (6, v. 4 FN) -- which we DON'T WANT
+  + in this situation $p = 0.4$ is preferable.
 
-
+Then, we can evaluate the model's performance on the `test data` by building a **confusion matrix**
 ```{r}
-#| echo: false
-#| output: false
-
-# plot the ROC curve
-ROCR::plot( ROCRPerf ,  
-           colorize=TRUE, 
-           print.cutoffs.at=seq(0.1, by=0.2) , 
-           xlim=c(0,0.1), 
-           ylim=c(0.8,1)
-           )
-
- 
+# Build the confusion matrix with p = 0.4
+table(ActualValue=biopsy_test$class, PredictedValue_04) %>% 
+  knitr::kable()
 ```
 
 ```{r}
-#| output-location: slide
-#| fig-subcap: "Threshold color gradient: YELLOW = the model predicts positive only for very confident cases, PURPLE: the model predicts positive for many cases, even with lower confidence."
-
-# Create a data frame for ggplot2
-perf_data <- data.frame(FPR = fpr, TPR = tpr, Threshold = thresholds)
-
-# Plot using ggplot2
-library(ggplot2)
-ggplot(perf_data, aes(x = FPR, y = TPR, color = Threshold)) +
-  geom_line(linewidth = 1) +
-  scale_color_viridis_c(option = "C") +  # Optional: better color scale
-  labs(title = "TPR vs FPR",
-       x = "False Positive Rate [0, 0.1]",
-       y = "True Positive Rate [0.8, 1]",
-       color = "Threshold ") +
-  coord_cartesian(xlim = c(0, 0.1), ylim = c(0.8, 1)) +
-  theme_minimal()
+# Build the confusion matrix with p = 0.7
+table(ActualValue=biopsy_test$class, PredictedValue_07) %>% 
+  knitr::kable()
 ```
 
-The practical use of this is to identify a threshold where the **True Positive Rate (TPR)** is acceptably high, without a significant increase in **False Positive Rate (FPR)**. 
-
-## [Logistic Regr.: confusion matrix]{.fit-title}
-We create a confusion matrix with diﬀerent acceptance rates so we can see how it aﬀects the true and false positivity rates.
-
-> Since our data involves diagnosing malignant tumors, it is important to keep the false negative rate low as this would be telling someone who has a malignant tumor that it is benign. 
+## Logistic regr. predictions: `accuracy`]
 
 + We found that **a cutoﬀ of 0.4** gives a good balance of low false negatives while still maintaining a high true positive rate.
 
++ With the chosen threshold of $p = 0.4$, we can calculate the model's `accuracy` on the test data.
+
 ```{r}
-table(ActualValue=biopsy_test$Class, PredictedValue=pred>0.4)
-table(ActualValue=biopsy_test$Class, PredictedValue=pred>0.7)
+# Build the confusion matrix with p = 0.4
+conf_matr_04 <- table(ActualValue=biopsy_test$class, PredictedValue_04)  
+
+# Calculate the accuracy
+accuracy <- sum(diag(conf_matr_04)) / sum(conf_matr_04)
+accuracy
 ```
 
-## [Logistic Regr.: ROC curve]{.fit-title}
+## Logistic regr.: ROC curve]
 ::: {style="font-size: 90%;"}
 ```{r}
 #| output-location: slide
 #| fig-subcap: "This shows why lowering the cutoﬀ improves the accuracy of the model as some malignant tumors are being underestimated which would cause false negatives."
 
-predicted.test <- predict(best_model, biopsy_test, type = "response")
+biopsy_test_pred
 
-predicted.data <- data.frame(prob.of.malig=predicted.test, malig = biopsy_test$Class)
+predicted.data <- data.frame(prob.of.malig=biopsy_test_pred, malig = biopsy_test$class)
 
 predicted.data <- predicted.data[order(predicted.data$prob.of.malig, decreasing = F),]
 
@@ -728,7 +1096,7 @@ plot_ROC
 ```
 :::
 
-## [Logistic Regr.: conclusions]{.fit-title}
+## Logistic regr.: conclusions]
 
 + `Uniform Size` and `Single Epithithial Size` were not significant in predicting the malignancy of tumor cells so our model does not include these variables. 
 
@@ -739,11 +1107,75 @@ plot_ROC
 + New training and testing data would help confirm our results and help identify possible overfitting.
 
 
-## [...]{.fit-title}
+<!-- ## ...-->
+<!-- # ⛔️⛔️⛔️ qui 🟠🟠 -->
+<!-- ## Logistic regr.: model evaluation on `test data`-->
+<!-- ::: {style="font-size: 80%;"} -->
+<!-- + We can use the `predict` function to predict the class of the `test data` using the best model. -->
+<!-- + Then we use the `ROCR` package evaluate and visualize the classification  -->
+<!--   + the `performance` function calculates the **True Positive Rate (TPR)** and **False Positive Rate (FPR)** for various thresholds. From it we can get: -->
+<!--     + `tpr` = **True Positive Rate (TPR)** is the proportion of actual positive cases that are correctly predicted as positive. -->
+<!--     + `fpr` = **False Positive Rate (FPR)** is the proportion of actual negative cases that are incorrectly predicted as positive. -->
+<!--     + `thresholds` = the list of thresholds used to calculate the TPR and FPR. -->
+
+<!-- ```{r} -->
+<!-- # Fitted value for the test data 205 samples based on model -->
+<!-- pred = stats::predict(best_model, biopsy_test, type = "response") -->
+<!-- # Create a prediction object for the ROCR package -->
+<!-- ROCRPRed <- ROCR::prediction(predictions = pred, labels = biopsy_test$class) -->
+<!-- # Create a performance object (True Positive Rate and False Positive Rate) for various thresholds. -->
+<!-- ROCRPerf <- ROCR::performance(ROCRPRed, "tpr", "fpr") -->
+<!-- # Extract TPR and FPR data -->
+<!-- fpr <- ROCRPerf@x.values[[1]] # x -->
+<!-- tpr <- ROCRPerf@y.values[[1]] # y -->
+<!-- # List of thresholds used to calculate the TPR and FPR in the performance object -->
+<!-- thresholds <- ROCRPerf@alpha.values[[1]] -->
+<!-- ``` -->
+<!-- ::: -->
+
+
+<!-- ## Logistic regr.: visualization of model performance at varying thresholds] -->
+
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| output: false -->
+
+<!-- # plot the ROC curve -->
+<!-- ROCR::plot( ROCRPerf ,   -->
+<!--            colorize=TRUE,  -->
+<!--            print.cutoffs.at=seq(0.1, by=0.2) ,  -->
+<!--            xlim=c(0,0.1),  -->
+<!--            ylim=c(0.8,1) -->
+<!--            ) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| output-location: slide -->
+<!-- #| fig-subcap: "Threshold color gradient: YELLOW = the model predicts positive only for very confident cases, PURPLE: the model predicts positive for many cases, even with lower confidence." -->
+
+<!-- # Create a data frame for ggplot2 -->
+<!-- perf_data <- data.frame(FPR = fpr, TPR = tpr, Threshold = thresholds) -->
+
+<!-- # Plot using ggplot2 -->
+<!-- library(ggplot2) -->
+<!-- ggplot(perf_data, aes(x = FPR, y = TPR, color = Threshold)) + -->
+<!--   geom_line(linewidth = 1) + -->
+<!--   scale_color_viridis_c(option = "C") +  # Optional: better color scale -->
+<!--   labs(title = "TPR vs FPR", -->
+<!--        x = "False Positive Rate [0, 0.1]", -->
+<!--        y = "True Positive Rate [0.8, 1]", -->
+<!--        color = "Threshold ") + -->
+<!--   coord_cartesian(xlim = c(0, 0.1), ylim = c(0.8, 1)) + -->
+<!--   theme_minimal() -->
+<!-- ``` -->
+
+<!-- The practical use of this is to identify a threshold where the **True Positive Rate (TPR)** is acceptably high, without a significant increase in **False Positive Rate (FPR)**.  -->
+
+
 
 # 🟠 K-MEANS CLUSTERING: EXAMPLE of UNSUPERVISED ML ALGORITHM
 
-## [...]{.fit-title}
+## ...]
 
 # PCA: EXAMPLE of UNSUPERVISED ML ALGORITHM
 
@@ -755,11 +1187,11 @@ Reducing high-dimensional data to a lower number of variables
 
 <!-- Probabilmente non viene proprio uguale perchè in MA fa normalizzazione e scaling mentre Statology fa solo scaling, ma fa niente, diciamo che ci serve per vedere la differenza -->
 
-## [`biopsy` dataset manipulation]{.fit-title}
+## `biopsy` dataset manipulation]
 
 We will: 
 
-+ exclude the non-numerical variables (`ID` and `class`) before conducting the PCA.   
++ exclude the non-numerical variables (`id` and `class`) before conducting the PCA.   
 + exclude the individuals with missing values using the `na.omit()` or `filter(complete.cases()` functions.
 
 + We can do both in 2 equivalent ways:
@@ -793,7 +1225,7 @@ data_biopsy <- biopsy %>%
 ::::
 
 
-## [`biopsy` dataset manipulation]{.fit-title}
+## `biopsy` dataset manipulation]
 
 We obtained a new dataset with 9 variables and 683 observations (instead of the original 699).  
 ```{r}
@@ -852,7 +1284,7 @@ summary(biopsy_pca)
 :::
 
 
-## [Proportion of Variance for components]{.fit-title}
+## Proportion of Variance for components]
 
 2. The row with **Proportion of Variance** can be either accessed from summary or calculated as follows:
 
@@ -869,7 +1301,7 @@ round(biopsy_pca$sdev^2 / sum(biopsy_pca$sdev^2), digits = 5)
 > The output suggests the **1st principal component** explains around 65% of the total variance, the **2nd principal component** explains about 9% of the variance, and this goes on with diminishing proportion for each component. 
 
 
-## [Cumulative Proportion of variance for components]{.fit-title}
+## Cumulative Proportion of variance for components]
 
 3. The last row from the `summary(biopsy_pca)`, shows the **Cumulative Proportion** of variance, which calculates the cumulative sum of the Proportion of Variance. 
 
@@ -906,7 +1338,7 @@ factoextra::fviz_eig(biopsy_pca,
 
 > Visualization is essential in the interpretation of PCA results. Based on the number of retained principal components, which is usually the first few, the observations expressed in component scores can be plotted in several ways.
 
-## [Principal Component `Scores`]{.fit-title}
+## Principal Component `Scores`]
 
 After a PCA, the observations are expressed as **principal component scores**.   
 
@@ -923,7 +1355,7 @@ head(PC_scores)
 
 It is also important to visualize the observations along the new axes (principal components) to interpret the relations in the dataset:
 
-## [Principal Component `Scores` plot (adding label variable)]{.fit-title}
+## Principal Component `Scores` plot (adding label variable)]
 
 3. When data includes a factor variable, like in our case, it may be interesting to show the grouping on the plot as well.
 
@@ -939,7 +1371,7 @@ PC_scores$Label <- biopsy_no_na$class
 <br>
 The visualization of the observation points (point cloud) could be in 2D or 3D.
 
-## [Principal Component `Scores` plot (2D)]{.fit-title}
+## Principal Component `Scores` plot (2D)]
 
 The Scores Plot can be visualized via the `ggplot2` package. 
 
@@ -963,7 +1395,7 @@ ggplot(PC_scores,
 
 
 
-## [Principal Component `Scores` (2D Ellipse Plot)]{.fit-title}
+## Principal Component `Scores` (2D Ellipse Plot)]
 
 Confidence ellipses can also be added to a grouped scatter plot visualized after a PCA. We use the `ggplot2` package. 
 
@@ -988,7 +1420,7 @@ ggplot(PC_scores,
 
 
 
-## [Principal Component `Scores` plot (3D)]{.fit-title}
+## Principal Component `Scores` plot (3D)]
 
 ::: {style="font-size: 80%;"}
 A 3D scatterplot of observations shows the first **3 principal components’ scores**. 
@@ -1025,7 +1457,7 @@ legend(plot_3d$xyz.convert(0.5, 0.7, 0.5),
 
 :::
 
-## [Biplot: principal components v. original variables]{.fit-title}
+## Biplot: principal components v. original variables]
 
 Next, we create another special type of scatterplot (a **biplot**) to understand the relationship between the principal components and the original variables.  
 In the `biplot` each of the observations is projected onto a scatterplot that uses the ***first and second principal components as the axes***.
@@ -1109,7 +1541,7 @@ loadings[ ,1:2]
 
 
 
-## [Recap of the workshop's content]{.fit-title}
+## Recap of the workshop's content]
 
 ::: {style="font-size: 95%;"}
 

@@ -14,12 +14,13 @@ This website [https://r4statistics.com/](https://r4statistics.com/) hosts some t
   + ML 
   + aggiungere logistic regression???
   + aggiungere decision trees??? 
-  + practice/RCODE 5  
-
+  + practice/RCODE 05  
 + ️🔳 then match the lecture in `lecture/lecture_slides/slides_lecture05.qmd` 
 
-+ ️🔳 rivedere `practice/practice_slides/slides_lab5.qmd`
-  + practice/RCODE 6  
++ ️🔳 rivedere `practice/practice_slides/slides_lab06.qmd`
+  + practice/RCODE 06  
+
++ ️🔳 aggiornare footer con link [https://r4statistics.com/](https://r4statistics.com/)  in `*slide*.pptx` files 
 
 + **[CODE refactoring]**
   + ✅ make  `_variable.yml`
