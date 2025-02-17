@@ -7,9 +7,11 @@ date-format: long
 code-link: true
 format:
   revealjs:
+    math: mathjax
     smaller: true
     scrollable: true
     theme: ../../theme/slidesMine.scss # QUARTO LOOKS IN SAME FOLDER 
+    css: ../../theme/styles.css
 #    logo: imgs_slides/mitgest_logo.png
     footer: '[R 4 Biostatistics](https://r4biostats.com/) | MITGEST::training(2024)'
 #    footer: <https://lulliter.github.io/R4biostats/lectures.html>

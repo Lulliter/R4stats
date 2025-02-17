@@ -155,7 +155,7 @@ library(broom)      # Convert Statistical Objects into Tidy Tibbles
 
 ## Logistic regr.: `logit` function
 ::: {style="font-size: 90%;"}
-If we have predictor variables like $x_{1,i}$, $x_{2,i}$, ..., $x_{k,i}$ and a binary response variable $y_i$ (where $y_i = 0$ or $y_i = 1$), we need a **"special" function** (or `link function`) able to transform the expected value of the response variable into the outcome we’re trying to predict.
+If we have predictor variables like $x_{1,i}$, $x_{2,i}$, ..., $x_{k,i}$ and a binary response variable $y_i$ (where $y_i = 0$ or $y_i = 1$), we need a **"special" function** (or `"link" function`) able to transform the expected value of the response variable into the $[0,1]$ outcome we’re trying to predict. <br><br>
 
 If $p_i$ is the probability that $y_i = 1$...
 $$
@@ -235,7 +235,7 @@ kableExtra::kable(heart_data_desc)
 
 In Machine Learning, it is good practice to split the data into `training` and `testing` sets.
 
-+ We will use the **training set** (80%) to fit the model and then the **testing set** (20%) to evaluate the model's performance.
++ We will use the **training set** (70%) to fit the model and then the **testing set** (30%) to evaluate the model's performance.
 ```{r}
 set.seed(123)
 
@@ -254,7 +254,7 @@ dim(heart_test)
 
 ## Convert binary variables to factors
 
-We now examine the training dataset `heart_train`, after converting the binary variables `heart_disease` and `coffee_drinker` to factors.
+Before examining the training dataset `heart_train`, we converting the binary variables `heart_disease` and `coffee_drinker` to factors (for better readability).
 
 ```{r}
 heart_train <- heart_train %>% 
@@ -263,7 +263,10 @@ heart_train <- heart_train %>%
                                 labels = c("No_HD", "Yes_HD")),
          coffee_drinker = factor(coffee_drinker, levels = c(0, 1),
                                  labels = c("No_Coffee", "Yes_Coffee")) 
-  )  
+  )
+
+# show the first 5 rows of the dataset
+heart_train[1:5,]
 ```
 
 ## Plotting `Y` by `X1` (continuous variable)
@@ -297,21 +300,27 @@ heart_train %>%
 
 ## Plotting `Y` by `X2` (discrete variable)
 
+::: {style="font-size: 90%;"}
+Then we examine the relationship between the binary outcome variable `heart_disease` and the binary predictor variable `coffee_drinker`.
+
+  + we use the handy `count` function from `dplyr` to count occurrences in categorical variable(s) combinations.
 ```{r}
 #| output: true
 #| output-location: slide
 #| fig.cap: 'Also drinking coffee seems associated to a higher likelihood of heart disease (HD =1)'
 
+# Dataset manipulation
 heart_train %>% 
-  dplyr::group_by(heart_disease, coffee_drinker) %>% 
-  dplyr::summarise(count = n()) %>% 
-  ungroup() %>% 
+  # count the unique values per each group from 2 categorical variables' combinations
+  dplyr::count(heart_disease, coffee_drinker, name = "count_by_group") %>% 
   dplyr::group_by(coffee_drinker) %>% 
-  dplyr::mutate(total_coffee_drinkers = sum(count)) %>% 
-  ungroup() %>% 
-  dplyr::mutate(proportion = count / total_coffee_drinkers) %>% 
+  dplyr::mutate(
+    total_coffee_class = sum(count_by_group),
+    proportion = count_by_group / total_coffee_class) %>% 
+  dplyr::ungroup() %>% 
+  # filter only those with heart disease
   dplyr::filter(heart_disease == "Yes_HD") %>% 
-# plot  
+# Plot  
   ggplot(aes(x = coffee_drinker, y = proportion, fill = coffee_drinker)) + 
   geom_bar(stat = "identity") + 
   scale_fill_manual(values = c("#57b7ff", "#e07689")) + 
@@ -323,30 +332,23 @@ heart_train %>%
   scale_y_continuous(labels = scales::percent)
 ```
 
+:::
+
 ## `Linear regression` wouldn'twork!
-::: {style="font-size: 80%"}
+::: {style="font-size: 90%"}
 
-We could technically use linear regression (@fig-lin-reg) to study likelihood of having `Heart Disease` in relation to `fast food spending`, but it would not work:
+We could technically use linear regression (@fig-lin-reg) to study likelihood of having `Heart Disease` in relation to risk factors, but it would not work:
 
-+ How should we interpret a continuous prediction when it is different from $0$ or $1$ ?
-<!-- we know that the response y is categorical, not numeric, so the interpretation of the regression coefficients is strange to say the least: what does it mean when the prediction is less than 0 or greater than 1? If the predictor is supposed to represent likelihood, or probability of having heart disease for a given observation of fast food spending, it should be constrained on [0,1].  -->
-<!-- + Second, this is not extensible to multi-class problems that have more than 2 possible categorical response values.  -->
-+ Also, here the assumptions for linear model are not met:
-    + ***Linear relationship*** between `Y` and `X1`  
-<!-- (plot residuals v fitted values with no discernible pattern)-->
-    + ***Residuals*** must be 1) approximately normally distributed and 2) uncorrelated
-<!-- (QQ plot close to diagonal line for normality ) (e.g. like in time series if adjacent values have similar errors)-->
-    + ***Homoscedasticity***: residuals should have constant variance
-    + ***Non collinearity***: predictor variables should not be highly correlated with each other
++ 🤔 How should we interpret a continuous prediction when it is different from $0$ or $1$?
 
 ```{r}
 #| label: fig-lin-reg
 #| output: true
 #| output-location: slide
-#| fig.cap: 'Showing that a linear regression (red line) would fit poorly'
+#| fig.cap: 'Showing that a linear regression (back line) would fit poorly'
 
 # Hypothetical linear regression model
-lin_reg_model <- lm(heart_disease ~ fast_food_spend, data = heart_data)
+lin_reg_model <- lm(heart_disease ~ fast_food_spend + coffee_drinker, data = heart_data)
 # Plot
 ggplot(heart_data) +
   geom_point(aes(fast_food_spend, heart_disease, color = factor(heart_disease)), 
@@ -355,20 +357,55 @@ ggplot(heart_data) +
   # regression line
   geom_abline(slope = coef(lin_reg_model)[2], 
               intercept = coef(lin_reg_model)[1], color = "black", size = 1.2, linetype = "dashed" ) + 
-  labs(title = "Heart disease [0,1] against fast food spend (US$), with regression line") + 
+  labs(title = "Heart disease [0,1] against fast food spend (US$) + regression line (black dashed)") + 
   ylab("Heart Disease (Y/N)") + 
   xlab("Annual Fast Food Spend") 
 ```
-
 :::
 
-## Fitting a `logistic regression` model
+## `Linear regression` wouldn'twork!
 
 ::: {style="font-size: 90%"}
-+ We can fit instead a **logistic regression model** to the `heart_train` data using:
-  + the `glm` function for Generalized Linear Models; 
-    + with argument `family = binomial` to specify the logistic regression model which will use `logit` as the `link` function;
-    + and after `~` we specify the predictor variables. 
++ Also, recall that linear regression models implies certain **assumptions**: 
+    + ***Linear relationship*** between `Y` and the predictors `X1` and `X2`  
+<!-- (plot residuals v fitted values with no discernible pattern)-->
+    + ***Residuals*** must be 1) approximately normally distributed and 2) uncorrelated
+<!-- (QQ plot close to diagonal line for normality ) (e.g. like in time series if adjacent values have similar errors)-->
+    + ***Homoscedasticity***: residuals should have constant variance
+    + ***Non collinearity***: predictor variables should not be highly correlated with each other
+
+<br><br>
+
++ Assumptions are **not** met in this case
+```{r}
+#| label: fig-lin-reg_diag
+#| output: true
+#| output-location: slide
+#| fig.cap: 'Diagostic plots for a hypothetical linear regression model'
+
+# diagnostic plots
+par(mfrow=c(2,2))
+plot(lin_reg_model)
+```
+:::
+
+```{r}
+#| echo: false
+#| output: false
+
+# multicollinearity
+vif(lin_reg_model)
+# ideally < 5
+```
+
+
+
+## [Fitting a `logistic regression` model]{.r-fit-text}
+
++ We can instead fit a **logistic regression model** to the `heart_train` data using:
+  + the `glm` function for Generalized Linear Models, 
+    + with argument `family = binomial` to specify logistic regression which will use `logit` as the `link` function,
+    + specifying (as usual) the 3 predictor variables after `~`. 
 
 ```{r}
 #| output: true
@@ -378,13 +415,14 @@ heart_model <- glm(heart_disease ~ coffee_drinker + fast_food_spend + income,
                    data = heart_train, 
                    family = binomial(link = "logit"))
 ```
-:::
+
 
 ## Model `summary` and `coefficients`
 
-::: {style="font-size: 90%"}
-+ @tbl-logit_heart (next) shows the model `summary`, with the `coefficient estimate` for each  predictor.
-+ the `broom::tidy` function converts the model summary into a data frame.
+::: {style="font-size: 85%"}
++ @tbl-logit_heart (next) shows the model output, with the `coefficient estimate` for each  predictor.
+  + The `broom::tidy` function converts the model summary into a more readable data frame.
+  + The `odds ratio` (= exponentiated coefficient estimate) is more interpretable than the coefficient itself.
 
 ```{r}
 #| echo: true
@@ -392,58 +430,116 @@ heart_model <- glm(heart_disease ~ coffee_drinker + fast_food_spend + income,
 #| output-location: slide
 #| label: tbl-logit_heart
 #| tbl-cap: |
-#|  Complete logistic regression model <br>
-#|    + coefficients'**estimates** are `natural logarithm of the odds` of the event happening (Heart Disease) <br>
-#|    + `positive estimate` indicates an increase in the odds of finding a malignant tumor  <br>
-#|    + `negative estimate` indicates a decrease in the odds of finding a malignant tumor  <br>
-#|    + **odds_ratios** = the exponentiated coefficient estimate  <br>
+#|  Complete logistic regression model <br><br>
+#|    + **estimates** of coefficients are in the form of `natural logarithm of the odds` of the event happening (Heart Disease) <br>
+#|        + `positive estimate` indicates an increase in the odds of having Heart Desease  <br>
+#|        + `negative estimate` indicates a decrease in the odds of having Heart Desease <br>
+#|    + **odds_ratios** = the exponentiated coefficient estimate <br><br>
 
+# Convert model's output summary into data frame
 heart_model_coef <- broom::tidy(heart_model) %>% 
-  mutate('signif. lev.' = case_when(
+  # improve readability of significance levels
+  dplyr::mutate('signif. lev.' = case_when(
     `p.value` < 0.001 ~ "***",
     `p.value` < 0.01 ~ "**",
     `p.value` < 0.05 ~ "*",
     TRUE ~ ""))%>%
-  mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
-  # add odds ratio
-  mutate(odds_ratio = exp(estimate)) %>%
-  relocate(odds_ratio, .after = estimate) %>%
-  # for visibility
-  #select( -statistic, -p.value) %>%
+  # add odds ratio column
+  dplyr::mutate(odds_ratio = exp(estimate)) %>%
+  dplyr::relocate(odds_ratio, .after = estimate) %>%
+  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  # format as table
   knitr::kable() %>% 
-  #reduce font size
-  kable_styling(font_size = 20)
+  # reduce font size
+  kable_styling(font_size = 20) %>% 
+  # add table title
+  kableExtra::add_header_above(c("Logistic Regression Analysis of Heart Disease Risk Factors"= 7))
 
 heart_model_coef
 ```
+
+
 ::: 
 
 
-## Interpreting the `logistic regression` model coefficients
-:::{style="font-size: 80%"}
+## [Interpreting the logistic `coefficients`]{.r-fit-text}
 
- 
+:::{style="font-size: 90%"}
+
 ```{r}
 #| echo: false
 #| output: true
 
-# Extract the coefficients
-heart_model_coef 
+broom::tidy(heart_model) %>% 
+  # improve readability of significance levels
+  dplyr::mutate('signif. lev.' = case_when(
+    `p.value` < 0.001 ~ "***",
+    `p.value` < 0.01 ~ "**",
+    `p.value` < 0.05 ~ "*",
+    TRUE ~ ""))%>%
+  # add odds ratio column
+  dplyr::mutate(odds_ratio = exp(estimate)) %>%
+  dplyr::relocate(odds_ratio, .after = estimate) %>%
+  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  knitr::kable() %>% 
+  # reduce font size
+  kable_styling(font_size = 20) %>% 
+  # highlight rows of terms (intercept) and income
+  kableExtra::row_spec(1,  background = "#f1e7d3") %>%
+  kableExtra::row_spec(4,  background = "#f1e7d3")
 
 ```
-
-+ **Intercept**: the estimated intercept is typically not of interest
-+ **Coffee Drinker**: Coffee drinking has an estimated coefficient of `-0.7296` which means that the coffee drinking is associated with a decrease in the odds that a person has heart disease. Specifically, it decreases the odds of heart disease (relative to non-coffee drinkers) by a multiplicative factor of `e-0.7296`, or `0.48`, holding all other predictors fixed. Therefore, coffee drinking is also associated with a decrease in the probability of having heart disease. This association appears to be significant.
-+ **Fast Food Spend**: A one-unit increase in fast food spend is associated with a `0.0024` increase in the log odds of having heart disease. This association appears to be heavily significant.
-+ **Income**: Based on a p-value of `0.8182`, we conclude that income is not significantly associated with heart disease.
++ **Intercept**: gives the log-odds of heart disease when all predictor variables are zero. While not our focus, the highly negative value suggests very low baseline probability of heart disease in the sample.
++ **Income**: Based on a `p-value = 0.8182`, we conclude that income is not significantly associated with heart disease. (Anyhow, the odds ratio of `≈1` would suggest no change in odds based on income.)
 :::
 
-## So, is drinking coffee good or bad? 🤔
+## [Interpreting the logistic `coefficients`]{.r-fit-text}
 
-Our **model** told us that coffee drinking is associated with a `decrease in the likelihood of having heart disease`.  
-However, our **plot** above showed that there was a `higher proportion of coffee drinkers with heart disease` as compared to non coffee drinkers. How can that be? <br><br>
+:::{style="font-size: 75%"}
 
-It’s because _coffee drinking and fast food spend are correlated_ so, on it’s own, it would appear as if coffee drinking were associated with heart disease, but this is only because coffee drinking is also associated with fast food spend, which our model tells us is the real contributor to heart disease.
+```{r}
+#| echo: false
+#| output: true
+
+broom::tidy(heart_model) %>% 
+  # improve readability of significance levels
+  dplyr::mutate('signif. lev.' = case_when(
+    `p.value` < 0.001 ~ "***",
+    `p.value` < 0.01 ~ "**",
+    `p.value` < 0.05 ~ "*",
+    TRUE ~ ""))%>%
+  # add odds ratio column
+  dplyr::mutate(odds_ratio = exp(estimate)) %>%
+  dplyr::relocate(odds_ratio, .after = estimate) %>%
+  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  knitr::kable() %>% 
+  # reduce font size
+  kable_styling(font_size = 20) %>% 
+  # highlight rows of terms (intercept) and income
+  kableExtra::row_spec(2:3,  background = "#f1e7d3")  
+```
+
++ **Coffee Drinker (=YES)**: the negative coefficient of `-0.7296` (log-odds) means that coffee drinking is associated with _<u>lower</u> odds of having heart disease_. Specifically, it decreases the odds ratio of heart disease by `e^0.7296` which means (relative to non-coffee drinkers) an $OR =$ `0.48` $=$ `48%`, holding all other predictors fixed. This effect is statistically significant as `p-value = 0.0122`.
++ **Fast Food Spend**: the positive coefficient of `0.0024` (log-odds) means that fast food spend is associated with _increased odds of having heart disease_. Given this is a <u>continuous variable</u>, this means that for every 1-unit increase in fast food spending, the odds of heart disease increase by `(e^0.0024 - 1)` $=$ `(1.0024 - 1)`, i.e. by `0.24%`. This effect is highly significant as `p-value = 0.0000`.
+  + But we should consider a more *adequate* scale! (relative to fast food annual spending):
+
+    + `Δ+ = 1 USD`: $(1.0024)^{1} \approx 1.0024 \quad \text{hence (1.0024 - 1)x100 = 0.24% increase in odds}$
+
+    + `Δ+ = 10 USD`: $(1.0024)^{10} \approx 1.024 \quad \text{hence (1.024 - 1)x100 = 2.4% increase in odds}$
+
+    + `Δ+ = 100 USD`: $(1.0024)^{100} \approx 1.27 \quad \text{hence (1.27 - 1)x100 = 27% increase in odds}$
+
+:::
+
+## Wait, is drinking coffee good or bad? 🤔
+
+Our **plot** above showed that there was a `higher proportion of coffee drinkers with heart disease` as compared to non coffee drinkers. 
+However, our **model** told us that coffee drinking is associated with a `decrease in the likelihood of having heart disease`.  
+How can that be? <br><br>  
+
+It’s because `coffee drinking` and `fast food spend` are <u>**correlated**</u>so, on it’s own, it would _appear_ as if coffee drinking were associated with heart disease, but this is only because coffee drinking is also associated with fast food spend, which our model tells us is the real contributor to heart disease.
+
+
 
 
 # 🖍️🖍️ qui 

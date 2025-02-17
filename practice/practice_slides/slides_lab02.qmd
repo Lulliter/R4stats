@@ -12,6 +12,7 @@ format:
     smaller: true
     scrollable: true
     theme: ../../theme/slidesMine.scss # QUARTO LOOKS IN SAME FOLDER 
+    css: ../../theme/styles.css
 #    logo: imgs_slides/mitgest_logo.png
     footer: '[R 4 Statistics]({{< var websites.live_site >}}) | 2024'
 #    footer: <https://lulliter.github.io/R4biostats/lectures.html>
@@ -42,6 +43,8 @@ suppress-bibliography: true
 ## GOAL OF TODAY'S PRACTICE SESSION
 
 [Consolidate understanding of inferential statistic, through R coding examples conducted on real biostatistics research data.]{style="color:#77501a"}
+
+<!-- CHECK THIS OUT https://martinctc.github.io/blog/common-statistical-tests-in-r-part-i/ -->
 
 <br><br>
 
