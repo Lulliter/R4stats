@@ -14,7 +14,7 @@ format:
     theme: ../../theme/slidesMine.scss # QUARTO LOOKS IN SAME FOLDER 
     css: ../../theme/styles.css
 #    logo: imgs_slides/mitgest_logo.png
-    footer: '[R 4 Statistics]({{< var websites.live_site >}}) | 2024'
+    footer: '[R 4 Statistics]({{< var websites.live_site >}}) | 2025'
 #    footer: <https://lulliter.github.io/R4biostats/lectures.html>
 ## ------------- x salvare come PDF 
     standalone: false
@@ -37,7 +37,6 @@ bibliography: ../../bib/R4biostats.bib
 csl: ../../bib/apa-6th-edition.csl 
 suppress-bibliography: true
 ---
-
 
 # GOAL OF TODAY'S PRACTICE SESSION
 
@@ -87,7 +86,7 @@ The examples and datasets in this Lab session follow very closely two sources:
 
 ```{r}
 # Load pckgs for this R session
-
+options(scipen = 999)
 # --- General 
 library(here)     # tools find your project's files, based on working directory
 library(dplyr)    # A Grammar of Data Manipulation
@@ -132,15 +131,16 @@ library(broom)      # Convert Statistical Objects into Tidy Tibbles
 <!-- (biopsy) OK!!! https://www.linkedin.com/pulse/logistic-regression-dataset-biopsy-giancarlo-ronci-twpke/ -->
 
 
-## Logistic regr.: review
+## Logistic regression: review
 <!-- GLM intro https://medium.com/@sahin.samia/a-comprehensive-introduction-to-generalized-linear-models-fd773d460c1d -->
 
 ::: {style="font-size: 90%;"}
-+ Logistic regression is a type of **`Generalized Linear Model (GLM)`**: a more flexible version of linear regression that can work also for `categorical response` variables or `count data` (e.g. poisson regression).
-
-+ Logistic regression is used to model a **binary response variable**: e.g. `yes|no` (or `benign|malignant` in the `biopsy` dataset).
-
-+ Logistic regression fits the coefficients $\beta_0$, $\beta_1$, ..., $\beta_k$ to the data using the **`Maximum Likelihood Estimation`** method (unlike linear regression, which uses the `Least Squares Estimation` method).
++ Logistic regression is a classification model used with a **binary response variable**, e.g.: 
+  + `yes|no`, or `0|1`, or `True|False` in a survey question;
+  + `success|failure` in a clinical trial experiment;
+  + `benign|malignant` in a biopsy experiment.
++ Logistic regression is a type of **`Generalized Linear Model (GLM)`**: a more _flexible_ version of linear regression that can work also for **categorical response** variables or **count data** (e.g. poisson regression).
++ When logistic regression fits the coefficients $\beta_0$, $\beta_1$, ..., $\beta_k$ to the data, it minimizes errors using the **`Maximum Likelihood Estimation`** method (as opposed to linear regression's `Least Squares Error Estimation` method).
 
 
 <!-- + `GLMs` (introduced in 1972) provide a unified framework to accommodate response variables that come from a wide range of distributions: -->
@@ -153,35 +153,39 @@ library(broom)      # Convert Statistical Objects into Tidy Tibbles
   <!-- Ultimately, the application of a GLM will feel very similar to multiple regression, even if some of the details are different. -->
 :::
 
-## Logistic regr.: `logit` function
-::: {style="font-size: 90%;"}
-If we have predictor variables like $x_{1,i}$, $x_{2,i}$, ..., $x_{k,i}$ and a binary response variable $y_i$ (where $y_i = 0$ or $y_i = 1$), we need a **"special" function** (or `"link" function`) able to transform the expected value of the response variable into the $[0,1]$ outcome we’re trying to predict. <br><br>
+## Logistic regression: `logit` function
+::: {style="font-size: 85%;"}
+If we have predictor variables like $x_{1,i}$, $x_{2,i}$, ..., $x_{k,i}$ and a binary response variable $y_i$ (where $y_i = 0$ or $y_i = 1$), we need a **"special" function** to transform the expected value of the response variable into the $[0,1]$ outcome we’re trying to predict. <br><br>
 
-If $p_i$ is the probability that $y_i = 1$...
+The **`logit` function** (of the GLM family) helps us determine the coefficients $\beta_0$, $\beta_1$, ..., $\beta_k$ that best fit this sort of data and it is defined as:
 $$
-logit (p_i) = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \cdots + \beta_k x_{k,i}
+logit (p_i) = \ln\left( \frac{p_i}{1-p_i} \right)= \beta_0 + \beta_1 x_{1,i} + \cdots + \beta_k x_{k,i}
 $$
+    where $p_i$ is the probability that $y_i = 1$
+<br><br>
 
-...the **`logit` function** is defined as:
+Via the **`inverse-logit` function** (`logistic`), we solve for the probability $p_i$, given values of the predictor variables, like so: 
 
 $$
-logit(p_i) = \ln\left( \frac{p_i}{1-p_i} \right)
+P(y_i = 1 | x_{1,i}, \ldots, x_{k,i} ) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_{1,i} + \cdots + \beta_k x_{k,i})}}
 $$
 
 ::: aside
-+ Predicting probabilities without a `logit` function could give values over 1, which doesn’t make sense.
+*[Predicting probabilities without a `logit` function could give values over 1, which doesn’t make sense.]*
 <!-- + Predicting counts without a `log link` could result in negative numbers, which are impossible. -->
-::: 
+
 :::
 
-# DATASETS for today
+:::
+
+# 🟠 DATASETS for today
 
 <br>
 
 ::: {style="font-size: 80%;"}
 In this tutorial, we will use: 
 
-+ a (toy) `heart` dataset from the book by: Brian Machut, Nathan Cornwell [Data Analytics with R](https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/#acknowledgements)  
++ a (toy) `heart_data` dataset from the book by: Brian Machut, Nathan Cornwell [Data Analytics with R](https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/#acknowledgements)  
 
 + the `biopsy` dataset attached to the [`MASS` package](https://cran.r-project.org/web/packages/MASS/MASS.pdf). 
 
@@ -189,13 +193,14 @@ In this tutorial, we will use:
 
 :::
 
-## Dataset on Heart Disease
+## Dataset on Heart Disease (`heart_data`)
 
-::: {style="font-size: 95%;"}
 
 **Name**: `heart_data.csv`  
 **Documentation**: Toy dataset prepared for teaching purposes. See reference on the data here [Data Analytics with R](https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/#acknowledgements)  
 **Sampling details**: This dataset contains 10,000 observations on 4 variables.  
+
+<br><br>
 
 ```{r}
 # Use `here` in specifying all the subfolders AFTER the working directory 
@@ -206,7 +211,6 @@ heart_data <- read.csv(file = here::here("practice", "data_input", "05_datasets"
                           na.strings = c("?","NA" ), # specific MISSING values  
                           row.names = NULL) 
 ```
-::: 
 
 ## `heart_data` variables with description
 
@@ -231,7 +235,7 @@ kableExtra::kable(heart_data_desc)
 ```
 :::
 
-## `heart` dataset splitting
+## `heart_data` dataset splitting
 
 In Machine Learning, it is good practice to split the data into `training` and `testing` sets.
 
@@ -273,12 +277,17 @@ heart_train[1:5,]
 
 We now examine visualize the relationship between the binary outcome variable `heart_disease` and the continuous predictor variable `fast_food_spend`.
 
++ `geom_jitter` adds a bit of randomness to the points to avoid overplotting.
++ `geom_boxplot` shows the distribution of the continuous variable by the binary outcome variable.
+
 <!-- https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/logreg.html -->
 
 ```{r}
 #| output: true
 #| output-location: slide
-#| fig.cap: 'The boxplots indicate that subjects who spend higher amounts annually on fast food show higher likelihood of heart disease (HD =1)'
+#| fig.cap: |
+#|   + The boxplots indicate that subjects with heart disease (HD =1) seem to spend higher amounts on fast food <br>
+#|   + Also, this sample has many more subjects without heart disease (HD = 0) than with heart disease (HD = 1)
 
 # plot the distribution of heart disease status by fast food spend
 heart_train %>% 
@@ -334,39 +343,108 @@ heart_train %>%
 
 :::
 
-## `Linear regression` wouldn'twork!
+## `Linear regression` wouldn't work!
 ::: {style="font-size: 90%"}
 
-We could technically use linear regression (@fig-lin-reg) to study likelihood of having `Heart Disease` in relation to risk factors, but it would not work:
++ In principle, we could use a **linear regression** model to study likelihood of having `Heart Disease` in relation to risk factors:
+$$ Y = \beta_0 + \beta_1 \cdot \text{(US\$ Spent Fast Food)} + \beta_2 \cdot \text{(Coffee Drinker = YES)} $$
 
-+ 🤔 How should we interpret a continuous prediction when it is different from $0$ or $1$?
++ But we'll see why the **logistic regression** model is a better option.
 
+$$ \log \left( \frac{p}{1-p} \right) = \beta_0 + \beta_1 \cdot \text{(US\$ Spent Fast Food)} + \beta_2 \cdot \text{(Coffee Drinker = YES)} $$
+
++ Let's compare the 2 models (for simplicity, we ignore the `coffee_drinker` variable for now.):
 ```{r}
-#| label: fig-lin-reg
-#| output: true
-#| output-location: slide
-#| fig.cap: 'Showing that a linear regression (back line) would fit poorly'
-
-# Hypothetical linear regression model
-lin_reg_model <- lm(heart_disease ~ fast_food_spend + coffee_drinker, data = heart_data)
-# Plot
-ggplot(heart_data) +
-  geom_point(aes(fast_food_spend, heart_disease, color = factor(heart_disease)), 
-             alpha = 0.25, size = 1.5) + 
-  scale_color_manual(values = c("0" = "#005ca1", "1" = "#9b2339")) +
-  # regression line
-  geom_abline(slope = coef(lin_reg_model)[2], 
-              intercept = coef(lin_reg_model)[1], color = "black", size = 1.2, linetype = "dashed" ) + 
-  labs(title = "Heart disease [0,1] against fast food spend (US$) + regression line (black dashed)") + 
-  ylab("Heart Disease (Y/N)") + 
-  xlab("Annual Fast Food Spend") 
+# --- 1) Linear regression model
+linear_mod <- lm(heart_disease ~ fast_food_spend# + coffee_drinker
+                 , data = heart_data)
+# --- 2) Logistic regression model
+logit_mod <- glm(heart_disease ~ fast_food_spend# + coffee_drinker
+                 , data = heart_data, family = "binomial")
 ```
 :::
 
-## `Linear regression` wouldn'twork!
+## [Compute alternative models' predictions]{.r-fit-text} 
+::: {style="font-size: 85%"}
+
+We can now extract the **coefficients** from the linear regression and logistic models, then estimate the **predicted outcomes** from these models: `lin_pred`, `logit_pred`, and `logistic_pred` (i.e. the conversion form log(odds) to probability).
+
+```{r}
+# --- 1) Extract coefficients from linear regression model
+intercept_lin <- coef(linear_mod)[1]
+fast_food_spend_lin <- coef(linear_mod)[2]
+coffee_drinker_lin <- coef(linear_mod)[3]
+
+# --- 2) Extract coefficients from logit regression model
+intercept_logit <- coef(logit_mod)[1]
+fast_food_spend_logit <- coef(logit_mod)[2]
+coffee_drinker_logit <- coef(logit_mod)[3]
+
+# --- Estimate predicted data from different models   
+heart_data <- heart_data %>%
+  mutate(
+    # Convert outcome variable to factor
+    heart_disease_factor = factor(heart_disease, 
+                                  labels = c("No Disease (Y=0)", "Disease (Y=1)")),
+    # 1) Linear model prediction
+    lin_pred = intercept_lin + fast_food_spend_lin * fast_food_spend, 
+    # 2) Logit model prediction
+    logit_pred = intercept_logit + fast_food_spend_logit * fast_food_spend,  coffee_drinker,
+    # 3) Convert logit to probability (logistic model prediction)
+    logistic_pred = 1 / (1 + exp(-logit_pred)) 
+    ) %>%
+  arrange(fast_food_spend)   
+```
+:::
+
+
+## Plot alternative models' outcomes
+We can also plot the **predicted outcomes** from the 3 models to see how they differ.  
+
+::: {style="font-size: 85%"}
+```{r}
+#| output: true
+#| output-location: slide
+#| fig.width: 8
+#| fig.height: 4.5
+#| fig.cap: |
+#|      + (The **actual** data points are shown as the grey dots)<br>
+#|      + The **linear** model predicts `values` that are ≠ 0 and 1, which poorly fit the actual data <br>
+#|      + The **logit** model predicts `log(odds)` ranging from -Inf to +Inf, which is not interpretable <br>
+#|      + The **logistic** model _squeezes_ `probabilities` between 0 and 1, which fits the data better  
+
+# --- Plot  
+ggplot(heart_data, aes(x = fast_food_spend)) +
+  # Actual dataset observations (Y=0, Y=1 ) using `color =`
+  geom_jitter(aes(y = heart_disease, color = heart_disease_factor), 
+              width = 200, height = 0.03, alpha = 0.75, size = 2, shape = 16) + 
+  # Models' predictions (smooth trends)
+  geom_smooth(aes(y = lin_pred, color = "Linear Regression"), method = "lm", se = FALSE, 
+              linewidth = 1.25, linetype = "dashed") +
+  geom_smooth(aes(y = logit_pred, color = "Logit (Log-Odds)"), method = "lm", se = FALSE, 
+              linewidth = 1.25, linetype = "dotdash") +
+  geom_smooth(aes(y = logistic_pred, color = "Logistic Regression"), method = "glm", 
+              method.args = list(family = "binomial"), se = FALSE, 
+              linewidth = 1.25, linetype = "solid") +
+  # Separate legends: color for dots, color for lines
+  scale_color_manual(name = "Actual Y values & Prediction Models", 
+                     values = c("No Disease (Y=0)" = "#A6A6A6", "Disease (Y=1)" = "#4c4c4c",
+                                "Linear Regression" = "#d02e4c","Logit (Log-Odds)" = "#239b85", 
+                                "Logistic Regression" = "#BD8723")) +
+  # Define scales for the axes
+  scale_x_continuous(breaks = seq(0, 6500, by = 500), limits = c(0, 6500), expand = c(0, 0))+
+  scale_y_continuous(breaks = seq(-3, 3, by = .25)) +
+  coord_cartesian(ylim = c(-1.25,1.25), xlim = c(0, 6500))  + theme_minimal() +
+  labs(title = "Comparing Linear and Logistic Regression Predictions v. actual Y values",
+       #subtitle = "(For simplicity, only fast food spend is considered)",
+       y = "Y = Heart disease [0,1]", x = "Fast food spend [US$/yr]", color = "Actual Y values and Predictions")
+```
+:::
+
+## `Linear regression` didn't work!
 
 ::: {style="font-size: 90%"}
-+ Also, recall that linear regression models implies certain **assumptions**: 
++ Besides the poor fit, recall linear regression models implies certain **assumptions**: 
     + ***Linear relationship*** between `Y` and the predictors `X1` and `X2`  
 <!-- (plot residuals v fitted values with no discernible pattern)-->
     + ***Residuals*** must be 1) approximately normally distributed and 2) uncorrelated
@@ -376,36 +454,36 @@ ggplot(heart_data) +
 
 <br><br>
 
-+ Assumptions are **not** met in this case
++ Assumptions that are **not** met in this case
 ```{r}
 #| label: fig-lin-reg_diag
 #| output: true
 #| output-location: slide
-#| fig.cap: 'Diagostic plots for a hypothetical linear regression model'
+#| fig.cap: 'Diagnostic plots for a hypothetical linear regression model 👎🏻'
 
 # diagnostic plots
 par(mfrow=c(2,2))
-plot(lin_reg_model)
+plot(linear_mod)
 ```
 :::
 
 ```{r}
+#| eval: false # need at least 2 predictors
 #| echo: false
 #| output: false
 
 # multicollinearity
-vif(lin_reg_model)
+vif(linear_mod)
 # ideally < 5
 ```
 
-
-
 ## [Fitting a `logistic regression` model]{.r-fit-text}
 
-+ We can instead fit a **logistic regression model** to the `heart_train` data using:
++ Now that we are convinced...
++ ...let's fit instead a **logistic regression model** to the `heart_train` data using:
   + the `glm` function for Generalized Linear Models, 
     + with argument `family = binomial` to specify logistic regression which will use `logit` as the `link` function,
-    + specifying (as usual) the 3 predictor variables after `~`. 
+    + here we employ all the 3 predictor variables in the dataset  (after `~`). 
 
 ```{r}
 #| output: true
@@ -420,7 +498,7 @@ heart_model <- glm(heart_disease ~ coffee_drinker + fast_food_spend + income,
 ## Model `summary` and `coefficients`
 
 ::: {style="font-size: 85%"}
-+ @tbl-logit_heart (next) shows the model output, with the `coefficient estimate` for each  predictor.
++ @tbl-logit_heart (next) shows the model output, with the coefficient estimate for each predictor.
   + The `broom::tidy` function converts the model summary into a more readable data frame.
   + The `odds ratio` (= exponentiated coefficient estimate) is more interpretable than the coefficient itself.
 
@@ -430,11 +508,11 @@ heart_model <- glm(heart_disease ~ coffee_drinker + fast_food_spend + income,
 #| output-location: slide
 #| label: tbl-logit_heart
 #| tbl-cap: |
-#|  Complete logistic regression model <br><br>
-#|    + **estimates** of coefficients are in the form of `natural logarithm of the odds` of the event happening (Heart Disease) <br>
-#|        + `positive estimate` indicates an increase in the odds of having Heart Desease  <br>
-#|        + `negative estimate` indicates a decrease in the odds of having Heart Desease <br>
-#|    + **odds_ratios** = the exponentiated coefficient estimate <br><br>
+#|  Logistic regression model output <br><br>
+#|    + **estimates** of coefficients are in the form of `natural logarithm of the odds` (log (odds)) of the event happening (Heart Disease) <br>
+#|        + a `positive estimate` indicates an increase in the odds of having Heart Desease  <br>
+#|        + a `negative estimate` indicates a decrease in the odds of having Heart Desease <br>
+#|    + **odds ratio** = the exponentiated coefficient estimate <br><br>
 
 # Convert model's output summary into data frame
 heart_model_coef <- broom::tidy(heart_model) %>% 
@@ -457,8 +535,6 @@ heart_model_coef <- broom::tidy(heart_model) %>%
 
 heart_model_coef
 ```
-
-
 ::: 
 
 
@@ -489,11 +565,18 @@ broom::tidy(heart_model) %>%
   kableExtra::row_spec(4,  background = "#f1e7d3")
 
 ```
-+ **Intercept**: gives the log-odds of heart disease when all predictor variables are zero. While not our focus, the highly negative value suggests very low baseline probability of heart disease in the sample.
-+ **Income**: Based on a `p-value = 0.8182`, we conclude that income is not significantly associated with heart disease. (Anyhow, the odds ratio of `≈1` would suggest no change in odds based on income.)
-:::
++ **Intercept**: gives the log-odds of heart disease when all predictor variables are zero. This is not generally interpreted, but the highly negative value suggests very low probability of heart disease <u>*in the sample of reference*</u>.
+  + (If interpreted) the intercept term `-11.0554` would translate as **probability** $P =  e^{-11.0554} / (1 + e^{-11.0554}) = 0.00002$ or $0.002\%$.
+  + ...which means: when $\text{coffee_drinker} = NO$, and $\text{fast_food_spend} = 0$, and $\text{income} = 0$, the probability of heart disease is as low as $0.002\%$.
+  
+<!-- WHICH MAKES TOTAL SENSE BASED ON OUR EXPLORATORY PLOTS -->
 
-## [Interpreting the logistic `coefficients`]{.r-fit-text}
++ **Income**: Based on a `p-value = 0.8182`, we conclude that income is not significantly associated with heart disease. (Anyhow, the odds ratio of `≈1` would suggest no change in odds based on income.)
+
+:::
+ 
+
+## [The `coefficient` of fast food $$ 🍔🍟]{.r-fit-text}
 
 :::{style="font-size: 75%"}
 
@@ -512,35 +595,129 @@ broom::tidy(heart_model) %>%
   dplyr::mutate(odds_ratio = exp(estimate)) %>%
   dplyr::relocate(odds_ratio, .after = estimate) %>%
   dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  # filter for intercept and fast food spend
+  dplyr::filter(term %in% c("(Intercept)", "fast_food_spend")) %>% 
   knitr::kable() %>% 
   # reduce font size
   kable_styling(font_size = 20) %>% 
   # highlight rows of terms (intercept) and income
-  kableExtra::row_spec(2:3,  background = "#f1e7d3")  
+  kableExtra::row_spec(2,  background = "#f1e7d3")  
 ```
 
-+ **Coffee Drinker (=YES)**: the negative coefficient of `-0.7296` (log-odds) means that coffee drinking is associated with _<u>lower</u> odds of having heart disease_. Specifically, it decreases the odds ratio of heart disease by `e^0.7296` which means (relative to non-coffee drinkers) an $OR =$ `0.48` $=$ `48%`, holding all other predictors fixed. This effect is statistically significant as `p-value = 0.0122`.
-+ **Fast Food Spend**: the positive coefficient of `0.0024` (log-odds) means that fast food spend is associated with _increased odds of having heart disease_. Given this is a <u>continuous variable</u>, this means that for every 1-unit increase in fast food spending, the odds of heart disease increase by `(e^0.0024 - 1)` $=$ `(1.0024 - 1)`, i.e. by `0.24%`. This effect is highly significant as `p-value = 0.0000`.
-  + But we should consider a more *adequate* scale! (relative to fast food annual spending):
+<!-- + **Coefficients** - A positive coefficient implies an increased odds of the binary outcome (e.g., presence of a disease) for each unit increase in the predictor variable. Conversely, a negative coefficient suggests decreased odds. -->
+<!-- + **Odds ratios** CONTINUOUS X VAR - The odds ratio represents the `factor by which the odds of the event increase or decrease for a one-unit change` in the predictor variable. An odds ratio > 1 indicates higher odds of the outcome, while an odds ratio < 1 indicates lower odds of the outcome. -->
+<!-- + **Odds ratios** DUMMY X VAR - The odds ratio represents how the odds of the outcome occurring change for that category relative to the reference category. -->
 
-    + `Δ+ = 1 USD`: $(1.0024)^{1} \approx 1.0024 \quad \text{hence (1.0024 - 1)x100 = 0.24% increase in odds}$
++ The positive coefficient of **Fast Food Annual Spending (US$)**, `0.0024` (highly statistically significant as `p-value = 0.0000`), suggests a **positive association with heart disease**.
 
-    + `Δ+ = 10 USD`: $(1.0024)^{10} \approx 1.024 \quad \text{hence (1.024 - 1)x100 = 2.4% increase in odds}$
++ This means that **for each additional** $\Delta X_1 = +1 \; US\$$ spent on fast food annually:  
+  + the **log(odds)** of heart disease increases by: $\Delta \log(\text{odds}) = \beta_{1} \times \Delta X_1 = 0.0024 \times 1 = 0.0024$  
 
-    + `Δ+ = 100 USD`: $(1.0024)^{100} \approx 1.27 \quad \text{hence (1.27 - 1)x100 = 27% increase in odds}$
+  + the **odds** of heart disease (with spending) increase by a factor of: $OR = e^{0.0024} \approx 1.0024$ (compared to without spending).
+  
+<!-- or equivalently: the odds go up by $0.24\%$ for each additional dollar spent on fast food annually. -->
+
++ The **probability** of heart disease is computed using the logistic function:  $P_{HD=1} = \frac{e^{\beta_0 + (\beta_1 \times X_1)}}{1 + e^{\beta_0 + (\beta_1 \times X_1)}}$  
+  + Solving for $\beta_0 = -11.0554$, $\beta_1 = 0.0024$ and $X_1 = 1$ gives: 
+  
+  $$P_{HD=1} = \frac{e^{-11.0554 + (0.0024 \times 1)}}{1 + e^{-11.0554 + (0.0024 \times 1)}} = 0.00001583981$$ 
+  
+which indicates a probability of heart disease is **as low as $0.00159\%$** when `fast_food_spend` $= 1\; US\$$.
+:::
+
+## [The `coefficient` of fast food $$ 🍔🍟]{.r-fit-text}
+
+:::{style="font-size: 75%"}
+```{r}
+#| echo: false
+#| output: true
+
+broom::tidy(heart_model) %>% 
+  # improve readability of significance levels
+  dplyr::mutate('signif. lev.' = case_when(
+    `p.value` < 0.001 ~ "***",
+    `p.value` < 0.01 ~ "**",
+    `p.value` < 0.05 ~ "*",
+    TRUE ~ ""))%>%
+  # add odds ratio column
+  dplyr::mutate(odds_ratio = exp(estimate)) %>%
+  dplyr::relocate(odds_ratio, .after = estimate) %>%
+  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  # filter for intercept and fast food spend
+  dplyr::filter(term %in% c("(Intercept)", "fast_food_spend")) %>% 
+  knitr::kable() %>% 
+  # reduce font size
+  kable_styling(font_size = 20) %>% 
+  # highlight rows of terms (intercept) and income
+  kableExtra::row_spec(2,  background = "#f1e7d3")  
+```
+
++ However, considering that this is **annual spending**, we should use a more **adequate scale**!
+
++ For example, **for an additional** $\Delta X_1 = +100 \; US\$$ spent on fast food annually:  
+  + the **log(odds)** of heart disease increases by: $\Delta \log(\text{odds}) = \beta_{1} \times \Delta X_1 = 0.0024 \times 100 = 0.24$  
+
+  + the **odds** of heart disease  (with spending) increase by a factor of: $OR = e^{0.24} \approx 1.271$  (compared to without spending).
+
+<!-- or equivalently: the odds go up by $27.1\%$ for each additional hundred dollars spent on fast food annually. --> 
+
++ The **probability** of heart disease is computed using the logistic function: $P_{HD=1} = \frac{e^{\beta_0 + (\beta_1 \times X_1)}}{1 + e^{\beta_0 + (\beta_1 \times X_1)}}$  
+
++ Solving for $\beta_0 = -11.0554$, $\beta_1 = 0.0024$ and and $X_1 = 100$ gives:  
+  $$P_{HD=1} = \frac{e^{-11.0554 + (0.0024 \times 100)}}{1 + e^{-11.0554 + (0.0024 \times 100)}} \approx 0.00002008$$    
+
+  which (this time) indicates a (**still very low probability**) of heart disease at **$0.002008\%$** when `fast_food_spend` $= 100\; US\$$.  
+:::
+<!-- + WHY SUCH A LOW PROBABILITY? -->
+<!--   + The probability at such a low baseline level (starting from an extremely low probability) does not increase linearly. -->
+<!--   + The change in absolute probability is tiny because the function is still in the flat lower part of the logistic curve. -->
+<!--   + The mean expenditure on fast food in the dataset is $2090.478, so the probability would be even lower. -->
+
+## [The `coefficient` of coffee drinking ☕️]{.r-fit-text}
+
+:::{style="font-size: 85%"}
+
+```{r}
+#| echo: false
+#| output: true
+
+broom::tidy(heart_model) %>% 
+  # improve readability of significance levels
+  dplyr::mutate('signif. lev.' = case_when(
+    `p.value` < 0.001 ~ "***",
+    `p.value` < 0.01 ~ "**",
+    `p.value` < 0.05 ~ "*",
+    TRUE ~ ""))%>%
+  # add odds ratio column
+  dplyr::mutate(odds_ratio = exp(estimate)) %>%
+  dplyr::relocate(odds_ratio, .after = estimate) %>%
+  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  # filter for intercept and fast food spend
+  dplyr::filter(term %in% c("(Intercept)", "coffee_drinkerYes_Coffee")) %>% 
+  knitr::kable() %>% 
+  # reduce font size
+  kable_styling(font_size = 20) %>% 
+  # highlight rows of terms (intercept) and income
+  kableExtra::row_spec(2,  background = "#f1e7d3")  
+```
+
++ The negative coefficient of **Coffee Drinker (=YES)**, `-0.7296` expressed in **log-odds**, means that coffee drinking is associated with _<u>lower</u> odds of having heart disease_. 
++ Transforming the estimate into **odds ratio**, we obtain $0.48 = 48\%$, which tells that **coffee-drinkers** have 0.48 (or 48%) lower odds than non-coffee drinkers to experience heart disease (holding all other predictors fixed). 
+$$ \text{Odds Ratio} = e^{-0.7296} = 0.48 $$
+
+  + Alternatively, we could say that **non-coffee drinkers** have $1-0.48 = 0.52 = 52\%$ higher odds of having heart disease compared to coffee drinkers. 
++ This effect is statistically significant as `p-value = 0.0122`.
 
 :::
 
-## Wait, is drinking coffee good or bad? 🤔
+## [Wait, is drinking coffee good or bad? 🤔]{.r-fit-text}
 
-Our **plot** above showed that there was a `higher proportion of coffee drinkers with heart disease` as compared to non coffee drinkers. 
-However, our **model** told us that coffee drinking is associated with a `decrease in the likelihood of having heart disease`.  
-How can that be? <br><br>  
-
-It’s because `coffee drinking` and `fast food spend` are <u>**correlated**</u>so, on it’s own, it would _appear_ as if coffee drinking were associated with heart disease, but this is only because coffee drinking is also associated with fast food spend, which our model tells us is the real contributor to heart disease.
-
-
-
+Our **plot** above showed that there was a higher proportion of coffee drinkers with heart disease as compared to non coffee drinkers. 
+However, our **model** just told us that coffee drinking is associated with a decrease in the likelihood of having heart disease.
+<br><br>  
+ How can that be❓
+<br><br>
+It’s because `coffee_drinking` and `fast__food_spend` are <u>**correlated**</u> so, on it’s own, it would _appear_ as if coffee drinking were associated with heart disease, but this is only because coffee drinking is also associated with fast food spend, which our model tells us is the real contributor to heart disease.
 
 # 🖍️🖍️ qui 
 <!-- SEGUI  -->
@@ -548,11 +725,6 @@ It’s because `coffee drinking` and `fast food spend` are <u>**correlated**</u>
 <!-- https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/logreg.html -->
 <!-- e  -->
 <!-- https://www.geeksforgeeks.org/how-to-interpret-odds-ratios-in-logistic-regression/?ref=next_article -->
-
-
-
-
-
 
 ## Making predictions from `logistic regression` model
 
