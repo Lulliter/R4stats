@@ -28,6 +28,7 @@ format:
 <!-- ::: -->
 
 <br>
+
 ### Welcome! 
 
 This website hosts some teaching material on **"Introduction to Statistics & Machine Learning with R"** — an intensive workshop that offers a few lectures accompanied by matching practice sessions -- to reinforce the concepts learned using {{< fa brands r-project >}} programming.

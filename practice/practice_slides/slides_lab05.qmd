@@ -155,7 +155,7 @@ library(broom)      # Convert Statistical Objects into Tidy Tibbles
 
 ## Logistic regression: `logit` function
 ::: {style="font-size: 85%;"}
-If we have predictor variables like $x_{1,i}$, $x_{2,i}$, ..., $x_{k,i}$ and a binary response variable $y_i$ (where $y_i = 0$ or $y_i = 1$), we need a **"special" function** to transform the expected value of the response variable into the $[0,1]$ outcome we’re trying to predict. <br><br>
+If we have predictor variables like $X_{1}$, $X_{2}$, ..., $X_{k}$ and a binary response variable $Y$ (where $y_i = 0$ or $y_i = 1$), we need a **"special" function** to transform the expected value of the response variable into the $[0,1]$ outcome we’re trying to predict. <br><br>
 
 The **`logit` function** (of the GLM family) helps us determine the coefficients $\beta_0$, $\beta_1$, ..., $\beta_k$ that best fit this sort of data and it is defined as:
 $$
@@ -193,8 +193,7 @@ In this tutorial, we will use:
 
 :::
 
-## Dataset on Heart Disease (`heart_data`)
-
+## [Dataset on Heart Disease (`heart_data`)]{.r-fit-text}
 
 **Name**: `heart_data.csv`  
 **Documentation**: Toy dataset prepared for teaching purposes. See reference on the data here [Data Analytics with R](https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/#acknowledgements)  
@@ -274,8 +273,7 @@ heart_train[1:5,]
 ```
 
 ## Plotting `Y` by `X1` (continuous variable)
-
-We now examine visualize the relationship between the binary outcome variable `heart_disease` and the continuous predictor variable `fast_food_spend`.
+Let's visualize the relationship between the binary outcome variable `heart_disease` and the continuous predictor variable `fast_food_spend`.
 
 + `geom_jitter` adds a bit of randomness to the points to avoid overplotting.
 + `geom_boxplot` shows the distribution of the continuous variable by the binary outcome variable.
@@ -310,7 +308,7 @@ heart_train %>%
 ## Plotting `Y` by `X2` (discrete variable)
 
 ::: {style="font-size: 90%;"}
-Then we examine the relationship between the binary outcome variable `heart_disease` and the binary predictor variable `coffee_drinker`.
+Let's see also the relationship between the binary outcome variable `heart_disease` and the binary predictor variable `coffee_drinker`.
 
   + we use the handy `count` function from `dplyr` to count occurrences in categorical variable(s) combinations.
 ```{r}
@@ -347,11 +345,11 @@ heart_train %>%
 ::: {style="font-size: 90%"}
 
 + In principle, we could use a **linear regression** model to study likelihood of having `Heart Disease` in relation to risk factors:
-$$ Y = \beta_0 + \beta_1 \cdot \text{(US\$ Spent Fast Food)} + \beta_2 \cdot \text{(Coffee Drinker = YES)} $$
+$$ Y = \beta_0 + \beta_1\text{(US\$ Spent Fast Food)} + \beta_2\text{(Coffee Drinker = YES)} $$
 
 + But we'll see why the **logistic regression** model is a better option.
 
-$$ \log \left( \frac{p}{1-p} \right) = \beta_0 + \beta_1 \cdot \text{(US\$ Spent Fast Food)} + \beta_2 \cdot \text{(Coffee Drinker = YES)} $$
+$$ \log \left( \frac{p}{1-p} \right) = \beta_0 + \beta_1\text{(US\$ Spent Fast Food)} + \beta_2\text{(Coffee Drinker = YES)} $$
 
 + Let's compare the 2 models (for simplicity, we ignore the `coffee_drinker` variable for now.):
 ```{r}
@@ -479,11 +477,11 @@ vif(linear_mod)
 
 ## [Fitting a `logistic regression` model]{.r-fit-text}
 
-+ Now that we are convinced...
++ [Now that we are convinced...]
 + ...let's fit instead a **logistic regression model** to the `heart_train` data using:
   + the `glm` function for Generalized Linear Models, 
     + with argument `family = binomial` to specify logistic regression which will use `logit` as the `link` function,
-    + here we employ all the 3 predictor variables in the dataset  (after `~`). 
+    + (after `~`) we include the 3 predictor variables in the model. 
 
 ```{r}
 #| output: true
@@ -495,7 +493,7 @@ heart_model <- glm(heart_disease ~ coffee_drinker + fast_food_spend + income,
 ```
 
 
-## Model `summary` and `coefficients`
+## Model output
 
 ::: {style="font-size: 85%"}
 + @tbl-logit_heart (next) shows the model output, with the coefficient estimate for each predictor.
@@ -540,7 +538,7 @@ heart_model_coef
 
 ## [Interpreting the logistic `coefficients`]{.r-fit-text}
 
-:::{style="font-size: 90%"}
+:::{style="font-size: 80%"}
 
 ```{r}
 #| echo: false
@@ -598,8 +596,8 @@ broom::tidy(heart_model) %>%
   # filter for intercept and fast food spend
   dplyr::filter(term %in% c("(Intercept)", "fast_food_spend")) %>% 
   knitr::kable() %>% 
-  # reduce font size
-  kable_styling(font_size = 20) %>% 
+  # # reduce font size
+  # kable_styling(font_size = 20) %>% 
   # highlight rows of terms (intercept) and income
   kableExtra::row_spec(2,  background = "#f1e7d3")  
 ```
@@ -617,7 +615,7 @@ broom::tidy(heart_model) %>%
   
 <!-- or equivalently: the odds go up by $0.24\%$ for each additional dollar spent on fast food annually. -->
 
-+ The **probability** of heart disease is computed using the logistic function:  $P_{HD=1} = \frac{e^{\beta_0 + (\beta_1 \times X_1)}}{1 + e^{\beta_0 + (\beta_1 \times X_1)}}$  
++ The **probability** of heart disease can be computed using the logistic function:  $P_{HD=1} = \frac{e^{\beta_0 + (\beta_1 \times X_1)}}{1 + e^{\beta_0 + (\beta_1 \times X_1)}}$  
   + Solving for $\beta_0 = -11.0554$, $\beta_1 = 0.0024$ and $X_1 = 1$ gives: 
   
   $$P_{HD=1} = \frac{e^{-11.0554 + (0.0024 \times 1)}}{1 + e^{-11.0554 + (0.0024 \times 1)}} = 0.00001583981$$ 
@@ -646,8 +644,8 @@ broom::tidy(heart_model) %>%
   # filter for intercept and fast food spend
   dplyr::filter(term %in% c("(Intercept)", "fast_food_spend")) %>% 
   knitr::kable() %>% 
-  # reduce font size
-  kable_styling(font_size = 20) %>% 
+  # # reduce font size
+  # kable_styling(font_size = 20) %>% 
   # highlight rows of terms (intercept) and income
   kableExtra::row_spec(2,  background = "#f1e7d3")  
 ```
@@ -661,7 +659,7 @@ broom::tidy(heart_model) %>%
 
 <!-- or equivalently: the odds go up by $27.1\%$ for each additional hundred dollars spent on fast food annually. --> 
 
-+ The **probability** of heart disease is computed using the logistic function: $P_{HD=1} = \frac{e^{\beta_0 + (\beta_1 \times X_1)}}{1 + e^{\beta_0 + (\beta_1 \times X_1)}}$  
++ The **probability** of heart disease can be computed using the logistic function: $P_{HD=1} = \frac{e^{\beta_0 + (\beta_1 \times X_1)}}{1 + e^{\beta_0 + (\beta_1 \times X_1)}}$  
 
 + Solving for $\beta_0 = -11.0554$, $\beta_1 = 0.0024$ and and $X_1 = 100$ gives:  
   $$P_{HD=1} = \frac{e^{-11.0554 + (0.0024 \times 100)}}{1 + e^{-11.0554 + (0.0024 \times 100)}} \approx 0.00002008$$    
@@ -675,7 +673,7 @@ broom::tidy(heart_model) %>%
 
 ## [The `coefficient` of coffee drinking ☕️]{.r-fit-text}
 
-:::{style="font-size: 85%"}
+:::{style="font-size: 75%"}
 
 ```{r}
 #| echo: false
@@ -696,18 +694,98 @@ broom::tidy(heart_model) %>%
   dplyr::filter(term %in% c("(Intercept)", "coffee_drinkerYes_Coffee")) %>% 
   knitr::kable() %>% 
   # reduce font size
-  kable_styling(font_size = 20) %>% 
+  # kable_styling(font_size = 20) %>% 
   # highlight rows of terms (intercept) and income
   kableExtra::row_spec(2,  background = "#f1e7d3")  
 ```
 
-+ The negative coefficient of **Coffee Drinker (=YES)**, `-0.7296` expressed in **log-odds**, means that coffee drinking is associated with _<u>lower</u> odds of having heart disease_. 
-+ Transforming the estimate into **odds ratio**, we obtain $0.48 = 48\%$, which tells that **coffee-drinkers** have 0.48 (or 48%) lower odds than non-coffee drinkers to experience heart disease (holding all other predictors fixed). 
-$$ \text{Odds Ratio} = e^{-0.7296} = 0.48 $$
-
-  + Alternatively, we could say that **non-coffee drinkers** have $1-0.48 = 0.52 = 52\%$ higher odds of having heart disease compared to coffee drinkers. 
++ The negative coefficient of **Coffee Drinker (=YES)**, `-0.7296` expressed in **log-odds**, means that coffee drinkers have _<u>lower</u> odds of having heart disease_ (relative to non-coffee drinkers). 
 + This effect is statistically significant as `p-value = 0.0122`.
++ Transforming the estimate into **odds ratio**, we obtain $\text{O.R.} = e^{-0.7296} = 0.48$ , meaning **coffee-drinkers** have 0.48 (or 48%) the odds that non-coffee drinkers have to experience heart disease (holding all other predictors fixed). 
+$$ \text{Odds Ratio} = e^{-0.7296} = 0.48 $$
+  + How much is the drop of the odds? Since O.R. is < 1, I have a percentage decrease:  
+  $(1 - 0.48) = 0.52$ or $52\%$ **lower odds of having heart disease compared to non-coffee drinkers**.
 
+<!-- 1 is no effect, so "how much did the odds drop relative to 1 (no effect, i.e. there is no difference between groups.)?" -->
+
+:::{.aside}
+Odds are typically expressed as a ratio, but they can be converted into a percentage increase relative to a baseline. However, the percentage **is not a probability**. 
+:::
+:::
+
+<!-- + For non coffee drinkers, the **odds ratio** of heart disease is -->
+<!-- $$ \text{Odds Ratio} = \frac{1}{0.48} = 2.08 $$    -->
+<!--   + How much higher the odds? Since O.R. is > 1, I have a percentage increase (compared to the reference group) of:   -->
+<!--   $(2.08 - 1) = 1.08$ or $108\%$ **higher odds of having heart disease compared to coffee drinkers**.  -->
+
+## Understanding Odds
+:::{style="font-size: 90%"}
++ **Odds** represent the ratio of the probability of an event occurring to the probability of it not occurring:
+  - **Example:** If the probability of heart disease is **0.25 (25%)**, then the odds are:
+
+$$ \text{Odds} = \frac{P(\text{event})}{1 - P(\text{event})} $$
+  
+  $$ \frac{0.25}{1 - 0.25} = \frac{0.25}{0.75} = 0.33 $$
+
+  This means that for **every 1 person without heart disease, there are 0.33 people with it.**  
+  (Or equivalently: for every **3 people without heart disease, 1 person has it.**)
+:::
+
+## Understanding Odds Ratio
+:::{style="font-size: 90%"}
++ **Odds Ratio (O.R.)** compares the odds of an event occurring in one group (exposed) relative to another group (reference).
+
+  + **Example:** If the odds of heart disease for coffee drinkers are **0.48**, and for non-coffee drinkers are **1**, then the odds ratio is:
+
+$$\text{Odds Ratio} = \frac{\text{Odds}_{\text{exposed}}}{\text{Odds}_{\text{reference}}} = 
+\frac{\text{Odds}_{\text{coffee drinkers}}}{\text{Odds}_{\text{non-coffee drinkers}}} = \frac{0.48}{1} = 0.48$$
+
++ **Interpretation:**
+  - If **O.R. > 1**, the event is **more likely** in the exposed group.
+  - If **O.R. < 1**, the event is **less likely** in the exposed group.
+  - If **O.R. = 1**, there is **no difference** between groups.
+
+::: 
+
+## [Example: Coffee Drinkers vs. Non-Coffee Drinkers]{.r-fit-text}
+:::{style="font-size: 75%"}
+If the **odds of heart disease** are:
+
+- Coffee drinkers (exposed group): $0.48$
+- Non-coffee drinkers (reference group): $1$
+
+Then the **Odds Ratio** is:
+
+$$\text{Odds Ratio} = \frac{\text{Odds}_{\text{coffee drinkers}}}{\text{Odds}_{\text{non-coffee drinkers}}} =
+\frac{0.48}{1} = 0.48$$
+
+This means **coffee drinkers have 52% lower odds** of heart disease than non-coffee drinkers.
+
+```{r}
+#| output: true
+#| echo: false
+
+library(knitr)
+library(kableExtra)
+
+# Create the table with properly formatted headers
+odds_table <- data.frame(
+  "Odds Ratio (O.R.)" = c("O.R. < 1", "O.R. > 1"),
+  "Example O.R." = c("0.48", "2.08"),
+  "Formula for % Change in Odds" = c("(1 - O.R.) × 100", "(O.R. - 1) × 100"), 
+  "Calculation" = c("(1 - 0.48) × 100 = 52%", "(2.08 - 1) × 100 = 108%"),
+  "Interpretation" =  c("52% lower odds of having heart disease compared to non-coffee drinkers", 
+                         "108% higher odds of having heart disease compared to coffee drinkers"),
+  check.names = FALSE # Prevents R from replacing spaces with dots
+)
+
+# Print as a kable table with better formatting
+kable(odds_table, align = "c") %>% 
+  #caption = "Odds Ratio Interpretation: Coffee Drinkers vs. Non-Coffee Drinkers",  %>%
+  # kableExtra::kable_styling(full_width = FALSE, font_size = 18) %>%  # Reduced font size slightly for better fit
+  # kableExtra::row_spec(0, bold = TRUE, font_size = 22) %>%  # Bolder and slightly larger header
+  kableExtra::column_spec(3:5, background = "#f1e7d3")  
+```
 :::
 
 ## [Wait, is drinking coffee good or bad? 🤔]{.r-fit-text}

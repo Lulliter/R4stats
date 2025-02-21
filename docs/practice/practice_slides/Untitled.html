@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>R 4 statistics - Intro to Statistics &amp; Machine Learning with </title>
+<title>R 4 statistics - Untitled</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,20 +23,20 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<link href="./images/icons8-r-project-120.png" rel="icon" type="image/png">
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<link href="../../images/icons8-r-project-120.png" rel="icon" type="image/png">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -53,6 +53,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -63,7 +92,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">R 4 statistics</span>
     </a>
   </div>
@@ -73,17 +102,17 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> <i class="bi bi-house-fill" role="img">
+    <a class="nav-link" href="../../index.html"> <i class="bi bi-house-fill" role="img">
 </i> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./install.html"> <i class="bi bi-tools" role="img">
+    <a class="nav-link" href="../../install.html"> <i class="bi bi-tools" role="img">
 </i> 
 <span class="menu-text">Pre-Workshop</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./syllabus.html"> <i class="bi bi-book-fill" role="img">
+    <a class="nav-link" href="../../syllabus.html"> <i class="bi bi-book-fill" role="img">
 </i> 
 <span class="menu-text">Syllabus</span></a>
   </li>  
@@ -95,33 +124,33 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-modules">    
         <li>
-    <a class="dropdown-item" href="./modules/01_data_with_R.html">
+    <a class="dropdown-item" href="../../modules/01_data_with_R.html">
  <span class="dropdown-text">Intro to R and data analysis</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./modules/02_inference.html">
+    <a class="dropdown-item" href="../../modules/02_inference.html">
  <span class="dropdown-text">Statistical inference &amp; hypothesis testing</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./modules/03_corr_regress.html">
+    <a class="dropdown-item" href="../../modules/03_corr_regress.html">
  <span class="dropdown-text">Modeling correlation and regression</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./modules/04_caus_pred.html">
+    <a class="dropdown-item" href="../../modules/04_caus_pred.html">
  <span class="dropdown-text">Causal analysis essentials</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./modules/05_intro_ML.html">
+    <a class="dropdown-item" href="../../modules/05_intro_ML.html">
  <span class="dropdown-text">Intro to machine learning</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./modules/06_extra.html">
+    <a class="dropdown-item" href="../../modules/06_extra.html">
  <span class="dropdown-text">Bonus topics</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="./license_etc.html"> <i class="bi bi-bookmark-heart-fill" role="img">
+    <a class="nav-link" href="../../license_etc.html"> <i class="bi bi-bookmark-heart-fill" role="img">
 </i> 
 <span class="menu-text">Acknowledgements</span></a>
   </li>  
@@ -136,7 +165,15 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#understanding-odds-and-odds-ratio" id="toc-understanding-odds-and-odds-ratio" class="nav-link active" data-scroll-target="#understanding-odds-and-odds-ratio"><strong>Understanding Odds and Odds Ratio</strong></a></li>
+  <li><a href="#create-the-table-with-properly-formatted-headers" id="toc-create-the-table-with-properly-formatted-headers" class="nav-link" data-scroll-target="#create-the-table-with-properly-formatted-headers">Create the table with properly formatted headers</a></li>
+  <li><a href="#print-as-a-kable-table" id="toc-print-as-a-kable-table" class="nav-link" data-scroll-target="#print-as-a-kable-table">Print as a kable table</a></li>
+  </ul>
+</nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -147,7 +184,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Intro to Statistics &amp; Machine Learning with <i class="fa-brands fa-r-project" aria-label="r-project"></i></h1>
+<h1 class="title">Untitled</h1>
 </div>
 
 
@@ -164,29 +201,46 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!-- ::: {.callout-caution collapse="false"} -->
-<!-- Webpage construction in progress... -->
-<!-- ::: -->
-<p><br></p>
-<section id="welcome" class="level3">
-<h3 class="anchored" data-anchor-id="welcome">Welcome!</h3>
-<p>This website hosts some teaching material on <strong>“Introduction to Statistics &amp; Machine Learning with R”</strong> — an intensive workshop that offers a few lectures accompanied by matching practice sessions – to reinforce the concepts learned using <i class="fa-brands fa-r-project" aria-label="r-project"></i> programming.</p>
-<p>The course was originally designed for a summer workshop offered to a group of PhD students from various EU universities specializing in life sciences (see <a href="https://R4biostats.com/">https://R4biostats.com/</a>).</p>
-<p>I (<em>Luisa</em>) co-created that workshop with my sister 😊 (<em>Chiara</em>) and I am currently revising and expanding the materials presented here.</p>
-<div class="custom-border" style="border: 1px solid lightgray; padding: 10px; border-radius: 15px; background-color: #f8f9fa;">
-<div class="columns">
-<div class="column" style="width:70%;">
-<p><strong><em>Get in touch if you have questions and/or are interested in a similar workshop for your team!</em></strong></p>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:25%;">
-<!-- bootstrap buttons  -->
-<p>
-<a id="mail-link" href="mailto:lmm76@georgetown.edu" class="btn btn-dark"> <i class="fa fa-envelope"></i> &nbsp;&nbsp;Email us</a>
-</p>
-</div>
-</div>
-</div>
+<section id="understanding-odds-and-odds-ratio" class="level3">
+<h3 class="anchored" data-anchor-id="understanding-odds-and-odds-ratio"><strong>Understanding Odds and Odds Ratio</strong></h3>
+<section id="what-are-odds" class="level4">
+<h4 class="anchored" data-anchor-id="what-are-odds"><strong>1️⃣ What Are Odds?</strong></h4>
+<p>Odds represent the <strong>ratio of the probability of an event occurring to the probability of it not occurring</strong>:</p>
+<p><span class="math display">\[ \text{Odds} = \frac{P(\text{event})}{1 - P(\text{event})} \]</span></p>
+<ul>
+<li><p><strong>Example:</strong> If the probability of heart disease is <strong>0.25 (25%)</strong>, then the odds are:</p>
+<p><span class="math display">\[ \frac{0.25}{1 - 0.25} = \frac{0.25}{0.75} = 0.33 \]</span></p>
+<p>This means that for every <strong>1 person with heart disease, there are 3 people without it</strong>.</p></li>
+</ul>
+<hr>
+</section>
+<section id="what-is-an-odds-ratio" class="level4">
+<h4 class="anchored" data-anchor-id="what-is-an-odds-ratio"><strong>2️⃣ What Is an Odds Ratio?</strong></h4>
+<p>The <strong>Odds Ratio (O.R.)</strong> compares the odds of an event occurring <strong>between two groups</strong>:</p>
+<p><span class="math display">\[\text{Odds Ratio} = \frac{\text{Odds}_{\text{exposed}}}{\text{Odds}_{\text{reference}}}\]</span></p>
+<ul>
+<li>If <strong>O.R. &gt; 1</strong>, the event is <strong>more likely</strong> in the exposed group.</li>
+<li>If <strong>O.R. &lt; 1</strong>, the event is <strong>less likely</strong> in the exposed group.</li>
+<li>If <strong>O.R. = 1</strong>, there is <strong>no difference</strong> between groups.</li>
+</ul>
+<hr>
+</section>
+<section id="example-coffee-drinkers-vs.-non-coffee-drinkers" class="level4">
+<h4 class="anchored" data-anchor-id="example-coffee-drinkers-vs.-non-coffee-drinkers"><strong>3️⃣ Example: Coffee Drinkers vs.&nbsp;Non-Coffee Drinkers</strong></h4>
+<p>If the <strong>odds of heart disease</strong> are: - <strong>Coffee drinkers (exposed group):</strong> <strong>0.48</strong> - <strong>Non-coffee drinkers (reference group):</strong> <strong>1</strong></p>
+<p>Then the <strong>Odds Ratio</strong> is:</p>
+<p><span class="math display">\[\text{Odds Ratio} = \frac{\text{Odds}_{\text{exposed}}}{\text{Odds}_{\text{reference}}} = \frac{0.48}{1} = 0.48\]</span></p>
+<p>This means <strong>coffee drinkers have 52% lower odds</strong> of heart disease than non-coffee drinkers.</p>
+<p>#| output: true #| echo: false</p>
+</section>
+</section>
+<section id="create-the-table-with-properly-formatted-headers" class="level1">
+<h1>Create the table with properly formatted headers</h1>
+<p>odds_table &lt;- data.frame( “Odds Ratio (O.R.)” = c(“O.R. &lt; 1”, “O.R. &gt; 1”), “O.R. Example” = c(“0.48”, “2.08”), “Formula for % Change in Odds” = c(“(1 - O.R.) × 100”, “(O.R. - 1) × 100”), “Calculation” = c(“(1 - 0.48) × 100 = 52%”, “(2.08 - 1) × 100 = 108%”), “Interpretation” = c(“52% lower odds of having heart disease compared to non-coffee drinkers”, “108% higher odds of having heart disease compared to coffee drinkers”), check.names = FALSE # Prevents R from replacing spaces with dots )</p>
+</section>
+<section id="print-as-a-kable-table" class="level1">
+<h1>Print as a kable table</h1>
+<p>kable(odds_table, caption = “Odds Ratio Interpretation: Coffee Drinkers vs.&nbsp;Non-Coffee Drinkers”, align = “c”) %&gt;% kable_styling(full_width = FALSE)</p>
 
 
 </section>
