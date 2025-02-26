@@ -1,7 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>{{< var websites.live_site >}}/syllabus.html</loc>
+    <lastmod>2025-01-26T21:02:13.923Z</lastmod>
+  </url>
+  <url>
     <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab05.html</loc>
-    <lastmod>2025-02-21T14:31:10.824Z</lastmod>
+    <lastmod>2025-02-26T11:24:01.684Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab03.html</loc>
+    <lastmod>2025-02-19T11:57:51.431Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab01.html</loc>
+    <lastmod>2025-02-19T11:57:51.069Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/modules/06_extra.html</loc>
+    <lastmod>2024-12-11T18:56:23.633Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/modules/04_caus_pred.html</loc>
+    <lastmod>2024-12-06T15:48:43.622Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/modules/02_inference.html</loc>
+    <lastmod>2024-12-02T18:33:13.769Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/me.html</loc>
+    <lastmod>2024-08-28T08:17:01.807Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/install.html</loc>
+    <lastmod>2025-01-26T20:34:51.665Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/index.html</loc>
+    <lastmod>2025-02-20T18:35:10.103Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/license_etc.html</loc>
+    <lastmod>2025-02-20T18:17:43.356Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/modules/01_data_with_R.html</loc>
+    <lastmod>2024-12-02T18:33:11.785Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/modules/03_corr_regress.html</loc>
+    <lastmod>2024-12-02T18:38:28.587Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/modules/05_intro_ML.html</loc>
+    <lastmod>2024-12-11T18:30:52.806Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_extra_01.html</loc>
+    <lastmod>2024-08-28T08:17:01.821Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab02.html</loc>
+    <lastmod>2025-02-19T11:57:51.318Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab04.html</loc>
+    <lastmod>2025-02-19T11:57:51.591Z</lastmod>
+  </url>
+  <url>
+    <loc>{{< var websites.live_site >}}/practice/practice_slides/slides_lab06.html</loc>
+    <lastmod>2025-02-19T11:57:40.802Z</lastmod>
   </url>
 </urlset>

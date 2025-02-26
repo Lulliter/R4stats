@@ -53,7 +53,7 @@
     "href": "practice/practice_slides/slides_lab05.html#lab-5",
     "title": "Lab 5: Intro to Machine Learning",
     "section": "Lab # 5",
-    "text": "Lab # 5\n\n\n\nIn this Lab session, we will focus on Machine Learning (ML), as introduced in Lecture 5\nWe will review examples of both supervised and unsupervised ML algorithms\n\n\nSupervised ML algorithms examples:\n\nLogistic regression\nClassification and regression trees (CART)\n🌳 Random Forest classifier\n\n\n\nUnsupervised ML algorithms examples:\n\nK-means Clustering\nPCA for dimension reduction\n\n\n(optional) PLS-DA for classification, a supervised ML alternative to PCA"
+    "text": "Lab # 5\n\n\n\nIn this Lab session, we will focus on Machine Learning (ML), as introduced in Lecture 5\nWe will review examples of both supervised and unsupervised ML algorithms\n\n\nSupervised ML algorithms examples:\n\nLogistic regression\nClassification and regression trees (CART)\n🌳 Random Forest classifier\n\n\n\nUnsupervised ML algorithms examples:\n\nK-means Clustering\nPCA for dimension reduction\n\n\n(optional) PLS-DA for classification, a supervised ML alternative to PCA\n\n\n\n\n\n\nhighlight ="
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#acknowledgements",
@@ -172,14 +172,14 @@
     "href": "practice/practice_slides/slides_lab05.html#linear-regression-didnt-work",
     "title": "Lab 5: Intro to Machine Learning",
     "section": "\nLinear regression didn’t work!",
-    "text": "Linear regression didn’t work!\n\n\nBesides the poor fit, recall linear regression models implies certain assumptions:\n\n\nLinear relationship between Y and the predictors X1 and X2\n\n\nResiduals must be 1) approximately normally distributed and 2) uncorrelated \n\n\nHomoscedasticity: residuals should have constant variance\n\nNon collinearity: predictor variables should not be highly correlated with each other\n\n\n\n\n\nAssumptions that are not met in this case\n\n\n# diagnostic plots\npar(mfrow=c(2,2))\nplot(linear_mod)"
+    "text": "Linear regression didn’t work!\n\n\nBesides the poor fit, recall linear regression models implies certain assumptions:\n\n\nLinear relationship between Y and the predictors X1 and X2\n\n\nResiduals must be 1) approximately normally distributed and 2) uncorrelated \n\n\nHomoscedasticity: residuals should have constant variance\n\nNon collinearity: predictor variables should not be highly correlated with each other\n\n\n\n\n\nAssumptions that are not met in this case\n\n\n# Set graphical parameters to plot side by side\npar(mfrow = c(1, 2))\n\n# Diagnostic plots\nplot(linear_mod, which = 1)\nplot(linear_mod, which = 2)\n\n# Reset graphical parameters (optional, avoids affecting later plots)\npar(mfrow = c(1, 1))"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#linear-regression-didnt-work-output",
     "href": "practice/practice_slides/slides_lab05.html#linear-regression-didnt-work-output",
     "title": "Lab 5: Intro to Machine Learning",
     "section": "\nLinear regression didn’t work!",
-    "text": "Linear regression didn’t work!\n\n\n\nFigure 1: Diagnostic plots for a hypothetical linear regression model 👎🏻"
+    "text": "Linear regression didn’t work!\n\n\n\nFigure 1: “Diagnostic plots for a hypothetical linear regression model 👎🏻”  + a) Residuals should be randomly scattered around 0  + b) QQ plot should be close to the diagonal line"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#fitting-a-logistic-regression-model",
@@ -189,18 +189,18 @@
     "text": "Fitting a logistic regression model\n\n[Now that we are convinced…]\n…let’s fit instead a logistic regression model to the heart_train data using:\n\nthe glm function for Generalized Linear Models,\n\nwith argument family = binomial to specify logistic regression which will use logit as the link function,\n(after ~) we include the 3 predictor variables in the model.\n\n\n\n\n\n\n# Fit a logistic regression model\nheart_model &lt;- glm(heart_disease ~ coffee_drinker + fast_food_spend + income,\n                   data = heart_train, \n                   family = binomial(link = \"logit\"))"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab05.html#model-summary-and-coefficients",
-    "href": "practice/practice_slides/slides_lab05.html#model-summary-and-coefficients",
+    "objectID": "practice/practice_slides/slides_lab05.html#model-output",
+    "href": "practice/practice_slides/slides_lab05.html#model-output",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Model summary and coefficients\n",
-    "text": "Model summary and coefficients\n\n\n\n\nTable 1 (next) shows the model output, with the coefficient estimate for each predictor.\n\nThe broom::tidy function converts the model summary into a more readable data frame.\nThe odds ratio (= exponentiated coefficient estimate) is more interpretable than the coefficient itself.\n\n\n\n\n# Convert model's output summary into data frame\nheart_model_coef &lt;- broom::tidy(heart_model) %&gt;% \n  # improve readability of significance levels\n  dplyr::mutate('signif. lev.' = case_when(\n    `p.value` &lt; 0.001 ~ \"***\",\n    `p.value` &lt; 0.01 ~ \"**\",\n    `p.value` &lt; 0.05 ~ \"*\",\n    TRUE ~ \"\"))%&gt;%\n  # add odds ratio column\n  dplyr::mutate(odds_ratio = exp(estimate)) %&gt;%\n  dplyr::relocate(odds_ratio, .after = estimate) %&gt;%\n  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %&gt;%\n  # format as table\n  knitr::kable() %&gt;% \n  # reduce font size\n  kable_styling(font_size = 20) %&gt;% \n  # add table title\n  kableExtra::add_header_above(c(\"Logistic Regression Analysis of Heart Disease Risk Factors\"= 7))\n\nheart_model_coef"
+    "section": "Model output",
+    "text": "Model output\n\n\n\nTable 1 (next) shows the model output, with the coefficient estimate for each predictor.\n\nThe broom::tidy function converts the model summary into a more readable data frame.\nThe odds ratio (= exponentiated coefficient estimate) is more interpretable than the coefficient itself.\n\n\n\n\n# Convert model's output summary into data frame\nheart_model_coef &lt;- broom::tidy(heart_model) %&gt;% \n  # improve readability of significance levels\n  dplyr::mutate('signif. lev.' = case_when(\n    `p.value` &lt; 0.001 ~ \"***\",\n    `p.value` &lt; 0.01 ~ \"**\",\n    `p.value` &lt; 0.05 ~ \"*\",\n    TRUE ~ \"\"))%&gt;%\n  # add odds ratio column\n  dplyr::mutate(odds_ratio = exp(estimate)) %&gt;%\n  dplyr::relocate(odds_ratio, .after = estimate) %&gt;%\n  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %&gt;%\n  # format as table\n  knitr::kable() %&gt;% \n  # reduce font size\n  kable_styling(font_size = 20) %&gt;% \n  # add table title\n  kableExtra::add_header_above(c(\"Logistic Regression Analysis of Heart Disease Risk Factors\"= 7))\n\nheart_model_coef"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab05.html#model-summary-and-coefficients-output",
-    "href": "practice/practice_slides/slides_lab05.html#model-summary-and-coefficients-output",
+    "objectID": "practice/practice_slides/slides_lab05.html#model-output-output",
+    "href": "practice/practice_slides/slides_lab05.html#model-output-output",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Model summary and coefficients\n",
-    "text": "Model summary and coefficients\n\n\n\nTable 1: Logistic regression model output  + estimates of coefficients are in the form of natural logarithm of the odds (log (odds)) of the event happening (Heart Disease)  + a positive estimate indicates an increase in the odds of having Heart Desease  + a negative estimate indicates a decrease in the odds of having Heart Desease  + odds ratio = the exponentiated coefficient estimate \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLogistic Regression Analysis of Heart Disease Risk Factors\n\n\n\nterm\nestimate\nodds_ratio\nstd.error\nstatistic\np.value\nsignif. lev.\n\n\n\n\n(Intercept)\n-11.0554\n0.0000\n0.6040\n-18.3051\n0.0000\n***\n\n\ncoffee_drinkerYes_Coffee\n-0.7296\n0.4821\n0.2910\n-2.5071\n0.0122\n*\n\n\nfast_food_spend\n0.0024\n1.0024\n0.0001\n20.6018\n0.0000\n***\n\n\nincome\n0.0000\n1.0000\n0.0000\n-0.2299\n0.8182"
+    "section": "Model output",
+    "text": "Model output\n\n\nTable 1: Logistic regression model output  + estimates of coefficients are in the form of natural logarithm of the odds (log (odds)) of the event happening (Heart Disease)  + a positive estimate indicates an increase in the odds of having Heart Desease  + a negative estimate indicates a decrease in the odds of having Heart Desease  + odds ratio = the exponentiated coefficient estimate \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLogistic Regression Analysis of Heart Disease Risk Factors\n\n\n\nterm\nestimate\nodds_ratio\nstd.error\nstatistic\np.value\nsignif. lev.\n\n\n\n\n(Intercept)\n-11.0554\n0.0000\n0.6040\n-18.3051\n0.0000\n***\n\n\ncoffee_drinkerYes_Coffee\n-0.7296\n0.4821\n0.2910\n-2.5071\n0.0122\n*\n\n\nfast_food_spend\n0.0024\n1.0024\n0.0001\n20.6018\n0.0000\n***\n\n\nincome\n0.0000\n1.0000\n0.0000\n-0.2299\n0.8182"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#interpreting-the-logistic-coefficients",
@@ -238,11 +238,53 @@
     "text": "Wait, is drinking coffee good or bad? 🤔\nOur plot above showed that there was a higher proportion of coffee drinkers with heart disease as compared to non coffee drinkers. However, our model just told us that coffee drinking is associated with a decrease in the likelihood of having heart disease. \nHow can that be❓  It’s because coffee_drinking and fast__food_spend are correlated so, on it’s own, it would appear as if coffee drinking were associated with heart disease, but this is only because coffee drinking is also associated with fast food spend, which our model tells us is the real contributor to heart disease."
   },
   {
+    "objectID": "practice/practice_slides/slides_lab05.html#understanding-odds",
+    "href": "practice/practice_slides/slides_lab05.html#understanding-odds",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Understanding Odds\n",
+    "text": "Understanding Odds\n\n\n\n\nOdds represent the ratio of the probability of an event occurring to the probability of it not occurring:\n\n\nExample: If the probability of heart disease is 0.25 (25%), then the odds are:\n\n\n\n\\[ \\text{Odds} = \\frac{P(\\text{event})}{1 - P(\\text{event})} \\]\n\\[ \\frac{0.25}{1 - 0.25} = \\frac{0.25}{0.75} = 0.33 \\]\nThis means that for every 1 person without heart disease, there are 0.33 people with it.\n(Or equivalently: for every 3 people without heart disease, 1 person has it.)"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#understanding-odds-ratio",
+    "href": "practice/practice_slides/slides_lab05.html#understanding-odds-ratio",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Understanding Odds Ratio\n",
+    "text": "Understanding Odds Ratio\n\n\n\n\nOdds Ratio (O.R.) compares the odds of an event occurring in one group (exposed) relative to another group (reference).\n\n\nExample: If the odds of heart disease for coffee drinkers are 0.48, and for non-coffee drinkers are 1, then the odds ratio is:\n\n\n\n\\[\\text{Odds Ratio} = \\frac{\\text{Odds}_{\\text{exposed}}}{\\text{Odds}_{\\text{reference}}} =\n\\frac{\\text{Odds}_{\\text{coffee drinkers}}}{\\text{Odds}_{\\text{non-coffee drinkers}}} = \\frac{0.48}{1} = 0.48\\]\n\n\nInterpretation:\n\nIf O.R. &gt; 1, the event is more likely in the exposed group.\nIf O.R. &lt; 1, the event is less likely in the exposed group.\nIf O.R. = 1, there is no difference between groups."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#example-coffee-drinkers-vs.-non-coffee-drinkers",
+    "href": "practice/practice_slides/slides_lab05.html#example-coffee-drinkers-vs.-non-coffee-drinkers",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Example: Coffee Drinkers vs. Non-Coffee Drinkers",
+    "text": "Example: Coffee Drinkers vs. Non-Coffee Drinkers\n\nIf the odds of heart disease are:\n\nCoffee drinkers (exposed group): \\(0.48\\)\n\nNon-coffee drinkers (reference group): \\(1\\)\n\n\nThen the Odds Ratio is:\n\\[\\text{Odds Ratio} = \\frac{\\text{Odds}_{\\text{coffee drinkers}}}{\\text{Odds}_{\\text{non-coffee drinkers}}} =\n\\frac{0.48}{1} = 0.48\\]\nThis means coffee drinkers have 52% lower odds of heart disease than non-coffee drinkers.\n\n\n\n\n\nOdds Ratio (O.R.)\nExample O.R.\nFormula for % Change in Odds\nCalculation\nInterpretation\n\n\n\nO.R. &lt; 1\n0.48\n(1 - O.R.) × 100\n(1 - 0.48) × 100 = 52%\n52% lower odds of having heart disease compared to non-coffee drinkers\n\n\nO.R. &gt; 1\n2.08\n(O.R. - 1) × 100\n(2.08 - 1) × 100 = 108%\n108% higher odds of having heart disease compared to coffee drinkers"
+  },
+  {
     "objectID": "practice/practice_slides/slides_lab05.html#making-predictions-from-logistic-regression-model",
     "href": "practice/practice_slides/slides_lab05.html#making-predictions-from-logistic-regression-model",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Making predictions from logistic regression model",
-    "text": "Making predictions from logistic regression model\n\n# Make predictions\nheart_train$heart_disease_pred &lt;- predict(heart_model, type = \"response\")"
+    "section": "Making predictions from logistic regression model ✍🏻",
+    "text": "Making predictions from logistic regression model ✍🏻\n\nLet’s use the logistic regression model to make predictions on the training data. First, we’ll do it manually:\n\nConsider an individual that drinks coffee, spends US$5,000 on fast food per year, and has an annual income of US$50,000.\nWe can calculate the probability of this individual having heart disease using our logistic regression model:\n\n\\[p_i(HD=YES) = \\frac{1}{1 + e^{-(\\beta_0 + \\beta_1X_1 + \\beta_2X_2 + \\beta_3X_3)}} = \\]\n\\[ = \\frac{1}{1 + e^{-(-11.0554 -0.7296 \\times 1 + 0.0024 \\times 5000 -0.0000023 \\times 50,000 )}} = 0.4951735\\]\n(decimals count!)"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#making-predictions-from-logistic-regression-model-1",
+    "href": "practice/practice_slides/slides_lab05.html#making-predictions-from-logistic-regression-model-1",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Making predictions from logistic regression model ✍🏻",
+    "text": "Making predictions from logistic regression model ✍🏻\n\n# Define cvalues for individual case \nx1 &lt;- 1\nx2 &lt;- 5000\nx3 &lt;- 50000\n\n# Coefficients from our logistic regression model\nbeta_0 &lt;- -11.055360943337\nb1 &lt;- -0.729562678149\nb2 &lt;- 0.002376170127\nb3 &lt;- -0.000002304669 \n\n# Compute the exponent part\nexponent &lt;- beta_0 + (b1 * x1) + (b2 * x2) + (b3 * x3)\n\n# Compute the predicted probability\nprobability &lt;- 1 / (1 + exp(-exponent))\n\n# Print the result\nprint(probability) # 0.4951735\n\n[1] 0.4951735"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#making-predictions-from-logistic-regression-model-2",
+    "href": "practice/practice_slides/slides_lab05.html#making-predictions-from-logistic-regression-model-2",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Making predictions from logistic regression model 👩🏻‍💻",
+    "text": "Making predictions from logistic regression model 👩🏻‍💻\n\nNow, let’s use the predict() function to make a prediction for the same individual.\n\nindividual &lt;- data.frame(\n  coffee_drinker = \"Yes_Coffee\", # factor \n  fast_food_spend = 5000, \n  income = 50000)\n\n# Make a prediction\npredict(heart_model, individual, type = \"response\")\n\n        1 \n0.4951735"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#adding-predictions-to-the-training-data",
+    "href": "practice/practice_slides/slides_lab05.html#adding-predictions-to-the-training-data",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Adding predictions to the training data",
+    "text": "Adding predictions to the training data\n\nIn fact, we can use the predict() function to make predictions for all the individuals observed in the training data heart_train.\n\n\nheart_train$heart_disease_pred = added column with the predicted probabilities of heart disease for each individual.\n\n\n# Add calculated predictions to the training data\nheart_train$heart_disease_pred &lt;- predict(heart_model, type = \"response\")\n\n# Subset  of 3 with heart_disease = Yes_HD\nheart_train[heart_train$heart_disease == \"Yes_HD\", ][1:3,] \n\n    heart_disease coffee_drinker fast_food_spend   income heart_disease_pred\n207        Yes_HD      No_Coffee        4723.998 48956.17         0.51420472\n210        Yes_HD     Yes_Coffee        4748.477 20655.20         0.36601782\n242        Yes_HD     Yes_Coffee        3932.141 14930.18         0.07756531\n\n# Subset  of 3 with heart_disease = No_HD\nheart_train[heart_train$heart_disease == \"No_HD\", ][1:3,]\n\n  heart_disease coffee_drinker fast_food_spend    income heart_disease_pred\n1         No_HD      No_Coffee        1823.816 44361.625        0.001086288\n3         No_HD      No_Coffee        2683.873 31767.139        0.008566989\n6         No_HD     Yes_Coffee        2298.971  7491.559        0.001762176"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#converting-predictions-into-classifications",
@@ -278,181 +320,6 @@
     "title": "Lab 5: Intro to Machine Learning",
     "section": "Sensitivity and Specificity]",
     "text": "Sensitivity and Specificity]\n\n# Sensitivity\nsensitivity &lt;- confusion_matrix[2, 2] / sum(confusion_matrix[2, ])\n\n# Specificity\nspecificity &lt;- confusion_matrix[1, 1] / sum(confusion_matrix[1, ])"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#dataset-on-breast-cancer-biopsy",
-    "href": "practice/practice_slides/slides_lab05.html#dataset-on-breast-cancer-biopsy",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Dataset on Breast Cancer Biopsy]",
-    "text": "Dataset on Breast Cancer Biopsy]\n\nName: Biopsy Data on Breast Cancer PatientsDocumentation: See reference on the data downloaded and conditioned for R here https://cran.r-project.org/web/packages/MASS/MASS.pdfSampling details: This breast cancer database was obtained from the University of Wisconsin Hospitals, Madison from Dr. William H. Wolberg. He assessed biopsies of breast tumours for 699 patients up to 15 July 1992; each of nine attributes has been scored on a scale of 1 to 10, and the outcome is also known. The dataset contains the original Wisconsin breast cancer data with 699 observations on 11 variables."
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#importing-dataset-biopsy",
-    "href": "practice/practice_slides/slides_lab05.html#importing-dataset-biopsy",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Importing Dataset biopsy]",
-    "text": "Importing Dataset biopsy]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe data can be interactively obtained form the MASS R package\n\n\n# (after loading pckg)\n# library(MASS)  \n\n# I can call \nutils::data(biopsy)"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-variables-with-description",
-    "href": "practice/practice_slides/slides_lab05.html#biopsy-variables-with-description",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "\nbiopsy variables with description]",
-    "text": "biopsy variables with description]\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\nid\ncharacter\nSample id\n\n\nV1\ninteger 1 - 10\nclump thickness\n\n\nV2\ninteger 1 - 10\nuniformity of cell size\n\n\nV3\ninteger 1 - 10\nuniformity of cell shape\n\n\nV4\ninteger 1 - 10\nmarginal adhesion\n\n\nV5\ninteger 1 - 10\nsingle epithelial cell size\n\n\nV6\ninteger 1 - 10\nbare nuclei (16 values are missing)\n\n\nV7\ninteger 1 - 10\nbland chromatin\n\n\nV8\ninteger 1 - 10\nnormal nucleoli\n\n\nV9\ninteger 1 - 10\nmitoses\n\n\nclass\nfactor\nbenign or malignant"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-variables-exploration",
-    "href": "practice/practice_slides/slides_lab05.html#biopsy-variables-exploration",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "\nbiopsy variables exploration]",
-    "text": "biopsy variables exploration]\n\nThe biopsy data contains 699 observations of 9 continuous variables, V1, V2, …, V9.\nThe dataset also contains a character variable: id, and a factor variable: class, with two levels (“benign” and “malignant”).\n\n# check variable types\nstr(biopsy)\n\n'data.frame':   699 obs. of  11 variables:\n $ ID   : chr  \"1000025\" \"1002945\" \"1015425\" \"1016277\" ...\n $ V1   : int  5 5 3 6 4 8 1 2 2 4 ...\n $ V2   : int  1 4 1 8 1 10 1 1 1 2 ...\n $ V3   : int  1 4 1 8 1 10 1 2 1 1 ...\n $ V4   : int  1 5 1 1 3 8 1 1 1 1 ...\n $ V5   : int  2 7 2 3 2 7 2 2 2 2 ...\n $ V6   : int  1 10 2 4 1 10 10 1 1 1 ...\n $ V7   : int  3 3 3 3 3 9 3 3 1 2 ...\n $ V8   : int  1 2 1 7 1 7 1 1 1 1 ...\n $ V9   : int  1 1 1 1 1 1 1 1 5 1 ...\n $ class: Factor w/ 2 levels \"benign\",\"malignant\": 1 1 1 1 1 2 1 1 1 1 ..."
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-missing-data",
-    "href": "practice/practice_slides/slides_lab05.html#biopsy-missing-data",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "\nbiopsy missing data]",
-    "text": "biopsy missing data]\n\nThere is one incomplete variable V6 = “bare nuclei” with 16 missing values.\n\nremember the package skimr for exploring a dataframe?\n\n\n# check if vars have missing values\nbiopsy %&gt;% \n  # select only variables starting with \"V\"\n  skimr::skim(starts_with(\"V\")) %&gt;%\n  dplyr::select(skim_variable, \n                n_missing)\n\n# A tibble: 9 × 2\n  skim_variable n_missing\n  &lt;chr&gt;             &lt;int&gt;\n1 V1                    0\n2 V2                    0\n3 V3                    0\n4 V4                    0\n5 V5                    0\n6 V6                   16\n7 V7                    0\n8 V8                    0\n9 V9                    0"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-missing-data-options",
-    "href": "practice/practice_slides/slides_lab05.html#biopsy-missing-data-options",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "\nbiopsy missing data options]",
-    "text": "biopsy missing data options]\n\nWe can decide what to do in these cases (informed by our knowledge of the dataset):\n\n\nOption 1) We drop the observation with incomplete data (i.e. with missing values for V6 = “bare nuclei”) with 16 missing values.\n\n\n# remove rows with missing values\nbiopsy_drop &lt;- biopsy %&gt;% \n  dplyr::filter(!is.na(V6))\n\nmean(biopsy_drop$V6)\n\n[1] 3.544656\n\n\n\n\nOption 2) We impute the missing values with the mean of the variable V6 = “bare nuclei”.\n\n\n# impute missing values with the median of the variable\nbiopsy_impute &lt;- biopsy %&gt;% \n  dplyr::mutate(V6 = ifelse(is.na(V6), median(V6, na.rm = TRUE), V6))\n\nmean(biopsy_impute$V6)\n\n[1] 3.486409"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-dataset-exploration",
-    "href": "practice/practice_slides/slides_lab05.html#biopsy-dataset-exploration",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "\nbiopsy dataset exploration]",
-    "text": "biopsy dataset exploration]\n\n\nBiopsied cells of 700 breast cancer tumors, used to determine if the tumors were benign or malignant.\nThis determination was based on 9 characteristics of the cells, ranked from 1(benign) to 10(malignant):\n\n\n1) Clump Thickness – How the cells aggregate. If monolayered they are benign and if clumped on top of each other they are malignant\n\n2) Uniform Size – All cells of the same type should be the same size.\n\n3) Uniform Shape If cells vary in cell shape they could be malignant\n\n4) Marginal Adhesion – Healthy cells have a strong ability to stick together whereas cancerous cells do not\n\n5) Single Epithelial Size – If epithelial cells are not equal in size, it could be a sign of cancer\n\n6) Bare nuclei – If the nucleus of the cell is not surrounded by cytoplasm, the cell could be malignant\n\n7) Bland Chromatin – If the chromatin’s texture is coarse the cell could be malignant\n\n8) Normal Nucleoli – In a healthy cell the nucleoli is small and hard detect via imagery. Enlarged nucleoli could be a sign of cancer\n\n9) Mitosis – cells that multiply at an uncontrollable rate could be malignant"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-dataset-preparation",
-    "href": "practice/practice_slides/slides_lab05.html#biopsy-dataset-preparation",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "\nbiopsy dataset preparation]",
-    "text": "biopsy dataset preparation]\n\n\nThe explanatory variable(s) (clump_thickness, …, mitosis) can be renamed for better readability\nThe observations with missing values (bare_nuclei) are removed for simplicity\n\nPatient ID (id) can be dropped as it is not used in this analysis\n\n\n\n# Create a clean version of the dataset\nbiopsy_clean &lt;- biopsy %&gt;%\n  # rename the columns (new = old)\n  rename(\n    id                = ID,\n    clump_thickness   =  V1,\n    uniform_size      =  V2,\n    uniform_shape     =  V3,\n    marginal_adhesion =  V4,\n    single_epith_size =  V5,\n    bare_nuclei       =  V6,\n    bland_chromatin   =  V7,\n    normal_nuclei     =  V8,\n    mitosis           =  V9,\n    class             =  class) %&gt;% \n  # remove rows with missing values\n  na.omit(bare_nuclei) %&gt;% \n  # remove the id column\n  select(-id)\n\n# check the structure of the dataset\npaint::paint(biopsy_clean)\n\n\ndata.frame [683, 10]\nclump_thickness   int 5 5 3 6 4 8\nuniform_size      int 1 4 1 8 1 10\nuniform_shape     int 1 4 1 8 1 10\nmarginal_adhesion int 1 5 1 1 3 8\nsingle_epith_size int 2 7 2 3 2 7\nbare_nuclei       int 1 10 2 4 1 10\nbland_chromatin   int 3 3 3 3 3 9\nnormal_nuclei     int 1 2 1 7 1 7\nmitosis           int 1 1 1 1 1 1\nclass             fct benign benign benign benign benign ma~"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-sample-splitting",
-    "href": "practice/practice_slides/slides_lab05.html#biopsy-sample-splitting",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "\nbiopsy sample splitting]",
-    "text": "biopsy sample splitting]\nIn Machine Learning, it is good practice to split the data into training and testing sets.\n\nWe will use the training set (80%) to fit the model and then the testing set (20%) to evaluate the model’s performance.\n\n\nset.seed(123)\n\n# Obtain 2 sub-samples from the dataset: training and testing\nsample  &lt;-  sample(c(TRUE, FALSE), nrow(biopsy_clean), replace = TRUE , prob = c(0.8, 0.2) )\nbiopsy_train  &lt;-  biopsy_clean[sample,]\nbiopsy_test  &lt;-  biopsy_clean[!sample,]\n\n\nWhich results in:\n\n\n# check the structure of the resulting datasets\ndim(biopsy_train)\n\n[1] 542  10\n\ndim(biopsy_test)\n\n[1] 141  10"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#indipendent-variables-visualization",
-    "href": "practice/practice_slides/slides_lab05.html#indipendent-variables-visualization",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Indipendent variables’ visualization]",
-    "text": "Indipendent variables’ visualization]\n\n\nWe create a new df biopsy_train2 (with only 3 columns)\nThen, in Figure 2, we visualize the distribution of the explanatory variables, where each is plotted between the two classes of the tumor.\n\n\n# New df for plotting\nbiopsy_train2 &lt;- data.frame(\n  \"level\" = c(biopsy_train$clump_thickness, biopsy_train$uniform_size,\n              biopsy_train$uniform_shape, biopsy_train$marginal_adhesion,\n              biopsy_train$single_epith_size, biopsy_train$bare_nuclei,\n              biopsy_train$bland_chromatin, biopsy_train$normal_nuclei,\n              biopsy_train$mitosis),\n  \"type\" = c(\"Clump Thickness\", \"Uniform Size\", \"Unifrom Shape\",\n             \"Marginal Adhesion\", \"Single Epithilial Size\", \"Bare Nuclei\",\n             \"Bland Chromatin\", \"Normal Nuclei\", \"Mitosis\"), \n  \"class\" = c(biopsy_train$class))\n\n# Plot\nggplot(biopsy_train2, aes(x = level, y = class , colour = class)) + \n  geom_boxplot(fill = NA) +\n  scale_color_manual(values = c(\"#005ca1\", \"#9b2339\")) + \n  geom_jitter(aes(fill = class), alpha = 0.25, shape = 21, width = 0.2) +  \n  scale_fill_manual(values = c(\"#57b7ff\", \"#e07689\")) +  \n  facet_wrap(~type, scales = \"free\") +  \n  theme(plot.title = element_text(size = 13,face=\"bold\", color = \"#873c4a\"),\n        axis.text.x = element_text(size=12,face=\"italic\"), \n        axis.text.y = element_text(size=12,face=\"italic\"),\n        legend.position = \"none\") + \n  labs(title = \"Distribution of each explanatory variable by tumor class (benign/malignant) in samples\") + \n  ylab(label = \"\") + xlab(label = \"\")"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#indipendent-variables-visualization-output",
-    "href": "practice/practice_slides/slides_lab05.html#indipendent-variables-visualization-output",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Indipendent variables’ visualization]",
-    "text": "Indipendent variables’ visualization]\n\n\n\nFigure 2: Boxplot of the independent variables  - values are consitently higher & more dispersed for malignant tumors  - values between 1 and 2 are classified as benign and values greater than 2 are classified as malignant"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-model-fitting",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-model-fitting",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr.: model fitting]",
-    "text": "Logistic regr.: model fitting]\n\n\nWe fit a logistic regression model to the biopsy_train data using:\n\nthe glm function with argument family = binomial to specify the logistic regression model;\nand with Class ~ . to specify an initial model that uses all the variables as predictors (backward elimination approach).\n\n\n\n\n# Building initial model \nmodel = stats::glm(class ~ . , family = binomial, data=biopsy_train)\n\n\n\nTable 2 shows the model summary, with the coefficient estimate for each predictor.\n\nthe broom::tidy function converts the model summary into a data frame.\n\n\n\n\nbroom::tidy(model) %&gt;% \n  mutate('Sign.lev' = case_when(\n    `p.value` &lt; 0.001 ~ \"***\",\n    `p.value` &lt; 0.01 ~ \"**\",\n    `p.value` &lt; 0.05 ~ \"*\",\n    TRUE ~ \"\"))%&gt;%\n  mutate(across(where(is.numeric), ~ round(.x, 4))) %&gt;%\n  knitr::kable()"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-model-coefficients",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-model-coefficients",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr.: model coefficients]",
-    "text": "Logistic regr.: model coefficients]\n\n\n\nTable 2: Complete logistic regression model  + coefficients are in the form of natural logarithm of the odds of the event happening  + positive estimate indicates an increase in the odds of finding a malignant tumor\n\n\n\n\n\n\n\n\n\n\n\n\nterm\nestimate\nstd.error\nstatistic\np.value\nsignif. lev.\n\n\n\n(Intercept)\n-9.4169\n1.1637\n-8.0921\n0.0000\n***\n\n\nclump_thickness\n0.4984\n0.1434\n3.4758\n0.0005\n***\n\n\nuniform_size\n0.0992\n0.2356\n0.4211\n0.6737\n\n\n\nuniform_shape\n0.2809\n0.2655\n1.0580\n0.2901\n\n\n\nmarginal_adhesion\n0.2688\n0.1285\n2.0917\n0.0365\n*\n\n\nsingle_epith_size\n0.0800\n0.1679\n0.4765\n0.6337\n\n\n\nbare_nuclei\n0.3446\n0.0983\n3.5054\n0.0005\n***\n\n\nbland_chromatin\n0.4083\n0.1859\n2.1958\n0.0281\n*\n\n\nnormal_nuclei\n0.2196\n0.1283\n1.7119\n0.0869\n\n\n\nmitosis\n0.4356\n0.3513\n1.2397\n0.2151"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-coefficients-interpretation",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-coefficients-interpretation",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr.: coefficients’ interpretation",
-    "text": "Logistic regr.: coefficients’ interpretation\n\nIn logistic regression, the coefficients are in the form of the natural logarithm of the odds of the response event happening (i.e. \\(Y_i = 1\\)):\n\\[logit(p_i) = \\ln\\left( \\frac{p_i}{1-p_i} \\right) = -9.5063 + 0.3935 \\times Clump\\_Thickness + ... + 0.5065 \\times Mitosis\\]\nHowever, with some algebraic transformation, the logit function can be inverted to obtain the probability of the response event happening as a function of the predictors:\n\\[p_i = \\frac{1}{1 + e^{-(-9.5063 + 0.3935 \\times Clump\\_Thickness + ... + 0.5065 \\times Mitosis)}}\\]\nThis equation represents the logistic regression model’s best-fit line."
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-multicollinearity",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-multicollinearity",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr.: multicollinearity]",
-    "text": "Logistic regr.: multicollinearity]\nLet’s check for collinearity using the VIF function from the ‘car’ package.\n\nA Variance Inflation Factor \\(VIF &gt; 5\\) indicates that there could be correlation between predictor variables.\nThe VIF values are all less than 5, which indicates that there is no severe correlation between predictor variables in the model. ✅\n\n\ncar::vif(model)\n\n  clump_thickness      uniform_size     uniform_shape marginal_adhesion \n         1.165502          2.775020          2.799658          1.258659 \nsingle_epith_size       bare_nuclei   bland_chromatin     normal_nuclei \n         1.456077          1.172923          1.266337          1.209717 \n          mitosis \n         1.060126"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-model-performance",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-model-performance",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr.: model performance]",
-    "text": "Logistic regr.: model performance]\nHighlight key logistic model performance metrics using broom::glance() function:\n\n\nAIC: A measure of model quality; lower values indicate a better fit with fewer parameters.\n\nNull Deviance: A measure of model error; how well the response variable can be predicted by a model with only an intercept term.\n\nDeviance: A measure of model error; how well the response variable can be predicted by a model with predictor variables.\n\nlower values mean the model fits the data better!\n\n\n\n\nbroom::glance(model)[, c(\"AIC\", \"null.deviance\",\"deviance\")] %&gt;% \n  # show only performance  metrics\n  knitr::kable() \n\n\nTable 3: Key logistic model performance metrics\n\n\n\n\nAIC\nnull.deviance\ndeviance\n\n\n111.7472\n710.4404\n91.74724"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-improving-the-model",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-improving-the-model",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr.: improving the model]",
-    "text": "Logistic regr.: improving the model]\n\n\n\nThe model includes all variables, but we could make it more parsimonious by removing variables that are not significant!\nWe use a statistic called the Akaike Information Criterion (AIC) to compare models.\n\nAIC’s calculation gives a penalty for including additional variables.\nThe model with the lowest AIC is considered the best.\n\n\n\n\n# For example let's fit a model without the variable `uniform_size`\nmodel2 = glm(class~ .-uniform_size, family = binomial, data=biopsy_train)\n\nAccording to the AIC values, the model2 seems better (AIC is lower).\n\n# Compare the AIC values of the 2 models\ntibble(Model = c(\"model\", \"model2\"), \n       AIC = c(AIC(model), AIC(model2) )) %&gt;% \n  kable()\n\n\n\nModel\nAIC\n\n\n\nmodel\n111.7472\n\n\nmodel2\n109.9322"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-systematic-model-selection",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-systematic-model-selection",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr.: systematic model selection]",
-    "text": "Logistic regr.: systematic model selection]\n\n\nThe MASS package’s function stepAIC enables to perform a systematic model selection (by AIC):\n\nThe direction argument specifies the direction of the stepwise search.\nThe trace argument (if set to TRUE) prints out all the steps.\n\n\nThe best_model has removed these variables:\n\nuniform_shape\nsingle_epith_size\nnormal_nuclei\n\n\nThe best_model has the lowest AIC value (from 100 to 98.5), despite a higher Residual Deviance than the full model (from 80 to 80.6), albeit by a very slight amount.\n\n\n# Select the best model based on AIC\nbest_model &lt;- MASS::stepAIC(model, direction = \"both\", trace = FALSE)\n\n# Compare the AIC values of full and best model\ntibble(Model = c(\"model\", \"best_model\"), \n       AIC = c(AIC(model), AIC(model2)),\n       Deviance = c(deviance(model), deviance(best_model))) %&gt;% kable()"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-systematic-model-selection-output",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-systematic-model-selection-output",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr.: systematic model selection]",
-    "text": "Logistic regr.: systematic model selection]\n\n\n\nModel\nAIC\nDeviance\n\n\n\nmodel\n111.7472\n91.74724\n\n\nbest_model\n109.9322\n92.22712"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-predicting-on-test-data",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-predicting-on-test-data",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr.: predicting on test data]",
-    "text": "Logistic regr.: predicting on test data]\n\nWe can use the predict function to predict the class of the biopsy_test using the best_model.\n\n\nbiopsy_test_pred contains the probability that each of observation (in test data) is malignant.\n\n\nThe classification of the PredictedValue... can be done using different probability thresholds (0.5, 0.4, 0.3, etc.). which will aﬀect the true and false positivity rates.:\n\n\nPredictedValue_05 is the standard threshold of 0.5.\n\nPredictedValue_04 is a more conservative threshold of 0.4.\n\nPredictedValue_07 is a more aggressive threshold of 0.7.\n\n\n\n\n# Fitted value for the test data 205 samples based on model\nbiopsy_test_pred &lt;- predict(best_model, newdata = biopsy_test, type = \"response\")\n\n# Convert the predicted probabilities into 2 predicted classes\nActualValue &lt;- biopsy_test$class\n\n# Different possible thresholds for the predicted probabilities\nPredictedValue_05 &lt;- if_else(biopsy_test_pred &gt; 0.5, \"pred_malignant\", \"pred_benign\")\nPredictedValue_04 &lt;- if_else(biopsy_test_pred &gt; 0.4, \"pred_malignant\", \"pred_benign\")\nPredictedValue_07 &lt;- if_else(biopsy_test_pred &gt; 0.7, \"pred_malignant\", \"pred_benign\")"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-predictions-confusion-matrix",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-predictions-confusion-matrix",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr. predictions: confusion matrix]",
-    "text": "Logistic regr. predictions: confusion matrix]\n\nIn diagnosing malignant tumors, it is important to keep the false negative rate low as this would be telling someone who has a malignant tumor that it is benign.\n\n\nAt \\(p = 0.7\\), the model will predict more false positives than at \\(p = 0.4\\) (6, v. 4 FN) – which we DON’T WANT\n\nin this situation \\(p = 0.4\\) is preferable.\n\n\n\nThen, we can evaluate the model’s performance on the test data by building a confusion matrix\n\n# Build the confusion matrix with p = 0.4\ntable(ActualValue=biopsy_test$class, PredictedValue_04) %&gt;% \n  knitr::kable()\n\n\n\n\npred_benign\npred_malignant\n\n\n\nbenign\n97\n2\n\n\nmalignant\n1\n41\n\n\n\n\n\n\n# Build the confusion matrix with p = 0.7\ntable(ActualValue=biopsy_test$class, PredictedValue_07) %&gt;% \n  knitr::kable()\n\n\n\n\npred_benign\npred_malignant\n\n\n\nbenign\n98\n1\n\n\nmalignant\n2\n40"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-predictions-accuracy",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-predictions-accuracy",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr. predictions: accuracy]",
-    "text": "Logistic regr. predictions: accuracy]\n\nWe found that a cutoﬀ of 0.4 gives a good balance of low false negatives while still maintaining a high true positive rate.\nWith the chosen threshold of \\(p = 0.4\\), we can calculate the model’s accuracy on the test data.\n\n\n# Build the confusion matrix with p = 0.4\nconf_matr_04 &lt;- table(ActualValue=biopsy_test$class, PredictedValue_04)  \n\n# Calculate the accuracy\naccuracy &lt;- sum(diag(conf_matr_04)) / sum(conf_matr_04)\naccuracy\n\n[1] 0.9787234"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-roc-curve",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-roc-curve",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr.: ROC curve]",
-    "text": "Logistic regr.: ROC curve]\n\n\nbiopsy_test_pred"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-roc-curve-output",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-roc-curve-output",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr.: ROC curve]",
-    "text": "Logistic regr.: ROC curve]\n\n          4           5           8          11          16          20 \n0.856141485 0.021801730 0.006638569 0.002740809 0.697791544 0.032716342 \n         21          25          32          33          52          61 \n0.997961706 0.002740809 0.004519927 0.998094980 0.381806237 0.890311717 \n         67          69          70          89          90          91 \n0.012240692 0.999981431 0.003471541 0.012240692 0.003929098 0.002740809 \n        106         108         109         113         116         120 \n0.941402362 0.992363246 0.002852352 0.999743776 0.004606417 0.010504861 \n        128         134         139         142         149         155 \n0.007445284 0.006121686 0.011678064 0.001901825 0.144563429 0.001152043 \n        179         185         187         195         196         199 \n0.012240692 0.988166650 0.989829799 0.007445284 0.012240692 0.001152043 \n        201         208         212         225         226         228 \n0.999880409 0.002740809 0.999653743 0.999855572 0.001777246 0.998393444 \n        237         245         247         256         257         268 \n0.999981069 0.002740809 0.999937031 0.933948013 0.003138053 0.859315512 \n        269         270         272         280         286         306 \n0.999916759 0.002740809 0.020062328 0.999271345 0.999995077 0.999301628 \n        308         309         330         331         334         335 \n0.002740809 0.998855592 0.998162104 0.993091237 0.971963147 0.991911245 \n        341         344         348         354         361         366 \n0.995690727 0.001152043 0.001849647 0.999461911 0.999999318 0.002932733 \n        370         374         377         387         390         394 \n0.003842243 0.017475517 0.001777246 0.988988418 0.023239762 0.001152043 \n        400         405         415         416         418         427 \n0.002492425 0.002622405 0.995754012 0.198484715 0.001777246 0.056025207 \n        432         440         445         446         449         460 \n0.044590613 0.008518553 0.054401619 0.001901825 0.001152043 0.018272953 \n        471         472         476         485         487         497 \n0.004835827 0.024892637 0.003138053 0.012487974 0.004835827 0.001152043 \n        500         505         506         511         524         528 \n0.007964004 0.001152043 0.003138053 0.001152043 0.997887796 0.012240692 \n        535         542         544         546         549         553 \n0.002932733 0.003138053 0.007964004 0.013089106 0.003138053 0.028155249 \n        556         558         561         563         564         569 \n0.091374216 0.015217068 0.020062328 0.002740809 0.004835827 0.946116385 \n        577         583         585         587         590         596 \n0.013089106 0.997256237 0.035930450 0.999994075 0.008518553 0.013089106 \n        597         598         600         604         608         611 \n0.011678064 0.042469039 0.026665424 0.987905231 0.001152043 0.999355762 \n        614         622         624         630         633         635 \n0.002932733 0.406899632 0.001152043 0.005173691 0.001152043 0.003138053 \n        637         638         644         648         653         655 \n0.999884288 0.061172200 0.001152043 0.002070039 0.016533076 0.007445284 \n        659         668         672         673         677         678 \n0.999488816 0.007445284 0.009959429 0.004519927 0.002613676 0.008518553 \n        683         693         699 \n0.025294048 0.003138053 0.990326447 \n\npredicted.data &lt;- data.frame(prob.of.malig=biopsy_test_pred, malig = biopsy_test$class)\n\npredicted.data &lt;- predicted.data[order(predicted.data$prob.of.malig, decreasing = F),]\n\npredicted.data$rank &lt;- 1:nrow(predicted.data)\n\nplot_ROC &lt;- ggplot(data=predicted.data, aes(x=rank, y=prob.of.malig)) +\n  geom_point(aes(color=malig), alpha=1, shape=4, stroke=2) +\n  xlab(\"Index\") + \n  ylab(\"Predicted Probability of Tumor Being Malignant\")  \n\nplot_ROC\n\n\nThis shows why lowering the cutoﬀ improves the accuracy of the model as some malignant tumors are being underestimated which would cause false negatives."
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#logistic-regr.-conclusions",
-    "href": "practice/practice_slides/slides_lab05.html#logistic-regr.-conclusions",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Logistic regr.: conclusions]",
-    "text": "Logistic regr.: conclusions]\n\nUniform Size and Single Epithithial Size were not significant in predicting the malignancy of tumor cells so our model does not include these variables.\nOur fitted model reduces the null deviance and AIC without impacting the residual deviance by a significant amount and is able to predict the testing dataset with &gt;90% accuracy.\nFor further analysis, we could run the model multiple times because our original and revised model are similar.\nNew training and testing data would help confirm our results and help identify possible overfitting."
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#section-1",
@@ -3533,96 +3400,5 @@
     "title": "Lab 6: Bonus practice materials",
     "section": "Final thoughts",
     "text": "Final thoughts\n\n\n\n\nWhile the workshop only allowed for a synthetic overview of fundamental ideas, it hopefully provided a solid foundation on the most common statistical analysis you will likely run in your daily work:\n\nThorough understanding of the input data and the data collection process\nUnivariate and bivariate exploratory analysis (accompanied by visual intuition) to form hypothesis\nUpon verifying the assumptions, we fit data to hypothesized model(s)\n\nAssessment of the model performance (\\(R^2\\), \\(Adj. R^2\\), \\(F-Statistic\\), etc.)\n\n\nYou should now have a solid grasp on the R language to keep using and exploring the huge potential of this programming ecosystem\nWe only scratched the surface in terms of ML classification and prediction models, but we got a hang of the fundamental steps and some useful tools that might serve us also in more advanced analysis\n\n\n\n\n\n\n\nR 4 Statistics | 2025"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#plotting-y-by-x_1-continuous-variable",
-    "href": "practice/practice_slides/slides_lab05.html#plotting-y-by-x_1-continuous-variable",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Plotting Y by $X_1$ (continuous variable)",
-    "text": "Plotting Y by $X_1$ (continuous variable)\nLet’s visualize the relationship between the binary outcome variable heart_disease and the continuous predictor variable fast_food_spend.\n\n\ngeom_jitter adds a bit of randomness to the points to avoid overplotting.\n\ngeom_boxplot shows the distribution of the continuous variable by the binary outcome variable.\n\n\n# plot the distribution of heart disease status by fast food spend\nheart_train %&gt;% \n  ggplot(aes(x = heart_disease, y = fast_food_spend, fill = heart_disease)) + \n  geom_jitter(aes(fill = heart_disease), alpha = 0.3, shape = 21, width = 0.25) +  \n  scale_color_manual(values = c(\"#005ca1\", \"#9b2339\")) + \n  scale_fill_manual(values = c(\"#57b7ff\", \"#e07689\")) + \n  geom_boxplot(fill = NA, color = \"black\", linewidth = .7) + \n  coord_flip() +\n    theme(plot.title = element_text(size = 13,face=\"bold\", color = \"#873c4a\"),\n        axis.text.x = element_text(size=12,face=\"italic\"), \n        axis.text.y = element_text(size=12,face=\"italic\"),\n        legend.position = \"none\") + \n  labs(title = \"Fast food expenditure by heart disease status\") + \n  xlab(\"Heart Disease (Y/N)\") + \n  ylab(\"Annual Fast Food Spend\")"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#plotting-y-by-x_1-continuous-variable-output",
-    "href": "practice/practice_slides/slides_lab05.html#plotting-y-by-x_1-continuous-variable-output",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Plotting Y by $X_1$ (continuous variable)",
-    "text": "Plotting Y by $X_1$ (continuous variable)\n\n\n+ The boxplots indicate that subjects with heart disease (HD =1) seem to spend higher amounts on fast food  + Also, this sample has many more subjects without heart disease (HD = 0) than with heart disease (HD = 1)"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#plotting-y-by-textttx_1-continuous-variable",
-    "href": "practice/practice_slides/slides_lab05.html#plotting-y-by-textttx_1-continuous-variable",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Plotting Y by $\\texttt{X_1}$ (continuous variable)",
-    "text": "Plotting Y by $\\texttt{X_1}$ (continuous variable)\nLet’s visualize the relationship between the binary outcome variable heart_disease and the continuous predictor variable fast_food_spend.\n\n\ngeom_jitter adds a bit of randomness to the points to avoid overplotting.\n\ngeom_boxplot shows the distribution of the continuous variable by the binary outcome variable.\n\n\n# plot the distribution of heart disease status by fast food spend\nheart_train %&gt;% \n  ggplot(aes(x = heart_disease, y = fast_food_spend, fill = heart_disease)) + \n  geom_jitter(aes(fill = heart_disease), alpha = 0.3, shape = 21, width = 0.25) +  \n  scale_color_manual(values = c(\"#005ca1\", \"#9b2339\")) + \n  scale_fill_manual(values = c(\"#57b7ff\", \"#e07689\")) + \n  geom_boxplot(fill = NA, color = \"black\", linewidth = .7) + \n  coord_flip() +\n    theme(plot.title = element_text(size = 13,face=\"bold\", color = \"#873c4a\"),\n        axis.text.x = element_text(size=12,face=\"italic\"), \n        axis.text.y = element_text(size=12,face=\"italic\"),\n        legend.position = \"none\") + \n  labs(title = \"Fast food expenditure by heart disease status\") + \n  xlab(\"Heart Disease (Y/N)\") + \n  ylab(\"Annual Fast Food Spend\")"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#plotting-y-by-textttx_1-continuous-variable-output",
-    "href": "practice/practice_slides/slides_lab05.html#plotting-y-by-textttx_1-continuous-variable-output",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Plotting Y by $\\texttt{X_1}$ (continuous variable)",
-    "text": "Plotting Y by $\\texttt{X_1}$ (continuous variable)\n\n\n+ The boxplots indicate that subjects with heart disease (HD =1) seem to spend higher amounts on fast food  + Also, this sample has many more subjects without heart disease (HD = 0) than with heart disease (HD = 1)"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#model-output",
-    "href": "practice/practice_slides/slides_lab05.html#model-output",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Model output",
-    "text": "Model output\n\n\n\nTable 1 (next) shows the model output, with the coefficient estimate for each predictor.\n\nThe broom::tidy function converts the model summary into a more readable data frame.\nThe odds ratio (= exponentiated coefficient estimate) is more interpretable than the coefficient itself.\n\n\n\n\n# Convert model's output summary into data frame\nheart_model_coef &lt;- broom::tidy(heart_model) %&gt;% \n  # improve readability of significance levels\n  dplyr::mutate('signif. lev.' = case_when(\n    `p.value` &lt; 0.001 ~ \"***\",\n    `p.value` &lt; 0.01 ~ \"**\",\n    `p.value` &lt; 0.05 ~ \"*\",\n    TRUE ~ \"\"))%&gt;%\n  # add odds ratio column\n  dplyr::mutate(odds_ratio = exp(estimate)) %&gt;%\n  dplyr::relocate(odds_ratio, .after = estimate) %&gt;%\n  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %&gt;%\n  # format as table\n  knitr::kable() %&gt;% \n  # reduce font size\n  kable_styling(font_size = 20) %&gt;% \n  # add table title\n  kableExtra::add_header_above(c(\"Logistic Regression Analysis of Heart Disease Risk Factors\"= 7))\n\nheart_model_coef"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#model-output-output",
-    "href": "practice/practice_slides/slides_lab05.html#model-output-output",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Model output",
-    "text": "Model output\n\n\nTable 1: Logistic regression model output  + estimates of coefficients are in the form of natural logarithm of the odds (log (odds)) of the event happening (Heart Disease)  + a positive estimate indicates an increase in the odds of having Heart Desease  + a negative estimate indicates a decrease in the odds of having Heart Desease  + odds ratio = the exponentiated coefficient estimate \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLogistic Regression Analysis of Heart Disease Risk Factors\n\n\n\nterm\nestimate\nodds_ratio\nstd.error\nstatistic\np.value\nsignif. lev.\n\n\n\n\n(Intercept)\n-11.0554\n0.0000\n0.6040\n-18.3051\n0.0000\n***\n\n\ncoffee_drinkerYes_Coffee\n-0.7296\n0.4821\n0.2910\n-2.5071\n0.0122\n*\n\n\nfast_food_spend\n0.0024\n1.0024\n0.0001\n20.6018\n0.0000\n***\n\n\nincome\n0.0000\n1.0000\n0.0000\n-0.2299\n0.8182"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#odds-increase-decrese",
-    "href": "practice/practice_slides/slides_lab05.html#odds-increase-decrese",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Odds increase decrese",
-    "text": "Odds increase decrese\nOdds Ratio (O.R.) compares the odds of an event occurring between two groups.\n\\[ \\text{Odds} = \\frac{P(\\text{event})}{1 - P(\\text{event})} \\]\nSo if I have \\(\\text{Odds}_{\\text{exposed}} = 0.48\\) and \\(\\text{Odds}_{\\text{reference}} = 1\\), then the Odds Ratio is:\n\\[\\text{Odds Ratio} = \\frac{\\text{Odds}_{\\text{exposed}}}{\\text{Odds}_{\\text{reference}}} = \\frac{0.48}{1} = 0.48\\]\n\n\n\n\nGeneral Rule for Interpreting Odds Ratios\n\nOdds Ratio (O.R.)\nO.R. example\nPercentage change in odds formula\nPercentage change in odds calculation\nPercentage change in odds Interpretation\n\n\n\nO.R. &lt; 1\n0.48\n(1 - O.R.) x 100\n(1 - 0.48) x 100 = 52%\n52% lower odds of having heart disease compared to non-coffee drinkers\n\n\nO.R. &gt; 1\n2.08\n(O.R. - 1) x 100\n(2.08 - 1) x 100 = 108%\n108% higher odds of having heart disease compared to coffee drinkers"
-  },
-  {
-    "objectID": "practice/practice_slides/Untitled.html",
-    "href": "practice/practice_slides/Untitled.html",
-    "title": "Untitled",
-    "section": "",
-    "text": "Understanding Odds and Odds Ratio\n\n1️⃣ What Are Odds?\nOdds represent the ratio of the probability of an event occurring to the probability of it not occurring:\n\\[ \\text{Odds} = \\frac{P(\\text{event})}{1 - P(\\text{event})} \\]\n\nExample: If the probability of heart disease is 0.25 (25%), then the odds are:\n\\[ \\frac{0.25}{1 - 0.25} = \\frac{0.25}{0.75} = 0.33 \\]\nThis means that for every 1 person with heart disease, there are 3 people without it.\n\n\n\n\n2️⃣ What Is an Odds Ratio?\nThe Odds Ratio (O.R.) compares the odds of an event occurring between two groups:\n\\[\\text{Odds Ratio} = \\frac{\\text{Odds}_{\\text{exposed}}}{\\text{Odds}_{\\text{reference}}}\\]\n\nIf O.R. &gt; 1, the event is more likely in the exposed group.\nIf O.R. &lt; 1, the event is less likely in the exposed group.\nIf O.R. = 1, there is no difference between groups.\n\n\n\n\n3️⃣ Example: Coffee Drinkers vs. Non-Coffee Drinkers\nIf the odds of heart disease are: - Coffee drinkers (exposed group): 0.48 - Non-coffee drinkers (reference group): 1\nThen the Odds Ratio is:\n\\[\\text{Odds Ratio} = \\frac{\\text{Odds}_{\\text{exposed}}}{\\text{Odds}_{\\text{reference}}} = \\frac{0.48}{1} = 0.48\\]\nThis means coffee drinkers have 52% lower odds of heart disease than non-coffee drinkers.\n#| output: true #| echo: false\n\n\n\nCreate the table with properly formatted headers\nodds_table &lt;- data.frame( “Odds Ratio (O.R.)” = c(“O.R. &lt; 1”, “O.R. &gt; 1”), “O.R. Example” = c(“0.48”, “2.08”), “Formula for % Change in Odds” = c(“(1 - O.R.) × 100”, “(O.R. - 1) × 100”), “Calculation” = c(“(1 - 0.48) × 100 = 52%”, “(2.08 - 1) × 100 = 108%”), “Interpretation” = c(“52% lower odds of having heart disease compared to non-coffee drinkers”, “108% higher odds of having heart disease compared to coffee drinkers”), check.names = FALSE # Prevents R from replacing spaces with dots )\n\n\nPrint as a kable table\nkable(odds_table, caption = “Odds Ratio Interpretation: Coffee Drinkers vs. Non-Coffee Drinkers”, align = “c”) %&gt;% kable_styling(full_width = FALSE)"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#understanding-odds-and-odds-ratio",
-    "href": "practice/practice_slides/slides_lab05.html#understanding-odds-and-odds-ratio",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Understanding Odds and Odds Ratio",
-    "text": "Understanding Odds and Odds Ratio\n\n\nOdds represent the ratio of the probability of an event occurring to the probability of it not occurring:\n\n\\[ \\text{Odds} = \\frac{P(\\text{event})}{1 - P(\\text{event})} \\]\n- **Example:** If the probability of heart disease is **0.25 (25%)**, then the odds are:\n\\[ \\frac{0.25}{1 - 0.25} = \\frac{0.25}{0.75} = 0.33 \\]\nThis means that for every 1 person with heart disease, there are 3 people without it."
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#understanding-and-comparing-odds-ratios",
-    "href": "practice/practice_slides/slides_lab05.html#understanding-and-comparing-odds-ratios",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Understanding (and comparing) Odds Ratios",
-    "text": "Understanding (and comparing) Odds Ratios\n\n\n\nOdds Ratio (O.R.) compares the odds of an event occurring in one group (exposed) relative to another group (reference).\n\n\nExample: If the odds of heart disease for coffee drinkers are 0.48, and for non-coffee drinkers are 1, then the odds ratio is:\n\n\n\n\\[\\text{Odds Ratio} = \\frac{\\text{Odds}_{\\text{exposed}}}{\\text{Odds}_{\\text{reference}}} = \\frac{0.48}{1} = 0.48\\]\n\n\n\n\nGeneral Rule for Interpreting Odds Ratios\n\nOdds Ratio (O.R.)\nO.R. example\nPercentage change in odds formula\nPercentage change in odds calculation\nPercentage change in odds Interpretation\n\n\n\nO.R. &lt; 1\n0.48\n(1 - O.R.) x 100\n(1 - 0.48) x 100 = 52%\n52% lower odds of having heart disease compared to non-coffee drinkers\n\n\nO.R. &gt; 1\n2.08\n(O.R. - 1) x 100\n(2.08 - 1) x 100 = 108%\n108% higher odds of having heart disease compared to coffee drinkers"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#understanding-odds",
-    "href": "practice/practice_slides/slides_lab05.html#understanding-odds",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Understanding Odds",
-    "text": "Understanding Odds\n\n\n\nOdds represent the ratio of the probability of an event occurring to the probability of it not occurring:\n\n\nExample: If the probability of heart disease is 0.25 (25%), then the odds are:\n\n\n\n\\[ \\text{Odds} = \\frac{P(\\text{event})}{1 - P(\\text{event})} \\]\n\\[ \\frac{0.25}{1 - 0.25} = \\frac{0.25}{0.75} = 0.33 \\]\nThis means that for every 1 person without heart disease, there are 0.33 people with it.\n(Or equivalently: for every 3 people without heart disease, 1 person has it.)"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#understanding-odds-ratio",
-    "href": "practice/practice_slides/slides_lab05.html#understanding-odds-ratio",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Understanding Odds Ratio",
-    "text": "Understanding Odds Ratio\n\n\n\nOdds Ratio (O.R.) compares the odds of an event occurring in one group (exposed) relative to another group (reference).\n\n\nExample: If the odds of heart disease for coffee drinkers are 0.48, and for non-coffee drinkers are 1, then the odds ratio is:\n\n\n\n\\[\\text{Odds Ratio} = \\frac{\\text{Odds}_{\\text{exposed}}}{\\text{Odds}_{\\text{reference}}} =\n\\frac{\\text{Odds}_{\\text{coffee drinkers}}}{\\text{Odds}_{\\text{non-coffee drinkers}}} = \\frac{0.48}{1} = 0.48\\]\n\n\nInterpretation:\n\nIf O.R. &gt; 1, the event is more likely in the exposed group.\nIf O.R. &lt; 1, the event is less likely in the exposed group.\nIf O.R. = 1, there is no difference between groups."
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#example-coffee-drinkers-vs.-non-coffee-drinkers",
-    "href": "practice/practice_slides/slides_lab05.html#example-coffee-drinkers-vs.-non-coffee-drinkers",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Example: Coffee Drinkers vs. Non-Coffee Drinkers",
-    "text": "Example: Coffee Drinkers vs. Non-Coffee Drinkers\n\nIf the odds of heart disease are:\n\nCoffee drinkers (exposed group): \\(0.48\\)\n\nNon-coffee drinkers (reference group): \\(1\\)\n\n\nThen the Odds Ratio is:\n\\[\\text{Odds Ratio} = \\frac{\\text{Odds}_{\\text{coffee drinkers}}}{\\text{Odds}_{\\text{non-coffee drinkers}}} =\n\\frac{0.48}{1} = 0.48\\]\nThis means coffee drinkers have 52% lower odds of heart disease than non-coffee drinkers.\n\n\n\n\n\nOdds Ratio (O.R.)\nExample O.R.\nFormula for % Change in Odds\nCalculation\nInterpretation\n\n\n\nO.R. &lt; 1\n0.48\n(1 - O.R.) × 100\n(1 - 0.48) × 100 = 52%\n52% lower odds of having heart disease compared to non-coffee drinkers\n\n\nO.R. &gt; 1\n2.08\n(O.R. - 1) × 100\n(2.08 - 1) × 100 = 108%\n108% higher odds of having heart disease compared to coffee drinkers"
   }
 ]
