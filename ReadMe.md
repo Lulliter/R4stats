@@ -10,27 +10,27 @@ This website [https://r4statistics.com/](https://r4statistics.com/) hosts some t
 + ✅ Must do manual 
   + ~~\*.PPTX 2 \*.PDF LOOSES THE EQUATIONS!!!!!~~
 
-+ ️🔳 rivedere `practice/practice_slides/slides_lab05.qmd` + practice/RCODE 5 
-  + ML 
-  + aggiungere logistic regression???
-  + aggiungere decision trees??? 
-  + practice/RCODE 05  
-+ ️🔳 then match the lecture in `lecture/lecture_slides/slides_lecture05.qmd` 
++ ️🔳 ultimare `practice/practice_slides/slides_lab05.qmd` + practice/RCODE 5 
+  + ~~aggiungere decision trees??? NO (dopo!) ~~
+  + ~~K-MEANS CLUSTERING ? NO (dopo!) ~~
+  + ~~logistic multiple variables ? NO (too much!) ~~
+  + bollini 🟠 e fine 
+  
++ ️🔳 re- create  `practice/Rcode/lab05_code.R`
 
-+ ️🔳 rivedere `practice/practice_slides/slides_lab06.qmd`
++ ️🔳 match the lecture in `lecture/lecture_slides/slides_lecture05.qmd` 
++ ️🔳 create standalone lesson on logistic regression for my website
+
+### Extra TO DO
+
++ ️◽️ (maybe?) rivedere `practice/practice_slides/slides_lab06.qmd`
   + practice/RCODE 06  
-
-+ ️🔳 aggiornare footer con link [https://r4statistics.com/](https://r4statistics.com/)  in `*slide*.pptx` files 
-
-+ **[CODE refactoring]**
-  + ✅ make  `_variable.yml`
-    + nome sito 
-+  ️🔳 turn re-usable practice slides code into `tidyeval` functions (plot etc) to be able to replace with different datasets 
-+  ️🔳 add `renv` bc this is going to last 
++ ️◽ **[add `renv`]** bc this is going to last 
++ ️◽ turn re-usable practice slides code into `tidyeval` functions (plot etc) to be able to replace with different datasets 
 
 ## How this website was built
 
-This is a static website built with [Quarto](https://quarto.org/), shared on a Github [repo](https://github.com/Lulliter/R4biostats) and served via [Github Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) ~~rendered at this link [https://lulliter.github.io/R4stats/](https://lulliter.github.io/R4stats/), or (after buying a "custom domain")~~ now deployed over a custom domain registered with AWS Route 53: [https://r4statistics.com/](https://r4statistics.com/).
+This is a static website built with [Quarto](https://quarto.org/), shared on a Github [repo](https://github.com/Lulliter/R4biostats) and served via [Github Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) ~~rendered at this link [https://lulliter.github.io/R4stats/](https://lulliter.github.io/R4stats/), or~~ now (after buying a "custom domain") deployed over a custom domain registered with AWS Route 53: [https://r4statistics.com/](https://r4statistics.com/).
 
 The main content of the website pages is contained in *Quarto Markdown* files (`*.qmd`). `*.qmd` files are very similar to regular Markdown (`*.md`) and R Markdown (`*.rmd`) files, except they are designed to be language agnostic.
 

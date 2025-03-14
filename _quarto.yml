@@ -31,7 +31,7 @@ website:
       [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) <br> [Luisa M. Mimmi](https://luisamimmi.org/) & M. Chiara Mimmi 2024
     right: |
       Made with {{< fa brands r-project >}} and [Quarto](https://quarto.org/) <br> 
-      [Code at {{< fa brands github >}} GitHub]("{{< var websites.gh_repo >}}")
+      [Code at {{< fa brands github >}} GitHub]({{< var websites.gh_repo >}})
 
     background: "#e3eff7"
 #     left: |

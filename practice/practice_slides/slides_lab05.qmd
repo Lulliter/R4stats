@@ -31,6 +31,7 @@ format:
 execute:
   # Quarto pre code blocks do not echo their source code by default
   echo: true
+  eval: true
   include: true
   freeze: auto
 bibliography: ../../bib/R4biostats.bib
@@ -38,9 +39,9 @@ csl: ../../bib/apa-6th-edition.csl
 suppress-bibliography: true
 ---
 
-# GOAL OF TODAY'S PRACTICE SESSION
+# GOAL OF TODAY'S PRACTICE SESSION {.section-slide}  
 
-## Lab # 5
+## Lab # 5 
 ::: {style="font-size: 90%;"}
 ::: {style="color:#77501a"}
 
@@ -53,7 +54,7 @@ suppress-bibliography: true
   + **Unsupervised ML algorithms** examples:
       + [K-means Clustering]{style="background-color: #d8cf71;"}
       + PCA for dimension reduction
-  + (optional) PLS-DA for classification, a supervised ML alternative to PCA
+      + [PLS-DA for classification, a supervised ML alternative to PCA]{style="background-color: #d8cf71;"}
     
     
 <!-- add png icon   -->
@@ -61,7 +62,7 @@ suppress-bibliography: true
 :::
 
 :::{aside}
-[*highlight* = ]{style="background-color: #d8cf71;"} ![](../../images/coming-soon.png){width=6%}  
+[*highlight* = ]{style="background-color: #d8cf71;"} ![](../../images/coming-soon.png){width=8%}  
 :::
 :::
 
@@ -82,32 +83,33 @@ The examples and datasets in this Lab session follow very closely two sources:
 <!-- POWER ANALYSIS https://mvanrongen.github.io/corestats-in-r_tidyverse/power-analysis.html -->
  
 
-# R ENVIRONMENT SET UP & DATA
+# R ENVIRONMENT SET UP & DATA {.section-slide}
 
 ## Needed R Packages
-::: {style="font-size: 85%;"}
+::: {style="font-size: 80%;"}
 
 + We will use functions from packages `base`, `utils`, and `stats` (pre-installed and pre-loaded) 
 + We may also use the packages below (specifying `package::function` for clarity).
 
 
 ```{r}
-# Load pckgs for this R session
+# Prefer non-scientific notation
 options(scipen = 999)
+
+# Load pckgs for this R session
 # --- General 
 library(here)     # tools find your project's files, based on working directory
 library(dplyr)    # A Grammar of Data Manipulation
 library(skimr)    # Compact and Flexible Summaries of Data
+library(tibble)   # Simple Data Frames
 library(magrittr) # A Forward-Pipe Operator for R 
 library(readr)    # A Forward-Pipe Operator for R 
 library(tidyr)    # Tidy Messy Data
 library(kableExtra) # Construct Complex Table with 'kable' and Pipe Syntax
-
 # ---Plotting & data visualization
 library(ggplot2)      # Create Elegant Data Visualisations Using the Grammar of Graphics
 library(ggfortify)     # Data Visualization Tools for Statistical Analysis Results
 library(scatterplot3d) # 3D Scatter Plot
-
 # --- Statistics
 library(MASS)       # Support Functions and Datasets for Venables and Ripley's MASS
 library(factoextra) # Extract and Visualize the Results of Multivariate Data Analyses
@@ -115,7 +117,7 @@ library(FactoMineR) # Multivariate Exploratory Data Analysis and Data Mining
 library(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests
 library(car)        # Companion to Applied Regression
 library(ROCR)       # Visualizing the Performance of Scoring Classifiers
-
+library(pROC)      # Display and Analyze ROC Curves
 # --- Tidymodels (meta package)
 library(rsample)    # General Resampling Infrastructure  
 library(broom)      # Convert Statistical Objects into Tidy Tibbles
@@ -126,7 +128,7 @@ library(broom)      # Convert Statistical Objects into Tidy Tibbles
 <!-- #library(oibiostat) # Data Package for OpenIntro Biostatistics  -->
 :::
 
-# LOGISTIC REGRESSION 
+# LOGISTIC REGRESSION {.section-slide}
 
 (EXAMPLE of SUPERVISED ML ALGORITHM)
 <!-- https://openintro-ims.netlify.app/regression-modeling -->
@@ -185,20 +187,18 @@ $$
 
 :::
 
-# 🟠 DATASETS for today
+# DATASET #1: Heart Disease {.section-slide}
 
-<br>
+<!-- ::: {style="font-size: 80%;"} -->
+<!-- In this tutorial, we will use:  -->
 
-::: {style="font-size: 80%;"}
-In this tutorial, we will use: 
-
-+ a (toy) `heart_data` dataset from the book by: Brian Machut, Nathan Cornwell [Data Analytics with R](https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/#acknowledgements)  
+<!-- + a (toy) `heart_data` dataset from the book by: Brian Machut, Nathan Cornwell [Data Analytics with R](https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/#acknowledgements)   -->
 
 <!-- + the `biopsy` dataset attached to the [`MASS` package](https://cran.r-project.org/web/packages/MASS/MASS.pdf).  -->
 
-+ a few clean datasets used in the "Core Statistics using R" course by: [Martin van Rongen](https://github.com/mvanrongen/corestats-in-r_tidyverse)
+<!-- + a few clean datasets used in the "Core Statistics using R" course by: [Martin van Rongen](https://github.com/mvanrongen/corestats-in-r_tidyverse) -->
 
-:::
+<!-- ::: -->
 
 ## [Dataset on Heart Disease (`heart_data`)]{.r-fit-text}
 
@@ -210,7 +210,7 @@ In this tutorial, we will use:
 
 ```{r}
 # Use `here` in specifying all the subfolders AFTER the working directory 
-heart_data <- read.csv(file = here::here("practice", "data_input", "05_datasets",
+heart_data <- utils::read.csv(file = here::here("practice", "data_input", "05_datasets",
                                       "heart_data.csv"), 
                           header = TRUE, # 1st line is the name of the variables
                           sep = ",", # which is the field separator character.
@@ -745,7 +745,10 @@ However, our **model** just told us that coffee drinking is associated with a de
 <br><br>
 It’s because `coffee_drinking` and `fast__food_spend` are <u>**correlated**</u> so, on it’s own, it would _appear_ as if coffee drinking were associated with heart disease, but this is only because coffee drinking is also associated with fast food spend, which our model tells us is the real contributor to heart disease.
 
-## Understanding `Odds`
+# DIGRESSION {.section-slide}
+
+## Understanding `Odds` {background-color="#d5eae0"}
+
 :::{style="font-size: 90%"}
 + **Odds** represent the ratio of the probability of an event occurring to the probability of it not occurring:
   - **Example:** If the probability of heart disease is **0.25 (25%)**, then the odds are:
@@ -758,7 +761,7 @@ $$ \text{Odds} = \frac{P(\text{event})}{1 - P(\text{event})} $$
   (Or equivalently: for every **3 people without heart disease, 1 person has it.**)
 :::
 
-## Understanding `Odds Ratio`
+## Understanding `Odds Ratio` {background-color="#d5eae0"}
 :::{style="font-size: 90%"}
 + **Odds Ratio (O.R.)** compares the odds of an event occurring in one group (exposed) relative to another group (reference).
 
@@ -774,7 +777,7 @@ $$\text{Odds Ratio} = \frac{\text{Odds}_{\text{exposed}}}{\text{Odds}_{\text{ref
 
 ::: 
 
-## [Example: Coffee Drinkers vs. Non-Coffee Drinkers]{.r-fit-text}
+## [Example: Coffee Drinkers vs. Non-Coffee Drinkers]{.r-fit-text}{background-color="#d5eae0"}
 :::{style="font-size: 75%"}
 If the **odds of heart disease** are:
 
@@ -816,7 +819,7 @@ kable(odds_table, align = "c") %>%
 :::
 
 
-## Making predictions from `logistic regression` model ✍🏻
+## [Making predictions from `logistic regression` model ✍🏻]{.r-fit-text}
 
 :::{style="font-size: 90%"}
 Let's use the `logistic regression` model to make predictions on the training data. First, we'll do it manually:
@@ -841,6 +844,7 @@ x2 <- 5000
 x3 <- 50000
 
 # Coefficients from our logistic regression model
+# (mind the decimals!)
 beta_0 <- -11.055360943337
 b1 <- -0.729562678149
 b2 <- 0.002376170127
@@ -864,13 +868,14 @@ print(probability) # 0.4951735
 Now, let's use the `predict()` function to make a prediction for the same individual.
 
 ```{r}
+# Define values for individual case (as df)
 individual <- data.frame(
-  coffee_drinker = "Yes_Coffee", # factor 
-  fast_food_spend = 5000, 
-  income = 50000)
+  coffee_drinker = "Yes_Coffee", # x1 (factor)  
+  fast_food_spend = 5000,  # x2  
+  income = 50000) # x3 
 
-# Make a prediction
-predict(heart_model, individual, type = "response")
+# Make a prediction for individual outcome
+predict(heart_model, individual, type = "response") # 0.4951735 
 ```
 :::
 
@@ -878,13 +883,12 @@ predict(heart_model, individual, type = "response")
 ## Adding predictions to the training data
 
 :::{style="font-size: 90%"}
-In fact, we can use the `predict()` function to make predictions for **all** the individuals observed in the training data `heart_train.`
+In fact, we can use the `predict()` function to make predictions for ***ALL the individuals*** observed in the training data `heart_train.`
 
 + `heart_train$heart_disease_pred` = added column with the predicted probabilities of heart disease for each individual.
 
 ```{r}
-
-# Add calculated predictions to the training data
+# Add calculated predictions to the whole training dataset
 heart_train$heart_disease_pred <- predict(heart_model, type = "response")
 
 # Subset  of 3 with heart_disease = Yes_HD
@@ -894,6 +898,217 @@ heart_train[heart_train$heart_disease == "No_HD", ][1:3,]
 ```
 :::
 
+## [Converting predictions into classifications]{.r-fit-text}
+
+For simplicity, we will establish a threshold of $0.5$ to classify the predictions as either `Yes_HD` or `No_HD`.
+
++ using the base function `ifelse(test, yes, no)`
+```{r}
+#| output: true
+
+# Convert predictions to classifications
+heart_train <- heart_train %>%
+  mutate(heart_disease_pred_class = ifelse(heart_disease_pred > 0.5, 
+                                           "pred_YES", "pred_NO"))
+# ... same BASE WAY
+# heart_train$heart_disease_pred_class <- ifelse(heart_train$heart_disease_pred > 0.5, 1, 0)
+```
+
+## [Evaluating performance with the confusion matrix]{.r-fit-text}
+
+Recall how the **confusion matrix** helps evaluating a model's performance.
+
+![](figures/confusion_matrix.jpg)
+
+
+## Confusion matrix with threshold of 0.5
+Then we compare the predicted classification to the actual training data.
+
+```{r}
+#| output: true
+ 
+# Confusion matrix at 0.5
+confusion_matrix <- table(heart_train$heart_disease, heart_train$heart_disease_pred_class)
+
+confusion_matrix %>% 
+  knitr::kable()
+
+```
+
+## Sensitivity, Specificity, Accuracy
+
++ **Sensitivity** (True Positive Rate): the proportion of actual positives that are correctly identified.
++ **Specificity** (True Negative Rate): the proportion of actual negatives that are correctly identified.
++ **Accuracy**: the proportion of true results (both true positives and true negatives) in the population.
+
+```{r}
+#| output: true
+#| echo: true
+
+sensitivity <- confusion_matrix[2, 2] / sum(confusion_matrix[2, ]) # 80/228
+specificity <- confusion_matrix[1, 1] / sum(confusion_matrix[1, ]) # 6790/6820
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix) # 6870/7048
+
+# Print the results
+sensitivity # 0.3508772
+specificity # 0.9956012
+accuracy # 0.9751131
+```
+
+
+## Making predictions on test data
+
+An even more meaningful step is to evaluate the model on the test data (`heart_test`), which (*in principle*) the model has not seen before.
+
+```{r}
+# Prep test data to match training data
+heart_test <- heart_test %>% 
+  # convert to factor with levels "Yes" and "No"
+  mutate(heart_disease = factor(heart_disease, levels = c(0, 1),
+                                labels = c("No_HD", "Yes_HD")),
+         coffee_drinker = factor(coffee_drinker, levels = c(0, 1),
+                                 labels = c("No_Coffee", "Yes_Coffee")) 
+  ) 
+
+heart_test_pred <- heart_test %>%
+  # add prediction as column 
+  mutate(heart_disease_pred = predict(heart_model, newdata = heart_test, type = "response"))
+
+```
+
+
+## Confusion matrix with threshold of 0.5
+Once again, we use a $0.5$ threshold to classify the predictions (in `test` data). Then we compare the predicted classification to the actual ones.
+
+```{r}
+#| output: true
+
+# Convert predictions to classifications
+heart_test_pred$heart_disease_pred_class <- ifelse(
+  heart_test_pred$heart_disease_pred > 0.5, "pred_YES", "pred_NO")
+ 
+# Confusion matrix at 0.5
+confusion_matrix_test <- table(heart_test_pred$heart_disease,
+                               heart_test_pred$heart_disease_pred_class)
+
+# Print the confusion matrix
+confusion_matrix_test %>% 
+  knitr::kable()
+```
+
+## [Sensitivity, Specificity, Accuracy (on test data)]{.r-fit-text}
+
+:::{style="font-size: 90%"}
++ **Sensitivity**: True Positive Rate
++ **Specificity**: True Negative Rate
++ **Accuracy**: Proportion of both true positives and true negatives in the population.
+
+```{r}
+#| output: true
+
+sensitivity_test <- confusion_matrix_test[2, 2] / sum(confusion_matrix_test[2, ]) # 25/105
+specificity_test <- confusion_matrix_test[1, 1] / sum(confusion_matrix_test[1, ]) # 2838/2847
+accuracy_test <- sum(diag(confusion_matrix_test)) / sum(confusion_matrix_test) # 2863/2952
+
+# Print the results
+sensitivity_test # 0.2380952
+specificity_test # 0.9968388
+accuracy_test    # 0.9698509
+```
+
+Sensitivity is really very low, which means that the model is not so good at identifying those who have heart disease. 
+
+  + This is quite problematic in a medical context, where we want to identify as many cases as possible.
+  
+<!-- This may be due to the distribution of the data or the model itself: people with heart disease are a very small proportion of the dataset, and the model may not have enough information to make accurate predictions. -->
+
+<!-- What if we change the threshold to 0.3 or 0.7? Would the model perform better? -->
+::: 
+
+
+## [Performance at different classification thresholds]{.r-fit-text}
+What if we change the threshold to $0.25$ or $0.75$? How would the model perform?
+
+```{r}
+# Check performance for different thresholds
+thresh_025 <- 0.25
+thresh_075 <- 0.75
+
+# Classify the predictions based on the threshold
+heart_test_pred <-  heart_test_pred %>% 
+  mutate(heart_disease_pred_class_025 = ifelse(heart_disease_pred > thresh_025,
+                                               "pred_YES", "pred_NO"),
+         heart_disease_pred_class_075 = ifelse(heart_disease_pred > thresh_075,
+                                               "pred_YES", "pred_NO"))
+ 
+# Confusion matrix at different thresholds
+confusion_matrix_test_025 <- table(heart_test_pred$heart_disease,
+                                   heart_test_pred$heart_disease_pred_class_025)
+confusion_matrix_test_075 <- table(heart_test_pred$heart_disease,
+                                   heart_test_pred$heart_disease_pred_class_075)
+
+# Calcluate sensitivity and specificity for each threshold
+sensitivity_test_025 <- confusion_matrix_test_025[2, 2] / sum(confusion_matrix_test_025[2, ])
+sensitivity_test_075 <- confusion_matrix_test_075[2, 2] / sum(confusion_matrix_test_075[2, ])
+specificity_test_025 <- confusion_matrix_test_025[1, 1] / sum(confusion_matrix_test_025[1, ])
+specificity_test_075 <- confusion_matrix_test_075[1, 1] / sum(confusion_matrix_test_075[1, ])
+```
+
+## [Performance at different classification thresholds]{.r-fit-text}
+
+A lower threshold ($0.25$) evidently allows to "catch" more of the "TRUE POSITIVES" (51, as opposed to 25 with $0.5$), but will also predict more "FALSE POSITIVES" (56, versus 9 with classification $0.5$ threshold)
+
+```{r}
+# Print the classification results at the threshold 0.25 
+sensitivity_test_025 # 0.4857143 (a.k.a. TRUE POSITIVE rate)
+specificity_test_025 # 0.9803302 (a.k.a. TRUE NEGATIVE rate)
+```
+
+Not surprisingly, a higher threshold ($0.75$) performs the worst in terms of `sensitivity` 
+```{r}
+# Print the classification results at the threshold 0.75
+sensitivity_test_075 # 0.1047619 (a.k.a. TRUE POSITIVE rate)
+specificity_test_075 # 0.9989463 (a.k.a. TRUE NEGATIVE rate)
+```
+
+## ROC curve may help deciding
+
++ We use the `pROC` package to plot the **ROC curve**: a graphical representation of the trade-off between the **True Positive Rate (Sensitivity)** and the **False Positive Rate (Specificity)** at various thresholds. 
+  + (ideal would go up to the top left corner)
++ The **AUC** is a measure of how well the model can distinguish between classes, with a higher AUC indicating better performance.
++ The **best threshold** is the one that maximizes the **Youden index** (Sensitivity + Specificity - 1).
+
+```{r}
+#| output: true
+#| output-location: slide
+
+# Create a ROC curve with confidence intervals
+roc_curve <- pROC::roc(heart_test_pred$heart_disease,
+                       heart_test_pred$heart_disease_pred,
+                       ci = TRUE, # Compute confidence intervals
+                       of = "thresholds", # Compute AUC
+                       thresholds = "best", # Select the best threshold
+                       print.thres = "best" # Highlight the best threshold on the plot
+)
+
+# Plot the ROC curve with custom color
+plot(roc_curve, col = "#00589b", lwd = 2, # Main ROC curve color (blue)
+     main = "ROC Curve for Heart Disease Prediction",
+     xlab = "(Specificity) False Positive Rate", 
+     ylab = "(Sensitivity) True Positive Rate")
+
+# Extract the best threshold value directly from roc_curve
+best_threshold <- pROC::coords(roc_curve, 
+                         # looks for the best threshold
+                         x = "best", 
+                         # and returns: 
+                         ret=c("threshold","specificity", "sensitivity"))
+# Add an horizontpROC::## Add an horizontal line at the best threshold
+abline(h = best_threshold$sensitivity, col = "#cd6882", lty = 2)
+# Add the AUC text
+text(0.5, 0.5, paste("AUC =", round(pROC::auc(roc_curve), 4)), col = "#887455", cex = 1.5)
+```
+
 # 🖍️🖍️   qui    🖍️🖍  
 <!-- SEGUI  -->
 
@@ -901,63 +1116,20 @@ heart_train[heart_train$heart_disease == "No_HD", ][1:3,]
 <!-- e  -->
 <!-- https://www.geeksforgeeks.org/how-to-interpret-odds-ratios-in-logistic-regression/?ref=next_article -->
 
+Rivedi anche steps in `practice/practice_slides/_biopsy_logistic.qmd`
 
-## Converting predictions into classifications
+ 
 
-```{r}
-#| output: true
-
-# Convert predictions to classifications
-heart_train$heart_disease_pred_class <- ifelse(heart_train$heart_disease_pred > 0.5, 1, 0)
-
-```
-
-
-## Evaluating the model]
-
-
-## ROC curve]
-
-```{r}
-
-# Load the pROC package
-library(pROC)
-
-# Create a ROC curve
-roc_curve <- roc(heart_train$heart_disease, heart_train$heart_disease_pred)
-
-# Plot the ROC curve
-plot(roc_curve, col = "blue", main = "ROC Curve", legacy.axes = TRUE)
-```
-
-## Confusion matrix]
-```{r}
-# Confusion matrix
-confusion_matrix <- table(heart_train$heart_disease, heart_train$heart_disease_pred_class)
-
-confusion_matrix
-```
-
-## Sensitivity and Specificity]
-
-```{r}
-# Sensitivity
-sensitivity <- confusion_matrix[2, 2] / sum(confusion_matrix[2, ])
-
-# Specificity
-specificity <- confusion_matrix[1, 1] / sum(confusion_matrix[1, ])
-
-```
 
 # 🔴🟠🟡🟢🔵🟣
 
 
 
-# 🟠 K-MEANS CLUSTERING: EXAMPLE of UNSUPERVISED ML ALGORITHM
+<!-- # 🟠 K-MEANS CLUSTERING: EXAMPLE of UNSUPERVISED ML ALGORITHM -->
 
-## ...]
+<!-- ## ...] -->
 
-# PCA: EXAMPLE of UNSUPERVISED ML ALGORITHM
+# PCA: EXAMPLE of UNSUPERVISED ML ALGORITHM {.section-slide}
 
 Reducing high-dimensional data to a lower number of variables
 <!-- 1) PCA fatta a mano. -->
@@ -966,6 +1138,95 @@ Reducing high-dimensional data to a lower number of variables
 <!-- https://www.statology.org/principal-components-analysis-in-r/ -->
 
 <!-- Probabilmente non viene proprio uguale perchè in MA fa normalizzazione e scaling mentre Statology fa solo scaling, ma fa niente, diciamo che ci serve per vedere la differenza -->
+
+# DATASET #2: `biopsy` {.section-slide}
+
+## Dataset on Breast Cancer Biopsy]
+
+::: {style="font-size: 95%;"}
+**Name**: Biopsy Data on Breast Cancer Patients  
+**Documentation**: See reference on the data downloaded and conditioned for R here [https://cran.r-project.org/web/packages/MASS/MASS.pdf](https://cran.r-project.org/web/packages/MASS/MASS.pdf)  
+**Sampling details**: This breast cancer database was obtained from the University of Wisconsin Hospitals, Madison from Dr. William H. Wolberg. He assessed biopsies of breast tumours for 699 patients up to 15 July
+1992; each of nine attributes has been scored on a scale of 1 to 10, and the outcome is also known. The dataset contains the original Wisconsin breast cancer data with 699 observations on 11 variables.  
+::: 
+
+## Importing Dataset `biopsy`]
+
+<!-- + **[Option 1]** the data can be directly obtained form the `MASS` R package -->
+<!--   + Adapting the function `here` to match your own folder structure -->
+
+<!-- <!-- FATTO IO MA LORO NON VEDONO -->  
+<!-- ```{r} -->
+<!-- #| eval: false -->
+<!-- #| output: false -->
+<!-- #| echo: false -->
+
+<!-- # (after loading pckg) -->
+<!-- library(MASS) # Support Functions and Datasets for Venables and Ripley's MASS -->
+<!-- # I can call  -->
+<!-- utils::data(biopsy) -->
+
+<!-- # li salvo nel mio folder per poi darglieli  -->
+<!-- readr::write_csv(biopsy, file = here::here("practice", "data_input", "04_datasets", -->
+<!--                                       "biopsy.csv")) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| eval: false -->
+<!-- #| output: false -->
+<!-- #| echo: true -->
+
+<!-- # (Check my working directory location) -->
+
+<!-- # Use `here` in specifying all the subfolders AFTER the working directory  -->
+<!-- biopsy2 <- readr::read_csv(file = here::here("practice", "data_input", "04_datasets", -->
+<!--                                       "biopsy.csv") ,  -->
+<!--                           show_col_types = FALSE, -->
+<!--                           col_types = c("c", # id,  -->
+<!--                                          "i", "i", "i", "i", "i", "i", "i", "i", "i",   #V1:V9  -->
+<!--                                          "f"  #class  -->
+<!-- )) -->
+<!-- ``` -->
+
++ The data can be interactively obtained form the `MASS` R package
+
+```{r}
+# (after loading pckg)
+# library(MASS)  
+
+# I can call 
+utils::data(biopsy)
+```
+
+ 
+## `biopsy` variables with description]
+
+::: {style="font-size: 80%;"}
+<!-- [[EXCERPT: see complete file in Input Data Folder]]{style="color:#77501a"} -->
+
+```{r}
+#| output: true
+#| echo: false
+
+biopsy_desc <- tibble::tribble(
+  ~Variable, ~ Type, ~Description,
+#"X" ,  "integer" ,         "row counter ", 
+"id" ,   "character",               "Sample id",
+"V1",    "integer 1 - 10",        "clump thickness",       
+"V2",    "integer 1 - 10",        "uniformity of cell size",   
+"V3",    "integer 1 - 10",        "uniformity of cell shape",  
+"V4",    "integer 1 - 10",        "marginal adhesion",              
+"V5",    "integer 1 - 10",        "single epithelial cell size",   
+"V6",    "integer 1 - 10",        "bare nuclei (16 values are missing)",
+"V7",    "integer 1 - 10",        "bland chromatin",             
+"V8",    "integer 1 - 10",        "normal nucleoli",       
+"V9",    "integer 1 - 10",        "mitoses",               
+"class", "factor"     ,        "benign or malignant" )                 
+
+kableExtra::kable(biopsy_desc)
+```
+:::
+
 
 ## `biopsy` dataset manipulation]
 
@@ -1095,7 +1356,7 @@ summary(biopsy_pca)$importance[3,]
 > Once you computed the PCA in R you must decide the number of components to retain based on the obtained results.
 
 
-# VISUALIZING PCA OUTPUTS
+# VISUALIZING PCA OUTPUTS {.section-slide}
 
 ## Scree plot
 
@@ -1341,7 +1602,7 @@ loadings[ ,1:2]
 :::
 
 
-## Final thoughts
+## 🟠 Final thoughts
 
 ::: {style="font-size: 95%;"}
 ::: {style="color:#77501a"}

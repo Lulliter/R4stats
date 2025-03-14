@@ -53,7 +53,7 @@
     "href": "practice/practice_slides/slides_lab05.html#lab-5",
     "title": "Lab 5: Intro to Machine Learning",
     "section": "Lab # 5",
-    "text": "Lab # 5\n\n\n\nIn this Lab session, we will focus on Machine Learning (ML), as introduced in Lecture 5\nWe will review examples of both supervised and unsupervised ML algorithms\n\n\nSupervised ML algorithms examples:\n\nLogistic regression\nClassification and regression trees (CART)\n🌳 Random Forest classifier\n\n\n\nUnsupervised ML algorithms examples:\n\nK-means Clustering\nPCA for dimension reduction\n\n\n(optional) PLS-DA for classification, a supervised ML alternative to PCA\n\n\n\n\n\n\nhighlight ="
+    "text": "Lab # 5\n\n\n\nIn this Lab session, we will focus on Machine Learning (ML), as introduced in Lecture 5\nWe will review examples of both supervised and unsupervised ML algorithms\n\n\nSupervised ML algorithms examples:\n\nLogistic regression\nClassification and regression trees (CART)\n🌳 Random Forest classifier\n\n\n\nUnsupervised ML algorithms examples:\n\nK-means Clustering\nPCA for dimension reduction\nPLS-DA for classification, a supervised ML alternative to PCA\n\n\n\n\n\n\n\n\nhighlight ="
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#acknowledgements",
@@ -67,7 +67,7 @@
     "href": "practice/practice_slides/slides_lab05.html#needed-r-packages",
     "title": "Lab 5: Intro to Machine Learning",
     "section": "Needed R Packages",
-    "text": "Needed R Packages\n\n\nWe will use functions from packages base, utils, and stats (pre-installed and pre-loaded)\nWe may also use the packages below (specifying package::function for clarity).\n\n\n# Load pckgs for this R session\noptions(scipen = 999)\n# --- General \nlibrary(here)     # tools find your project's files, based on working directory\nlibrary(dplyr)    # A Grammar of Data Manipulation\nlibrary(skimr)    # Compact and Flexible Summaries of Data\nlibrary(magrittr) # A Forward-Pipe Operator for R \nlibrary(readr)    # A Forward-Pipe Operator for R \nlibrary(tidyr)    # Tidy Messy Data\nlibrary(kableExtra) # Construct Complex Table with 'kable' and Pipe Syntax\n\n# ---Plotting & data visualization\nlibrary(ggplot2)      # Create Elegant Data Visualisations Using the Grammar of Graphics\nlibrary(ggfortify)     # Data Visualization Tools for Statistical Analysis Results\nlibrary(scatterplot3d) # 3D Scatter Plot\n\n# --- Statistics\nlibrary(MASS)       # Support Functions and Datasets for Venables and Ripley's MASS\nlibrary(factoextra) # Extract and Visualize the Results of Multivariate Data Analyses\nlibrary(FactoMineR) # Multivariate Exploratory Data Analysis and Data Mining\nlibrary(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests\nlibrary(car)        # Companion to Applied Regression\nlibrary(ROCR)       # Visualizing the Performance of Scoring Classifiers\n\n# --- Tidymodels (meta package)\nlibrary(rsample)    # General Resampling Infrastructure  \nlibrary(broom)      # Convert Statistical Objects into Tidy Tibbles"
+    "text": "Needed R Packages\n\n\nWe will use functions from packages base, utils, and stats (pre-installed and pre-loaded)\nWe may also use the packages below (specifying package::function for clarity).\n\n\n# Prefer non-scientific notation\noptions(scipen = 999)\n\n# Load pckgs for this R session\n# --- General \nlibrary(here)     # tools find your project's files, based on working directory\nlibrary(dplyr)    # A Grammar of Data Manipulation\nlibrary(skimr)    # Compact and Flexible Summaries of Data\nlibrary(tibble)   # Simple Data Frames\nlibrary(magrittr) # A Forward-Pipe Operator for R \nlibrary(readr)    # A Forward-Pipe Operator for R \nlibrary(tidyr)    # Tidy Messy Data\nlibrary(kableExtra) # Construct Complex Table with 'kable' and Pipe Syntax\n# ---Plotting & data visualization\nlibrary(ggplot2)      # Create Elegant Data Visualisations Using the Grammar of Graphics\nlibrary(ggfortify)     # Data Visualization Tools for Statistical Analysis Results\nlibrary(scatterplot3d) # 3D Scatter Plot\n# --- Statistics\nlibrary(MASS)       # Support Functions and Datasets for Venables and Ripley's MASS\nlibrary(factoextra) # Extract and Visualize the Results of Multivariate Data Analyses\nlibrary(FactoMineR) # Multivariate Exploratory Data Analysis and Data Mining\nlibrary(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests\nlibrary(car)        # Companion to Applied Regression\nlibrary(ROCR)       # Visualizing the Performance of Scoring Classifiers\nlibrary(pROC)      # Display and Analyze ROC Curves\n# --- Tidymodels (meta package)\nlibrary(rsample)    # General Resampling Infrastructure  \nlibrary(broom)      # Convert Statistical Objects into Tidy Tibbles"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#logistic-regression-review",
@@ -88,7 +88,7 @@
     "href": "practice/practice_slides/slides_lab05.html#dataset-on-heart-disease-heart_data",
     "title": "Lab 5: Intro to Machine Learning",
     "section": "Dataset on Heart Disease (heart_data)",
-    "text": "Dataset on Heart Disease (heart_data)\nName: heart_data.csvDocumentation: Toy dataset prepared for teaching purposes. See reference on the data here Data Analytics with RSampling details: This dataset contains 10,000 observations on 4 variables.\n\n\n# Use `here` in specifying all the subfolders AFTER the working directory \nheart_data &lt;- read.csv(file = here::here(\"practice\", \"data_input\", \"05_datasets\",\n                                      \"heart_data.csv\"), \n                          header = TRUE, # 1st line is the name of the variables\n                          sep = \",\", # which is the field separator character.\n                          na.strings = c(\"?\",\"NA\" ), # specific MISSING values  \n                          row.names = NULL)"
+    "text": "Dataset on Heart Disease (heart_data)\nName: heart_data.csvDocumentation: Toy dataset prepared for teaching purposes. See reference on the data here Data Analytics with RSampling details: This dataset contains 10,000 observations on 4 variables.\n\n\n# Use `here` in specifying all the subfolders AFTER the working directory \nheart_data &lt;- utils::read.csv(file = here::here(\"practice\", \"data_input\", \"05_datasets\",\n                                      \"heart_data.csv\"), \n                          header = TRUE, # 1st line is the name of the variables\n                          sep = \",\", # which is the field separator character.\n                          na.strings = c(\"?\",\"NA\" ), # specific MISSING values  \n                          row.names = NULL)"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#heart_data-variables-with-description",
@@ -270,63 +270,119 @@
     "href": "practice/practice_slides/slides_lab05.html#making-predictions-from-logistic-regression-model-1",
     "title": "Lab 5: Intro to Machine Learning",
     "section": "Making predictions from logistic regression model ✍🏻",
-    "text": "Making predictions from logistic regression model ✍🏻\n\n# Define cvalues for individual case \nx1 &lt;- 1\nx2 &lt;- 5000\nx3 &lt;- 50000\n\n# Coefficients from our logistic regression model\nbeta_0 &lt;- -11.055360943337\nb1 &lt;- -0.729562678149\nb2 &lt;- 0.002376170127\nb3 &lt;- -0.000002304669 \n\n# Compute the exponent part\nexponent &lt;- beta_0 + (b1 * x1) + (b2 * x2) + (b3 * x3)\n\n# Compute the predicted probability\nprobability &lt;- 1 / (1 + exp(-exponent))\n\n# Print the result\nprint(probability) # 0.4951735\n\n[1] 0.4951735"
+    "text": "Making predictions from logistic regression model ✍🏻\n\n# Define cvalues for individual case \nx1 &lt;- 1\nx2 &lt;- 5000\nx3 &lt;- 50000\n\n# Coefficients from our logistic regression model\n# (mind the decimals!)\nbeta_0 &lt;- -11.055360943337\nb1 &lt;- -0.729562678149\nb2 &lt;- 0.002376170127\nb3 &lt;- -0.000002304669 \n\n# Compute the exponent part\nexponent &lt;- beta_0 + (b1 * x1) + (b2 * x2) + (b3 * x3)\n\n# Compute the predicted probability\nprobability &lt;- 1 / (1 + exp(-exponent))\n\n# Print the result\nprint(probability) # 0.4951735\n\n[1] 0.4951735"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#making-predictions-from-logistic-regression-model-2",
     "href": "practice/practice_slides/slides_lab05.html#making-predictions-from-logistic-regression-model-2",
     "title": "Lab 5: Intro to Machine Learning",
     "section": "Making predictions from logistic regression model 👩🏻‍💻",
-    "text": "Making predictions from logistic regression model 👩🏻‍💻\n\nNow, let’s use the predict() function to make a prediction for the same individual.\n\nindividual &lt;- data.frame(\n  coffee_drinker = \"Yes_Coffee\", # factor \n  fast_food_spend = 5000, \n  income = 50000)\n\n# Make a prediction\npredict(heart_model, individual, type = \"response\")\n\n        1 \n0.4951735"
+    "text": "Making predictions from logistic regression model 👩🏻‍💻\n\nNow, let’s use the predict() function to make a prediction for the same individual.\n\n# Define values for individual case (as df)\nindividual &lt;- data.frame(\n  coffee_drinker = \"Yes_Coffee\", # x1 (factor)  \n  fast_food_spend = 5000,  # x2  \n  income = 50000) # x3 \n\n# Make a prediction for individual outcome\npredict(heart_model, individual, type = \"response\") # 0.4951735 \n\n        1 \n0.4951735"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#adding-predictions-to-the-training-data",
     "href": "practice/practice_slides/slides_lab05.html#adding-predictions-to-the-training-data",
     "title": "Lab 5: Intro to Machine Learning",
     "section": "Adding predictions to the training data",
-    "text": "Adding predictions to the training data\n\nIn fact, we can use the predict() function to make predictions for all the individuals observed in the training data heart_train.\n\n\nheart_train$heart_disease_pred = added column with the predicted probabilities of heart disease for each individual.\n\n\n# Add calculated predictions to the training data\nheart_train$heart_disease_pred &lt;- predict(heart_model, type = \"response\")\n\n# Subset  of 3 with heart_disease = Yes_HD\nheart_train[heart_train$heart_disease == \"Yes_HD\", ][1:3,] \n\n    heart_disease coffee_drinker fast_food_spend   income heart_disease_pred\n207        Yes_HD      No_Coffee        4723.998 48956.17         0.51420472\n210        Yes_HD     Yes_Coffee        4748.477 20655.20         0.36601782\n242        Yes_HD     Yes_Coffee        3932.141 14930.18         0.07756531\n\n# Subset  of 3 with heart_disease = No_HD\nheart_train[heart_train$heart_disease == \"No_HD\", ][1:3,]\n\n  heart_disease coffee_drinker fast_food_spend    income heart_disease_pred\n1         No_HD      No_Coffee        1823.816 44361.625        0.001086288\n3         No_HD      No_Coffee        2683.873 31767.139        0.008566989\n6         No_HD     Yes_Coffee        2298.971  7491.559        0.001762176"
+    "text": "Adding predictions to the training data\n\nIn fact, we can use the predict() function to make predictions for ALL the individuals observed in the training data heart_train.\n\n\nheart_train$heart_disease_pred = added column with the predicted probabilities of heart disease for each individual.\n\n\n# Add calculated predictions to the whole training dataset\nheart_train$heart_disease_pred &lt;- predict(heart_model, type = \"response\")\n\n# Subset  of 3 with heart_disease = Yes_HD\nheart_train[heart_train$heart_disease == \"Yes_HD\", ][1:3,] \n\n    heart_disease coffee_drinker fast_food_spend   income heart_disease_pred\n207        Yes_HD      No_Coffee        4723.998 48956.17         0.51420472\n210        Yes_HD     Yes_Coffee        4748.477 20655.20         0.36601782\n242        Yes_HD     Yes_Coffee        3932.141 14930.18         0.07756531\n\n# Subset  of 3 with heart_disease = No_HD\nheart_train[heart_train$heart_disease == \"No_HD\", ][1:3,]\n\n  heart_disease coffee_drinker fast_food_spend    income heart_disease_pred\n1         No_HD      No_Coffee        1823.816 44361.625        0.001086288\n3         No_HD      No_Coffee        2683.873 31767.139        0.008566989\n6         No_HD     Yes_Coffee        2298.971  7491.559        0.001762176"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#converting-predictions-into-classifications",
     "href": "practice/practice_slides/slides_lab05.html#converting-predictions-into-classifications",
     "title": "Lab 5: Intro to Machine Learning",
     "section": "Converting predictions into classifications",
-    "text": "Converting predictions into classifications\n\n# Convert predictions to classifications\nheart_train$heart_disease_pred_class &lt;- ifelse(heart_train$heart_disease_pred &gt; 0.5, 1, 0)"
+    "text": "Converting predictions into classifications\nFor simplicity, we will establish a threshold of \\(0.5\\) to classify the predictions as either Yes_HD or No_HD.\n\nusing the base function ifelse(test, yes, no)\n\n\n\n# Convert predictions to classifications\nheart_train &lt;- heart_train %&gt;%\n  mutate(heart_disease_pred_class = ifelse(heart_disease_pred &gt; 0.5, \n                                           \"pred_YES\", \"pred_NO\"))\n# ... same BASE WAY\n# heart_train$heart_disease_pred_class &lt;- ifelse(heart_train$heart_disease_pred &gt; 0.5, 1, 0)"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab05.html#evaluating-the-model",
-    "href": "practice/practice_slides/slides_lab05.html#evaluating-the-model",
+    "objectID": "practice/practice_slides/slides_lab05.html#evaluating-performance-with-the-confusion-matrix",
+    "href": "practice/practice_slides/slides_lab05.html#evaluating-performance-with-the-confusion-matrix",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Evaluating the model]",
-    "text": "Evaluating the model]"
+    "section": "Evaluating performance with the confusion matrix",
+    "text": "Evaluating performance with the confusion matrix\nRecall how the confusion matrix helps evaluating a model’s performance."
   },
   {
-    "objectID": "practice/practice_slides/slides_lab05.html#roc-curve",
-    "href": "practice/practice_slides/slides_lab05.html#roc-curve",
+    "objectID": "practice/practice_slides/slides_lab05.html#confusion-matrix-with-threshold-of-0.5",
+    "href": "practice/practice_slides/slides_lab05.html#confusion-matrix-with-threshold-of-0.5",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "ROC curve]",
-    "text": "ROC curve]\n\n# Load the pROC package\nlibrary(pROC)\n\n# Create a ROC curve\nroc_curve &lt;- roc(heart_train$heart_disease, heart_train$heart_disease_pred)\n\n# Plot the ROC curve\nplot(roc_curve, col = \"blue\", main = \"ROC Curve\", legacy.axes = TRUE)"
+    "section": "Confusion matrix with threshold of 0.5",
+    "text": "Confusion matrix with threshold of 0.5\nThen we compare the predicted classification to the actual training data.\n\n# Confusion matrix at 0.5\nconfusion_matrix &lt;- table(heart_train$heart_disease, heart_train$heart_disease_pred_class)\n\nconfusion_matrix %&gt;% \n  knitr::kable()\n\n\n\n\npred_NO\npred_YES\n\n\n\nNo_HD\n6790\n30\n\n\nYes_HD\n148\n80"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab05.html#confusion-matrix",
-    "href": "practice/practice_slides/slides_lab05.html#confusion-matrix",
+    "objectID": "practice/practice_slides/slides_lab05.html#sensitivity-specificity-accuracy",
+    "href": "practice/practice_slides/slides_lab05.html#sensitivity-specificity-accuracy",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Confusion matrix]",
-    "text": "Confusion matrix]\n\n# Confusion matrix\nconfusion_matrix &lt;- table(heart_train$heart_disease, heart_train$heart_disease_pred_class)\n\nconfusion_matrix\n\n        \n            0    1\n  No_HD  6790   30\n  Yes_HD  148   80"
+    "section": "Sensitivity, Specificity, Accuracy",
+    "text": "Sensitivity, Specificity, Accuracy\n\n\nSensitivity (True Positive Rate): the proportion of actual positives that are correctly identified.\n\nSpecificity (True Negative Rate): the proportion of actual negatives that are correctly identified.\n\nAccuracy: the proportion of true results (both true positives and true negatives) in the population.\n\n\nsensitivity &lt;- confusion_matrix[2, 2] / sum(confusion_matrix[2, ]) # 80/228\nspecificity &lt;- confusion_matrix[1, 1] / sum(confusion_matrix[1, ]) # 6790/6820\naccuracy &lt;- sum(diag(confusion_matrix)) / sum(confusion_matrix) # 6870/7048\n\n# Print the results\nsensitivity # 0.3508772\n\n[1] 0.3508772\n\nspecificity # 0.9956012\n\n[1] 0.9956012\n\naccuracy # 0.9751131\n\n[1] 0.9747446"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab05.html#sensitivity-and-specificity",
-    "href": "practice/practice_slides/slides_lab05.html#sensitivity-and-specificity",
+    "objectID": "practice/practice_slides/slides_lab05.html#making-predictions-on-test-data",
+    "href": "practice/practice_slides/slides_lab05.html#making-predictions-on-test-data",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Sensitivity and Specificity]",
-    "text": "Sensitivity and Specificity]\n\n# Sensitivity\nsensitivity &lt;- confusion_matrix[2, 2] / sum(confusion_matrix[2, ])\n\n# Specificity\nspecificity &lt;- confusion_matrix[1, 1] / sum(confusion_matrix[1, ])"
+    "section": "Making predictions on test data",
+    "text": "Making predictions on test data\nAn even more meaningful step is to evaluate the model on the test data (heart_test), which (in principle) the model has not seen before.\n\n# Prep test data to match training data\nheart_test &lt;- heart_test %&gt;% \n  # convert to factor with levels \"Yes\" and \"No\"\n  mutate(heart_disease = factor(heart_disease, levels = c(0, 1),\n                                labels = c(\"No_HD\", \"Yes_HD\")),\n         coffee_drinker = factor(coffee_drinker, levels = c(0, 1),\n                                 labels = c(\"No_Coffee\", \"Yes_Coffee\")) \n  ) \n\nheart_test_pred &lt;- heart_test %&gt;%\n  # add prediction as column \n  mutate(heart_disease_pred = predict(heart_model, newdata = heart_test, type = \"response\"))"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab05.html#section-1",
-    "href": "practice/practice_slides/slides_lab05.html#section-1",
+    "objectID": "practice/practice_slides/slides_lab05.html#confusion-matrix-with-threshold-of-0.5-1",
+    "href": "practice/practice_slides/slides_lab05.html#confusion-matrix-with-threshold-of-0.5-1",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "…]",
-    "text": "…]"
+    "section": "Confusion matrix with threshold of 0.5",
+    "text": "Confusion matrix with threshold of 0.5\nOnce again, we use a \\(0.5\\) threshold to classify the predictions (in test data). Then we compare the predicted classification to the actual ones.\n\n# Convert predictions to classifications\nheart_test_pred$heart_disease_pred_class &lt;- ifelse(\n  heart_test_pred$heart_disease_pred &gt; 0.5, \"pred_YES\", \"pred_NO\")\n \n# Confusion matrix at 0.5\nconfusion_matrix_test &lt;- table(heart_test_pred$heart_disease,\n                               heart_test_pred$heart_disease_pred_class)\n\n# Print the confusion matrix\nconfusion_matrix_test %&gt;% \n  knitr::kable()\n\n\n\n\npred_NO\npred_YES\n\n\n\nNo_HD\n2838\n9\n\n\nYes_HD\n80\n25"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#sensitivity-specificity-accuracy-on-test-data",
+    "href": "practice/practice_slides/slides_lab05.html#sensitivity-specificity-accuracy-on-test-data",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Sensitivity, Specificity, Accuracy (on test data)",
+    "text": "Sensitivity, Specificity, Accuracy (on test data)\n\n\n\nSensitivity: True Positive Rate\n\nSpecificity: True Negative Rate\n\nAccuracy: Proportion of both true positives and true negatives in the population.\n\n\nsensitivity_test &lt;- confusion_matrix_test[2, 2] / sum(confusion_matrix_test[2, ]) # 25/105\nspecificity_test &lt;- confusion_matrix_test[1, 1] / sum(confusion_matrix_test[1, ]) # 2838/2847\naccuracy_test &lt;- sum(diag(confusion_matrix_test)) / sum(confusion_matrix_test) # 2863/2952\n\n# Print the results\nsensitivity_test # 0.2380952\n\n[1] 0.2380952\n\nspecificity_test # 0.9968388\n\n[1] 0.9968388\n\naccuracy_test    # 0.9698509\n\n[1] 0.9698509\n\n\nSensitivity is really very low, which means that the model is not so good at identifying those who have heart disease.\n\nThis is quite problematic in a medical context, where we want to identify as many cases as possible."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#performance-at-different-classification-thresholds",
+    "href": "practice/practice_slides/slides_lab05.html#performance-at-different-classification-thresholds",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Performance at different classification thresholds",
+    "text": "Performance at different classification thresholds\nWhat if we change the threshold to \\(0.25\\) or \\(0.75\\)? How would the model perform?\n\n# Check performance for different thresholds\nthresh_025 &lt;- 0.25\nthresh_075 &lt;- 0.75\n\n# Classify the predictions based on the threshold\nheart_test_pred &lt;-  heart_test_pred %&gt;% \n  mutate(heart_disease_pred_class_025 = ifelse(heart_disease_pred &gt; thresh_025,\n                                               \"pred_YES\", \"pred_NO\"),\n         heart_disease_pred_class_075 = ifelse(heart_disease_pred &gt; thresh_075,\n                                               \"pred_YES\", \"pred_NO\"))\n \n# Confusion matrix at different thresholds\nconfusion_matrix_test_025 &lt;- table(heart_test_pred$heart_disease,\n                                   heart_test_pred$heart_disease_pred_class_025)\nconfusion_matrix_test_075 &lt;- table(heart_test_pred$heart_disease,\n                                   heart_test_pred$heart_disease_pred_class_075)\n\n# Calcluate sensitivity and specificity for each threshold\nsensitivity_test_025 &lt;- confusion_matrix_test_025[2, 2] / sum(confusion_matrix_test_025[2, ])\nsensitivity_test_075 &lt;- confusion_matrix_test_075[2, 2] / sum(confusion_matrix_test_075[2, ])\nspecificity_test_025 &lt;- confusion_matrix_test_025[1, 1] / sum(confusion_matrix_test_025[1, ])\nspecificity_test_075 &lt;- confusion_matrix_test_075[1, 1] / sum(confusion_matrix_test_075[1, ])"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#performance-at-different-classification-thresholds-1",
+    "href": "practice/practice_slides/slides_lab05.html#performance-at-different-classification-thresholds-1",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Performance at different classification thresholds",
+    "text": "Performance at different classification thresholds\nA lower threshold (\\(0.25\\)) evidently allows to “catch” more of the “TRUE POSITIVES” (51, as opposed to 25 with \\(0.5\\)), but will also predict more “FALSE POSITIVES” (56, versus 9 with classification \\(0.5\\) threshold)\n\n# Print the classification results at the threshold 0.25 \nsensitivity_test_025 # 0.4857143 (a.k.a. TRUE POSITIVE rate)\n\n[1] 0.4857143\n\nspecificity_test_025 # 0.9803302 (a.k.a. TRUE NEGATIVE rate)\n\n[1] 0.9803302\n\n\nNot surprisingly, a higher threshold (\\(0.75\\)) performs the worst in terms of sensitivity\n\n# Print the classification results at the threshold 0.75\nsensitivity_test_075 # 0.1047619 (a.k.a. TRUE POSITIVE rate)\n\n[1] 0.1047619\n\nspecificity_test_075 # 0.9989463 (a.k.a. TRUE NEGATIVE rate)\n\n[1] 0.9989463"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#roc-curve-may-help-deciding",
+    "href": "practice/practice_slides/slides_lab05.html#roc-curve-may-help-deciding",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "ROC curve may help deciding",
+    "text": "ROC curve may help deciding\n\nWe use the pROC package to plot the ROC curve: a graphical representation of the trade-off between the True Positive Rate (Sensitivity) and the False Positive Rate (Specificity) at various thresholds.\n\n(ideal would go up to the top left corner)\n\n\nThe AUC is a measure of how well the model can distinguish between classes, with a higher AUC indicating better performance.\nThe best threshold is the one that maximizes the Youden index (Sensitivity + Specificity - 1).\n\n\n# Create a ROC curve with confidence intervals\nroc_curve &lt;- pROC::roc(heart_test_pred$heart_disease,\n                       heart_test_pred$heart_disease_pred,\n                       ci = TRUE, # Compute confidence intervals\n                       of = \"thresholds\", # Compute AUC\n                       thresholds = \"best\", # Select the best threshold\n                       print.thres = \"best\" # Highlight the best threshold on the plot\n)\n\n# Plot the ROC curve with custom color\nplot(roc_curve, col = \"#00589b\", lwd = 2, # Main ROC curve color (blue)\n     main = \"ROC Curve for Heart Disease Prediction\",\n     xlab = \"(Specificity) False Positive Rate\", \n     ylab = \"(Sensitivity) True Positive Rate\")\n\n# Extract the best threshold value directly from roc_curve\nbest_threshold &lt;- pROC::coords(roc_curve, \n                         # looks for the best threshold\n                         x = \"best\", \n                         # and returns: \n                         ret=c(\"threshold\",\"specificity\", \"sensitivity\"))\n# Add an horizontpROC::## Add an horizontal line at the best threshold\nabline(h = best_threshold$sensitivity, col = \"#cd6882\", lty = 2)\n# Add the AUC text\ntext(0.5, 0.5, paste(\"AUC =\", round(pROC::auc(roc_curve), 4)), col = \"#887455\", cex = 1.5)"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#roc-curve-may-help-deciding-output",
+    "href": "practice/practice_slides/slides_lab05.html#roc-curve-may-help-deciding-output",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "ROC curve may help deciding",
+    "text": "ROC curve may help deciding"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#dataset-on-breast-cancer-biopsy",
+    "href": "practice/practice_slides/slides_lab05.html#dataset-on-breast-cancer-biopsy",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Dataset on Breast Cancer Biopsy]",
+    "text": "Dataset on Breast Cancer Biopsy]\n\nName: Biopsy Data on Breast Cancer PatientsDocumentation: See reference on the data downloaded and conditioned for R here https://cran.r-project.org/web/packages/MASS/MASS.pdfSampling details: This breast cancer database was obtained from the University of Wisconsin Hospitals, Madison from Dr. William H. Wolberg. He assessed biopsies of breast tumours for 699 patients up to 15 July 1992; each of nine attributes has been scored on a scale of 1 to 10, and the outcome is also known. The dataset contains the original Wisconsin breast cancer data with 699 observations on 11 variables."
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#importing-dataset-biopsy",
+    "href": "practice/practice_slides/slides_lab05.html#importing-dataset-biopsy",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "Importing Dataset biopsy]",
+    "text": "Importing Dataset biopsy]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe data can be interactively obtained form the MASS R package\n\n\n# (after loading pckg)\n# library(MASS)  \n\n# I can call \nutils::data(biopsy)"
+  },
+  {
+    "objectID": "practice/practice_slides/slides_lab05.html#biopsy-variables-with-description",
+    "href": "practice/practice_slides/slides_lab05.html#biopsy-variables-with-description",
+    "title": "Lab 5: Intro to Machine Learning",
+    "section": "\nbiopsy variables with description]",
+    "text": "biopsy variables with description]\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\nid\ncharacter\nSample id\n\n\nV1\ninteger 1 - 10\nclump thickness\n\n\nV2\ninteger 1 - 10\nuniformity of cell size\n\n\nV3\ninteger 1 - 10\nuniformity of cell shape\n\n\nV4\ninteger 1 - 10\nmarginal adhesion\n\n\nV5\ninteger 1 - 10\nsingle epithelial cell size\n\n\nV6\ninteger 1 - 10\nbare nuclei (16 values are missing)\n\n\nV7\ninteger 1 - 10\nbland chromatin\n\n\nV8\ninteger 1 - 10\nnormal nucleoli\n\n\nV9\ninteger 1 - 10\nmitoses\n\n\nclass\nfactor\nbenign or malignant"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#biopsy-dataset-manipulation",
@@ -493,8 +549,8 @@
     "objectID": "practice/practice_slides/slides_lab05.html#final-thoughts",
     "href": "practice/practice_slides/slides_lab05.html#final-thoughts",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Final thoughts",
-    "text": "Final thoughts\n\n\n\n\nWhile the workshop only allowed for a synthetic overview of fundamental ideas, it hopefully provided a solid foundation on the most common statistical analysis you will likely run in your daily work:\n\nThorough understanding of the input data and the data collection process\nUnivariate and bivariate exploratory analysis (accompanied by visual intuition) to form hypothesis\nUpon verifying the assumptions, we fit data to hypothesized model(s)\n\nAssessment of the model performance (\\(R^2\\), \\(Adj. R^2\\), \\(F-Statistic\\), etc.)\n\n\nYou should now have a solid grasp on the R language to keep using and exploring the huge potential of this programming ecosystem\nWe only scratched the surface in terms of ML classification and prediction models, but we got a hang of the fundamental steps and some useful tools that might serve us also in more advanced analysis\n\n\n\n\n\n\n\nR 4 Statistics | 2025"
+    "section": "🟠 Final thoughts",
+    "text": "🟠 Final thoughts\n\n\n\n\nWhile the workshop only allowed for a synthetic overview of fundamental ideas, it hopefully provided a solid foundation on the most common statistical analysis you will likely run in your daily work:\n\nThorough understanding of the input data and the data collection process\nUnivariate and bivariate exploratory analysis (accompanied by visual intuition) to form hypothesis\nUpon verifying the assumptions, we fit data to hypothesized model(s)\n\nAssessment of the model performance (\\(R^2\\), \\(Adj. R^2\\), \\(F-Statistic\\), etc.)\n\n\nYou should now have a solid grasp on the R language to keep using and exploring the huge potential of this programming ecosystem\nWe only scratched the surface in terms of ML classification and prediction models, but we got a hang of the fundamental steps and some useful tools that might serve us also in more advanced analysis\n\n\n\n\n\n\n\nR 4 Statistics | 2025"
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#topics-discussed-in-lecture-3",
