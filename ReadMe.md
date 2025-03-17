@@ -10,13 +10,12 @@ This website [https://r4statistics.com/](https://r4statistics.com/) hosts some t
 + ✅ Must do manual 
   + ~~\*.PPTX 2 \*.PDF LOOSES THE EQUATIONS!!!!!~~
 
-+ ️🔳 ultimare `practice/practice_slides/slides_lab05.qmd` + practice/RCODE 5 
-  + ~~aggiungere decision trees??? NO (dopo!) ~~
-  + ~~K-MEANS CLUSTERING ? NO (dopo!) ~~
-  + ~~logistic multiple variables ? NO (too much!) ~~
-  + bollini 🟠 e fine 
-  
-+ ️🔳 re- create  `practice/Rcode/lab05_code.R`
++ ✅  ltimare `practice/practice_slides/slides_lab05.qmd` + practice/RCODE 5 
+  + ~~aggiungere decision trees??? NO (dopo!)~~
+  + ~~K-MEANS CLUSTERING ? NO (dopo!)~~
+  + ~~logistic multiple variables ? NO (too much!)~~
+
++ ✅ re- create  `practice/Rcode/lab05_code.R`
 
 + ️🔳 match the lecture in `lecture/lecture_slides/slides_lecture05.qmd` 
 + ️🔳 create standalone lesson on logistic regression for my website

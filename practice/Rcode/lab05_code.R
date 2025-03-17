@@ -1,110 +1,767 @@
-# Lab 4: Modeling correlation and regression ------------------------------
-# Practice session covering topics discussed in Lecture 4 
+# #    logo: imgs_slides/mitgest_logo.png ----
+# #    footer: <https://lulliter.github.io/R4biostats/lectures.html> ----
+# ## ------------- x salvare come PDF  ----
+# # GOAL OF TODAY'S PRACTICE SESSION {.section-slide}   ----
+# ## Lab # 5  ----
+# ## ACKNOWLEDGEMENTS ----
+# # R ENVIRONMENT SET UP & DATA {.section-slide} ----
+# ## Needed R Packages ----
 
+# # Prefer non-scientific notation ----
+# Prefer non-scientific notation
+options(scipen = 999)
 
-# GOAL OF TODAY'S PRACTICE SESSION ----------------------------------------
- 
-  # + Revisit PCA algorithm explored via MetaboAnalyst, to learn how we can compute it with R 
-  # + Understand some key elements of statistical Power Analysis
-  # + Introduce how ML approaches deal with available data  
-
-
-# The examples and datasets in this Lab session follow very closely two sources:
-    # 1. The tutorial on "Principal Component Analysis (PCA) in R" by: [Statistics Globe](https://statisticsglobe.com    /principal-component-analysis-r)
-    # 2. The materials in support of the "Core Statistics using R" course by: [Martin van Rongen](https://github.com    /mvanrongen/corestats-in-r_tidyverse)
-
-
-# _________---------------------------------------------------------------------
-
-# R ENVIRONMENT SET UP & DATA ---------------------------------------------
-
-##  Load pckgs for this R session ---------------------------------------------
+# # Load pckgs for this R session ----
+# Load pckgs for this R session
+# # --- General  ----
 # --- General 
 library(here)     # tools find your project's files, based on working directory
 library(dplyr)    # A Grammar of Data Manipulation
 library(skimr)    # Compact and Flexible Summaries of Data
+library(tibble)   # Simple Data Frames
 library(magrittr) # A Forward-Pipe Operator for R 
 library(readr)    # A Forward-Pipe Operator for R 
-
-# Plotting & data visualization 
+library(tidyr)    # Tidy Messy Data
+library(kableExtra) # Construct Complex Table with 'kable' and Pipe Syntax
+# # ---Plotting & data visualization ----
+# ---Plotting & data visualization
 library(ggplot2)      # Create Elegant Data Visualisations Using the Grammar of Graphics
 library(ggfortify)     # Data Visualization Tools for Statistical Analysis Results
 library(scatterplot3d) # 3D Scatter Plot
-
+# # --- Statistics ----
 # --- Statistics
 library(MASS)       # Support Functions and Datasets for Venables and Ripley's MASS
 library(factoextra) # Extract and Visualize the Results of Multivariate Data Analyses
 library(FactoMineR) # Multivariate Exploratory Data Analysis and Data Mining
 library(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests
-
+library(car)        # Companion to Applied Regression
+library(ROCR)       # Visualizing the Performance of Scoring Classifiers
+library(pROC)      # Display and Analyze ROC Curves
+# # --- Tidymodels (meta package) ----
 # --- Tidymodels (meta package)
 library(rsample)    # General Resampling Infrastructure  
 library(broom)      # Convert Statistical Objects into Tidy Tibbles
+
+# # LOGISTIC REGRESSION {.section-slide} ----
+# ## Logistic regression: review ----
+# ## Logistic regression: `logit` function ----
+# # DATASET #1: Heart Disease {.section-slide} ----
+# ## [Dataset on Heart Disease (`heart_data`)]{.r-fit-text} ----
+
+# # Use `here` in specifying all the subfolders AFTER the working directory  ----
+# Use `here` in specifying all the subfolders AFTER the working directory 
+heart_data <- utils::read.csv(file = here::here("practice", "data_input", "05_datasets",
+                                      "heart_data.csv"), 
+                          header = TRUE, # 1st line is the name of the variables
+                          sep = ",", # which is the field separator character.
+                          na.strings = c("?","NA" ), # specific MISSING values  
+                          row.names = NULL) 
+
+# ## `heart_data` variables with description ----
+
+#| output: true
+#| echo: false
+
+heart_data_desc <- tibble::tribble(
+  ~Variable, ~ Type, ~Description,
+#"X" ,  "integer" ,         "row counter ", 
+"heart_disease",    "int",  "whether an individual has heart disease (1 = yes; 0 = no)", 
+"coffee_drinker",   "int",  "whether an individual drinks coffee regularly (1 = yes; 0 = no)", 
+"fast_food_spend",  "dbl",  "a numerical field corresponding to the annual spend of each individual on fast food", 
+"income",           "dbl",   "a numerical field corresponding to the individual’s annual income"
+
+)                 
+
+kableExtra::kable(heart_data_desc)
+
+# ## `heart_data` dataset splitting ----
+
+set.seed(123)
+
+# # Obtain 2 sub-samples from the dataset: training and testing ----
+# Obtain 2 sub-samples from the dataset: training and testing
+sample  <-  sample(c(TRUE, FALSE), nrow(heart_data), replace = TRUE , prob = c(0.7, 0.3) )
+heart_train  <-  heart_data[sample,]
+heart_test  <-  heart_data[!sample,]
+
+
+# # check the structure of the resulting datasets ----
+# check the structure of the resulting datasets
+dim(heart_train)
+dim(heart_test)
+
+# ## Convert binary variables to factors ----
+
+heart_train <- heart_train %>% 
+  # convert to factor with levels "Yes" and "No"
+  dplyr::mutate(heart_disease = factor(heart_disease, levels = c(0, 1),
+                                labels = c("No_HD", "Yes_HD")),
+         coffee_drinker = factor(coffee_drinker, levels = c(0, 1),
+                                 labels = c("No_Coffee", "Yes_Coffee")) 
+  )
+
+# # show the first 5 rows of the dataset ----
+# show the first 5 rows of the dataset
+heart_train[1:5,]
+
+# ## Plotting `Y` by `X1` (continuous variable) ----
+
+#| output: true
+#| output-location: slide
+#| fig.cap: |
+#|   + The boxplots indicate that subjects with heart disease (HD =1) seem to spend higher amounts on fast food <br>
+#|   + Also, this sample has many more subjects without heart disease (HD = 0) than with heart disease (HD = 1)
+
+# # plot the distribution of heart disease status by fast food spend ----
+# plot the distribution of heart disease status by fast food spend
+heart_train %>% 
+  ggplot2::ggplot(aes(x = heart_disease, y = fast_food_spend, fill = heart_disease)) + 
+  geom_jitter(aes(fill = heart_disease), alpha = 0.3, shape = 21, width = 0.25) +  
+  scale_color_manual(values = c("#005ca1", "#9b2339")) + 
+  scale_fill_manual(values = c("#57b7ff", "#e07689")) + 
+  geom_boxplot(fill = NA, color = "black", linewidth = .7) + 
+  coord_flip() +
+    theme(plot.title = element_text(size = 13,face="bold", color = "#873c4a"),
+        axis.text.x = element_text(size=12,face="italic"), 
+        axis.text.y = element_text(size=12,face="italic"),
+        legend.position = "none") + 
+  labs(title = "Fast food expenditure by heart disease status") + 
+  xlab("Heart Disease (Y/N)") + 
+  ylab("Annual Fast Food Spend") 
+
+# ## Plotting `Y` by `X2` (discrete variable) ----
+
+#| output: true
+#| output-location: slide
+#| fig.cap: 'Also drinking coffee seems associated to a higher likelihood of heart disease (HD =1)'
+
+heart_train %>% 
+  # 1) Count the unique values per each group from 2 categorical variables' combinations
+  dplyr::count(heart_disease, coffee_drinker, name = "count_by_group") %>% 
+  dplyr::group_by(coffee_drinker) %>% 
+  dplyr::mutate(
+    total_coffee_class = sum(count_by_group),
+    proportion = count_by_group / total_coffee_class) %>% 
+  dplyr::ungroup() %>% 
+  # 2) Filter only those with heart disease
+  dplyr::filter(heart_disease == "Yes_HD") %>% 
+  # 3) Plot frequency of heart disease status by coffee drinking 
+  ggplot2::ggplot(aes(x = coffee_drinker, y = proportion, fill = coffee_drinker)) + 
+  geom_bar(stat = "identity") + 
+  scale_fill_manual(values = c("#57b7ff", "#e07689")) + 
+  theme_minimal() +
+  ylab("Percent with Heart Disease") +
+  xlab("Coffee Drinker (Y/N)") +
+  ggtitle("Figure 3: Percent of HD incidence by CoffeeDrinking class") +
+  labs(fill = "Coffee Drinker") + 
+  scale_y_continuous(labels = scales::percent)
+
+# ## `Linear regression` wouldn't work! ----
+
+# # --- 1) Linear regression model ----
+# --- 1) Linear regression model
+linear_mod <- lm(heart_disease ~ fast_food_spend# + coffee_drinker
+                 , data = heart_data)
+# # --- 2) Logistic regression model ----
+# --- 2) Logistic regression model
+logit_mod <- glm(heart_disease ~ fast_food_spend# + coffee_drinker
+                 , data = heart_data, family = "binomial")
+
+# ## [Compute alternative models' predictions]{.r-fit-text}  ----
+
+# # --- 1) Extract coefficients from linear regression model ----
+# --- 1) Extract coefficients from linear regression model
+intercept_lin <- coef(linear_mod)[1]
+fast_food_spend_lin <- coef(linear_mod)[2]
+coffee_drinker_lin <- coef(linear_mod)[3]
+
+# # --- 2) Extract coefficients from logit regression model ----
+# --- 2) Extract coefficients from logit regression model
+intercept_logit <- coef(logit_mod)[1]
+fast_food_spend_logit <- coef(logit_mod)[2]
+coffee_drinker_logit <- coef(logit_mod)[3]
+
+# # --- Estimate predicted data from different models    ----
+# --- Estimate predicted data from different models   
+heart_data <- heart_data %>%
+  dplyr::mutate(
+    # Convert outcome variable to factor
+    heart_disease_factor = factor(heart_disease, 
+                                  labels = c("No Disease (Y=0)", "Disease (Y=1)")),
+    # 1) Linear model prediction
+    lin_pred = intercept_lin + fast_food_spend_lin * fast_food_spend, 
+    # 2) Logit model prediction
+    logit_pred = intercept_logit + fast_food_spend_logit * fast_food_spend,  coffee_drinker,
+    # 3) Convert logit to probability (logistic model prediction)
+    logistic_pred = 1 / (1 + exp(-logit_pred))) %>%
+  dplyr::arrange(fast_food_spend)   
+
+# ## Plot alternative models' outcomes ----
+
+#| output: true
+#| output-location: slide
+#| fig.width: 8
+#| fig.height: 4.5
+#| fig.cap: |
+#|      + (The **actual** data points are shown as the grey dots)<br>
+#|      + The **linear** model predicts `values` that are ≠ 0 and 1, which poorly fit the actual data <br>
+#|      + The **logit** model predicts `log(odds)` ranging from -Inf to +Inf, which is not interpretable <br>
+#|      + The **logistic** model _squeezes_ `probabilities` between 0 and 1, which fits the data better  
+
+# # --- Plot   ----
+# --- Plot  
+ggplot2::ggplot(heart_data, aes(x = fast_food_spend)) +
+  # Actual dataset observations (Y=0, Y=1 ) using `color =`
+  geom_jitter(aes(y = heart_disease, color = heart_disease_factor), 
+              width = 200, height = 0.03, alpha = 0.75, size = 2, shape = 16) + 
+  # Models' predictions (smooth trends)
+  geom_smooth(aes(y = lin_pred, color = "Linear Regression"), method = "lm", se = FALSE, 
+              linewidth = 1.25, linetype = "dashed") +
+  geom_smooth(aes(y = logit_pred, color = "Logit (Log-Odds)"), method = "lm", se = FALSE, 
+              linewidth = 1.25, linetype = "dotdash") +
+  geom_smooth(aes(y = logistic_pred, color = "Logistic Regression"), method = "glm", 
+              method.args = list(family = "binomial"), se = FALSE, 
+              linewidth = 1.25, linetype = "solid") +
+  # Separate legends: color for dots, color for lines
+  scale_color_manual(name = "Actual Y values & Prediction Models", 
+                     values = c("No Disease (Y=0)" = "#A6A6A6", "Disease (Y=1)" = "#4c4c4c",
+                                "Linear Regression" = "#d02e4c","Logit (Log-Odds)" = "#239b85", 
+                                "Logistic Regression" = "#BD8723")) +
+  # Define scales for the axes
+  scale_x_continuous(breaks = seq(0, 6500, by = 500), limits = c(0, 6500), expand = c(0, 0))+
+  scale_y_continuous(breaks = seq(-3, 3, by = .25)) +
+  coord_cartesian(ylim = c(-1.25,1.25), xlim = c(0, 6500))  + theme_minimal() +
+  labs(title = "Comparing Linear and Logistic Regression Predictions v. actual Y values",
+       #subtitle = "(For simplicity, only fast food spend is considered)",
+       y = "Y = Heart disease [0,1]", x = "Fast food spend [US$/yr]", color = "Actual Y values and Predictions")
+
+# ## `Linear regression` didn't work! ----
+
+#| label: fig-lin-reg_diag
+#| output: true
+#| output-location: slide
+#| fig.show: "hold"
+#| fig.cap: |
+#|      "Diagnostic plots for a hypothetical linear regression model 👎🏻" <br>
+#|      + a) Residuals should be randomly scattered around 0 <br>
+#|      + b) QQ plot should be close to the diagonal line 
+
+# # Set graphical parameters to plot side by side ----
+# Set graphical parameters to plot side by side
+par(mfrow = c(1, 2))
+
+# # Diagnostic plots ----
+# Diagnostic plots
+plot(linear_mod, which = 1)
+plot(linear_mod, which = 2)
+
+# # Reset graphical parameters (optional, avoids affecting later plots) ----
+# Reset graphical parameters (optional, avoids affecting later plots)
+par(mfrow = c(1, 1))
+
+
+# | eval: false # need at least 2 predictors
+# | echo: false
+# | output: false
+
+# # multicollinearity ----
+# multicollinearity
+#vif(linear_mod)
+# # ideally < 5 ----
+# ideally < 5
+
+# ## [Fitting a `logistic regression` model]{.r-fit-text} ----
+
+#| output: true
+
+# # Fit a logistic regression model ----
+# Fit a logistic regression model
+heart_model <- stats::glm(heart_disease ~ coffee_drinker + fast_food_spend + income,
+                   data = heart_train, 
+                   family = binomial(link = "logit"))
+
+# ## Model output ----
+
+#| echo: true
+#| output: true
+#| output-location: slide
+#| label: tbl-logit_heart
+#| tbl-cap: |
+#|  Logistic regression model output <br><br>
+#|    + **estimates** of coefficients are in the form of `natural logarithm of the odds` (log (odds)) of the event happening (Heart Disease) <br>
+#|        + a `positive estimate` indicates an increase in the odds of having Heart Desease  <br>
+#|        + a `negative estimate` indicates a decrease in the odds of having Heart Desease <br>
+#|    + **odds ratio** = the exponentiated coefficient estimate <br><br>
+
+# # Convert model's output summary into data frame ----
+# Convert model's output summary into data frame
+heart_model_coef <- broom::tidy(heart_model) %>% 
+  # improve readability of significance levels
+  dplyr::mutate('signif. lev.' = case_when(
+    `p.value` < 0.001 ~ "***",
+    `p.value` < 0.01 ~ "**",
+    `p.value` < 0.05 ~ "*",
+    TRUE ~ ""))%>%
+  # add odds ratio column
+  dplyr::mutate(odds_ratio = exp(estimate)) %>%
+  dplyr::relocate(odds_ratio, .after = estimate) %>%
+  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  # format as table
+  knitr::kable() %>% 
+  # reduce font size
+  kable_styling(font_size = 20) %>% 
+  # add table title
+  kableExtra::add_header_above(c("Logistic Regression Analysis of Heart Disease Risk Factors"= 7))
+
+heart_model_coef
+
+# ## [Interpreting the logistic `coefficients`]{.r-fit-text} ----
+
+#| echo: false
+#| output: true
+
+broom::tidy(heart_model) %>% 
+  # improve readability of significance levels
+  dplyr::mutate('signif. lev.' = case_when(
+    `p.value` < 0.001 ~ "***",
+    `p.value` < 0.01 ~ "**",
+    `p.value` < 0.05 ~ "*",
+    TRUE ~ ""))%>%
+  # add odds ratio column
+  dplyr::mutate(odds_ratio = exp(estimate)) %>%
+  dplyr::relocate(odds_ratio, .after = estimate) %>%
+  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  knitr::kable() %>% 
+  # reduce font size
+  kable_styling(font_size = 20) %>% 
+  # highlight rows of terms (intercept) and income
+  kableExtra::row_spec(1,  background = "#f1e7d3") %>%
+  kableExtra::row_spec(4,  background = "#f1e7d3")
+
+
+# ## [The `coefficient` of fast food $$ 🍔🍟]{.r-fit-text} ----
+
+#| echo: false
+#| output: true
+
+broom::tidy(heart_model) %>% 
+  # improve readability of significance levels
+  dplyr::mutate('signif. lev.' = case_when(
+    `p.value` < 0.001 ~ "***",
+    `p.value` < 0.01 ~ "**",
+    `p.value` < 0.05 ~ "*",
+    TRUE ~ ""))%>%
+  # add odds ratio column
+  dplyr::mutate(odds_ratio = exp(estimate)) %>%
+  dplyr::relocate(odds_ratio, .after = estimate) %>%
+  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  # filter for intercept and fast food spend
+  dplyr::filter(term %in% c("(Intercept)", "fast_food_spend")) %>% 
+  knitr::kable() %>% 
+  # # reduce font size
+  # kable_styling(font_size = 20) %>% 
+  # highlight rows of terms (intercept) and income
+  kableExtra::row_spec(2,  background = "#f1e7d3")  
+
+# ## [The `coefficient` of fast food $$ 🍔🍟]{.r-fit-text} ----
+
+#| echo: false
+#| output: true
+
+broom::tidy(heart_model) %>% 
+  # improve readability of significance levels
+  dplyr::mutate('signif. lev.' = case_when(
+    `p.value` < 0.001 ~ "***",
+    `p.value` < 0.01 ~ "**",
+    `p.value` < 0.05 ~ "*",
+    TRUE ~ ""))%>%
+  # add odds ratio column
+  dplyr::mutate(odds_ratio = exp(estimate)) %>%
+  dplyr::relocate(odds_ratio, .after = estimate) %>%
+  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  # filter for intercept and fast food spend
+  dplyr::filter(term %in% c("(Intercept)", "fast_food_spend")) %>% 
+  knitr::kable() %>% 
+  # # reduce font size
+  # kable_styling(font_size = 20) %>% 
+  # highlight rows of terms (intercept) and income
+  kableExtra::row_spec(2,  background = "#f1e7d3")  
+
+# ## [The `coefficient` of coffee drinking ☕️]{.r-fit-text} ----
+
+#| echo: false
+#| output: true
+
+broom::tidy(heart_model) %>% 
+  # improve readability of significance levels
+  dplyr::mutate('signif. lev.' = case_when(
+    `p.value` < 0.001 ~ "***",
+    `p.value` < 0.01 ~ "**",
+    `p.value` < 0.05 ~ "*",
+    TRUE ~ ""))%>%
+  # add odds ratio column
+  dplyr::mutate(odds_ratio = exp(estimate)) %>%
+  dplyr::relocate(odds_ratio, .after = estimate) %>%
+  dplyr::mutate(across(where(is.numeric), ~ round(.x, 4))) %>%
+  # filter for intercept and fast food spend
+  dplyr::filter(term %in% c("(Intercept)", "coffee_drinkerYes_Coffee")) %>% 
+  knitr::kable() %>% 
+  # reduce font size
+  # kable_styling(font_size = 20) %>% 
+  # highlight rows of terms (intercept) and income
+  kableExtra::row_spec(2,  background = "#f1e7d3")  
+
+# ## [Wait, is drinking coffee good or bad? 🤔]{.r-fit-text} ----
+# # DIGRESSION {.section-slide} ----
+# ## Understanding `Odds` {background-color="#d5eae0"} ----
+# ## Understanding `Odds Ratio` {background-color="#d5eae0"} ----
+# ## [Example: Coffee Drinkers vs. Non-Coffee Drinkers]{.r-fit-text}{background-color="#d5eae0"} ----
+
+#| output: true
+#| echo: false
+
+library(knitr)
+library(kableExtra)
+
+# # Create the table with properly formatted headers ----
+# Create the table with properly formatted headers
+odds_table <- data.frame(
+  "Odds Ratio (O.R.)" = c("O.R. < 1", "O.R. > 1"),
+  "Example O.R." = c("0.48", "2.08"),
+  "Formula for % Change in Odds" = c("(1 - O.R.) × 100", "(O.R. - 1) × 100"), 
+  "Calculation" = c("(1 - 0.48) × 100 = 52%", "(2.08 - 1) × 100 = 108%"),
+  "Interpretation" =  c("52% lower odds of having heart disease compared to non-coffee drinkers", 
+                         "108% higher odds of having heart disease compared to coffee drinkers"),
+  check.names = FALSE # Prevents R from replacing spaces with dots
+)
+
+# # Print as a kable table with better formatting ----
+# Print as a kable table with better formatting
+kable(odds_table, align = "c") %>% 
+  #caption = "Odds Ratio Interpretation: Coffee Drinkers vs. Non-Coffee Drinkers",  %>%
+  # kableExtra::kable_styling(full_width = FALSE, font_size = 18) %>%  # Reduced font size slightly for better fit
+  # kableExtra::row_spec(0, bold = TRUE, font_size = 22) %>%  # Bolder and slightly larger header
+  kableExtra::column_spec(3:5, background = "#f1e7d3")  
+
+# ## [Making predictions from `logistic regression` model ✍🏻]{.r-fit-text} ----
+# ## Making predictions from `logistic regression` model ✍🏻 ----
+
+# # Define values for individual case  ----
+# Define values for individual case 
+x1 <- 1
+x2 <- 5000
+x3 <- 50000
+
+# # Coefficients from our logistic regression model ----
+# Coefficients from our logistic regression model
+# # (mind the decimals!) ----
+# (mind the decimals!)
+beta_0 <- -11.055360943337
+b1 <- -0.729562678149
+b2 <- 0.002376170127
+b3 <- -0.000002304669 
+
+# # Compute the exponent part ----
+# Compute the exponent part
+exponent <- beta_0 + (b1 * x1) + (b2 * x2) + (b3 * x3)
+
+# # Compute the predicted probability ----
+# Compute the predicted probability
+probability <- 1 / (1 + exp(-exponent))
+
+# # Print the result ----
+# Print the result
+print(probability) # 0.4951735
+
+
+# ## Making predictions from `logistic regression` model 👩🏻‍💻 ----
+
+# # Define values for individual case (as df) ----
+# Define values for individual case (as df)
+individual <- data.frame(
+  coffee_drinker = "Yes_Coffee", # x1 (factor)  
+  fast_food_spend = 5000,  # x2  
+  income = 50000) # x3 
+
+# # Make a prediction for individual outcome ----
+# Make a prediction for individual outcome
+predict(heart_model, individual, type = "response") # 0.4951735 
+
+# ## Adding predictions to the training data ----
+
+# # Add calculated predictions to the whole training dataset ----
+# Add calculated predictions to the whole training dataset
+heart_train$heart_disease_pred <- predict(heart_model, type = "response")
+
+
+# # Subsetof 3 with heart_disease = Yes_HD ----
+# Subsetof 3 with heart_disease = Yes_HD
+heart_train[heart_train$heart_disease == "Yes_HD", ][1:3,] 
+# # Subsetof 3 with heart_disease = No_HD ----
+# Subsetof 3 with heart_disease = No_HD
+heart_train[heart_train$heart_disease == "No_HD", ][1:3,]
+
+# ## [Converting predictions into classifications]{.r-fit-text} ----
+
+#| output: true
+
+# # Convert predictions to classifications ----
+# Convert predictions to classifications
+heart_train <- heart_train %>%
+  dplyr::mutate(heart_disease_pred_class = ifelse(heart_disease_pred > 0.5, 
+                                           "pred_YES", "pred_NO"))
+# # (... same BASE WAY) ----
+# (... same BASE WAY)
+# # heart_train$heart_disease_pred_class <- ifelse(heart_train$heart_disease_pred > 0.5, 1, 0) ----
+# heart_train$heart_disease_pred_class <- ifelse(heart_train$heart_disease_pred > 0.5, 1, 0)
+
+# ## [Evaluating performance with the confusion matrix]{.r-fit-text} ----
+# ## Confusion matrix with threshold of 0.5 ----
+
+#| output: true
+ 
+# # Confusion matrix at 0.5 ----
+# Confusion matrix at 0.5
+confusion_matrix <- table(heart_train$heart_disease, heart_train$heart_disease_pred_class)
+
+confusion_matrix %>% 
+  knitr::kable()
+
+
+# ## Sensitivity, Specificity, Accuracy ----
+
+#| output: true
+#| echo: true
+
+sensitivity <- confusion_matrix[2, 2] / sum(confusion_matrix[2, ]) # 80/228
+specificity <- confusion_matrix[1, 1] / sum(confusion_matrix[1, ]) # 6790/6820
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix) # 6870/7048
+
+# # Print the results ----
+# Print the results
+sensitivity # 0.3508772
+specificity # 0.9956012
+accuracy # 0.9751131
+
+# ## Making predictions on `test data` ----
+
+# # Prep test data to match training data ----
+# Prep test data to match training data
+heart_test <- heart_test %>% 
+  # convert to factor with levels "Yes" and "No"
+  dplyr::mutate(heart_disease = factor(heart_disease, levels = c(0, 1),
+                                labels = c("No_HD", "Yes_HD")),
+         coffee_drinker = factor(coffee_drinker, levels = c(0, 1),
+                                 labels = c("No_Coffee", "Yes_Coffee")) 
+  ) 
+
+heart_test_pred <- heart_test %>%
+  # add prediction as column 
+  mutate(heart_disease_pred = predict(heart_model, newdata = heart_test, type = "response"))
+
+
+# ## Confusion matrix with threshold of 0.5 ----
+
+#| output: true
+
+# # Convert predictions to classifications ----
+# Convert predictions to classifications
+heart_test_pred$heart_disease_pred_class <- ifelse(
+  heart_test_pred$heart_disease_pred > 0.5, "pred_YES", "pred_NO")
+ 
+# # Confusion matrix at 0.5 ----
+# Confusion matrix at 0.5
+confusion_matrix_test <- table(heart_test_pred$heart_disease,
+                               heart_test_pred$heart_disease_pred_class)
+
+# # Print the confusion matrix ----
+# Print the confusion matrix
+confusion_matrix_test %>% 
+  knitr::kable()
+
+# ## [Sensitivity, Specificity, Accuracy (on test data)]{.r-fit-text} ----
+
+#| output: true
+
+sensitivity_test <- confusion_matrix_test[2, 2] / sum(confusion_matrix_test[2, ]) # 25/105
+specificity_test <- confusion_matrix_test[1, 1] / sum(confusion_matrix_test[1, ]) # 2838/2847
+accuracy_test <- sum(diag(confusion_matrix_test)) / sum(confusion_matrix_test) # 2863/2952
+
+# # Print the results ----
+# Print the results
+sensitivity_test # 0.2380952
+specificity_test # 0.9968388
+accuracy_test    # 0.9698509
+
+# ## [Performance at different classification thresholds]{.r-fit-text} ----
+
+# # Set different thresholds options ----
+# Set different thresholds options
+thresh_025 <- 0.25
+thresh_075 <- 0.75
+
+# # Classify the predictions based on such alternative threshold ----
+# Classify the predictions based on such alternative threshold
+heart_test_pred <-  heart_test_pred %>% 
+  mutate(heart_disease_pred_class_025 = ifelse(heart_disease_pred > thresh_025,
+                                               "pred_YES", "pred_NO"),
+         heart_disease_pred_class_075 = ifelse(heart_disease_pred > thresh_075,
+                                               "pred_YES", "pred_NO"))
+ 
+# # Recompute confusion matrices for different thresholds ----
+# Recompute confusion matrices for different thresholds
+confusion_matrix_test_025 <- table(heart_test_pred$heart_disease,
+                                   heart_test_pred$heart_disease_pred_class_025)
+confusion_matrix_test_075 <- table(heart_test_pred$heart_disease,
+                                   heart_test_pred$heart_disease_pred_class_075)
+
+# # Calcluate sensitivity and specificity for each threshold ----
+# Calcluate sensitivity and specificity for each threshold
+sensitivity_test_025 <- confusion_matrix_test_025[2, 2] / sum(confusion_matrix_test_025[2, ])
+sensitivity_test_075 <- confusion_matrix_test_075[2, 2] / sum(confusion_matrix_test_075[2, ])
+specificity_test_025 <- confusion_matrix_test_025[1, 1] / sum(confusion_matrix_test_025[1, ])
+specificity_test_075 <- confusion_matrix_test_075[1, 1] / sum(confusion_matrix_test_075[1, ])
+
+# ## [Confusion matrices at different classification thresholds]{.r-fit-text} ----
+
+#| output: TRUE
+#| echo: false
+#| tbl-cap: "Confusion matrix at threshold 0.25"
+#| tbl-cap-location: top
+
+# # Apply cell_spec to highlight one specific cell (e.g., row 2, column 2) ----
+# Apply cell_spec to highlight one specific cell (e.g., row 2, column 2)
+confusion_matrix_test_025[2, 2] <- kableExtra::cell_spec(confusion_matrix_test_025[2, 2], background = "#e9c776")
+
+confusion_matrix_test_025[1,1] <- kableExtra::cell_spec(confusion_matrix_test_025[1,1], background = "#ffc2b0")
+
+# # Print the confusion matrix ----
+# Print the confusion matrix
+confusion_matrix_test_025 %>% 
+  knitr::kable() 
+  
  
 
-## Our dataset for today  ---------------------------------------------
-  # In this tutorial, we will use: 
-  #   
-  # 1. the biopsy dataset attached to the [`MASS` package](https://cran.r-project.org/web/packages/MASS/MASS.pdf). 
-  # 2. a few clean datasets used in the "Core Statistics using R" course by: [Martin van Rongen](https://github.com  /mvanrongen# /corestats-in-r_tidyverse)
-  
 
-# _________---------------------------------------------------------------------
-## Loading `biopsy` dataset  with description -------------
+#| output: TRUE
+#| echo: false
+#| tbl-cap: "Confusion matrix at threshold = 0.75"
+#| tbl-cap-location: top
+ 
+# # Apply cell_spec to highlight one specific cell (e.g., row 2, column 2) ----
+# Apply cell_spec to highlight one specific cell (e.g., row 2, column 2)
+confusion_matrix_test_075[2, 2] <- kableExtra::cell_spec(confusion_matrix_test_075[2, 2], background = "#e9c776")
 
-# (after loading pckg MASS) I can call 
-utils::data(biopsy) # actual dataset 
+confusion_matrix_test_075[1,1] <- kableExtra::cell_spec(confusion_matrix_test_075[1,1], background = "#ffc2b0")
+
+# # Print the confusion matrix ----
+# Print the confusion matrix
+confusion_matrix_test_075 %>% 
+  knitr::kable()
+
+# ## [Performance at different classification thresholds]{.r-fit-text} ----
+
+# # Print the classification results at the threshold 0.25  ----
+# Print the classification results at the threshold 0.25 
+sensitivity_test_025 # 0.4857143 (a.k.a. TRUE POSITIVE rate)
+specificity_test_025 # 0.9803302 (a.k.a. TRUE NEGATIVE rate)
+
+
+# # Print the classification results at the threshold 0.75 ----
+# Print the classification results at the threshold 0.75
+sensitivity_test_075 # 0.1047619 (a.k.a. TRUE POSITIVE rate)
+specificity_test_075 # 0.9989463 (a.k.a. TRUE NEGATIVE rate)
+
+# ## ROC curve may help deciding ----
+
+#| output: true
+
+# # Create a the needed data for a ROC curve with confidence intervals ----
+# Create a the needed data for a ROC curve with confidence intervals
+roc_curve_data <- pROC::roc(heart_test_pred$heart_disease,
+                       heart_test_pred$heart_disease_pred,
+                       ci = TRUE, # Compute confidence intervals
+                       thresholds = "best", # Select the best threshold
+                       print.thres = "best") 
+
+# # Extract the best threshold value directly from roc_curve_data ----
+# Extract the best threshold value directly from roc_curve_data
+best_threshold <- pROC::coords(roc_curve_data, 
+                         # looks for the best threshold
+                         x = "best", 
+                         # and returns: 
+                         ret=c("threshold","specificity", "sensitivity"))
+# # Print the best threshold ----
+# Print the best threshold
+best_threshold
+
+# ## ROC curve may help deciding ----
+
+#| output: true
+#| output-location: slide
+#| fig-cap: "ROC Curve for Heart Disease Prediction: Logistic regression model on test data <br>*(Ideally, the curve is as close to the top-left corner as possible.)*"
+#| fig-cap-location: top
+
+# # Use function to store the plot as an object ----
+# Use function to store the plot as an object
+roc_plot <- function() {
+  plot(roc_curve_data, col = "#00589b", lwd = 2, 
+       # main = "ROC Curve for Heart Disease Prediction",
+       # sub = "Logistic regression model on test data",
+       xlab = "(Specificity) False Positive Rate", 
+       ylab = "(Sensitivity) True Positive Rate")
+  # Add a horizontal line at the best threshold
+  abline(h = best_threshold$sensitivity, col = "#cd6882", lty = 2)
+  # Add the AUC text
+  text(0.5, 0.5, paste("AUC =", round(pROC::auc(roc_curve_data), 4)), 
+       col = "#887455", cex = 1.5)
+}
+
+# # Call the function to plot the ROC curve ----
+# Call the function to plot the ROC curve
+roc_plot()
+
+# ## Conclusions ----
+# # PCA: EXAMPLE of UNSUPERVISED ML ALGORITHM {.section-slide} ----
+# # DATASET #2: `biopsy` {.section-slide} ----
+# ## Dataset on Breast Cancer Biopsy] ----
+# ## Importing Dataset `biopsy`] ----
+
+# # (after loading pckg) ----
+# (after loading pckg)
+# # library(MASS)   ----
+# library(MASS)  
+
+# # I can call  ----
+# I can call 
+utils::data(biopsy)
+
+# ## `biopsy` variables with description] ----
+
+#| output: true
+#| echo: false
 
 biopsy_desc <- tibble::tribble(
   ~Variable, ~ Type, ~Description,
-  #"X" ,  "integer" ,         "row counter ", 
-  "ID" ,   "character",             "Sample ID",
-  "V1",    "integer 1 - 10",        "clump thickness",       
-  "V2",    "integer 1 - 10",        "uniformity of cell size",   
-  "V3",    "integer 1 - 10",        "uniformity of cell shape",  
-  "V4",    "integer 1 - 10",        "marginal adhesion",              
-  "V5",    "integer 1 - 10",        "single epithelial cell size",   
-  "V6",    "integer 1 - 10",        "bare nuclei (16 values are missing)",
-  "V7",    "integer 1 - 10",        "bland chromatin",             
-  "V8",    "integer 1 - 10",        "normal nucleoli",       
-  "V9",    "integer 1 - 10",        "mitoses",               
-  "class",  "factor"     ,          "benign or malignant" )                 
+#"X" ,  "integer" ,         "row counter ", 
+"id" ,   "character",               "Sample id",
+"V1",    "integer 1 - 10",        "clump thickness",       
+"V2",    "integer 1 - 10",        "uniformity of cell size",   
+"V3",    "integer 1 - 10",        "uniformity of cell shape",  
+"V4",    "integer 1 - 10",        "marginal adhesion",              
+"V5",    "integer 1 - 10",        "single epithelial cell size",   
+"V6",    "integer 1 - 10",        "bare nuclei (16 values are missing)",
+"V7",    "integer 1 - 10",        "bland chromatin",             
+"V8",    "integer 1 - 10",        "normal nucleoli",       
+"V9",    "integer 1 - 10",        "mitoses",               
+"class", "factor"     ,        "benign or malignant" )                 
 
-# check them out 
-biopsy_desc
- 
-## [`biopsy` variables exploration 1/2] -------------
-  # The `biopsy` data contains **699 observations of 11 variables**. 
-  # The dataset also contains a character variable: `ID`, and a factor variable: `class`, with two levels ("benign" and "malignant").
+kableExtra::kable(biopsy_desc)
 
- 
-# check variable types
-str(biopsy)
-   
-## [`biopsy` variables exploration 2/2] -------------
-# There is also one incomplete variable `V6` 
-# + remember the package `skimr` for exploring a dataframe?
-
-# check if vars have missing values
-biopsy %>% 
-  # select only variables starting with "V"
-  skimr::skim(starts_with("V")) %>%
-  dplyr::select(skim_variable, 
-                n_missing)
-
-## [`biopsy` dataset manipulation] -------------------
-  
-# We will: 
-#   
-# + exclude the non-numerical variables (`ID` and `class`) before conducting the PCA.   
-# + exclude the individuals with missing values using the `na.omit()` or `filter(complete.cases()` functions.
+# ## `biopsy` dataset manipulation] ----
 
 
-# We can do both in 2 equivalent ways:
- 
-# 1/2 new (manipulated) dataset 
-data_biopsy <- na.omit(biopsy[,-c(1,11)])
-# 2/2 with `dplyr` (more explicit)
+# # new (manipulated) dataset  ----
 # new (manipulated) dataset 
 data_biopsy <- biopsy %>% 
   # drop incomplete & non-integer columns
@@ -112,124 +769,80 @@ data_biopsy <- biopsy %>%
   # drop incomplete observations (rows)
   dplyr::filter(complete.cases(.))
 
-## [`biopsy` dataset manipulation]  ---------------------------------------------
-# We obtained a new dataset with 9 variables and 683 observations (instead of the original 699).  
+# ## `biopsy` dataset manipulation] ----
 
-
+# # check reduced dataset  ----
 # check reduced dataset 
 str(data_biopsy)
 
+# ## Calculate Principal Components ----
 
-# PCA: EXAMPLE of UNSUPERVISED ML ALGORITHM  ---------------------------------------------
-
-# Reducing high-dimensional data to a lower number of variables
-
-## Calculate Principal Components  ---------------------------------------------
-  # The first step of PCA is to calculate the principal components. To accomplish this, we use the `prcomp()` function from the `stats` package.  
-  # 
-  # + With argument `“scale = TRUE”` each variable in the biopsy data is scaled to have a mean of `0` and a standard deviation of `1` before calculating the principal components (just like option `Autoscaling` in MetaboAnalyst)
-
-
-
+# # calculate principal component ----
 # calculate principal component
 biopsy_pca <- prcomp(data_biopsy, 
                      # standardize variables
                      scale = TRUE)
-## Analyze Principal Components  ---------------------------------------------
 
-# Let’s check out the elements of our obtained `biopsy_pca` object 
-# + (All accessible via the  `$` operator)
+# ## Analyze Principal Components ----
 
 names(biopsy_pca)
 
-# **"sdev"** = the standard deviation of the principal components
-# **"sdev"\^2** = the variance of the principal components (**eigenvalues** of the covariance/correlation matrix)
-# **"rotation"** = the matrix of variable **loadings** (i.e., a matrix whose columns contain the **eigenvectors**).
-# **"center"** and **"scale"** = the means and standard deviations of the original variables before the transformation;
-# **"x"** = the principal component scores (after PCA the observations are expressed in principal component scores)
-
-## Analyze Principal Components (cont.)  ---------------------------------------------
-
-# We can see the summary of the analysis using the `summary()` function
-# 1. The first row gives the **Standard deviation** of each component, which can also be retrieved via `biopsy_pca$sdev`. 
-# 2. The second row shows the **Proportion of Variance**, i.e. the percentage of explained variance.
+# ## Analyze Principal Components (cont.) ----
 
 summary(biopsy_pca)
 
-  
-## [Proportion of Variance for components]{.r-fit-text}  ---------------------------------------------
-  
-#  2. The row with **Proportion of Variance** can be either accessed from summary or calculated as follows:
+# ## Proportion of Variance for components] ----
+
+# # a) Extracting Proportion of Variance from summary ----
 # a) Extracting Proportion of Variance from summary
 summary(biopsy_pca)$importance[2,]
 
+# # b) (same thing) ----
 # b) (same thing)
 round(biopsy_pca$sdev^2 / sum(biopsy_pca$sdev^2), digits = 5)
- 
-## > The output suggests the **1st principal component** explains around 65% of the total variance, the **2nd principal component** explains about 9% of the variance, and this goes on with diminishing proportion for each component. 
 
+# ## Cumulative Proportion of variance for components] ----
 
-## [Cumulative Proportion of variance for components]{.r-fit-text} --------------------------------------------
-
-# 3. The last row from the `summary(biopsy_pca)`, shows the **Cumulative Proportion** of variance, which calculates the cumulative sum of the Proportion of Variance. 
-
-# Extracting Cumulative Proportion from summary 
+# # Extracting Cumulative Proportion from summary ----
+# Extracting Cumulative Proportion from summary
 summary(biopsy_pca)$importance[3,]
- 
-## > Once you computed the PCA in R you must decide the number of components to retain based on the obtained results.
 
+# # VISUALIZING PCA OUTPUTS {.section-slide} ----
+# ## Scree plot ----
 
-# VISUALIZING PCA OUTPUTS  ---------------------------------------------
+#| output-location: slide
+#| fig-cap: "The obtained **scree plot** simply visualizes the output of `summary(biopsy_pca)`."
 
-## Scree plot  ---------------------------------------------
-
-# There are several ways to decide on the number of components to retain. 
-# 
-# + One helpful option is visualizing the percentage of explained variance per principal component via a **scree plot**. 
-# + Plotting with the `fviz_eig()` function from the `factoextra` package
-
+# # Scree plot shows the variance of each principal component  ----
 # Scree plot shows the variance of each principal component 
 factoextra::fviz_eig(biopsy_pca, 
                      addlabels = TRUE, 
                      ylim = c(0, 70))
 
-## > Visualization is essential in the interpretation of PCA results. Based on the number of retained principal components, which is usually the first few, the observations expressed in component scores can be plotted in several ways.
+# ## Principal Component `Scores`] ----
 
-## [Principal Component `Scores`]  ---------------------------------------------
-# After a PCA, the observations are expressed as **principal component scores**.   
-# 
-# 1. We can retrieve the principal component scores for each Variable by calling `biopsy_pca$x`, and  store them in a new dataframe `PC_scores`.
-# 2. Next we draw a `scatterplot` of the observations -- expressed in terms of principal components 
+#| output-location: slide
 
+# # Create new object with PC_scores ----
 # Create new object with PC_scores
 PC_scores <- as.data.frame(biopsy_pca$x)
 head(PC_scores)
- 
-#It is also important to visualize the observations along the new axes (principal components) to interpret the relations in the dataset:
-  
-## [Principal Component `Scores` plot (adding label variable)] ------------------------------------
-  
-#  3. When data includes a factor variable, like in our case, it may be interesting to show the grouping on the plot as well.
 
-# + In such cases, the label variable `class` can be added to the PC set as follows.
+# ## Principal Component `Scores` plot (adding label variable)] ----
 
+# # retrieve class variable ----
 # retrieve class variable
 biopsy_no_na <- na.omit(biopsy)
+# # adding class grouping variable to PC_scores ----
 # adding class grouping variable to PC_scores
 PC_scores$Label <- biopsy_no_na$class
- 
 
-## [Principal Component `Scores` plot (2D)]  ---------------------------------------------
-#The visualization of the observation points (point cloud) could be in 2D or 3D.
+# ## Principal Component `Scores` plot (2D)] ----
 
-# The Scores Plot can be visualized via the `ggplot2` package. 
-# 
-# + grouping is indicated by argument the `color = Label`; 
-# + `geom_point()` is used for the point cloud.
+#| output-location: slide
+#| fig-cap: "Figure 1 shows the observations projected into the new data space made up of principal components"
 
-
-# "Figure 1 shows the observations projected into the new data space made up of principal components"
-ggplot(PC_scores, 
+ggplot2::ggplot(PC_scores, 
        aes(x = PC1, 
            y = PC2, 
            color = Label)) +
@@ -237,19 +850,13 @@ ggplot(PC_scores,
   scale_color_manual(values=c("#245048", "#CC0066")) +
   ggtitle("Figure 1: Scores Plot") +
   theme_bw()
- 
-## [Principal Component `Scores` (2D Ellipse Plot)] ---------------------------------------------
 
-# Confidence ellipses can also be added to a grouped scatter plot visualized after a PCA. We use the `ggplot2` package. 
-# 
-# + grouping is indicated by argument the `color = Label`; 
-# + `geom_point()` is used for the point cloud; 
-# + the `stat_ellipse()` function is called to add the ellipses per biopsy group.
+# ## Principal Component `Scores` (2D Ellipse Plot)] ----
 
+#| output-location: slide
+#| fig-cap: "Figure 2 shows the observations projected into the new data space made up of principal components, with 95% confidence regions displayed." 
 
-# igure 2 shows the observations projected into the new data space made up of principal components, with 95% confidence regions displayed." 
-
-ggplot(PC_scores, 
+ggplot2::ggplot(PC_scores, 
        aes(x = PC1, 
            y = PC2, 
            color = Label)) +
@@ -258,17 +865,13 @@ ggplot(PC_scores,
   stat_ellipse() + 
   ggtitle("Figure 2: Ellipse Plot") +
   theme_bw()
- 
-## [Principal Component `Scores` plot (3D)] ---------------------------------------------
 
-# A 3D scatterplot of observations shows the first **3 principal components’ scores**. 
-# 
-# + For this one, we need the `scatterplot3d()` function of the `scatterplot3d` package;
-# + The color argument assigned to the Label variable;
-# + To add a legend, we use the `legend()` function and specify its coordinates via the `xyz.convert()` function.
+# ## Principal Component `Scores` plot (3D)] ----
 
-# "Figure 3 shows the observations projected into the new 3D data space made up of principal components." 
+#| output-location: slide
+#| fig-cap: "Figure 3 shows the observations projected into the new 3D data space made up of principal components." 
 
+# # 3D scatterplot ... ----
 # 3D scatterplot ...
 plot_3d <- with(PC_scores, 
                 scatterplot3d::scatterplot3d(PC_scores$PC1, 
@@ -281,6 +884,7 @@ plot_3d <- with(PC_scores,
                                              ylab="PC2",
                                              zlab="PC3"))
 
+# # ... + legend ----
 # ... + legend
 legend(plot_3d$xyz.convert(0.5, 0.7, 0.5), 
        pch = 19, 
@@ -288,485 +892,27 @@ legend(plot_3d$xyz.convert(0.5, 0.7, 0.5),
        xjust=-0.9,
        legend = levels(PC_scores$Label), 
        col = seq_along(levels(PC_scores$Label)))
- 
-## [Biplot: principal components v. original variables]  ---------------------------------------------
-  
-#   Next, we create another special type of scatterplot (a **biplot**) to understand the relationship between the principal components and the original variables.  
-# In the `biplot` each of the observations is projected onto a scatterplot that uses the ***first and second principal components as the axes***.
-# 
-# + For this plot, we use the `fviz_pca_biplot()` function from the `factoextra` package 
-# + We will specify the color for the variables, or rather, for the "loading vectors"
-# + The `habillage` argument allows to highlight with color the grouping by `class`
 
-# Figure 4: "The axes show the principal component scores, and the vectors are the loading vectors"
+# ## Biplot: principal components v. original variables] ----
+
+#| output-location: slide
+#| fig-cap: "The axes show the principal component scores, and the vectors are the loading vectors"
 
 factoextra::fviz_pca_biplot(biopsy_pca, 
-                            repel = TRUE,
-                            col.var = "black",
-                            habillage = biopsy_no_na$class,
-                            title = "Figure 4: Biplot", geom="point")
- 
-## Interpreting biplot output  ---------------------------------------------
-# Biplots have two key elements: **scores** (the 2 axes) and **loadings** (the vectors). 
-# As in the scores plot, each point represents an observation projected in the space of principal components where:
-#   
-#   + Biopsies of the same class are located closer to each other, which indicates that they have similar **scores**  referred to the 2 main principal components; 
-#  + The **loading vectors** show strength and direction of association of original variables with new PC variables.
+                repel = TRUE,
+                col.var = "black",
+                habillage = biopsy_no_na$class,
+                title = "Figure 4: Biplot", geom="point")
 
- ## > As expected from PCA, the single `PC1` accounts for variance in almost all original variables, while `V9` has the major projection along `PC2`.
+# ## Interpreting biplot output ----
+# ## Interpreting biplot output (cont.) ----
 
-   
-## Interpreting biplot output (cont.)  ---------------------------------------------
 scores <- biopsy_pca$x
 
 loadings <- biopsy_pca$rotation
+# # excerpt of first 2 components ----
 # excerpt of first 2 components
 loadings[ ,1:2] 
- 
- 
-    
-# POWER ANALYSIS   ---------------------------------------------
- 
-  # In this section, we will use: 
-  #   
-  #   + the *NHANES* clinical data, we already analysed in Lab # 3 
-  # + a few, tidy *"fish-related"* datasets 🍥🦑 🐠 🍤 🎏  that we will load on the go
-  # + Source: the materials of the "Core Statistics using R" by: [Martin van Rongen](https://github.com/mvanrongen/corestats-in-r_tidyverse)
-     
-# Sample Size determination in Inferential statistics   ---------------------------------------------
 
-## [Purpose and challenges of Power Analysis]  ---------------------------------------------
-#     + In this case, given $n$, $\alpha$, and a specified effect size, the analysis will return the power ($1- \beta$) of # the test, or $\beta$ (i.e. the probability of Type II error = incorrectly retaining $H_o$).
-
-## [Specifying effect size] ---------------------------------------------
-
-# So (since $\alpha$ and $1-\beta$ are normally set) the key piece of information we need is the **effect size**, which is essentially a function of the difference between the means of the null and alternative hypotheses over the variation (standard deviation) in the data. 
-# 
-# > The tricky part is that effect size is related to biological/practical significance rather than statistical significance
-# 
-# How should you estimate a meaningful `Effect Size`?
-# 
-# + Use preliminary information in the form of pilot study
-# + Use background information in the form of similar studies in the literature
-# + (With no prior information), make an estimated guess on the effect size expected (see guidelines next)
-# 
-# > Most R functions for sample size only allow you to enter effect size as input
-
-## [Specifying effect size: general guidelines] ---------------------------------------------
-
-# As a general indicative reference, below are the **"Cohen's Standard Effect Sizes"** (from statistician Jacob Cohen who came up with a rough set of numerical measures for `“small”`, `“medium”` and `“large”` effect sizes that are still in use today)  
-
- 
-## The `pwr` package ---------------------------------------------
- 
-# The `pwr` package (develped by Stéphane Champely), implements power analysis as outlined by Cohen (1988). 
-# The key arguments of the function `pwr.t.test` are 4 quantities, plus 2 for the test description:
-# 
-# + The core idea behind its functions is that **you enter 3 of the 4 quantities** (effect size, sample size, significance level, power) **and the 4th is calculated**.
-
-  
-## [One Sample Mean: EXE data]  ---------------------------------------------
-# GOAL: Imagine this is a *pilot study*, in which we tested fish is (on average) different form 20 cm in length. 
-# 
-# The `guanapo_data` dataset contains information on fish lengths from the Guanapo river pilot
-
- 
-# Load data on river fish length 
-fishlength_data <- readr::read_csv(here::here("practice", "data_input", "04_datasets", 
-                                              "fishlength.csv"),
-                                   show_col_types = FALSE)
-
-# Select a portion of the data (i.e. out "pilot" experiment)  
-guanapo_data <- fishlength_data %>% 
-  dplyr::filter(river == "Guanapo")
-
-# Pilot experiment data 
-names(guanapo_data)
-mean_H1 <-  mean(guanapo_data$length) # 18.29655
-mean_H1
-sd_sample <- sd(guanapo_data$length)  # 2.584636
-sd_sample
- 
-## [One Sample Mean t-test: EXAMPLE cont.] ---------------------------------------------
- 
-# Let's compute the one sample t-test with `stats::t.test` against a hypothetical average fish length ($mean\_H_o = 20$ )
-
-# Hypothetical fish population length mean (H0)
-mean_H0 <- 20
-# one-sample mean t-test 
-t_stat <- stats::t.test(x = guanapo_data$length,
-                        mu = mean_H0,
-                        alternative = "two.sided")
-# one-sample t-test results
-t_stat
- 
-## > There appear to be a statistically significant result here: the mean length of the fish appears to be different from 20 cm.
-
-# QUESTION: In a new study of the same fish, what sample size `n` would you need to get a comparable result? 
- 
-## [One Sample Mean t-test: POWER ANALYSIS (`n`)] ---------------------------------------------
-# Cohen's d formula 
-eff_size <- (mean_H1 - mean_H0) / sd_sample # -0.6590669
-
-# power analysis to actually calculate the minimum sample size required:
-pwr::pwr.t.test(d = eff_size, 
-                sig.level = 0.05, 
-                power = 0.8,
-                type = "one.sample")
- 
-
-## > We would need `n = 21` (rounding up) observations for an experiment (e.g. in different river) to detect an effect size as the pilot study at a 5% significance level and 80% power.  
-
-## [One Sample Mean t-test: POWER ANALYSIS, stricter conditions] ---------------------------------------------
-  # What if we wanted the results to be even more stringent? 
-  # + e.g. require higher significance level (0.01) and power (0.90) with the same effect?
-  
-# power analysis to actually calculate the minimum sample size required:
-pwr::pwr.t.test(d = eff_size, 
-                sig.level = 0.01, 
-                power = 0.9,
-                type = "one.sample")
-## > This time, we would need `n = 38` observations for an experiment to detect the same effect size at the stricter level of significance and power.
-
-
-## [Two Independent Samples: EXE data] ---------------------------------------------
-# Let’s look at the entire `fishlength_data` with the lengths of fish from 2 separate rivers.
-
-# Explore complete data 
-fishlength_data %>% 
-  dplyr::group_by (river) %>% 
-  dplyr::summarise (N = n(), 
-                    mean_len = mean(length),
-                    sd_len = sd(length)) 
-# Visualize quickly the 2 samples (rivers) with a boxplot
-
-# "The fish in the 2 samples appear to have different mean length" 
-# visualize the data
-fishlength_data %>% 
-  ggplot(aes(x = river, y = length)) +
-  geom_boxplot()
- 
-## [Two Independent Samples: t-test] -----------------------------------------
-#   Let's confirm it with a two sample t-test against $𝑯_𝟎$: *The two population means are equal*
-
-# Perform two-samples unpaired test
-fishlength_data %>% 
-  rstatix::t_test(length ~ river,
-                  paired = FALSE
-                    )
-## > The t-test analysis confirms that the difference is significant.
-
-## QUESTION: Can we use this information to design a more `efficient` experiment? I.e. run an experiment powerful enough to pick up the same observed difference in means but with **fewer observations**?
-
-## [Two Independent Samples: POWER ANALYSIS 1/2] -------------------
-
-#1. Let's work out exactly the **effect size** of this study by estimating Cohen’s d using this data.
-#+ (We use a function from the package `rstatix::cohens_d` to estimate Cohen's d)
-
-# Estimate cohen's d 
-fishlength_data %>%
-  rstatix::cohens_d(length ~ river, var.equal = TRUE)
-
-## > The `effsize` column contains the information that we want, in this case **0.94**
-  
-## [Two Independent Samples: POWER ANALYSIS 2/2  (`n`)] -------------------
-# 2. Actually answer the question about **how many fish** we really need to catch in the future
-
-# run power analysis 
-pwr::pwr.t.test(d = 0.94, power = 0.8, sig.level = 0.05,
-                type = "two.sample", alternative = "two.sided")
-## > The `n` output ( = **19 observations per group**) -as opposed to 39 + 29- would be sufficient if we wanted to confidently detect the difference observed in the previous study  
-
-## [Two Paired Samples: EXE data] -------------------
-# The `cortisol_data` dataset contains information about cortisol levels measured on 20 participants in the morning and evening
-
-# Load data 
-cortisol_data <- read.csv(file = here::here("practice", "data_input", "04_datasets", 
-                                            "cortisol.csv"), 
-                          header = TRUE, # 1st line is the name of the variables
-                          sep = ",", # which is the field separator character.
-                          na.strings = c("?","NA" ), # specific MISSING values  
-                          row.names = NULL) 
-
-# Explore data 
-names(cortisol_data)
-
-cortisol_data %>% 
-  dplyr::group_by (time) %>% 
-  dplyr::summarise (
-    N = n(), 
-    mean_cort = mean(cortisol),
-    sd_cort = sd(cortisol)) 
-
-## > Notice the difference in the paired sample means is quite large
-
-## [Two Paired Samples t-test: visualization] -------------------
-#   Visualize quickly the 2 paired samples (morning and evening) with a boxplot
-
-# "The cortisol levels in the 2 paired amples appear quite different" 
-# visualize the data
-cortisol_data %>% 
-  ggplot(aes(x = time, y = cortisol)) +
-  geom_boxplot()
-
-## [Two Paired Samples: POWER ANALYSIS (`d`)] -------------------
-# GOAL: Flipping the question, if we know the given `n` (20 patients observed twice): How big should the `effect size` be to be detected at `power` of 0.8 and `significance level` 0.05? 
-  
-  #+ We use `pwr::pwr.t.test`, with the argument specification `type = "paired"`, but this time to estimate the **effect size**
-
-# power analysis to actually calculate the effect size at the desired conditions:
-pwr::pwr.t.test(n = 20, 
-                #d =  eff_size, 
-                sig.level = 0.05, 
-                power = 0.8,
-                type = "paired")
-
-## > The functions returns the effect size (Cohen’s metric): `d = 0.6604413`. So, with this experimental design we would be able to detect a **medium-large effect size**.
-
-## [Two Paired Samples t-test: POWER ANALYSIS on given `n`] -------------------
-
-# Looking instead at the **actual sample data**, what would be the observed effect size?
-# + To compute "observed `d`" we can use the function `rstatix::cohens_d` 
-
-d <- cortisol_data %>% 
-  # estimate cohen's d
-rstatix::cohens_d(cortisol ~ time, paired = TRUE)
-
-d
-
-## > The obtained `d` (-1.16) is extremely large, so ***we likely have more participants in this study than actually needed*** given such a large effect. 
-
-## [Two Paired Samples t-test: POWER ANALYSIS gives sufficient `n`] -------------------
-
-# Let's re-compute the power analysis, but leave `n` as the unknown quantity, given the effect size (`d`) we have observed  
-# power analysis to calculate minimunm n given the observed effect size in the sample 
-pwr::pwr.t.test(# n = 20, 
-                d =  -1.16, 
-                sig.level = 0.05, 
-                power = 0.8,
-                type = "paired")
-## > As a matter of fact, ` n = 8` pairs of observations would have sufficed in this study, given the size of effect we were trying to detect.
-
-
-## [One-way ANOVA test: EXE data] -------------------
-# The `mussels_data` dataset contains information about the length of the *anterior adductor muscle scar* in the mussel # `Mytilus trossulus` across five locations around the world!  
-
-# Load data 
-mussels_data <- read.csv(file = here::here("practice", "data_input", "04_datasets", 
-                                        "mussels.csv"), 
-                          header = TRUE, # 1st line is the name of the variables
-                          sep = ",", # which is the field separator character.
-                          na.strings = c("?","NA" ), # specific MISSING values  
-                          row.names = NULL) 
-
-# Explore data 
-names(mussels_data)
-
-stats <- mussels_data %>% 
-  dplyr::group_by (location) %>% 
-  dplyr::summarise (
-    N = n(), 
-    mean_len = mean(length),
-    sd_len = sd(length)) 
-
-stats
-
-## [One-way ANOVA test: visualization] -------------------
-# > There appears to be a noticeable difference in lenght at average measurements *at least* between some of the locations
-
-#| output-location: slide
-
-# Visualize the data with a boxplot
-mussels_data %>% 
-  ggplot(aes(x = location, y = length)) +
-  geom_boxplot()
-
-## [One-way ANOVA test: EXAMPLE cont.] -------------------
-# Assuming we verified the required assumptions, let's run the ANOVA test to confirm the visual intuition 
-# 
-# + With the `stats::aov` followed by the command `summary`  
-
-# Summary of test outputs: 
-summary_ANOVA <- summary(stats::aov(length ~ location,
-                                    data = mussels_data))
-
-# From which we extract all the output elements 
-# F value 
-summary_ANOVA[[1]][["F value"]] # 7.121019
-# p value 
-summary_ANOVA[[1]][["Pr(>F)"]]  # 0.0002812242
-# df of numerator and denominator
-summary_ANOVA[[1]][["Df"]]      # 4, 34 
-# Sum of Square BETWEEN groups
-SSB <- summary_ANOVA[[1]][["Sum Sq"]][1]  # 0.004519674
-# Sum of Square WITHIN groups
-SSW <- summary_ANOVA[[1]][["Sum Sq"]][2]  # 0.005394906
-
-## > + A one-way ANOVA test confirms that **the mean lengths of muscle scar differed significantly between locations** ( F = 7.121, with df = [4, 34], and p = 0.000281).
- 
-## [One-way ANOVA test: POWER ANALYSIS (`effect`)] -------------------
-
-# In ANOVA it may be tricky to decide what kind of effect size we are looking for: 
-#   
-#   + if we care about an overall significance test, the sample size needed is a function of the standard deviation of the group means
-# + if we're interested in the comparisons of means, there are other ways of expressing the effect size (e.g. a difference between the smallest and largest means)
-# 
-# Here let's consider an overall test in which we could reasonably collect the same n. of observations in each group 
-
-n_loc <- nrow(stats)
-
-means_by_loc <- c(0.0780, 0.0748, 0.103, 0.0802, 0.0957)
-overall_mean <-  mean(means_by_loc)
-sd_by_loc <- c(0.0129, 0.00860, 0.0162, 0.0120, 0.0130)
-overall_sd <-  mean(sd_by_loc)
-
-## [One-way ANOVA test: POWER ANALYSIS (`effect`)] -------------------
-
-# Effect Size f formula
-Cohen_f = sqrt( sum( (1/n_loc) * (means_by_loc - overall_mean)^2) ) /overall_sd
-Cohen_f # EXTREMELY BIG 
-
-# Power analysis with given f 
-pwr::pwr.anova.test(k = n_loc,
-                    n = NULL,
-                    f = Cohen_f,
-                    sig.level = 0.05,
-                    power = 0.80)
-## > The `n` output ( = **5 observations per group**) -as opposed to >6 per group- would be sufficient if we wanted to confidently detect the difference observed in the previous study  
-
-## [Linear Regression with grouped data: EXE data] -------------------
- 
-# The ideas covered before apply also to **linear models**, although here:
-# 
-# + we use `pwr.f2.test()` to do the power calculation
-# + the `effect sizes` ($f^2$) is based on $R^2$
-
-# define the linear model
-lm_mussels <- lm(length ~ location, 
-                 data = mussels_data)
-# summarise the model
-summary(lm_mussels)
- 
-## [Linear Regression with grouped data: POWER ANALYSIS] -------------------
-# From the linear model we get that the $R^2$ value is 0.4559 and we can use this to calculate Cohen’s $f^2$ value using the formula 
-
-# Extract R squared
-R_2 <- summary(lm_mussels)$r.squared
-# compute f squared
-f_2 <- R_2 / (1 - R_2)
-f_2
-
-#Our model has 5 parameters (because we have 5 groups) and so the numerator degrees of freedom $u$ will be 4 (5−1=4). 
-#Hence, we carry out the power analysis with the function `pwr.f2.test`:
-
-# power analysis for overall linear model 
-pwr::pwr.f2.test(u = 4, v = NULL, 
-                 f2 = 0.8378974,
-                 sig.level = 0.05 , power = 0.8)
-
-## [Linear Regression with grouped data: POWER ANALYSIS interpret.] -------------------
-# Recall that, in the F statistic evaluating the model, 
-
-# + **u** the df for the numerator: $df_{between} =k−1 = 5-1 = 4$ 
-# + **v** the df for the denominator: $df_{within} = n-k = ?$ 
-#   + so $n = v+5$ 
-
-pwr::pwr.f2.test(u = 4, f2 = 0.8378974,
-            sig.level = 0.05 , power = 0.8)
-## > This tells us that the denominator degrees of freedom **v** should be 15 (14.62 rounded up), and this means that we would only need 20 observations **n = v+5** in total across all 5 groups to detect this effect size 
-
-# SAMPLE SPLITTING IN MACHINE LEARNING -------------------
- 
-# > Embracing a different philosophical approach... 
- 
-## [2 different approaches with different takes on empirical data] -------------------
-# [*(Simplifying a little)*] 
-#### Inferential statistics
-# + `APPROACH`: Strong emphasis on defining assumptions (about variables distributions) and/or hypotheses on the relationship between them 
- 
-#### Machine Learning
- # + `APPROACH`: Focus on labeling observations or uncovering ("learn") a pattern, without worrying about explaining them
-## [Data Splitting in ML approaches] -------------------
-
-## [Introducing R (metapackage) `tidymodels` for modeling and ML] -------------------
-# The package `tidymodels` (much like the `tidyverse`) is an ecosystem of packages meant to enable a wide variety of approaches for modeling and statistical analysis.
-# 
-# + One package in this system is `rsample` is one of its building blocks for resampling data 
-
-
-## [Revisiting NHANES for a quick demonstration of predictive modeling] -------------------
-
-# Let's re-load a dataset from Lab # 3 (the NHANES dataset) for a quick demonstration of data splitting in an ML predictive modeling scenario 
-
-# + We can try predicting `BMI` from `age` (in years), `PhysActive`, and `gender`, using linear regression model (which is a `Supervised ML algorithm`) 
-
-#+ (we already saved this dataset)
-# Use `here` in specifying all the subfolders AFTER the working directory 
-nhanes <- read.csv(file = here::here("practice", "data_input", "03_datasets",
-                                      "nhanes.samp.csv"), 
-                          header = TRUE, # 1st line is the name of the variables
-                          sep = ",", # which is the field separator character.
-                          na.strings = c("?","NA" ), # specific MISSING values  
-                          row.names = NULL) 
-
-
-## Splitting the dataset into training and testing samples
-# + With this approach, it is best practice to **"hold back" some data for testing** to get a better estimate of how models will perform on new data
- 
-# + We can easily specify training and testing sets using `rsample`'s function `initial_split`
-  
-# ensure we always get the same result when sampling (for convenience )
-set.seed(12345)
-  
-nhanes_split <- nhanes %>%
-  # define the training proportion as 75%
-  rsample::initial_split(prop = 0.75,
-                         # ensuring both sets are balanced in gender
-                         strata = Gender)
-
-# resulting datasets
-nhanes_train <- rsample::training(nhanes_split)
-dim(nhanes_train)
-nhanes_test <- rsample::testing(nhanes_split)
-dim(nhanes_test)
-
-#  In this case the **regression models** serves for predicting numeric, continuous quantities 
-  # fitting  linear regression model specification
-  lin_mod <- lm(BMI ~ Age + Gender + PhysActive, data = nhanes_train)
-  
-  summary(lin_mod)
- 
-## [Predicting BMI estimates for new data set] -------------------
-# Using the above model, we can predict the BMI for different individuals (those left in the testing data)
-#  + with the function `predict`, where we specify the argument `newdata = nhanes_test`)
-#  + adding the prediction `interval` (the 95% CI), which gives uncertainty around a single value of the prediction
-
-# Obtain predictions from the results of a model fitting function
-pred_bmi <- stats::predict(lin_mod, 
-                           newdata = nhanes_test,
-                           interval = "confidence" )
-head(pred_bmi)
-
-## [Evaluating the predictive performance in testing data] -------------------
-# The ultimate goal of holding data back from the model training process was to **evaluate its predictive performance on new data**. 
-#   A common measure used is the `RMSE (Root Mean Square Error)` = a measure of the distance between observed values and predicted values **in the testing dataset**  
-  
-# Computing the Root Mean Square Error
-RMSE_test <- sqrt(mean((nhanes_test$BMI - predict(lin_mod, nhanes_test))^2, na.rm = T))
-RMSE_test # 6.170518
-
-
-## > The RMSE (= 6.170518) tells us, (roughly speaking) by how much, on average, the new observed BMI values differ from those predicted by our model
-
-## [... and what about RMSE in training data?] -------------------
-#  Let's see the RMSE in the training dataset (for comparison)
-
-RMSE_train <- sqrt(mean((nhanes_train$BMI - predict(lin_mod, nhanes_train))^2, na.rm = T))
-RMSE_train # 6.866044
-
-# R squared is also quite low 
-summary(lin_mod)$r.squared     # R^2 0.0341589
-
-## > This is not what expected 🤔, since RMSE on the training data is sliglthly bigger that in the testing data! 
-# A possible explanation is that out model is `underfitting` in the first place (model's ${R}^2$ was quite low too), so we should definitely try different models...  
-
+# ## Recap of the workshop's content] ----
+# ## Conclusions ----

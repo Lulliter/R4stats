@@ -2,7 +2,7 @@
 title: "Lab 5: Intro to Machine Learning"
 subtitle: "<span style='font-size:2em;'> Practice session</span>"
 #author: "Luisa M. Mimmi | [https://luisamimmi.org/](https://luisamimmi.org/)"
-author: "<span style='font-size:1.3em; font-weight: bold; color:#77501a'> Luisa M. Mimmi — &ensp;</span>  <a href='https://luisamimmi.org/' style='color:#72aed8; font-weight:600; font-size:1.3em;'>https://luisamimmi.org/</a>"
+author: "<span style='font-size:1.3em; font-weight: bold; color:#daa21b'> Luisa M. Mimmi — &ensp;</span>  <a href='https://luisamimmi.org/' style='color:#01aeff; font-weight:600; font-size:1.3em;'>https://luisamimmi.org/</a>"
 date: today
 date-format: long
 code-link: true
@@ -42,6 +42,7 @@ suppress-bibliography: true
 # GOAL OF TODAY'S PRACTICE SESSION {.section-slide}  
 
 ## Lab # 5 
+
 ::: {style="font-size: 90%;"}
 ::: {style="color:#77501a"}
 
@@ -60,17 +61,16 @@ suppress-bibliography: true
 <!-- add png icon   -->
 <!-- ![](../../images/coming-soon.png){width=5%} -->
 :::
-
-:::{aside}
-[*highlight* = ]{style="background-color: #d8cf71;"} ![](../../images/coming-soon.png){width=8%}  
-:::
 :::
 
- 
+::: aside
+[[*highlight*]{style="background-color: #d8cf71;"} = coming soon]{style="color: #d02e4c;"}
+:::
 
 
 
-## 🟠 ACKNOWLEDGEMENTS
+
+## ACKNOWLEDGEMENTS
 
  
 The examples and datasets in this Lab session follow very closely two sources:
@@ -86,6 +86,7 @@ The examples and datasets in this Lab session follow very closely two sources:
 # R ENVIRONMENT SET UP & DATA {.section-slide}
 
 ## Needed R Packages
+
 ::: {style="font-size: 80%;"}
 
 + We will use functions from packages `base`, `utils`, and `stats` (pre-installed and pre-loaded) 
@@ -138,7 +139,15 @@ library(broom)      # Convert Statistical Objects into Tidy Tibbles
 
 <!-- (biopsy) ROTTO!!! https://github.com/sws8/biopsy-analysis/blob/main/biopsy_analysis.pdf -->
 <!-- (biopsy) OK!!! https://www.linkedin.com/pulse/logistic-regression-dataset-biopsy-giancarlo-ronci-twpke/ -->
+<!-- SEGUI  -->
 
+<!-- https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/logreg.html -->
+<!-- e  -->
+<!-- https://www.geeksforgeeks.org/how-to-interpret-odds-ratios-in-logistic-regression/?ref=next_article -->
+
+<!-- Rivedi anche steps in `practice/practice_slides/_biopsy_logistic.qmd` -->
+
+ 
 
 ## Logistic regression: review
 <!-- GLM intro https://medium.com/@sahin.samia/a-comprehensive-introduction-to-generalized-linear-models-fd773d460c1d -->
@@ -243,7 +252,7 @@ kableExtra::kable(heart_data_desc)
 
 ## `heart_data` dataset splitting
 
-In Machine Learning, it is good practice to split the data into `training` and `testing` sets.
+In ML modeling, it is good practice to split the data into `training` and `testing` sets.
 
 + We will use the **training set** (70%) to fit the model and then the **testing set** (30%) to evaluate the model's performance.
 ```{r}
@@ -269,7 +278,7 @@ Before examining the training dataset `heart_train`, we converting the binary va
 ```{r}
 heart_train <- heart_train %>% 
   # convert to factor with levels "Yes" and "No"
-  mutate(heart_disease = factor(heart_disease, levels = c(0, 1),
+  dplyr::mutate(heart_disease = factor(heart_disease, levels = c(0, 1),
                                 labels = c("No_HD", "Yes_HD")),
          coffee_drinker = factor(coffee_drinker, levels = c(0, 1),
                                  labels = c("No_Coffee", "Yes_Coffee")) 
@@ -296,7 +305,7 @@ Let's visualize the relationship between the binary outcome variable `heart_dise
 
 # plot the distribution of heart disease status by fast food spend
 heart_train %>% 
-  ggplot(aes(x = heart_disease, y = fast_food_spend, fill = heart_disease)) + 
+  ggplot2::ggplot(aes(x = heart_disease, y = fast_food_spend, fill = heart_disease)) + 
   geom_jitter(aes(fill = heart_disease), alpha = 0.3, shape = 21, width = 0.25) +  
   scale_color_manual(values = c("#005ca1", "#9b2339")) + 
   scale_fill_manual(values = c("#57b7ff", "#e07689")) + 
@@ -311,37 +320,36 @@ heart_train %>%
   ylab("Annual Fast Food Spend") 
 ```
 
-
 ## Plotting `Y` by `X2` (discrete variable)
 
-::: {style="font-size: 90%;"}
+::: {style="font-size: 85%;"}
 Let's see also the relationship between the binary outcome variable `heart_disease` and the binary predictor variable `coffee_drinker`.
-
-  + we use the handy `count` function from `dplyr` to count occurrences in categorical variable(s) combinations.
+  
+  + First, we need a little manipulation of the data:
+    + With the handy `dplyr::count` function we count occurrences in categorical variable(s) combinations.
 ```{r}
 #| output: true
 #| output-location: slide
 #| fig.cap: 'Also drinking coffee seems associated to a higher likelihood of heart disease (HD =1)'
 
-# Dataset manipulation
 heart_train %>% 
-  # count the unique values per each group from 2 categorical variables' combinations
+  # 1) Count the unique values per each group from 2 categorical variables' combinations
   dplyr::count(heart_disease, coffee_drinker, name = "count_by_group") %>% 
   dplyr::group_by(coffee_drinker) %>% 
   dplyr::mutate(
     total_coffee_class = sum(count_by_group),
     proportion = count_by_group / total_coffee_class) %>% 
   dplyr::ungroup() %>% 
-  # filter only those with heart disease
+  # 2) Filter only those with heart disease
   dplyr::filter(heart_disease == "Yes_HD") %>% 
-# Plot  
-  ggplot(aes(x = coffee_drinker, y = proportion, fill = coffee_drinker)) + 
+  # 3) Plot frequency of heart disease status by coffee drinking 
+  ggplot2::ggplot(aes(x = coffee_drinker, y = proportion, fill = coffee_drinker)) + 
   geom_bar(stat = "identity") + 
   scale_fill_manual(values = c("#57b7ff", "#e07689")) + 
   theme_minimal() +
   ylab("Percent with Heart Disease") +
   xlab("Coffee Drinker (Y/N)") +
-  ggtitle("Figure 3: Percent of Coffee Drinkers with Heart Disease") +
+  ggtitle("Figure 3: Percent of HD incidence by CoffeeDrinking class") +
   labs(fill = "Coffee Drinker") + 
   scale_y_continuous(labels = scales::percent)
 ```
@@ -387,7 +395,7 @@ coffee_drinker_logit <- coef(logit_mod)[3]
 
 # --- Estimate predicted data from different models   
 heart_data <- heart_data %>%
-  mutate(
+  dplyr::mutate(
     # Convert outcome variable to factor
     heart_disease_factor = factor(heart_disease, 
                                   labels = c("No Disease (Y=0)", "Disease (Y=1)")),
@@ -396,9 +404,8 @@ heart_data <- heart_data %>%
     # 2) Logit model prediction
     logit_pred = intercept_logit + fast_food_spend_logit * fast_food_spend,  coffee_drinker,
     # 3) Convert logit to probability (logistic model prediction)
-    logistic_pred = 1 / (1 + exp(-logit_pred)) 
-    ) %>%
-  arrange(fast_food_spend)   
+    logistic_pred = 1 / (1 + exp(-logit_pred))) %>%
+  dplyr::arrange(fast_food_spend)   
 ```
 :::
 
@@ -419,7 +426,7 @@ We can also plot the **predicted outcomes** from the 3 models to see how they di
 #|      + The **logistic** model _squeezes_ `probabilities` between 0 and 1, which fits the data better  
 
 # --- Plot  
-ggplot(heart_data, aes(x = fast_food_spend)) +
+ggplot2::ggplot(heart_data, aes(x = fast_food_spend)) +
   # Actual dataset observations (Y=0, Y=1 ) using `color =`
   geom_jitter(aes(y = heart_disease, color = heart_disease_factor), 
               width = 200, height = 0.03, alpha = 0.75, size = 2, shape = 16) + 
@@ -452,12 +459,12 @@ ggplot(heart_data, aes(x = fast_food_spend)) +
 + Besides the poor fit, recall linear regression models implies certain **assumptions**: 
     + ***Linear relationship*** between `Y` and the predictors `X1` and `X2`  
 <!-- (plot residuals v fitted values with no discernible pattern)-->
-    + ***Residuals*** must be 1) approximately normally distributed and 2) uncorrelated
+    + ***Residuals*** must be: 1) approximately normally distributed and 2) uncorrelated
 <!-- (QQ plot close to diagonal line for normality ) (e.g. like in time series if adjacent values have similar errors)-->
     + ***Homoscedasticity***: residuals should have constant variance
     + ***Non collinearity***: predictor variables should not be highly correlated with each other
 
-<br><br>
+<br>
 
 + Assumptions that are **not** met in this case
 ```{r}
@@ -495,8 +502,8 @@ vif(linear_mod)
 
 ## [Fitting a `logistic regression` model]{.r-fit-text}
 
-+ [Now that we are convinced...]
-+ ...let's fit instead a **logistic regression model** to the `heart_train` data using:
++ *[Now that we are convinced...]*
++ ...let's fit a **logistic regression model** to the `heart_train` data using:
   + the `glm` function for Generalized Linear Models, 
     + with argument `family = binomial` to specify logistic regression which will use `logit` as the `link` function,
     + (after `~`) we include the 3 predictor variables in the model. 
@@ -505,7 +512,7 @@ vif(linear_mod)
 #| output: true
 
 # Fit a logistic regression model
-heart_model <- glm(heart_disease ~ coffee_drinker + fast_food_spend + income,
+heart_model <- stats::glm(heart_disease ~ coffee_drinker + fast_food_spend + income,
                    data = heart_train, 
                    family = binomial(link = "logit"))
 ```
@@ -515,7 +522,7 @@ heart_model <- glm(heart_disease ~ coffee_drinker + fast_food_spend + income,
 
 ::: {style="font-size: 85%"}
 + @tbl-logit_heart (next) shows the model output, with the coefficient estimate for each predictor.
-  + The `broom::tidy` function converts the model summary into a more readable data frame.
+  + The `broom`'s `tidy` function converts the model summary into a more readable data frame.
   + The `odds ratio` (= exponentiated coefficient estimate) is more interpretable than the coefficient itself.
 
 ```{r}
@@ -740,8 +747,8 @@ Odds are typically expressed as a ratio, but they can be converted into a percen
 
 Our **plot** above showed that there was a higher proportion of coffee drinkers with heart disease as compared to non coffee drinkers. 
 However, our **model** just told us that coffee drinking is associated with a decrease in the likelihood of having heart disease.
-<br><br>  
- How can that be❓
+<br><br>
+❓ How can that be❓
 <br><br>
 It’s because `coffee_drinking` and `fast__food_spend` are <u>**correlated**</u> so, on it’s own, it would _appear_ as if coffee drinking were associated with heart disease, but this is only because coffee drinking is also associated with fast food spend, which our model tells us is the real contributor to heart disease.
 
@@ -822,7 +829,7 @@ kable(odds_table, align = "c") %>%
 ## [Making predictions from `logistic regression` model ✍🏻]{.r-fit-text}
 
 :::{style="font-size: 90%"}
-Let's use the `logistic regression` model to make predictions on the training data. First, we'll do it manually:
+Let's use the `logistic regression model` to make predictions (on the training data). First, we'll do it manually:
 
 + Consider an individual that `drinks coffee`, spends US\$5,000 on `fast food` per year, and has an `annual income` of US\$50,000.
 
@@ -832,13 +839,15 @@ $$p_i(HD=YES) = \frac{1}{1 + e^{-(\beta_0 + \beta_1X_1 + \beta_2X_2 + \beta_3X_3
 
 $$ = \frac{1}{1 + e^{-(-11.0554 -0.7296 \times 1 + 0.0024 \times 5000 -0.0000023 \times 50,000 )}} = 0.4951735$$  
 
+::: aside
 (decimals count!)
+:::
 :::
 
 ## Making predictions from `logistic regression` model ✍🏻
 
 ```{r}
-# Define cvalues for individual case 
+# Define values for individual case 
 x1 <- 1
 x2 <- 5000
 x3 <- 50000
@@ -865,7 +874,7 @@ print(probability) # 0.4951735
 ## Making predictions from `logistic regression` model 👩🏻‍💻
 
 :::{style="font-size: 90%"}
-Now, let's use the `predict()` function to make a prediction for the same individual.
+Now, let's use the `stats::predict()` function to make a prediction for the same individual.
 
 ```{r}
 # Define values for individual case (as df)
@@ -883,34 +892,37 @@ predict(heart_model, individual, type = "response") # 0.4951735
 ## Adding predictions to the training data
 
 :::{style="font-size: 90%"}
-In fact, we can use the `predict()` function to make predictions for ***ALL the individuals*** observed in the training data `heart_train.`
+In fact, we can use the `stats::predict()` function to make predictions for ***ALL the individuals*** observed in the training data `heart_train.`
 
 + `heart_train$heart_disease_pred` = added column with the predicted probabilities of heart disease for each individual.
 
 ```{r}
 # Add calculated predictions to the whole training dataset
 heart_train$heart_disease_pred <- predict(heart_model, type = "response")
+```
 
-# Subset  of 3 with heart_disease = Yes_HD
+Let's take a look at a few obtained predictions for some individuals in the training data.
+```{r}
+# Subsetof 3 with heart_disease = Yes_HD
 heart_train[heart_train$heart_disease == "Yes_HD", ][1:3,] 
-# Subset  of 3 with heart_disease = No_HD
+# Subsetof 3 with heart_disease = No_HD
 heart_train[heart_train$heart_disease == "No_HD", ][1:3,]
 ```
 :::
 
 ## [Converting predictions into classifications]{.r-fit-text}
 
-For simplicity, we will establish a threshold of $0.5$ to classify the predictions as either `Yes_HD` or `No_HD`.
+For simplicity, we will establish a threshold of $0.5$ to classify the predictions as either `Yes_HD` (if $pred>0.5$) or `No_HD`.
 
-+ using the base function `ifelse(test, yes, no)`
++ using the R base function `ifelse(test, yes, no)`
 ```{r}
 #| output: true
 
 # Convert predictions to classifications
 heart_train <- heart_train %>%
-  mutate(heart_disease_pred_class = ifelse(heart_disease_pred > 0.5, 
+  dplyr::mutate(heart_disease_pred_class = ifelse(heart_disease_pred > 0.5, 
                                            "pred_YES", "pred_NO"))
-# ... same BASE WAY
+# (... same BASE WAY)
 # heart_train$heart_disease_pred_class <- ifelse(heart_train$heart_disease_pred > 0.5, 1, 0)
 ```
 
@@ -956,7 +968,7 @@ accuracy # 0.9751131
 ```
 
 
-## Making predictions on test data
+## Making predictions on `test data`
 
 An even more meaningful step is to evaluate the model on the test data (`heart_test`), which (*in principle*) the model has not seen before.
 
@@ -964,7 +976,7 @@ An even more meaningful step is to evaluate the model on the test data (`heart_t
 # Prep test data to match training data
 heart_test <- heart_test %>% 
   # convert to factor with levels "Yes" and "No"
-  mutate(heart_disease = factor(heart_disease, levels = c(0, 1),
+  dplyr::mutate(heart_disease = factor(heart_disease, levels = c(0, 1),
                                 labels = c("No_HD", "Yes_HD")),
          coffee_drinker = factor(coffee_drinker, levels = c(0, 1),
                                  labels = c("No_Coffee", "Yes_Coffee")) 
@@ -978,7 +990,8 @@ heart_test_pred <- heart_test %>%
 
 
 ## Confusion matrix with threshold of 0.5
-Once again, we use a $0.5$ threshold to classify the predictions (in `test` data). Then we compare the predicted classification to the actual ones.
+Once again, we use a generic $0.5$ threshold to classify the predictions (in `test` data).  
+Then we compare the predicted classification to the actual ones.
 
 ```{r}
 #| output: true
@@ -998,7 +1011,7 @@ confusion_matrix_test %>%
 
 ## [Sensitivity, Specificity, Accuracy (on test data)]{.r-fit-text}
 
-:::{style="font-size: 90%"}
+:::{style="font-size: 85%"}
 + **Sensitivity**: True Positive Rate
 + **Specificity**: True Negative Rate
 + **Accuracy**: Proportion of both true positives and true negatives in the population.
@@ -1016,9 +1029,8 @@ specificity_test # 0.9968388
 accuracy_test    # 0.9698509
 ```
 
-Sensitivity is really very low, which means that the model is not so good at identifying those who have heart disease. 
-
-  + This is quite problematic in a medical context, where we want to identify as many cases as possible.
++ 🤔 Sensitivity is really quite low, which means that **the model is not so good at identifying those who have heart disease**. 
+  + This is quite problematic in a medical context, where it is critical to identify to identify as many *"positive"* cases as possible.
   
 <!-- This may be due to the distribution of the data or the model itself: people with heart disease are a very small proportion of the dataset, and the model may not have enough information to make accurate predictions. -->
 
@@ -1030,18 +1042,18 @@ Sensitivity is really very low, which means that the model is not so good at ide
 What if we change the threshold to $0.25$ or $0.75$? How would the model perform?
 
 ```{r}
-# Check performance for different thresholds
+# Set different thresholds options
 thresh_025 <- 0.25
 thresh_075 <- 0.75
 
-# Classify the predictions based on the threshold
+# Classify the predictions based on such alternative threshold
 heart_test_pred <-  heart_test_pred %>% 
   mutate(heart_disease_pred_class_025 = ifelse(heart_disease_pred > thresh_025,
                                                "pred_YES", "pred_NO"),
          heart_disease_pred_class_075 = ifelse(heart_disease_pred > thresh_075,
                                                "pred_YES", "pred_NO"))
  
-# Confusion matrix at different thresholds
+# Recompute confusion matrices for different thresholds
 confusion_matrix_test_025 <- table(heart_test_pred$heart_disease,
                                    heart_test_pred$heart_disease_pred_class_025)
 confusion_matrix_test_075 <- table(heart_test_pred$heart_disease,
@@ -1054,17 +1066,73 @@ specificity_test_025 <- confusion_matrix_test_025[1, 1] / sum(confusion_matrix_t
 specificity_test_075 <- confusion_matrix_test_075[1, 1] / sum(confusion_matrix_test_075[1, ])
 ```
 
+## [Confusion matrices at different classification thresholds]{.r-fit-text}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+#| output: TRUE
+#| echo: false
+#| tbl-cap: "Confusion matrix at threshold 0.25"
+#| tbl-cap-location: top
+
+# Apply cell_spec to highlight one specific cell (e.g., row 2, column 2)
+confusion_matrix_test_025[2, 2] <- kableExtra::cell_spec(confusion_matrix_test_025[2, 2], background = "#e9c776")
+
+confusion_matrix_test_025[1,1] <- kableExtra::cell_spec(confusion_matrix_test_025[1,1], background = "#ffc2b0")
+
+# Print the confusion matrix
+confusion_matrix_test_025 %>% 
+  knitr::kable() 
+  
+ 
+```
+<br><br>
+Better threshold in terms of [TRUE POSITIVES]{style="background: #e9c776"} (`sensitivity` of the test goes from 0.238 to 0.486).
+:::
+  
+::: {.column width="50%"}
+```{r}
+#| output: TRUE
+#| echo: false
+#| tbl-cap: "Confusion matrix at threshold = 0.75"
+#| tbl-cap-location: top
+ 
+# Apply cell_spec to highlight one specific cell (e.g., row 2, column 2)
+confusion_matrix_test_075[2, 2] <- kableExtra::cell_spec(confusion_matrix_test_075[2, 2], background = "#e9c776")
+
+confusion_matrix_test_075[1,1] <- kableExtra::cell_spec(confusion_matrix_test_075[1,1], background = "#ffc2b0")
+
+# Print the confusion matrix
+confusion_matrix_test_075 %>% 
+  knitr::kable()
+```
+<br><br>
+Better threshold in terms of [TRUE NEGATIVEs]{style="background: #ffc2b0"} (`specificity` of the test goes from 0.996 to 0.999).
+
+:::
+  
+::: aside
+Evidently, the highly imbalanced data (few cases of heart disease) has to do with the low sensitivity of the model.
+:::
+::::
+
+
 ## [Performance at different classification thresholds]{.r-fit-text}
 
-A lower threshold ($0.25$) evidently allows to "catch" more of the "TRUE POSITIVES" (51, as opposed to 25 with $0.5$), but will also predict more "FALSE POSITIVES" (56, versus 9 with classification $0.5$ threshold)
+As expected, a lower threshold ($0.25$) can "catch" more of the "TRUE POSITIVES", hence it has a higher `sensitivity` but a lower `specificity`.
 
+#### Thresholds of 0.25 
 ```{r}
 # Print the classification results at the threshold 0.25 
 sensitivity_test_025 # 0.4857143 (a.k.a. TRUE POSITIVE rate)
 specificity_test_025 # 0.9803302 (a.k.a. TRUE NEGATIVE rate)
 ```
+<br> 
 
-Not surprisingly, a higher threshold ($0.75$) performs the worst in terms of `sensitivity` 
+#### Thresholds of 0.75
+Not surprisingly, the highest threshold ($0.75$) has the worst `sensitivity` 
 ```{r}
 # Print the classification results at the threshold 0.75
 sensitivity_test_075 # 0.1047619 (a.k.a. TRUE POSITIVE rate)
@@ -1072,58 +1140,71 @@ specificity_test_075 # 0.9989463 (a.k.a. TRUE NEGATIVE rate)
 ```
 
 ## ROC curve may help deciding
+:::{style="font-size: 80%"}
++ The **ROC curve** (_"Receiver Operating Curve"_) represents the trade-off between the **True Positive Rate (Sensitivity)** and the **False Positive Rate (Specificity)** at various thresholds.
 
-+ We use the `pROC` package to plot the **ROC curve**: a graphical representation of the trade-off between the **True Positive Rate (Sensitivity)** and the **False Positive Rate (Specificity)** at various thresholds. 
-  + (ideal would go up to the top left corner)
-+ The **AUC** is a measure of how well the model can distinguish between classes, with a higher AUC indicating better performance.
-+ The **best threshold** is the one that maximizes the **Youden index** (Sensitivity + Specificity - 1).
-
++ We use the `pROC` package: 
+  1. `roc` prepares the data for the **ROC curve** with confidence intervals.
+  2. `coords` extracts the **best threshold** value, with corresponding **specificity** and **sensitivity** -- which maximizes the **Youden index** (Sensitivity + Specificity - 1).
+  3. `auc` computes the **AUC** (Area Under the Curve) of the ROC curve -- how well the model can distinguish between classes
 ```{r}
 #| output: true
-#| output-location: slide
 
-# Create a ROC curve with confidence intervals
-roc_curve <- pROC::roc(heart_test_pred$heart_disease,
+# Create a the needed data for a ROC curve with confidence intervals
+roc_curve_data <- pROC::roc(heart_test_pred$heart_disease,
                        heart_test_pred$heart_disease_pred,
                        ci = TRUE, # Compute confidence intervals
-                       of = "thresholds", # Compute AUC
                        thresholds = "best", # Select the best threshold
-                       print.thres = "best" # Highlight the best threshold on the plot
-)
+                       print.thres = "best") 
 
-# Plot the ROC curve with custom color
-plot(roc_curve, col = "#00589b", lwd = 2, # Main ROC curve color (blue)
-     main = "ROC Curve for Heart Disease Prediction",
-     xlab = "(Specificity) False Positive Rate", 
-     ylab = "(Sensitivity) True Positive Rate")
-
-# Extract the best threshold value directly from roc_curve
-best_threshold <- pROC::coords(roc_curve, 
+# Extract the best threshold value directly from roc_curve_data
+best_threshold <- pROC::coords(roc_curve_data, 
                          # looks for the best threshold
                          x = "best", 
                          # and returns: 
                          ret=c("threshold","specificity", "sensitivity"))
-# Add an horizontpROC::## Add an horizontal line at the best threshold
-abline(h = best_threshold$sensitivity, col = "#cd6882", lty = 2)
-# Add the AUC text
-text(0.5, 0.5, paste("AUC =", round(pROC::auc(roc_curve), 4)), col = "#887455", cex = 1.5)
+# Print the best threshold
+best_threshold
 ```
 
-# 🖍️🖍️   qui    🖍️🖍  
-<!-- SEGUI  -->
+:::
 
-<!-- https://bookdown.org/brianmachut/uofm_analytics_r_hw_sol_2/logreg.html -->
-<!-- e  -->
-<!-- https://www.geeksforgeeks.org/how-to-interpret-odds-ratios-in-logistic-regression/?ref=next_article -->
+## ROC curve may help deciding
+:::{style="font-size: 95%"}
+```{r}
+#| output: true
+#| output-location: slide
+#| fig-cap: "ROC Curve for Heart Disease Prediction: Logistic regression model on test data <br>*(Ideally, the curve is as close to the top-left corner as possible.)*"
+#| fig-cap-location: top
 
-Rivedi anche steps in `practice/practice_slides/_biopsy_logistic.qmd`
+# Use function to store the plot as an object
+roc_plot <- function() {
+  plot(roc_curve_data, col = "#00589b", lwd = 2, 
+       # main = "ROC Curve for Heart Disease Prediction",
+       # sub = "Logistic regression model on test data",
+       xlab = "(Specificity) False Positive Rate", 
+       ylab = "(Sensitivity) True Positive Rate")
+  # Add a horizontal line at the best threshold
+  abline(h = best_threshold$sensitivity, col = "#cd6882", lty = 2)
+  # Add the AUC text
+  text(0.5, 0.5, paste("AUC =", round(pROC::auc(roc_curve_data), 4)), 
+       col = "#887455", cex = 1.5)
+}
 
- 
+# Call the function to plot the ROC curve
+roc_plot()
+```
+:::
 
+## Conclusions
 
-# 🔴🟠🟡🟢🔵🟣
++ As confirmed also graphically by the **ROC curve**, a low prediction threshold of $0.02$ would seem the best compromise between a **high `sensitivity`** ($0.8401826$) --of utmost importance in clinical tests-- without compromising too much in terms of `specificity` ($0.9142857$). 
 
++ However, such a low threshold would also increase the number of **False Positives** (people wrongly classified as having heart disease), which could lead to unnecessary treatments or interventions.
 
++ The choice of the threshold should be made considering the **specific context** and the **consequences** of **False Positives** and **False Negatives**.
+
++ Also, the **sample distribution** (i.e. having very few cases of heart disease in the observed cases) has a significant impact on the model's prediction performance. 
 
 <!-- # 🟠 K-MEANS CLUSTERING: EXAMPLE of UNSUPERVISED ML ALGORITHM -->
 
@@ -1424,7 +1505,7 @@ The Scores Plot can be visualized via the `ggplot2` package.
 #| output-location: slide
 #| fig-cap: "Figure 1 shows the observations projected into the new data space made up of principal components"
 
-ggplot(PC_scores, 
+ggplot2::ggplot(PC_scores, 
        aes(x = PC1, 
            y = PC2, 
            color = Label)) +
@@ -1448,7 +1529,7 @@ Confidence ellipses can also be added to a grouped scatter plot visualized after
 #| output-location: slide
 #| fig-cap: "Figure 2 shows the observations projected into the new data space made up of principal components, with 95% confidence regions displayed." 
 
-ggplot(PC_scores, 
+ggplot2::ggplot(PC_scores, 
        aes(x = PC1, 
            y = PC2, 
            color = Label)) +
@@ -1468,7 +1549,7 @@ A 3D scatterplot of observations shows the first **3 principal components’ sco
 
 + For this one, we need the `scatterplot3d()` function of the `scatterplot3d` package;
 + The color argument assigned to the Label variable;
-+ To add a legend, we use the `legend()` function and specify its coordinates via the `xyz.convert()` function.
++ To add a legend, we use the `legend` function and specify its coordinates via the `xyz.convert()` function.
 
 ```{r}
 #| output-location: slide
@@ -1602,24 +1683,14 @@ loadings[ ,1:2]
 :::
 
 
-## 🟠 Final thoughts
+## Conclusions
 
-::: {style="font-size: 95%;"}
-::: {style="color:#77501a"}
+<!-- Say something about the PCA slides (similar to "Conclusions" slides 54 after Logistic regression) -->
++ Today, we explored just a fraction of the **Machine Learning toolbox**, focusing on two fundamental approaches while learning essential **workflow steps** and **practical tools** that extend to more advanced analyses.
 
++ **`Logistic Regression`** exemplifies **Supervised Learning**, where models learn from labeled data to make predictions—particularly useful for binary classification.
 
-+ While the workshop only allowed for a synthetic overview of fundamental ideas, it hopefully provided a solid foundation on the most common statistical analysis you will likely run in your daily work: 
-  + Thorough **understanding of the input data** and the data collection process 
-  + Univariate and bivariate **exploratory analysis** (accompanied by visual intuition) to form hypothesis 
-  + Upon verifying the assumptions, we **fit data** to hypothesized model(s)
-  + **Assessment of the model performance** ($R^2$, $Adj. R^2$, $F-Statistic$, etc.)
++ **`PCA`** represents **Unsupervised Learning**, helping reduce dimensionality, visualize high-dimensional data, and uncover hidden structures.
 
-
-+ You should now have a solid grasp on the R language to keep using and exploring the huge potential of this programming ecosystem
-
-+ We only scratched the surface in terms of ML classification and prediction models, but we got a hang of the **fundamental steps** and some **useful tools** that might serve us also in more advanced analysis 
-
-:::
-
-:::
++ The **context** and the **data** shape analytical choices, whether it's setting a classification **threshold** in Logistic Regression or selecting the **number of components** in PCA to balance information retention and interpretability.
 
