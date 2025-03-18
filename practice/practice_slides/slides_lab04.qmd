@@ -2,7 +2,7 @@
 title: "Lab 4:Mapping causal & predictive approaches"
 subtitle: "<span style='font-size:2em;'> Practice session</span>"
 #author: "Luisa M. Mimmi | [https://luisamimmi.org/](https://luisamimmi.org/)"
-author: "<span style='font-size:1.3em; font-weight: bold; color:#77501a'> Luisa M. Mimmi — &ensp;</span>  <a href='https://luisamimmi.org/' style='color:#72aed8; font-weight:600; font-size:1.3em;'>https://luisamimmi.org/</a>"
+author: "<span style='font-size:1.3em; font-weight: bold; color:#daa21b'> Luisa M. Mimmi — &ensp;</span>  <a href='https://luisamimmi.org/' style='color:#01aeff; font-weight:600; font-size:1.3em;'>https://luisamimmi.org/</a>"
 date: today
 date-format: long
 code-link: true

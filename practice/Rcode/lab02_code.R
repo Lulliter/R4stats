@@ -1,4 +1,4 @@
-# Lab 2 STATISTICAL INFERENCE & HYOPTHESIS TESTING------------------------------
+# Lab 2 STATISTICAL INFERENCE & HYPOTHESIS TESTING------------------------------
 # Practice session covering topics discussed in Lecture 2 
 
 

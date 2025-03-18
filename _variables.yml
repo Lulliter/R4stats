@@ -31,3 +31,10 @@ websites:
 author:
   name: Luisa M. Mimmi
   affiliation: Independent Consultant
+
+
+### ---- BUT STRANGELY DOES WORK IN YAML -- FOOTER 🤯
+# MY GH question https://github.com/quarto-dev/quarto-cli/issues/12308#issuecomment-2734229350
+
+#https://github.com/quarto-dev/quarto-cli/issues/10289#issuecomment-2231989122
+quarto-icon: https://quarto.org/quarto.png

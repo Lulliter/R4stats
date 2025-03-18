@@ -1,7 +1,7 @@
 ---
 title: "Lab 3: Modeling correlation and regression"
 subtitle: "<span style='font-size:2em;'> Practice session covering topics discussed in Lecture 3 </span>"
-author: "<a href='https://r4biostats.com/me.html' style='color:#72aed8;font-weight:600;'>M. Chiara Mimmi, Ph.D.</a>&ensp;|&ensp;Università degli Studi di Pavia"
+author: "<span style='font-size:1.3em; font-weight: bold; color:#daa21b'> Luisa M. Mimmi — &ensp;</span>  <a href='https://luisamimmi.org/' style='color:#01aeff; font-weight:600; font-size:1.3em;'>https://luisamimmi.org/</a>"
 date: 2024-07-26
 date-format: long
 code-link: true
@@ -591,7 +591,11 @@ In the `famuss` dataset, the variables `race`, and `actn3.r577x` are categorical
 
 + we can use the generic base R function `graphics::barplot`  
 ```{r}
-mycolors_contrast <- c("#9b2339", "#E7B800","#239b85", "#85239b", "#9b8523","#23399b", "#d8e600", "#0084e6","#399B23",  "#e60066" , "#00d8e6",  "#005ca1", "#e68000")
+#| output-location: slide
+
+mycolors_contrast <- c("#9b2339", "#E7B800","#239b85", "#85239b", "#9b8523",
+                       "#23399b", "#d8e600","#0084e6","#399B23",  "#e60066" ,
+                       "#00d8e6",  "#005ca1", "#e68000")
 
 ## genotypes as columns
 genotype.race = matrix(table(famuss$actn3.r577x, famuss$race), ncol=3, byrow=T)
@@ -961,7 +965,7 @@ ResStdErr
 
 :::
 
-## [Linear regression model's fit: : $R^2$ and $Adj. R^2$]{.r-fit-text} 
+## [Linear regression model's fit: $R^2$ and $Adj. R^2$]{.r-fit-text} 
 ::: {style="font-size: 85%;"}
 The **$R^2$** tells us the **proportion of the variance in the response variable** that can be explained by the predictor variable(s).
 
@@ -984,7 +988,7 @@ summary(lr_model)$adj.r.squared
 ```
 :::
 
-## [Linear regression model's fit: : F statistic]{.r-fit-text}
+## [Linear regression model's fit: F statistic]{.r-fit-text}
 The **F-statistic** indicates whether the regression model provides a better fit to the data than a model that contains no independent variables. In essence, it tests if the regression model as a whole is useful.
 
 

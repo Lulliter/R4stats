@@ -2,7 +2,7 @@
 title: "Lab 2: Statistical inference & hypothesis testing"
 subtitle: "<span style='font-size:2em;'> Practice session</span>"
 #author: "Luisa M. Mimmi | [https://luisamimmi.org/](https://luisamimmi.org/)"
-author: "<span style='font-size:1.3em; font-weight: bold; color:#77501a'> Luisa M. Mimmi — &ensp;</span>  <a href='https://luisamimmi.org/' style='color:#72aed8; font-weight:600; font-size:1.3em;'>https://luisamimmi.org/</a>"
+author: "<span style='font-size:1.3em; font-weight: bold; color:#daa21b'> Luisa M. Mimmi — &ensp;</span>  <a href='https://luisamimmi.org/' style='color:#01aeff; font-weight:600; font-size:1.3em;'>https://luisamimmi.org/</a>"
 date: today
 date-format: long
 code-link: true
@@ -156,7 +156,7 @@ The data, with medical records of **299 heart failure patient**, were collected 
 ![](../../images/HEART_FAIL_vars.png){#tbl-heart_vars} 
 
 
-## Look into the dataset just loaded in the R environment
+## [Look into the dataset just loaded in the R environment]{.r-fit-text}
 
 Recall some `base R` functions from Lab 1
 
@@ -293,7 +293,7 @@ heart_failure <- heart_failure  %>%
 ```
 
 
-# [VISUAL DATA EXPLORATION FOR THE "HEART FAILURE"]{.r-stretch}
+# [VISUAL DATA EXPLORATION FOR THE "HEART FAILURE"]{.r-fit-text}
 
 **CONTINUOUS VARIABLES**
  
@@ -533,7 +533,7 @@ ser_sod + ser_sod2 + plot_layout(ncol = 1)
 <!-- ## Types of errors (Type 1 and Type 2) -->
 
 
-# [VISUAL DATA EXPLORATION FOR THE "HEART FAILURE"]{.r-stretch}
+# [VISUAL DATA EXPLORATION FOR THE "HEART FAILURE"]{.r-fit-text}
 
 **DISCRETE VARIABLES**
  
@@ -697,7 +697,7 @@ heart_failure %>%
 General population data taken from the literature [See @wongsaengsak_significance_2019].
 :::  
 
-## 2.a Computation of the test statistic 
+## [2.a Computation of the test statistic]{.r-fit-text} 
 ::: {style="font-size: 90%;"}
 In this case, we have: 
 
@@ -724,7 +724,7 @@ z_calc_HF <-  (x_HF - mu) / std_err_HF        # 8.018043
 ```
 :::
 
-## 2.b Computation of the p-value associated to the test statistic  
+## [2.b Computation of the p-value associated to the test statistic]{.r-fit-text}  
 
 To find the **p-value** associated with a z-score in R, we can use the `pnorm()` function, which uses the following syntax:
 
@@ -743,7 +743,7 @@ p_value_r <- stats::pnorm(z_calc_HF, mean = 0, sd = 1,lower.tail = FALSE)
 p_value_two <- 2*stats::pnorm(z_calc_HF, mean = 0, sd = 1, lower.tail = FALSE)  
 ```
 
-## 2.c Computation of the p-value associated to the test statistic  
+## [2.c Computation of the p-value associated to the test statistic]{.r-fit-text}  
 
 + 👩🏻‍💻 Let's see how this could be done using an R function `BSDA::z.test`
 ```{r}
@@ -1002,7 +1002,7 @@ heart_failure %>%
 4. The variance within the 2 groups should be similar ❓
   + (If not, perform Welch’s t-test) 
 
-## [Preliminary Fisher's F test to check for variance equality]{.r-stretch}
+## [Preliminary Fisher's F test to check for variance equality]{.r-fit-text}
 
 + We can compute the Fisher test "by hand" ✍🏻 
 ```{r}
@@ -1022,7 +1022,7 @@ F_ratio <- var_died / var_survived
 F_ratio  # 1.020497 
 ```
 
-## [Preliminary Fisher's F test to check for variance equality (.cont)]{.r-stretch}
+## [Preliminary Fisher's F test to check for variance equality (.cont)]{.r-fit-text}
 
 ```{r}
 ## -- Define the critical value of F distribution for a risk of alpha = 0.05
@@ -1164,7 +1164,7 @@ Assumptions for the results of a one-way ANOVA to be valid:
 2. **Normally-distributed response variable** – The values of the dependent variable follow a normal distribution. ❓
 3. **Homogeneity of variance** – The variances of the populations that the samples come from are equal. ❓
 
-## [Preliminary check for normality (visual)]{.r-stretch}
+## [Preliminary check for normality (visual)]{.r-fit-text}
 
 2. **Normally-distributed response variable**  ✅ 
 
@@ -1184,7 +1184,7 @@ mice %>%
 ```
 
 
-## [Preliminary check for normality (test) with `stats::shapiro.test`]{.r-stretch}
+## [Preliminary check for normality (test) with `stats::shapiro.test`]{.r-fit-text}
 
 ```{r}
 # Shapiro-Wilk Normality Test to verify normality  
@@ -1194,7 +1194,7 @@ stats::shapiro.test(mice[mice$group == "Treatment 1", "surv_days", drop=TRUE])
 stats::shapiro.test(mice[mice$group == "Treatment 2", "surv_days", drop=TRUE])
 ```
 
-## [Preliminary check for normality (test) with `rstatix::shapiro_test`]{.r-stretch}
+## [Preliminary check for normality (test) with `rstatix::shapiro_test`]{.r-fit-text}
 
 _(same thing, but using a different R function)_
 
@@ -1210,7 +1210,7 @@ mice %>%
   rstatix::shapiro_test(surv_days)
 ```
 
-## [Preliminary check variance equality ]{.r-stretch}
+## [Preliminary check variance equality ]{.r-fit-text}
 ::: {style="font-size: 85%;"}
 3. **Homogeneity of variance** – ✅ 
   + (Besides visual inspection, confirmed  by Levene test for variance equality)
@@ -1489,7 +1489,7 @@ ggplot(heart_failure,aes(x = creatinine_phosphokinase,fill = DEATH_EVENT_f))+
   theme(plot.title = element_text(size = 14,face="bold", color = "#873c4a"))
 ```
 
-## [Preliminary check for normality (visual)]{.r-stretch}
+## [Preliminary check for normality (visual)]{.r-fit-text}
 
 + **Normally-distributed response variable** - ❌
 
@@ -1509,7 +1509,7 @@ ggpubr::ggqqplot(
 ``` 
 
 
-## [Preliminary check for normality (test) with `rstatix::shapiro_test`]{.r-stretch}
+## [Preliminary check for normality (test) with `rstatix::shapiro_test`]{.r-fit-text}
 
 (same thing, but using a different R function)
 
@@ -1570,7 +1570,7 @@ Defining the question formally:
 + $𝑯_𝒂$ : $𝝁_{sersod-died} ≠ 𝝁_{sersod-surv}$  there is a difference in mean serum sodium between patients who suffered heart failure  and died  versus patients who survived after heart failure (two-sided test)   
 
 
-## [Preliminary check “HOV” assumption (visual)]{.r-stretch}
+## [Preliminary check “HOV” assumption (visual)]{.r-fit-text}
 
 ::: {style="font-size: 85%;"}
 + **Homogeneity of Variance assumption** - ❌
@@ -1606,7 +1606,7 @@ ggplot(swstats, aes(x=DEATH_EVENT_f, y=mean)) +
 
 :::
 
-## [Preliminary check “HOV” assumption (test)]{.r-stretch}
+## [Preliminary check “HOV” assumption (test)]{.r-fit-text}
 
 It is always best to use an actual test, so we use also the **Fisher's F test** to verify equal variances of Serum Sodium concentration in the two groups. [In this test **$H_0$ = “the ratio of variances is equal to 1”**] 
 

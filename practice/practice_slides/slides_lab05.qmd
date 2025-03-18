@@ -495,9 +495,8 @@ par(mfrow = c(1, 1))
 #| echo: false
 #| output: false
 
-# multicollinearity
-vif(linear_mod)
-# ideally < 5
+# --- multicollinearity
+#vif(linear_mod) # ideally < 5
 ```
 
 ## [Fitting a `logistic regression` model]{.r-fit-text}
@@ -1327,15 +1326,15 @@ We will:
 ```{r}
 #| eval: false
 
-# new (manipulated) dataset 
-data_biopsy <- na.omit(biopsy[,-c(1,11)])
+#--- new (manipulated) dataset 
+# data_biopsy <- na.omit(biopsy[,-c(1,11)])
 ```
 :::
   
 ::: {.column width="50%"}
 #### with `dplyr` (more explicit)
 ```{r}
-# new (manipulated) dataset 
+# --- new (manipulated) dataset 
 data_biopsy <- biopsy %>% 
   # drop incomplete & non-integer columns
   dplyr::select(-ID, -class) %>% 

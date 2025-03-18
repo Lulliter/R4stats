@@ -258,15 +258,9 @@ plot(linear_mod, which = 2)
 # # Reset graphical parameters (optional, avoids affecting later plots) ----
 # Reset graphical parameters (optional, avoids affecting later plots)
 par(mfrow = c(1, 1))
-
-
-# | eval: false # need at least 2 predictors
-# | echo: false
-# | output: false
-
 # # multicollinearity ----
 # multicollinearity
-#vif(linear_mod)
+#vif(linear_mod) # need at least 2 predictors
 # # ideally < 5 ----
 # ideally < 5
 
@@ -759,6 +753,9 @@ biopsy_desc <- tibble::tribble(
 kableExtra::kable(biopsy_desc)
 
 # ## `biopsy` dataset manipulation] ----
+# # new (manipulated) dataset  ----
+# new (manipulated) dataset 
+#data_biopsy <- na.omit(biopsy[,-c(1,11)])
 
 
 # # new (manipulated) dataset  ----
