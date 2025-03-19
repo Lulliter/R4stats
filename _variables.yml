@@ -14,27 +14,14 @@ websites:
 #	+ the `{{< var >}}` shortcode in normal *.qmd       {{< var websites.lulas_site >}}
 #	+ the `"{{< var >}}"` shortcode in YAML entry       "{{< var websites.lulas_site >}}"
 
+quarto-icon: https://quarto.org/quarto.png
 
-#	+ in normal *.qmd        {{< var websites.gh_repo >}}
-#	+ in YAML entry        "{{< var websites.gh_repo >}}"
-
-#	+ in normal *.qmd        {{< var websites.live_site >}}
-#	+ in YAML entry        "{{< var websites.live_site >}}"
-
-
-#	+ in normal *.qmd        {{< var websites.R4biostats >}}
-#	+ in YAML entry        "{{< var websites.R4biostats >}}"
-
-
-### ---- DOESN"T WORK IN YAML 
+### ---- DOESN"T WORK IN YAML (but DOES in footer) -- 🤯
 # metadata fields such as author, title, etc., in the YAML are treated as static text fields and do not support dynamic variables like {{< >}}.
 author:
   name: Luisa M. Mimmi
   affiliation: Independent Consultant
 
 
-### ---- BUT STRANGELY DOES WORK IN YAML -- FOOTER 🤯
-# MY GH question https://github.com/quarto-dev/quarto-cli/issues/12308#issuecomment-2734229350
-
+# --> MY GH question https://github.com/quarto-dev/quarto-cli/issues/12308#issuecomment-2734229350
 #https://github.com/quarto-dev/quarto-cli/issues/10289#issuecomment-2231989122
-quarto-icon: https://quarto.org/quarto.png

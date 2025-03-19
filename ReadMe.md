@@ -33,6 +33,13 @@ This is a static website built with [Quarto](https://quarto.org/), shared on a G
 
 The main content of the website pages is contained in *Quarto Markdown* files (`*.qmd`). `*.qmd` files are very similar to regular Markdown (`*.md`) and R Markdown (`*.rmd`) files, except they are designed to be language agnostic.
 
++ `Google Analytics` Account under property r4biostats.com
+ + Nome stream: r4statistics.com
+ + URL dello stream: https://r4statistics.com
+ + ID stream: 10407079869
+ + ID misurazione: G-TDWG2LL0S7
+
+
 ## Things needed to build the site
 
 1. Install **Quarto** (an open source tool that can be used from RStudio, Jupyter, CLI, etc.)... Most R users will use RStudio
