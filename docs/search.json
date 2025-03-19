@@ -388,36 +388,36 @@
     "objectID": "practice/practice_slides/slides_lab05.html#dataset-on-breast-cancer-biopsy",
     "href": "practice/practice_slides/slides_lab05.html#dataset-on-breast-cancer-biopsy",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Dataset on Breast Cancer Biopsy]",
-    "text": "Dataset on Breast Cancer Biopsy]\n\nName: Biopsy Data on Breast Cancer PatientsDocumentation: See reference on the data downloaded and conditioned for R here https://cran.r-project.org/web/packages/MASS/MASS.pdfSampling details: This breast cancer database was obtained from the University of Wisconsin Hospitals, Madison from Dr. William H. Wolberg. He assessed biopsies of breast tumours for 699 patients up to 15 July 1992; each of nine attributes has been scored on a scale of 1 to 10, and the outcome is also known. The dataset contains the original Wisconsin breast cancer data with 699 observations on 11 variables."
+    "section": "Dataset on Breast Cancer Biopsy",
+    "text": "Dataset on Breast Cancer Biopsy\n\nName: Biopsy Data on Breast Cancer PatientsDocumentation: See reference on the data downloaded and conditioned for R here https://cran.r-project.org/web/packages/MASS/MASS.pdfSampling details: This breast cancer database was obtained from the University of Wisconsin Hospitals, Madison from Dr. William H. Wolberg. He assessed biopsies of breast tumours for 699 patients up to 15 July 1992; each of nine attributes has been scored on a scale of 1 to 10, and the outcome is also known. The dataset contains the original Wisconsin breast cancer data with 699 observations on 11 variables."
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#importing-dataset-biopsy",
     "href": "practice/practice_slides/slides_lab05.html#importing-dataset-biopsy",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Importing Dataset biopsy]",
-    "text": "Importing Dataset biopsy]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe data can be interactively obtained form the MASS R package\n\n\n# (after loading pckg)\n# library(MASS)  \n\n# I can call \nutils::data(biopsy)"
+    "section": "Importing Dataset biopsy\n",
+    "text": "Importing Dataset biopsy\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe data can be interactively obtained form the MASS R package\n\n\n# (need to load MASS pkg before)\nlibrary(MASS)  \n\n# ... so I can call \nutils::data(biopsy)\n\n\nI can find info on the dataset using the ? operator\n\n\n# Find info on the dataset\n?biopsy"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#biopsy-variables-with-description",
     "href": "practice/practice_slides/slides_lab05.html#biopsy-variables-with-description",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "\nbiopsy variables with description]",
-    "text": "biopsy variables with description]\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\nid\ncharacter\nSample id\n\n\nV1\ninteger 1 - 10\nclump thickness\n\n\nV2\ninteger 1 - 10\nuniformity of cell size\n\n\nV3\ninteger 1 - 10\nuniformity of cell shape\n\n\nV4\ninteger 1 - 10\nmarginal adhesion\n\n\nV5\ninteger 1 - 10\nsingle epithelial cell size\n\n\nV6\ninteger 1 - 10\nbare nuclei (16 values are missing)\n\n\nV7\ninteger 1 - 10\nbland chromatin\n\n\nV8\ninteger 1 - 10\nnormal nucleoli\n\n\nV9\ninteger 1 - 10\nmitoses\n\n\nclass\nfactor\nbenign or malignant"
+    "section": "\nbiopsy variables with description",
+    "text": "biopsy variables with description\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\nid\ncharacter\nSample id\n\n\nV1\ninteger 1 - 10\nclump thickness\n\n\nV2\ninteger 1 - 10\nuniformity of cell size\n\n\nV3\ninteger 1 - 10\nuniformity of cell shape\n\n\nV4\ninteger 1 - 10\nmarginal adhesion\n\n\nV5\ninteger 1 - 10\nsingle epithelial cell size\n\n\nV6\ninteger 1 - 10\nbare nuclei (16 values are missing)\n\n\nV7\ninteger 1 - 10\nbland chromatin\n\n\nV8\ninteger 1 - 10\nnormal nucleoli\n\n\nV9\ninteger 1 - 10\nmitoses\n\n\nclass\nfactor\nbenign or malignant"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#biopsy-dataset-manipulation",
     "href": "practice/practice_slides/slides_lab05.html#biopsy-dataset-manipulation",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "\nbiopsy dataset manipulation]",
-    "text": "biopsy dataset manipulation]\nWe will:\n\nexclude the non-numerical variables (id and class) before conducting the PCA.\nexclude the individuals with missing values using the na.omit() or filter(complete.cases() functions.\nWe can do both in 2 equivalent ways:\n\n\n\n\nwith base R (more compact)\n\n#--- new (manipulated) dataset \n# data_biopsy &lt;- na.omit(biopsy[,-c(1,11)])\n\n\nwith dplyr (more explicit)\n\n# --- new (manipulated) dataset \ndata_biopsy &lt;- biopsy %&gt;% \n  # drop incomplete & non-integer columns\n  dplyr::select(-ID, -class) %&gt;% \n  # drop incomplete observations (rows)\n  dplyr::filter(complete.cases(.))"
+    "section": "\nbiopsy dataset manipulation",
+    "text": "biopsy dataset manipulation\nWe will:\n\nexclude the non-numerical variables (id and class) before conducting the PCA.\nexclude the individuals with missing values using the na.omit() or filter(complete.cases() functions.\nWe can do both in 2 equivalent ways:\n\n\n\n\nwith base R (more compact)\n\n#--- new (manipulated) dataset \ndata_biopsy &lt;- na.omit(biopsy[,-c(1,11)])\n\n\nwith dplyr (more explicit)\n\n# --- new (manipulated) dataset \ndata_biopsy &lt;- biopsy %&gt;% \n  # drop incomplete & non-integer columns\n  dplyr::select(-ID, -class) %&gt;% \n  # drop incomplete observations (rows)\n  dplyr::filter(complete.cases(.))"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#biopsy-dataset-manipulation-1",
     "href": "practice/practice_slides/slides_lab05.html#biopsy-dataset-manipulation-1",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "\nbiopsy dataset manipulation]",
-    "text": "biopsy dataset manipulation]\nWe obtained a new dataset with 9 variables and 683 observations (instead of the original 699).\n\n# check reduced dataset \nstr(data_biopsy)\n\n'data.frame':   683 obs. of  9 variables:\n $ V1: int  5 5 3 6 4 8 1 2 2 4 ...\n $ V2: int  1 4 1 8 1 10 1 1 1 2 ...\n $ V3: int  1 4 1 8 1 10 1 2 1 1 ...\n $ V4: int  1 5 1 1 3 8 1 1 1 1 ...\n $ V5: int  2 7 2 3 2 7 2 2 2 2 ...\n $ V6: int  1 10 2 4 1 10 10 1 1 1 ...\n $ V7: int  3 3 3 3 3 9 3 3 1 2 ...\n $ V8: int  1 2 1 7 1 7 1 1 1 1 ...\n $ V9: int  1 1 1 1 1 1 1 1 5 1 ..."
+    "section": "\nbiopsy dataset manipulation",
+    "text": "biopsy dataset manipulation\nWe obtained a new dataset with 9 variables and 683 observations (instead of the original 699).\n\n# check reduced dataset \nstr(data_biopsy)\n\n'data.frame':   683 obs. of  9 variables:\n $ V1: int  5 5 3 6 4 8 1 2 2 4 ...\n $ V2: int  1 4 1 8 1 10 1 1 1 2 ...\n $ V3: int  1 4 1 8 1 10 1 2 1 1 ...\n $ V4: int  1 5 1 1 3 8 1 1 1 1 ...\n $ V5: int  2 7 2 3 2 7 2 2 2 2 ...\n $ V6: int  1 10 2 4 1 10 10 1 1 1 ...\n $ V7: int  3 3 3 3 3 9 3 3 1 2 ...\n $ V8: int  1 2 1 7 1 7 1 1 1 1 ...\n $ V9: int  1 1 1 1 1 1 1 1 5 1 ..."
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#calculate-principal-components",
@@ -444,15 +444,15 @@
     "objectID": "practice/practice_slides/slides_lab05.html#proportion-of-variance-for-components",
     "href": "practice/practice_slides/slides_lab05.html#proportion-of-variance-for-components",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Proportion of Variance for components]",
-    "text": "Proportion of Variance for components]\n\nThe row with Proportion of Variance can be either accessed from summary or calculated as follows:\n\n\n# a) Extracting Proportion of Variance from summary\nsummary(biopsy_pca)$importance[2,]\n\n    PC1     PC2     PC3     PC4     PC5     PC6     PC7     PC8     PC9 \n0.65550 0.08622 0.05992 0.05107 0.04225 0.03354 0.03271 0.02897 0.00982 \n\n# b) (same thing)\nround(biopsy_pca$sdev^2 / sum(biopsy_pca$sdev^2), digits = 5)\n\n[1] 0.65550 0.08622 0.05992 0.05107 0.04225 0.03354 0.03271 0.02897 0.00982\n\n\n\n\nThe output suggests the 1st principal component explains around 65% of the total variance, the 2nd principal component explains about 9% of the variance, and this goes on with diminishing proportion for each component."
+    "section": "Proportion of Variance for components",
+    "text": "Proportion of Variance for components\n\nThe row with Proportion of Variance can be either accessed from summary or calculated as follows:\n\n\n# a) Extracting Proportion of Variance from summary\nsummary(biopsy_pca)$importance[2,]\n\n    PC1     PC2     PC3     PC4     PC5     PC6     PC7     PC8     PC9 \n0.65550 0.08622 0.05992 0.05107 0.04225 0.03354 0.03271 0.02897 0.00982 \n\n# b) (same thing)\nround(biopsy_pca$sdev^2 / sum(biopsy_pca$sdev^2), digits = 5)\n\n[1] 0.65550 0.08622 0.05992 0.05107 0.04225 0.03354 0.03271 0.02897 0.00982\n\n\n\n\nThe output suggests the 1st principal component explains around 65% of the total variance, the 2nd principal component explains about 9% of the variance, and this goes on with diminishing proportion for each component."
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#cumulative-proportion-of-variance-for-components",
     "href": "practice/practice_slides/slides_lab05.html#cumulative-proportion-of-variance-for-components",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Cumulative Proportion of variance for components]",
-    "text": "Cumulative Proportion of variance for components]\n\nThe last row from the summary(biopsy_pca), shows the Cumulative Proportion of variance, which calculates the cumulative sum of the Proportion of Variance.\n\n\n# Extracting Cumulative Proportion from summary\nsummary(biopsy_pca)$importance[3,]\n\n    PC1     PC2     PC3     PC4     PC5     PC6     PC7     PC8     PC9 \n0.65550 0.74172 0.80163 0.85270 0.89496 0.92850 0.96121 0.99018 1.00000 \n\n\n\n\nOnce you computed the PCA in R you must decide the number of components to retain based on the obtained results."
+    "section": "Cumulative Proportion of variance for components",
+    "text": "Cumulative Proportion of variance for components\n\nThe last row from the summary(biopsy_pca), shows the Cumulative Proportion of variance, which calculates the cumulative sum of the Proportion of Variance.\n\n\n# Extracting Cumulative Proportion from summary\nsummary(biopsy_pca)$importance[3,]\n\n    PC1     PC2     PC3     PC4     PC5     PC6     PC7     PC8     PC9 \n0.65550 0.74172 0.80163 0.85270 0.89496 0.92850 0.96121 0.99018 1.00000 \n\n\n\n\nOnce you computed the PCA in R you must decide the number of components to retain based on the obtained results."
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#scree-plot",
@@ -472,78 +472,78 @@
     "objectID": "practice/practice_slides/slides_lab05.html#principal-component-scores",
     "href": "practice/practice_slides/slides_lab05.html#principal-component-scores",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Principal Component Scores]",
-    "text": "Principal Component Scores]\nAfter a PCA, the observations are expressed as principal component scores.\n\nWe can retrieve the principal component scores for each Variable by calling biopsy_pca$x, and store them in a new dataframe PC_scores.\nNext we draw a scatterplot of the observations – expressed in terms of principal components\n\n\n# Create new object with PC_scores\nPC_scores &lt;- as.data.frame(biopsy_pca$x)\nhead(PC_scores)\n\n\nIt is also important to visualize the observations along the new axes (principal components) to interpret the relations in the dataset:"
+    "section": "Principal Component Scores\n",
+    "text": "Principal Component Scores\n\nAfter a PCA, the observations are expressed as principal component scores.\n\nWe can retrieve the principal component scores for each Variable by calling biopsy_pca$x, and store them in a new dataframe PC_scores.\nNext we draw a scatterplot of the observations – expressed in terms of principal components\n\n\n# Create new object with PC_scores\nPC_scores &lt;- as.data.frame(biopsy_pca$x)\nhead(PC_scores)\n\n\nIt is also important to visualize the observations along the new axes (principal components) to interpret the relations in the dataset:"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#principal-component-scores-output",
     "href": "practice/practice_slides/slides_lab05.html#principal-component-scores-output",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Principal Component Scores]",
-    "text": "Principal Component Scores]\n\n        PC1         PC2         PC3         PC4         PC5         PC6\n1  1.469095 -0.10419679  0.56527102  0.03193593 -0.15088743 -0.05997679\n2 -1.440990 -0.56972390 -0.23642767  0.47779958  1.64188188  0.48268150\n3  1.591311 -0.07606412 -0.04882192  0.09232038 -0.05969539  0.27916615\n4 -1.478728 -0.52806481  0.60260642 -1.40979365 -0.56032669 -0.06298211\n5  1.343877 -0.09065261 -0.02997533  0.33803588 -0.10874960 -0.43105416\n6 -5.010654 -1.53379305 -0.46067165 -0.29517264  0.39155544 -0.11527442\n         PC7        PC8          PC9\n1 -0.3491471 -0.4200360 -0.005687222\n2  1.1150819 -0.3792992  0.023409926\n3 -0.2325697 -0.2096465  0.013361828\n4  0.2109599  1.6059184  0.182642900\n5 -0.2596714 -0.4463277 -0.038791241\n6 -0.3842529  0.1489917 -0.042953075"
+    "section": "Principal Component Scores\n",
+    "text": "Principal Component Scores\n\n\n        PC1         PC2         PC3         PC4         PC5         PC6\n1  1.469095 -0.10419679  0.56527102  0.03193593 -0.15088743 -0.05997679\n2 -1.440990 -0.56972390 -0.23642767  0.47779958  1.64188188  0.48268150\n3  1.591311 -0.07606412 -0.04882192  0.09232038 -0.05969539  0.27916615\n4 -1.478728 -0.52806481  0.60260642 -1.40979365 -0.56032669 -0.06298211\n5  1.343877 -0.09065261 -0.02997533  0.33803588 -0.10874960 -0.43105416\n6 -5.010654 -1.53379305 -0.46067165 -0.29517264  0.39155544 -0.11527442\n         PC7        PC8          PC9\n1 -0.3491471 -0.4200360 -0.005687222\n2  1.1150819 -0.3792992  0.023409926\n3 -0.2325697 -0.2096465  0.013361828\n4  0.2109599  1.6059184  0.182642900\n5 -0.2596714 -0.4463277 -0.038791241\n6 -0.3842529  0.1489917 -0.042953075"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#principal-component-scores-plot-adding-label-variable",
     "href": "practice/practice_slides/slides_lab05.html#principal-component-scores-plot-adding-label-variable",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Principal Component Scores plot (adding label variable)]",
-    "text": "Principal Component Scores plot (adding label variable)]\n\nWhen data includes a factor variable, like in our case, it may be interesting to show the grouping on the plot as well.\n\n\nIn such cases, the label variable class can be added to the PC set as follows.\n\n\n# retrieve class variable\nbiopsy_no_na &lt;- na.omit(biopsy)\n# adding class grouping variable to PC_scores\nPC_scores$Label &lt;- biopsy_no_na$class\n\n The visualization of the observation points (point cloud) could be in 2D or 3D."
+    "section": "Principal Component Scores plot (adding label variable)",
+    "text": "Principal Component Scores plot (adding label variable)\n\nWhen data includes a factor variable, like in our case, it may be interesting to show the grouping on the plot as well.\n\n\nIn such cases, the label variable class can be added to the PC set as follows.\n\n\n# retrieve class variable\nbiopsy_no_na &lt;- na.omit(biopsy)\n# adding class grouping variable to PC_scores\nPC_scores$Label &lt;- biopsy_no_na$class\n\n The visualization of the observation points (point cloud) could be in 2D or 3D."
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#principal-component-scores-plot-2d",
     "href": "practice/practice_slides/slides_lab05.html#principal-component-scores-plot-2d",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Principal Component Scores plot (2D)]",
-    "text": "Principal Component Scores plot (2D)]\nThe Scores Plot can be visualized via the ggplot2 package.\n\ngrouping is indicated by argument the color = Label;\n\ngeom_point() is used for the point cloud.\n\n\nggplot2::ggplot(PC_scores, \n       aes(x = PC1, \n           y = PC2, \n           color = Label)) +\n  geom_point() +\n  scale_color_manual(values=c(\"#245048\", \"#CC0066\")) +\n  ggtitle(\"Figure 1: Scores Plot\") +\n  theme_bw()"
+    "section": "Principal Component Scores plot (2D)",
+    "text": "Principal Component Scores plot (2D)\nThe Scores Plot can be visualized via the ggplot2 package.\n\ngrouping is indicated by argument the color = Label;\n\ngeom_point() is used for the point cloud.\n\n\nggplot2::ggplot(PC_scores, \n       aes(x = PC1, \n           y = PC2, \n           color = Label)) +\n  geom_point() +\n  scale_color_manual(values=c(\"#245048\", \"#CC0066\")) +\n  ggtitle(\"Figure 1: Scores Plot\") +\n  theme_bw()"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#principal-component-scores-plot-2d-output",
     "href": "practice/practice_slides/slides_lab05.html#principal-component-scores-plot-2d-output",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Principal Component Scores plot (2D)]",
-    "text": "Principal Component Scores plot (2D)]\n\n\nFigure 1 shows the observations projected into the new data space made up of principal components"
+    "section": "Principal Component Scores plot (2D)",
+    "text": "Principal Component Scores plot (2D)\n\n\nFigure 1 shows the observations projected into the new data space made up of principal components"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#principal-component-scores-2d-ellipse-plot",
     "href": "practice/practice_slides/slides_lab05.html#principal-component-scores-2d-ellipse-plot",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Principal Component Scores (2D Ellipse Plot)]",
-    "text": "Principal Component Scores (2D Ellipse Plot)]\nConfidence ellipses can also be added to a grouped scatter plot visualized after a PCA. We use the ggplot2 package.\n\ngrouping is indicated by argument the color = Label;\n\ngeom_point() is used for the point cloud;\nthe stat_ellipse() function is called to add the ellipses per biopsy group.\n\n\nggplot2::ggplot(PC_scores, \n       aes(x = PC1, \n           y = PC2, \n           color = Label)) +\n  geom_point() +\n  scale_color_manual(values=c(\"#245048\", \"#CC0066\")) +\n  stat_ellipse() + \n  ggtitle(\"Figure 2: Ellipse Plot\") +\n  theme_bw()"
+    "section": "Principal Component Scores (2D Ellipse Plot)",
+    "text": "Principal Component Scores (2D Ellipse Plot)\nConfidence ellipses can also be added to a grouped scatter plot visualized after a PCA. We use the ggplot2 package.\n\ngrouping is indicated by argument the color = Label;\n\ngeom_point() is used for the point cloud;\nthe stat_ellipse() function is called to add the ellipses per biopsy group.\n\n\nggplot2::ggplot(PC_scores, \n       aes(x = PC1, \n           y = PC2, \n           color = Label)) +\n  geom_point() +\n  scale_color_manual(values=c(\"#245048\", \"#CC0066\")) +\n  stat_ellipse() + \n  ggtitle(\"Figure 2: Ellipse Plot\") +\n  theme_bw()"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#principal-component-scores-2d-ellipse-plot-output",
     "href": "practice/practice_slides/slides_lab05.html#principal-component-scores-2d-ellipse-plot-output",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Principal Component Scores (2D Ellipse Plot)]",
-    "text": "Principal Component Scores (2D Ellipse Plot)]\n\n\nFigure 2 shows the observations projected into the new data space made up of principal components, with 95% confidence regions displayed."
+    "section": "Principal Component Scores (2D Ellipse Plot)",
+    "text": "Principal Component Scores (2D Ellipse Plot)\n\n\nFigure 2 shows the observations projected into the new data space made up of principal components, with 95% confidence regions displayed."
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#principal-component-scores-plot-3d",
     "href": "practice/practice_slides/slides_lab05.html#principal-component-scores-plot-3d",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Principal Component Scores plot (3D)]",
-    "text": "Principal Component Scores plot (3D)]\n\nA 3D scatterplot of observations shows the first 3 principal components’ scores.\n\nFor this one, we need the scatterplot3d() function of the scatterplot3d package;\nThe color argument assigned to the Label variable;\nTo add a legend, we use the legend function and specify its coordinates via the xyz.convert() function.\n\n\n# 3D scatterplot ...\nplot_3d &lt;- with(PC_scores, \n                scatterplot3d::scatterplot3d(PC_scores$PC1, \n                                             PC_scores$PC2, \n                                             PC_scores$PC3, \n                                             color = as.numeric(Label), \n                                             pch = 19, \n                                             main =\"Figure 3: 3D Scatter Plot\", \n                                             xlab=\"PC1\",\n                                             ylab=\"PC2\",\n                                             zlab=\"PC3\"))\n\n# ... + legend\nlegend(plot_3d$xyz.convert(0.5, 0.7, 0.5), \n       pch = 19, \n       yjust=-0.6,\n       xjust=-0.9,\n       legend = levels(PC_scores$Label), \n       col = seq_along(levels(PC_scores$Label)))"
+    "section": "Principal Component Scores plot (3D)",
+    "text": "Principal Component Scores plot (3D)\n\nA 3D scatterplot of observations shows the first 3 principal components’ scores.\n\nFor this one, we need the scatterplot3d() function of the scatterplot3d package;\nThe color argument assigned to the Label variable;\nTo add a legend, we use the legend function and specify its coordinates via the xyz.convert() function.\n\n\n# 3D scatterplot ...\nplot_3d &lt;- with(PC_scores, \n                scatterplot3d::scatterplot3d(PC_scores$PC1, \n                                             PC_scores$PC2, \n                                             PC_scores$PC3, \n                                             color = as.numeric(Label), \n                                             pch = 19, \n                                             main =\"Figure 3: 3D Scatter Plot\", \n                                             xlab=\"PC1\",\n                                             ylab=\"PC2\",\n                                             zlab=\"PC3\"))\n\n# ... + legend\nlegend(plot_3d$xyz.convert(0.5, 0.7, 0.5), \n       pch = 19, \n       yjust=-0.6,\n       xjust=-0.9,\n       legend = levels(PC_scores$Label), \n       col = seq_along(levels(PC_scores$Label)))"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#principal-component-scores-plot-3d-output",
     "href": "practice/practice_slides/slides_lab05.html#principal-component-scores-plot-3d-output",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Principal Component Scores plot (3D)]",
-    "text": "Principal Component Scores plot (3D)]\n\n\nFigure 3 shows the observations projected into the new 3D data space made up of principal components."
+    "section": "Principal Component Scores plot (3D)",
+    "text": "Principal Component Scores plot (3D)\n\n\nFigure 3 shows the observations projected into the new 3D data space made up of principal components."
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#biplot-principal-components-v.-original-variables",
     "href": "practice/practice_slides/slides_lab05.html#biplot-principal-components-v.-original-variables",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Biplot: principal components v. original variables]",
-    "text": "Biplot: principal components v. original variables]\nNext, we create another special type of scatterplot (a biplot) to understand the relationship between the principal components and the original variables.\nIn the biplot each of the observations is projected onto a scatterplot that uses the first and second principal components as the axes.\n\nFor this plot, we use the fviz_pca_biplot() function from the factoextra package\n\nWe will specify the color for the variables, or rather, for the “loading vectors”\nThe habillage argument allows to highlight with color the grouping by class\n\n\n\n\n\nfactoextra::fviz_pca_biplot(biopsy_pca, \n                repel = TRUE,\n                col.var = \"black\",\n                habillage = biopsy_no_na$class,\n                title = \"Figure 4: Biplot\", geom=\"point\")"
+    "section": "Biplot: principal components v. original variables",
+    "text": "Biplot: principal components v. original variables\nNext, we create another special type of scatterplot (a biplot) to understand the relationship between the principal components and the original variables.\nIn the biplot each of the observations is projected onto a scatterplot that uses the first and second principal components as the axes.\n\nFor this plot, we use the fviz_pca_biplot() function from the factoextra package\n\nWe will specify the color for the variables, or rather, for the “loading vectors”\nThe habillage argument allows to highlight with color the grouping by class\n\n\n\n\n\nfactoextra::fviz_pca_biplot(biopsy_pca, \n                repel = TRUE,\n                col.var = \"black\",\n                habillage = biopsy_no_na$class,\n                title = \"Figure 4: Biplot\", geom=\"point\")"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#biplot-principal-components-v.-original-variables-output",
     "href": "practice/practice_slides/slides_lab05.html#biplot-principal-components-v.-original-variables-output",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Biplot: principal components v. original variables]",
-    "text": "Biplot: principal components v. original variables]\n\n\nThe axes show the principal component scores, and the vectors are the loading vectors"
+    "section": "Biplot: principal components v. original variables",
+    "text": "Biplot: principal components v. original variables\n\n\nThe axes show the principal component scores, and the vectors are the loading vectors"
   },
   {
     "objectID": "practice/practice_slides/slides_lab05.html#interpreting-biplot-output",
@@ -560,18 +560,11 @@
     "text": "Interpreting biplot output (cont.)\n\nscores &lt;- biopsy_pca$x\n\nloadings &lt;- biopsy_pca$rotation\n# excerpt of first 2 components\nloadings[ ,1:2] \n\n          PC1         PC2\nV1 -0.3020626 -0.14080053\nV2 -0.3807930 -0.04664031\nV3 -0.3775825 -0.08242247\nV4 -0.3327236 -0.05209438\nV5 -0.3362340  0.16440439\nV6 -0.3350675 -0.26126062\nV7 -0.3457474 -0.22807676\nV8 -0.3355914  0.03396582\nV9 -0.2302064  0.90555729"
   },
   {
-    "objectID": "practice/practice_slides/slides_lab05.html#recap-of-the-workshops-content",
-    "href": "practice/practice_slides/slides_lab05.html#recap-of-the-workshops-content",
+    "objectID": "practice/practice_slides/slides_lab05.html#recap-of-the-labs-content",
+    "href": "practice/practice_slides/slides_lab05.html#recap-of-the-labs-content",
     "title": "Lab 5: Intro to Machine Learning",
-    "section": "Recap of the workshop’s content]",
-    "text": "Recap of the workshop’s content]\n\nTOPICS WE COVERED\n\nMotivated the choice of learning/using R for scientific quantitative analysis, and lay out some fundamental concepts in biostatistics with concrete R coding examples.\nConsolidated understanding of inferential statistic, through R coding examples conducted on real biostatistics research data.\nDiscussed the relationship between any two variables, and introduce a widely used analytical tool: regression.\nPresented a popular ML technique for dimensionality reduction (PCA), performed both with MetaboAnalyst and R.\nIntroduction to power analysis to define the correct sample size for hypotheses testing and discussion of how ML approaches deal with available data."
-  },
-  {
-    "objectID": "practice/practice_slides/slides_lab05.html#conclusions-1",
-    "href": "practice/practice_slides/slides_lab05.html#conclusions-1",
-    "title": "Lab 5: Intro to Machine Learning",
-    "section": "Conclusions",
-    "text": "Conclusions\n\n\nToday, we explored just a fraction of the Machine Learning toolbox, focusing on two fundamental approaches while learning essential workflow steps and practical tools that extend to more advanced analyses.\nLogistic Regression exemplifies Supervised Learning, where models learn from labeled data to make predictions—particularly useful for binary classification.\nPCA represents Unsupervised Learning, helping reduce dimensionality, visualize high-dimensional data, and uncover hidden structures.\nThe context and the data shape analytical choices, whether it’s setting a classification threshold in Logistic Regression or selecting the number of components in PCA to balance information retention and interpretability."
+    "section": "Recap of the lab’s content",
+    "text": "Recap of the lab’s content\n\n\nWhile we’ve only explored a small portion of the Machine Learning toolbox, we have covered two fundamental approaches and gained familiarity with the ML workflow and some key practical tools that extend to more advanced analyses.\nLogistic Regression exemplifies Supervised Learning, where models learn from labeled data to make predictions—particularly useful for binary classification.\nPCA (Principal Component Analysis) represents Unsupervised Learning, helping to reduce dimensionality, visualize high-dimensional data, and uncover hidden structures.\nAnalytical choices depend on the context and data—whether it’s setting a classification threshold in Logistic Regression or selecting the number of components in PCA to balance information retention and interpretability."
   },
   {
     "objectID": "practice/practice_slides/slides_lab03.html#topics-discussed-in-lecture-3",
@@ -1960,165 +1953,60 @@
     "text": "Final thoughts/recommendations\n\nAlways read the documentation (?package::function, especially the examples at the bottom)\nAlways inspect the data / variables before and after making changes\n\nIt is advisable to rename (i.e. create a new R object) when you recode/manipulate a variable or a dataset\n\nthis promotes reproducibility, since you(or others) will be able to retrace your coding steps\n\n\nAlways plot distributions for visual data exploration\nMake changes in small increments (like we saw in building ggplot2 graph in subsequent layers)"
   },
   {
-    "objectID": "modules/06_extra.html",
-    "href": "modules/06_extra.html",
-    "title": "Extra materials",
+    "objectID": "modules/05_intro_ML.html",
+    "href": "modules/05_intro_ML.html",
+    "title": "Introduction to machine learning",
     "section": "",
-    "text": "🔴 … currently under review … 🔴"
+    "text": "🟠 … currently under review … 🟠"
   },
   {
-    "objectID": "modules/06_extra.html#topics",
-    "href": "modules/06_extra.html#topics",
-    "title": "Extra materials",
-    "section": "Topics",
-    "text": "Topics\n\nIntroduction to MetaboAnalyst software\n\nA useful R-based resources for metabolomics\n\n\nElements of statistical Power Analysis"
+    "objectID": "modules/05_intro_ML.html#lecture-outline",
+    "href": "modules/05_intro_ML.html#lecture-outline",
+    "title": "Introduction to machine learning",
+    "section": "Lecture Outline",
+    "text": "Lecture Outline\n\nIntroduction to Machine Learning\n\nShifting the emphasis on empirical prediction\n\nDistinction between supervised & unsupervised algorithms\n\nSupervised ML Example\n\nLogistic regression\n🌳 Random Forest / decision trees 🌲\n\n\nUnsupervised ML Example\n\nPCA for dimension reduction\nK-means Clustering"
   },
   {
-    "objectID": "modules/06_extra.html#extra-lecture-slides",
-    "href": "modules/06_extra.html#extra-lecture-slides",
-    "title": "Extra materials",
-    "section": "(Extra) lecture slides",
-    "text": "(Extra) lecture slides\n\nView lecture slides in full screen"
-  },
-  {
-    "objectID": "modules/06_extra.html#extra-practice-slides",
-    "href": "modules/06_extra.html#extra-practice-slides",
-    "title": "Extra materials",
-    "section": "(Extra) practice slides",
-    "text": "(Extra) practice slides\n\nView practice slides in full screen  \n\n\n\nPractice input data (as subfolder)\nPractice R code (as .R file)"
-  },
-  {
-    "objectID": "modules/04_caus_pred.html",
-    "href": "modules/04_caus_pred.html",
-    "title": "Causal analysis essentials",
-    "section": "",
-    "text": "Recall the essential features of experimental study designs\n\nLearning the vocabulary of causal analysis\n\n\nGet a visual intuition of causal pathways, including challenging elements:\n\n\nCollider variables\n\nConfounder variables\n\nMediator variables\n\n\nDiscuss the correct causal model to capture the association among exposure, outcome and other covariates, (including challenging ones)\nDefine causal outcomes and choosing the appropriate “estimands”:\n\n\nATE, ATT, or ATU?\n\n\nDevise statistical methods to estimate ATE, ATT, and ATU based on research question and (sub)population of interest"
-  },
-  {
-    "objectID": "modules/04_caus_pred.html#outline",
-    "href": "modules/04_caus_pred.html#outline",
-    "title": "Causal analysis essentials",
-    "section": "",
-    "text": "Recall the essential features of experimental study designs\n\nLearning the vocabulary of causal analysis\n\n\nGet a visual intuition of causal pathways, including challenging elements:\n\n\nCollider variables\n\nConfounder variables\n\nMediator variables\n\n\nDiscuss the correct causal model to capture the association among exposure, outcome and other covariates, (including challenging ones)\nDefine causal outcomes and choosing the appropriate “estimands”:\n\n\nATE, ATT, or ATU?\n\n\nDevise statistical methods to estimate ATE, ATT, and ATU based on research question and (sub)population of interest"
-  },
-  {
-    "objectID": "modules/04_caus_pred.html#lecture-slides",
-    "href": "modules/04_caus_pred.html#lecture-slides",
-    "title": "Causal analysis essentials",
+    "objectID": "modules/05_intro_ML.html#lecture-slides",
+    "href": "modules/05_intro_ML.html#lecture-slides",
+    "title": "Introduction to machine learning",
     "section": "Lecture slides",
     "text": "Lecture slides\n\n\nView lecture slides in full screen"
   },
   {
-    "objectID": "modules/04_caus_pred.html#practice-slides",
-    "href": "modules/04_caus_pred.html#practice-slides",
-    "title": "Causal analysis essentials",
+    "objectID": "modules/05_intro_ML.html#practice-slides",
+    "href": "modules/05_intro_ML.html#practice-slides",
+    "title": "Introduction to machine learning",
     "section": "Practice slides",
     "text": "Practice slides\n\nView practice slides in full screen  \n\n\n\nPractice input data (as subfolder)\n\n\n Download input data\n\n\nPractice R code (as .R file)\n\n\n Download R file"
   },
   {
-    "objectID": "modules/02_inference.html",
-    "href": "modules/02_inference.html",
-    "title": "Statistical inference & hypothesis testing",
+    "objectID": "modules/03_corr_regress.html",
+    "href": "modules/03_corr_regress.html",
+    "title": "Modeling correlation and regression",
     "section": "",
-    "text": "Purpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\n\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\n\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA) \n\n\n\n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations"
+    "text": "Testing and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (param)\n\n(numerical variables)\n\n\nSpearman’s test (no param)\n\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\n\nFisher’s Exact Test\n\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\n\nWidely used analytical tools\n\nSimple linear regression models\nMultiple Linear Regression models\n\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised & Unsupervised algorithms"
   },
   {
-    "objectID": "modules/02_inference.html#outline",
-    "href": "modules/02_inference.html#outline",
-    "title": "Statistical inference & hypothesis testing",
+    "objectID": "modules/03_corr_regress.html#outline",
+    "href": "modules/03_corr_regress.html#outline",
+    "title": "Modeling correlation and regression",
     "section": "",
-    "text": "Purpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\n\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\n\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA) \n\n\n\n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations"
+    "text": "Testing and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (param)\n\n(numerical variables)\n\n\nSpearman’s test (no param)\n\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\n\nFisher’s Exact Test\n\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\n\nWidely used analytical tools\n\nSimple linear regression models\nMultiple Linear Regression models\n\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised & Unsupervised algorithms"
   },
   {
-    "objectID": "modules/02_inference.html#lecture-slides",
-    "href": "modules/02_inference.html#lecture-slides",
-    "title": "Statistical inference & hypothesis testing",
+    "objectID": "modules/03_corr_regress.html#lecture-slides",
+    "href": "modules/03_corr_regress.html#lecture-slides",
+    "title": "Modeling correlation and regression",
     "section": "Lecture slides",
     "text": "Lecture slides\n\n\nView lecture slides in full screen"
   },
   {
-    "objectID": "modules/02_inference.html#practice-slides",
-    "href": "modules/02_inference.html#practice-slides",
-    "title": "Statistical inference & hypothesis testing",
+    "objectID": "modules/03_corr_regress.html#practice-slides",
+    "href": "modules/03_corr_regress.html#practice-slides",
+    "title": "Modeling correlation and regression",
     "section": "Practice slides",
-    "text": "Practice slides\n\nView practice slides in full screen  \n\n\n\nPractice input data (as subfolder)\n\n\n Download input data\n\n\nPractice R code (as .R file)\n\n\n Download R file"
-  },
-  {
-    "objectID": "me.html",
-    "href": "me.html",
-    "title": "About the Instructor",
-    "section": "",
-    "text": "Maria Chiara Mimmi, Ph.D., is a Research Fellow at University of Pavia - Dept. of Molecular Medicine, as well as NMR Expert at Fondazione IRCCS Policlinico San Matteo. She has twenty years of experience working in life science research, with a focus on NMR and Mass Spectrometry applied to metabolomics/lipidomics.\nIn 2020, she joined the University of Pavia, at the Molecular Medicine Dept., to work with the recently acquired 700 MHz NMR spectrometer. Since then she focused on NMR applied to either metabolomics and to structure/dynamics of amyloidogenic proteins.\n\n\nUniversità degli Studi di Pavia | Pavia, Italy Master of Biostatistics and Epidemiology | 2018-2019\nUniversità degli Studi di Milano | Milano, Italy Ph.D. in Chemical Sciences | 2001 - 2003\nInstitut National de la Recherche Agronomique | Versailles-Grignon, France Visiting scholar | 2003 - 2003\nUniversità degli Studi di Pavia | Pavia, Italy BSc Degree in Chemistry | 1994 - 2000\nUniversiteit Leiden | Leiden, The Netherlands Erasmus exchange student (6 months) | 1999 - 1999\n\n \n  \n   \n  \n    \n     LinkedIn\n  \n  \n    \n     Email\n  \n  \n      Google Scholar\n  \n  \n      Research Gate\n  \n  \n      Orcid"
-  },
-  {
-    "objectID": "me.html#education",
-    "href": "me.html#education",
-    "title": "About the Instructor",
-    "section": "",
-    "text": "Università degli Studi di Pavia | Pavia, Italy Master of Biostatistics and Epidemiology | 2018-2019\nUniversità degli Studi di Milano | Milano, Italy Ph.D. in Chemical Sciences | 2001 - 2003\nInstitut National de la Recherche Agronomique | Versailles-Grignon, France Visiting scholar | 2003 - 2003\nUniversità degli Studi di Pavia | Pavia, Italy BSc Degree in Chemistry | 1994 - 2000\nUniversiteit Leiden | Leiden, The Netherlands Erasmus exchange student (6 months) | 1999 - 1999"
-  },
-  {
-    "objectID": "install.html",
-    "href": "install.html",
-    "title": "Installation and setup",
-    "section": "",
-    "text": "This workshop showcases introductory bio statistics concepts using the open source (and free!) programming language . Each session of the workshop features exercises that will help you learn by doing.\nWe will quickly go over this at our first Practice session, but you are expected to have the required software installed on your machine before the workshop.\nBelow is a step by step process that should guide you through the needed installation steps."
-  },
-  {
-    "objectID": "install.html#installing-packages-1st-time-you-use-an-r-package",
-    "href": "install.html#installing-packages-1st-time-you-use-an-r-package",
-    "title": "Installation and setup",
-    "section": "Installing packages (1st time you use an R Package)",
-    "text": "Installing packages (1st time you use an R Package)\nOption 1)\nYou could install one package at a time via the function install.packages()…\n\n# (**ONLY** the 1st time you use them)\n\n# Installing \ninstall.packages(\"name_of_package_here\" ) \n\n# [OPTIONAL ARGUMENT] Installing (with specification for dependencies)\ninstall.packages(\"name_of_package_here\" , dependencies = TRUE)\n\n… or in bulk, like so (it might take a few moments more):\n\n# (**ONLY** the 1st time you use them)\n\n# ---- Installing R pckgs for 1st LAB \npkg_list_lab_1 &lt;- c(\"fs\",\"here\", \"janitor\", \"skimr\", \n                   \"dplyr\", \"forcats\", \n                   \"ggplot2\",  \"ggridges\")\n\ninstall.packages(pkg_list_lab_1)\n\n\n# ---- Installing (more) R pckgs for 2nd LAB  \npkg_list_lab_2 &lt;- c(\"tidyr\", \"patchwork\",\n                    \"ggthemes\", \"ggstatsplot\", \"ggpubr\",  \"viridis\",\n                    \"BSDA\", \"rstatix\", \"car\", \"multcomp\") \n\ninstall.packages(pkg_list_lab_2)\n\n\n# ----  Installing (more) R pckgs for 3rd LAB  \npkg_list_lab_3 &lt;- c(\"openxlsx\", \n                    \"lmtest\" , \n                    \"broom\", \n                    \"performance\")\n\ninstall.packages(pkg_list_lab_3)\n\n\n# ----  Installing (more) R pckgs for 4th LAB  \npkg_list_lab_4 &lt;- c(\"rsample\",\n                    \"MASS\",\n                    \"FactoMineR\",\n                    \"factoextra\",\n                    \"ggfortify\",\n                    \"scatterplot3d\",\n                    \"pwr\" )\n\ninstall.packages(pkg_list_lab_4)\n\nOption 2)\nIn alternative, you could install each package separately, using the RStudio GUI, from the Packages tab in the bottom right pane as indicated here:\n\n\nScreenshot Install/Update pckgs from RStudio"
-  },
-  {
-    "objectID": "install.html#loading-a-package-at-the-beginning-of-every-r-session",
-    "href": "install.html#loading-a-package-at-the-beginning-of-every-r-session",
-    "title": "Installation and setup",
-    "section": "Loading a package (at the beginning of every R session)",
-    "text": "Loading a package (at the beginning of every R session)\nOnce packages have been installed, with the command library() loads the specific R packages that you are going to need in any given R session.\n\n# Loading a package (at the beginning of every R session) \n# --- General \nlibrary(here)       # tools find your project's files, based on working directory\nlibrary(fs)         # file/directory interactions\nlibrary(janitor)    # tools for examining and cleaning data\nlibrary(skimr)      # Compact and Flexible Summaries of Data     \nlibrary(openxlsx)   # Read, Write and Edit xlsx Files\n\n# --- Tidyverse \nlibrary(dplyr)      # {tidyverse} A Grammar of Data Manipulation     \nlibrary(tidyr)      # {tidyverse} Tools to create tidy data \nlibrary(forcats)    # {tidyverse} Tools for Categorical Var.(Factors)   \n\n# --- Plotting\nlibrary(ggplot2)    # {tidyverse} tools for plotting\nlibrary(ggstatsplot)# 'ggplot2' Based Plots with Statistical Details \nlibrary(ggpubr)     # 'ggplot2' Based Publication Ready Plots \nlibrary(patchwork)  # Functions for \"\"Grid\" Graphics\"composing\" plots \nlibrary(viridis)    # Colorblind-Friendly Color Maps for R \nlibrary(ggthemes)   # Extra Themes, Scales and Geoms for 'ggplot2'\nlibrary(ggridges)   # Ridgeline Plots in 'ggplot2' (density functions)\n\n# --- Statistics\nlibrary(BSDA)       # Basic Statistics and Data Analysis   \nlibrary(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests\nlibrary(car)        # Companion to Applied Regression\nlibrary(multcomp)   # Simultaneous Inference in General Parametric Models \nlibrary(lmtest)     # Testing Linear Regression Models  \nlibrary(broom)      # Convert Statistical Objects into Tidy Tibbles\nlibrary(performance)# Assessment of Regression Models Performance \nlibrary(pwr)        # Basic Functions for Power Analysis"
-  },
-  {
-    "objectID": "install.html#learning-about-a-package-after-installation",
-    "href": "install.html#learning-about-a-package-after-installation",
-    "title": "Installation and setup",
-    "section": "Learning about a package (after installation)",
-    "text": "Learning about a package (after installation)\nOnce an R package is installed, you can also read the documentation about it directly inside the RStudio IDE. For example, try running in your Console:\n\n# - To ask about a package\n?here\n\n# -- To ask about a specific function\n?janitor::clean_names\n\n?dplyr::group_by\n\nCongrats! You are all done! 🙌🏻"
-  },
-  {
-    "objectID": "install.html#useful-keyboard-shortcuts-in-rstudio",
-    "href": "install.html#useful-keyboard-shortcuts-in-rstudio",
-    "title": "Installation and setup",
-    "section": "Useful keyboard shortcuts in RStudio",
-    "text": "Useful keyboard shortcuts in RStudio\n\n\n\n\n\n\nDescription\nWindows & Linux\nMac\n\n\n\nInsert code section\nCtrl+Shift+R\nShift+Command+R  or Ctrl+Shift+R\n\n\nInsert code chunk (Quarto/Rmarkdown)\nCtrl+Alt+I\nCommand+Option+I\n\n\nComment/uncomment line\nCtrl+Shift+C\nCommand+Shift+C\n\n\nReindent lines\nCtrl+I\nCommand+I\n\n\nInsert 'assign' operator &lt;-\nAlt+-\nOption+-\n\n\nInsert 'pipe' operator %&gt;% or |&gt;\nCtrl+Shift+M\nShift+Command+M\n\n\nCode completion (in source)\nTab\nTab\n\n\nFile path completion (in console)\n\"+Tab\n\"+Tab\n\n\nMultple cursor selection\nAlt+click\nAlt+click\n\n\nMultple cursor selection (next)\nAlt+Shift+click\nAlt+Shift+click\n\n\nSwitch cursor between source & console\nCtrl+1 and Ctrl+2\nCtrl+1 and Ctrl+2\n\n\nRun current line/selection\nCtrl+Enter\nCommand+Return\n\n\nRun current chunk\nCtrl+Alt+C\nCommand+Option+C\n\n\nRun entire file\nCtrl+Shift+Enter\nCommand+Shift+Return\n\n\nShow help for function at cursor\nF1\nF1\n\n\nSearch within file\nCtrl+F\nCommand+F\n\n\nSearch within project\nCtrl+Shift+F\nCommand+Shift+F\n\n\nRestart R session\nCtrl+Shift+F10\nCommand+Shift+F10\n\n\n\n\n\n\nHere you find the complete list of RStudio Keyboard Shortcuts"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Intro to Statistics & Machine Learning with ",
-    "section": "",
-    "text": "Welcome!\nThis website hosts some teaching material on “Introduction to Statistics & Machine Learning with R” — an intensive workshop that offers a few lectures accompanied by matching practice sessions – to reinforce the concepts learned using  programming.\nThe course was originally designed for a summer workshop offered to a group of PhD students from various EU universities specializing in life sciences (see https://R4biostats.com/).\nI (Luisa) co-created that workshop with my sister 😊 (Chiara) and I am currently revising and expanding the materials presented here.\n\n\n\nGet in touch if you have questions and/or are interested in a similar workshop for your team!\n\n\n\n\n\n    Email us"
-  },
-  {
-    "objectID": "license_etc.html",
-    "href": "license_etc.html",
-    "title": "Acknowledgments and resources",
-    "section": "",
-    "text": "We are genuinely grateful to many people within the Statistics, Machine Learning, Epidemiology and R programming communities, who shared their valuable work, open source software, and training resources."
-  },
-  {
-    "objectID": "license_etc.html#licensing-and-use-of-the-workshop-materials",
-    "href": "license_etc.html#licensing-and-use-of-the-workshop-materials",
-    "title": "Acknowledgments and resources",
-    "section": "Licensing and use of the workshop materials",
-    "text": "Licensing and use of the workshop materials\nThe workshop materials are licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. All borrowed external materials (images, worked examples, etc.), are credited with proper “Source” statements and governed by their own licenses. To our knowledge, all the consulted materials were published under “open access” or “creative commons” frameworks. If this were not the case for any content piece displayed here, please let us know and it will be removed."
-  },
-  {
-    "objectID": "license_etc.html#selected-resources-for-self-guided-learning",
-    "href": "license_etc.html#selected-resources-for-self-guided-learning",
-    "title": "Acknowledgments and resources",
-    "section": "Selected resources for self-guided learning",
-    "text": "Selected resources for self-guided learning\nBelow is a curated list of great resources (most of which free and openly accessible) you can peruse on your own.\n\n\nStatistics, Biostatistics, Epidemiology with R examples\n\n\n\n\nChoueiry, G. (2024, December 5). 8 Types of Treatment Effects Explained (with Examples) [Article]. https://quantifyinghealth.com/treatment-effects-explained/\n\n\nHeiss, A. (2024, March 21). Demystifying causal inference estimands: ATE, ATT, and ATU [Article]. Andrew Heiss’s blog. https://www.andrewheiss.com/blog/2024/03/21/demystifying-ate-att-atu\n\n\nGreifer, N., & Stuart, E. A. (2021). Choosing the Causal Estimand for Propensity Score Analysis of Observational Studies [Article]. https://doi.org/10.48550/ARXIV.2106.10577    \n\nApplied Epi Team (2024). Applied Epi - Elevating frontline epidemiology [Course]. Training, support, tools. https://www.appliedepi.org/\nApplied Epi Team (2024). R for applied epidemiology and public health The Epidemiologist R Handbook [Course]. https://epirhandbook.com/en/\nBobbitt, Z. (2024). Statology [Course]. Statology. https://www.statology.org/\nÇetinkaya-Rundel, M., & Hardim, J. (2023). Introduction to Modern Statistics (1st Ed) [Book]. https://openintro-ims.netlify.app/\nchilds_introductory_2022-1?\n\nSelby, D., & 2021 (2024). Analytical Epidemiology II [Course]. David Selby. https://personalpages.manchester.ac.uk/staff/david.selby/analysis/2021-03-30-inference/\n\nVu, J., & Harrington, D. (2021). Introductory Statistics for the Life and Biomedical Sciences [Book]. https://www.openintro.org/book/biostat/\nR packages & tools\n\nPOSIT (2024). POSIT resources [R]. https://posit.co/resources/.\nRStudio, & Posit (2024). Base-r-cheat-sheet.pdf [R]. https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf\nVarious contributors (2024). Bioconductor - Open source software for Bioinformatics [R]. Bioconductor - Open source software for Bioinformatics. https://www.bioconductor.org/\nWickham, H., François, R., Müller, K., & Vaughan, D. (2023). Programming with dplyr [R]. dplyr. https://dplyr.tidyverse.org/articles/programming.html#tidy-selection\nWickham, H. (2014). Tidy Data [R]. Journal of Statistical Software, 59(10). https://doi.org/10.18637/jss.v059.i10\nSources of practice datasets\n\nVanderbilt Department of Biostatistics (2023, September 17). Vanderbilt Biostatistics Datasets [Dataset]. https://hbiostat.org/data/\nChicco, D., & Jurman, G. (2020). Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone [Dataset]. BMC Medical Informatics and Decision Making, 20(1), 16. https://doi.org/10.1186/s12911-020-1023-5\nAhmad, T., Munir, A., Bhatti, S. H., Aftab, M., & Raza, M. A. (2017). Survival analysis of heart failure patients: A case study [Dataset]. PLOS ONE, 12(7), e0181001. https://doi.org/10.1371/journal.pone.0181001\n\nJoosten, H., Van Eersel, M. E. A., Gansevoort, R. T., Bilo, H. J. G., Slaets, J. P. J., & Izaks, G. J. (2013). Cardiovascular Risk Profile and Cognitive Function in Young, Middle-Aged, and Elderly Subjects [Dataset]. Stroke, 44(6), 1543–1549. https://doi.org/10.1161/STROKEAHA.111.000496"
+    "text": "Practice slides\n\nView practice slides in full screen  \n\nPractice input data (as subfolder)\n\n\n Download input data\n\n\nPractice R code (as .R file)\n\n\n Download R file"
   },
   {
     "objectID": "modules/01_data_with_R.html",
@@ -2163,95 +2051,165 @@
     "text": "Practice R code (as .R file)\n\n\n Download R file"
   },
   {
-    "objectID": "modules/03_corr_regress.html",
-    "href": "modules/03_corr_regress.html",
-    "title": "Modeling correlation and regression",
+    "objectID": "license_etc.html",
+    "href": "license_etc.html",
+    "title": "Acknowledgments and resources",
     "section": "",
-    "text": "Testing and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (param)\n\n(numerical variables)\n\n\nSpearman’s test (no param)\n\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\n\nFisher’s Exact Test\n\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\n\nWidely used analytical tools\n\nSimple linear regression models\nMultiple Linear Regression models\n\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised & Unsupervised algorithms"
+    "text": "We are genuinely grateful to many people within the Statistics, Machine Learning, Epidemiology and R programming communities, who shared their valuable work, open source software, and training resources."
   },
   {
-    "objectID": "modules/03_corr_regress.html#outline",
-    "href": "modules/03_corr_regress.html#outline",
-    "title": "Modeling correlation and regression",
-    "section": "",
-    "text": "Testing and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (param)\n\n(numerical variables)\n\n\nSpearman’s test (no param)\n\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\n\nFisher’s Exact Test\n\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\n\nWidely used analytical tools\n\nSimple linear regression models\nMultiple Linear Regression models\n\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised & Unsupervised algorithms"
+    "objectID": "license_etc.html#licensing-and-use-of-the-workshop-materials",
+    "href": "license_etc.html#licensing-and-use-of-the-workshop-materials",
+    "title": "Acknowledgments and resources",
+    "section": "Licensing and use of the workshop materials",
+    "text": "Licensing and use of the workshop materials\nThe workshop materials are licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. All borrowed external materials (images, worked examples, etc.), are credited with proper “Source” statements and governed by their own licenses. To our knowledge, all the consulted materials were published under “open access” or “creative commons” frameworks. If this were not the case for any content piece displayed here, please let us know and it will be removed."
   },
   {
-    "objectID": "modules/03_corr_regress.html#lecture-slides",
-    "href": "modules/03_corr_regress.html#lecture-slides",
-    "title": "Modeling correlation and regression",
+    "objectID": "license_etc.html#selected-resources-for-self-guided-learning",
+    "href": "license_etc.html#selected-resources-for-self-guided-learning",
+    "title": "Acknowledgments and resources",
+    "section": "Selected resources for self-guided learning",
+    "text": "Selected resources for self-guided learning\nBelow is a curated list of great resources (most of which free and openly accessible) you can peruse on your own.\n\n\nStatistics, Biostatistics, Epidemiology with R examples\n\n\n\n\nChoueiry, G. (2024, December 5). 8 Types of Treatment Effects Explained (with Examples) [Article]. https://quantifyinghealth.com/treatment-effects-explained/\n\n\nHeiss, A. (2024, March 21). Demystifying causal inference estimands: ATE, ATT, and ATU [Article]. Andrew Heiss’s blog. https://www.andrewheiss.com/blog/2024/03/21/demystifying-ate-att-atu\n\n\nGreifer, N., & Stuart, E. A. (2021). Choosing the Causal Estimand for Propensity Score Analysis of Observational Studies [Article]. https://doi.org/10.48550/ARXIV.2106.10577    \n\nApplied Epi Team (2024). Applied Epi - Elevating frontline epidemiology [Course]. Training, support, tools. https://www.appliedepi.org/\nApplied Epi Team (2024). R for applied epidemiology and public health The Epidemiologist R Handbook [Course]. https://epirhandbook.com/en/\nBobbitt, Z. (2024). Statology [Course]. Statology. https://www.statology.org/\nÇetinkaya-Rundel, M., & Hardim, J. (2023). Introduction to Modern Statistics (1st Ed) [Book]. https://openintro-ims.netlify.app/\nChilds, D. Z., Hindle, B. J., & Warren, P. H. (2022). Introductory Biostatistics with R [Book]. https://github.com/rstudio/bookdown\n\nSelby, D., & 2021 (2024). Analytical Epidemiology II [Course]. David Selby. https://personalpages.manchester.ac.uk/staff/david.selby/analysis/2021-03-30-inference/\n\nVu, J., & Harrington, D. (2021). Introductory Statistics for the Life and Biomedical Sciences [Book]. https://www.openintro.org/book/biostat/\nR packages & tools\n\nPOSIT (2024). POSIT resources [R]. https://posit.co/resources/.\nRStudio, & Posit (2024). Base-r-cheat-sheet.pdf [R]. https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf\nVarious contributors (2024). Bioconductor - Open source software for Bioinformatics [R]. Bioconductor - Open source software for Bioinformatics. https://www.bioconductor.org/\nWickham, H., François, R., Müller, K., & Vaughan, D. (2023). Programming with dplyr [R]. dplyr. https://dplyr.tidyverse.org/articles/programming.html#tidy-selection\nWickham, H. (2014). Tidy Data [R]. Journal of Statistical Software, 59(10). https://doi.org/10.18637/jss.v059.i10\nSources of practice datasets\n\nVanderbilt Department of Biostatistics (2023, September 17). Vanderbilt Biostatistics Datasets [Dataset]. https://hbiostat.org/data/\nChicco, D., & Jurman, G. (2020). Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone [Dataset]. BMC Medical Informatics and Decision Making, 20(1), 16. https://doi.org/10.1186/s12911-020-1023-5\nAhmad, T., Munir, A., Bhatti, S. H., Aftab, M., & Raza, M. A. (2017). Survival analysis of heart failure patients: A case study [Dataset]. PLOS ONE, 12(7), e0181001. https://doi.org/10.1371/journal.pone.0181001\nJoosten, H., Van Eersel, M. E. A., Gansevoort, R. T., Bilo, H. J. G., Slaets, J. P. J., & Izaks, G. J. (2013). Cardiovascular Risk Profile and Cognitive Function in Young, Middle-Aged, and Elderly Subjects [Dataset]. Stroke, 44(6), 1543–1549. https://doi.org/10.1161/STROKEAHA.111.000496\nRipley, B., & Venables, B. (2009). MASS: Support Functions and Datasets for Venables and Ripley’s MASS [Dataset]. https://CRAN.R-project.org/package=MASS"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Intro to Statistics & Machine Learning with ",
+    "section": "",
+    "text": "Welcome!\nThis website hosts some teaching material on “Introduction to Statistics & Machine Learning with R” — an intensive workshop that offers a few lectures accompanied by matching practice sessions – to reinforce the concepts learned using  programming.\nThe course was originally designed for a summer workshop offered to a group of PhD students from various EU universities specializing in life sciences (see https://R4biostats.com/).\nI (Luisa) co-created that workshop with my sister 😊 (Chiara) and I am currently revising and expanding the materials presented here.\n\n\n\nGet in touch if you have questions and/or are interested in a similar workshop for your team!\n\n\n\n\n\n    Email us"
+  },
+  {
+    "objectID": "install.html",
+    "href": "install.html",
+    "title": "Installation and setup",
+    "section": "",
+    "text": "This workshop showcases introductory bio statistics concepts using the open source (and free!) programming language . Each session of the workshop features exercises that will help you learn by doing.\nWe will quickly go over this at our first Practice session, but you are expected to have the required software installed on your machine before the workshop.\nBelow is a step by step process that should guide you through the needed installation steps."
+  },
+  {
+    "objectID": "install.html#installing-packages-1st-time-you-use-an-r-package",
+    "href": "install.html#installing-packages-1st-time-you-use-an-r-package",
+    "title": "Installation and setup",
+    "section": "Installing packages (1st time you use an R Package)",
+    "text": "Installing packages (1st time you use an R Package)\nOption 1)\nYou could install one package at a time via the function install.packages()…\n\n# (**ONLY** the 1st time you use them)\n\n# Installing \ninstall.packages(\"name_of_package_here\" ) \n\n# [OPTIONAL ARGUMENT] Installing (with specification for dependencies)\ninstall.packages(\"name_of_package_here\" , dependencies = TRUE)\n\n… or in bulk, like so (it might take a few moments more):\n\n# (**ONLY** the 1st time you use them)\n\n# ---- Installing R pckgs for 1st LAB \npkg_list_lab_1 &lt;- c(\"fs\",\"here\", \"janitor\", \"skimr\", \n                   \"dplyr\", \"forcats\", \n                   \"ggplot2\",  \"ggridges\")\n\ninstall.packages(pkg_list_lab_1)\n\n\n# ---- Installing (more) R pckgs for 2nd LAB  \npkg_list_lab_2 &lt;- c(\"tidyr\", \"patchwork\",\n                    \"ggthemes\", \"ggstatsplot\", \"ggpubr\",  \"viridis\",\n                    \"BSDA\", \"rstatix\", \"car\", \"multcomp\") \n\ninstall.packages(pkg_list_lab_2)\n\n\n# ----  Installing (more) R pckgs for 3rd LAB  \npkg_list_lab_3 &lt;- c(\"openxlsx\", \n                    \"lmtest\" , \n                    \"broom\", \n                    \"performance\")\n\ninstall.packages(pkg_list_lab_3)\n\n\n# ----  Installing (more) R pckgs for 4th LAB  \npkg_list_lab_4 &lt;- c(\"rsample\",\n                    \"MASS\",\n                    \"FactoMineR\",\n                    \"factoextra\",\n                    \"ggfortify\",\n                    \"scatterplot3d\",\n                    \"pwr\" )\n\ninstall.packages(pkg_list_lab_4)\n\nOption 2)\nIn alternative, you could install each package separately, using the RStudio GUI, from the Packages tab in the bottom right pane as indicated here:\n\n\nScreenshot Install/Update pckgs from RStudio"
+  },
+  {
+    "objectID": "install.html#loading-a-package-at-the-beginning-of-every-r-session",
+    "href": "install.html#loading-a-package-at-the-beginning-of-every-r-session",
+    "title": "Installation and setup",
+    "section": "Loading a package (at the beginning of every R session)",
+    "text": "Loading a package (at the beginning of every R session)\nOnce packages have been installed, with the command library() loads the specific R packages that you are going to need in any given R session.\n\n# Loading a package (at the beginning of every R session) \n# --- General \nlibrary(here)       # tools find your project's files, based on working directory\nlibrary(fs)         # file/directory interactions\nlibrary(janitor)    # tools for examining and cleaning data\nlibrary(skimr)      # Compact and Flexible Summaries of Data     \nlibrary(openxlsx)   # Read, Write and Edit xlsx Files\n\n# --- Tidyverse \nlibrary(dplyr)      # {tidyverse} A Grammar of Data Manipulation     \nlibrary(tidyr)      # {tidyverse} Tools to create tidy data \nlibrary(forcats)    # {tidyverse} Tools for Categorical Var.(Factors)   \n\n# --- Plotting\nlibrary(ggplot2)    # {tidyverse} tools for plotting\nlibrary(ggstatsplot)# 'ggplot2' Based Plots with Statistical Details \nlibrary(ggpubr)     # 'ggplot2' Based Publication Ready Plots \nlibrary(patchwork)  # Functions for \"\"Grid\" Graphics\"composing\" plots \nlibrary(viridis)    # Colorblind-Friendly Color Maps for R \nlibrary(ggthemes)   # Extra Themes, Scales and Geoms for 'ggplot2'\nlibrary(ggridges)   # Ridgeline Plots in 'ggplot2' (density functions)\n\n# --- Statistics\nlibrary(BSDA)       # Basic Statistics and Data Analysis   \nlibrary(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests\nlibrary(car)        # Companion to Applied Regression\nlibrary(multcomp)   # Simultaneous Inference in General Parametric Models \nlibrary(lmtest)     # Testing Linear Regression Models  \nlibrary(broom)      # Convert Statistical Objects into Tidy Tibbles\nlibrary(performance)# Assessment of Regression Models Performance \nlibrary(pwr)        # Basic Functions for Power Analysis"
+  },
+  {
+    "objectID": "install.html#learning-about-a-package-after-installation",
+    "href": "install.html#learning-about-a-package-after-installation",
+    "title": "Installation and setup",
+    "section": "Learning about a package (after installation)",
+    "text": "Learning about a package (after installation)\nOnce an R package is installed, you can also read the documentation about it directly inside the RStudio IDE. For example, try running in your Console:\n\n# - To ask about a package\n?here\n\n# -- To ask about a specific function\n?janitor::clean_names\n\n?dplyr::group_by\n\nCongrats! You are all done! 🙌🏻"
+  },
+  {
+    "objectID": "install.html#useful-keyboard-shortcuts-in-rstudio",
+    "href": "install.html#useful-keyboard-shortcuts-in-rstudio",
+    "title": "Installation and setup",
+    "section": "Useful keyboard shortcuts in RStudio",
+    "text": "Useful keyboard shortcuts in RStudio\n\n\n\n\n\n\nDescription\nWindows & Linux\nMac\n\n\n\nInsert code section\nCtrl+Shift+R\nShift+Command+R  or Ctrl+Shift+R\n\n\nInsert code chunk (Quarto/Rmarkdown)\nCtrl+Alt+I\nCommand+Option+I\n\n\nComment/uncomment line\nCtrl+Shift+C\nCommand+Shift+C\n\n\nReindent lines\nCtrl+I\nCommand+I\n\n\nInsert 'assign' operator &lt;-\nAlt+-\nOption+-\n\n\nInsert 'pipe' operator %&gt;% or |&gt;\nCtrl+Shift+M\nShift+Command+M\n\n\nCode completion (in source)\nTab\nTab\n\n\nFile path completion (in console)\n\"+Tab\n\"+Tab\n\n\nMultple cursor selection\nAlt+click\nAlt+click\n\n\nMultple cursor selection (next)\nAlt+Shift+click\nAlt+Shift+click\n\n\nSwitch cursor between source & console\nCtrl+1 and Ctrl+2\nCtrl+1 and Ctrl+2\n\n\nRun current line/selection\nCtrl+Enter\nCommand+Return\n\n\nRun current chunk\nCtrl+Alt+C\nCommand+Option+C\n\n\nRun entire file\nCtrl+Shift+Enter\nCommand+Shift+Return\n\n\nShow help for function at cursor\nF1\nF1\n\n\nSearch within file\nCtrl+F\nCommand+F\n\n\nSearch within project\nCtrl+Shift+F\nCommand+Shift+F\n\n\nRestart R session\nCtrl+Shift+F10\nCommand+Shift+F10\n\n\n\n\n\n\nHere you find the complete list of RStudio Keyboard Shortcuts"
+  },
+  {
+    "objectID": "me.html",
+    "href": "me.html",
+    "title": "About the Instructor",
+    "section": "",
+    "text": "Maria Chiara Mimmi, Ph.D., is a Research Fellow at University of Pavia - Dept. of Molecular Medicine, as well as NMR Expert at Fondazione IRCCS Policlinico San Matteo. She has twenty years of experience working in life science research, with a focus on NMR and Mass Spectrometry applied to metabolomics/lipidomics.\nIn 2020, she joined the University of Pavia, at the Molecular Medicine Dept., to work with the recently acquired 700 MHz NMR spectrometer. Since then she focused on NMR applied to either metabolomics and to structure/dynamics of amyloidogenic proteins.\n\n\nUniversità degli Studi di Pavia | Pavia, Italy Master of Biostatistics and Epidemiology | 2018-2019\nUniversità degli Studi di Milano | Milano, Italy Ph.D. in Chemical Sciences | 2001 - 2003\nInstitut National de la Recherche Agronomique | Versailles-Grignon, France Visiting scholar | 2003 - 2003\nUniversità degli Studi di Pavia | Pavia, Italy BSc Degree in Chemistry | 1994 - 2000\nUniversiteit Leiden | Leiden, The Netherlands Erasmus exchange student (6 months) | 1999 - 1999\n\n \n  \n   \n  \n    \n     LinkedIn\n  \n  \n    \n     Email\n  \n  \n      Google Scholar\n  \n  \n      Research Gate\n  \n  \n      Orcid"
+  },
+  {
+    "objectID": "me.html#education",
+    "href": "me.html#education",
+    "title": "About the Instructor",
+    "section": "",
+    "text": "Università degli Studi di Pavia | Pavia, Italy Master of Biostatistics and Epidemiology | 2018-2019\nUniversità degli Studi di Milano | Milano, Italy Ph.D. in Chemical Sciences | 2001 - 2003\nInstitut National de la Recherche Agronomique | Versailles-Grignon, France Visiting scholar | 2003 - 2003\nUniversità degli Studi di Pavia | Pavia, Italy BSc Degree in Chemistry | 1994 - 2000\nUniversiteit Leiden | Leiden, The Netherlands Erasmus exchange student (6 months) | 1999 - 1999"
+  },
+  {
+    "objectID": "modules/02_inference.html",
+    "href": "modules/02_inference.html",
+    "title": "Statistical inference & hypothesis testing",
+    "section": "",
+    "text": "Purpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\n\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\n\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA) \n\n\n\n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations"
+  },
+  {
+    "objectID": "modules/02_inference.html#outline",
+    "href": "modules/02_inference.html#outline",
+    "title": "Statistical inference & hypothesis testing",
+    "section": "",
+    "text": "Purpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\n\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\n\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA) \n\n\n\n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations"
+  },
+  {
+    "objectID": "modules/02_inference.html#lecture-slides",
+    "href": "modules/02_inference.html#lecture-slides",
+    "title": "Statistical inference & hypothesis testing",
     "section": "Lecture slides",
     "text": "Lecture slides\n\n\nView lecture slides in full screen"
   },
   {
-    "objectID": "modules/03_corr_regress.html#practice-slides",
-    "href": "modules/03_corr_regress.html#practice-slides",
-    "title": "Modeling correlation and regression",
-    "section": "Practice slides",
-    "text": "Practice slides\n\nView practice slides in full screen  \n\nPractice input data (as subfolder)\n\n\n Download input data\n\n\nPractice R code (as .R file)\n\n\n Download R file"
-  },
-  {
-    "objectID": "modules/05_intro_ML.html",
-    "href": "modules/05_intro_ML.html",
-    "title": "Introduction to machine learning",
-    "section": "",
-    "text": "🟠 … currently under review … 🟠"
-  },
-  {
-    "objectID": "modules/05_intro_ML.html#lecture-outline",
-    "href": "modules/05_intro_ML.html#lecture-outline",
-    "title": "Introduction to machine learning",
-    "section": "Lecture Outline",
-    "text": "Lecture Outline\n\nIntroduction to Machine Learning\n\nShifting the emphasis on empirical prediction\n\nDistinction between supervised & unsupervised algorithms\n\nSupervised ML Example\n\nLogistic regression\n🌳 Random Forest / decision trees 🌲\n\n\nUnsupervised ML Example\n\nPCA for dimension reduction\nK-means Clustering"
-  },
-  {
-    "objectID": "modules/05_intro_ML.html#lecture-slides",
-    "href": "modules/05_intro_ML.html#lecture-slides",
-    "title": "Introduction to machine learning",
-    "section": "Lecture slides",
-    "text": "Lecture slides\n\n\nView lecture slides in full screen"
-  },
-  {
-    "objectID": "modules/05_intro_ML.html#practice-slides",
-    "href": "modules/05_intro_ML.html#practice-slides",
-    "title": "Introduction to machine learning",
+    "objectID": "modules/02_inference.html#practice-slides",
+    "href": "modules/02_inference.html#practice-slides",
+    "title": "Statistical inference & hypothesis testing",
     "section": "Practice slides",
     "text": "Practice slides\n\nView practice slides in full screen  \n\n\n\nPractice input data (as subfolder)\n\n\n Download input data\n\n\nPractice R code (as .R file)\n\n\n Download R file"
   },
   {
-    "objectID": "practice/practice_slides/slides_extra_01.html#needed-r-packages",
-    "href": "practice/practice_slides/slides_extra_01.html#needed-r-packages",
-    "title": "Diving deeper into Causal Analysis",
-    "section": "Needed R Packages",
-    "text": "Needed R Packages\n\n\nWe will use functions from packages base, utils, and stats (pre-installed and pre-loaded)\nWe may also use the packages below (specifying package::function for clarity).\n\n\n# Load pckgs for this R session\n\n# --- General \nlibrary(here)     # tools find your project's files, based on working directory\nlibrary(dplyr)    # A Grammar of Data Manipulation\nlibrary(skimr)    # Compact and Flexible Summaries of Data\nlibrary(magrittr) # A Forward-Pipe Operator for R \nlibrary(readr)    # A Forward-Pipe Operator for R \n\n# Plotting & data visualization\nlibrary(ggplot2)      # Create Elegant Data Visualisations Using the Grammar of Graphics\nlibrary(ggfortify)     # Data Visualization Tools for Statistical Analysis Results\nlibrary(scatterplot3d) # 3D Scatter Plot\n\n# --- Statistics\nlibrary(MASS)       # Support Functions and Datasets for Venables and Ripley's MASS\nlibrary(factoextra) # Extract and Visualize the Results of Multivariate Data Analyses\nlibrary(FactoMineR) # Multivariate Exploratory Data Analysis and Data Mining\nlibrary(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests\n\n# --- Tidymodels (meta package)\nlibrary(rsample)    # General Resampling Infrastructure  \nlibrary(broom)      # Convert Statistical Objects into Tidy Tibbles"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_extra_01.html#dataset-on-.",
-    "href": "practice/practice_slides/slides_extra_01.html#dataset-on-.",
-    "title": "Diving deeper into Causal Analysis",
-    "section": "Dataset on ….",
-    "text": "Dataset on ….\n\nName: …. Documentation: …. Sampling details: …."
-  },
-  {
-    "objectID": "practice/practice_slides/slides_extra_01.html#importing-dataset-....",
-    "href": "practice/practice_slides/slides_extra_01.html#importing-dataset-....",
-    "title": "Diving deeper into Causal Analysis",
-    "section": "Importing Dataset ....",
-    "text": "Importing Dataset ....\n.\n\nThe data can be interactively obtained form the MASS R package\n\n\n# (after loading pckg)\n# library(MASS)  \n\n# I can call \n# utils::data(biopsy)"
-  },
-  {
-    "objectID": "practice/practice_slides/slides_extra_01.html#section",
-    "href": "practice/practice_slides/slides_extra_01.html#section",
-    "title": "Diving deeper into Causal Analysis",
+    "objectID": "modules/04_caus_pred.html",
+    "href": "modules/04_caus_pred.html",
+    "title": "Causal analysis essentials",
     "section": "",
-    "text": "We define:\n\nthe individual treatment effect\n\nthe average treatment effect\n\nand the average treatment effect on the treated"
+    "text": "Recall the essential features of experimental study designs\n\nLearning the vocabulary of causal analysis\n\n\nGet a visual intuition of causal pathways, including challenging elements:\n\n\nCollider variables\n\nConfounder variables\n\nMediator variables\n\n\nDiscuss the correct causal model to capture the association among exposure, outcome and other covariates, (including challenging ones)\nDefine causal outcomes and choosing the appropriate “estimands”:\n\n\nATE, ATT, or ATU?\n\n\nDevise statistical methods to estimate ATE, ATT, and ATU based on research question and (sub)population of interest"
   },
   {
-    "objectID": "practice/practice_slides/slides_extra_01.html#final-thoughts",
-    "href": "practice/practice_slides/slides_extra_01.html#final-thoughts",
-    "title": "Diving deeper into Causal Analysis",
-    "section": "Final thoughts",
-    "text": "Final thoughts\n\n\n\n…..\n\n…\n\n\n…"
+    "objectID": "modules/04_caus_pred.html#outline",
+    "href": "modules/04_caus_pred.html#outline",
+    "title": "Causal analysis essentials",
+    "section": "",
+    "text": "Recall the essential features of experimental study designs\n\nLearning the vocabulary of causal analysis\n\n\nGet a visual intuition of causal pathways, including challenging elements:\n\n\nCollider variables\n\nConfounder variables\n\nMediator variables\n\n\nDiscuss the correct causal model to capture the association among exposure, outcome and other covariates, (including challenging ones)\nDefine causal outcomes and choosing the appropriate “estimands”:\n\n\nATE, ATT, or ATU?\n\n\nDevise statistical methods to estimate ATE, ATT, and ATU based on research question and (sub)population of interest"
+  },
+  {
+    "objectID": "modules/04_caus_pred.html#lecture-slides",
+    "href": "modules/04_caus_pred.html#lecture-slides",
+    "title": "Causal analysis essentials",
+    "section": "Lecture slides",
+    "text": "Lecture slides\n\n\nView lecture slides in full screen"
+  },
+  {
+    "objectID": "modules/04_caus_pred.html#practice-slides",
+    "href": "modules/04_caus_pred.html#practice-slides",
+    "title": "Causal analysis essentials",
+    "section": "Practice slides",
+    "text": "Practice slides\n\nView practice slides in full screen  \n\n\n\nPractice input data (as subfolder)\n\n\n Download input data\n\n\nPractice R code (as .R file)\n\n\n Download R file"
+  },
+  {
+    "objectID": "modules/06_extra.html",
+    "href": "modules/06_extra.html",
+    "title": "Extra materials",
+    "section": "",
+    "text": "🔴 … currently under review … 🔴"
+  },
+  {
+    "objectID": "modules/06_extra.html#topics",
+    "href": "modules/06_extra.html#topics",
+    "title": "Extra materials",
+    "section": "Topics",
+    "text": "Topics\n\nIntroduction to MetaboAnalyst software\n\nA useful R-based resources for metabolomics\n\n\nElements of statistical Power Analysis"
+  },
+  {
+    "objectID": "modules/06_extra.html#extra-lecture-slides",
+    "href": "modules/06_extra.html#extra-lecture-slides",
+    "title": "Extra materials",
+    "section": "(Extra) lecture slides",
+    "text": "(Extra) lecture slides\n\nView lecture slides in full screen"
+  },
+  {
+    "objectID": "modules/06_extra.html#extra-practice-slides",
+    "href": "modules/06_extra.html#extra-practice-slides",
+    "title": "Extra materials",
+    "section": "(Extra) practice slides",
+    "text": "(Extra) practice slides\n\nView practice slides in full screen  \n\n\n\nPractice input data (as subfolder)\nPractice R code (as .R file)"
   },
   {
     "objectID": "practice/practice_slides/slides_lab02.html#goal-of-todays-practice-session",

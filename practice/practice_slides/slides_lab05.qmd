@@ -1221,7 +1221,7 @@ Reducing high-dimensional data to a lower number of variables
 
 # DATASET #2: `biopsy` {.section-slide}
 
-## Dataset on Breast Cancer Biopsy]
+## Dataset on Breast Cancer Biopsy
 
 ::: {style="font-size: 95%;"}
 **Name**: Biopsy Data on Breast Cancer Patients  
@@ -1230,7 +1230,7 @@ Reducing high-dimensional data to a lower number of variables
 1992; each of nine attributes has been scored on a scale of 1 to 10, and the outcome is also known. The dataset contains the original Wisconsin breast cancer data with 699 observations on 11 variables.  
 ::: 
 
-## Importing Dataset `biopsy`]
+## Importing Dataset `biopsy`
 
 <!-- + **[Option 1]** the data can be directly obtained form the `MASS` R package -->
 <!--   + Adapting the function `here` to match your own folder structure -->
@@ -1271,15 +1271,22 @@ Reducing high-dimensional data to a lower number of variables
 + The data can be interactively obtained form the `MASS` R package
 
 ```{r}
-# (after loading pckg)
-# library(MASS)  
+# (need to load MASS pkg before)
+library(MASS)  
 
-# I can call 
+# ... so I can call 
 utils::data(biopsy)
 ```
 
++ I can find info on the dataset using the `?` operator
+
+```{r}
+# Find info on the dataset
+?biopsy
+```
+
  
-## `biopsy` variables with description]
+## `biopsy` variables with description
 
 ::: {style="font-size: 80%;"}
 <!-- [[EXCERPT: see complete file in Input Data Folder]]{style="color:#77501a"} -->
@@ -1308,7 +1315,7 @@ kableExtra::kable(biopsy_desc)
 :::
 
 
-## `biopsy` dataset manipulation]
+## `biopsy` dataset manipulation
 
 We will: 
 
@@ -1327,7 +1334,7 @@ We will:
 #| eval: false
 
 #--- new (manipulated) dataset 
-# data_biopsy <- na.omit(biopsy[,-c(1,11)])
+data_biopsy <- na.omit(biopsy[,-c(1,11)])
 ```
 :::
   
@@ -1346,7 +1353,7 @@ data_biopsy <- biopsy %>%
 ::::
 
 
-## `biopsy` dataset manipulation]
+## `biopsy` dataset manipulation
 
 We obtained a new dataset with 9 variables and 683 observations (instead of the original 699).  
 ```{r}
@@ -1405,7 +1412,7 @@ summary(biopsy_pca)
 :::
 
 
-## Proportion of Variance for components]
+## [Proportion of Variance for components]{.r-fit-text}
 
 2. The row with **Proportion of Variance** can be either accessed from summary or calculated as follows:
 
@@ -1422,7 +1429,7 @@ round(biopsy_pca$sdev^2 / sum(biopsy_pca$sdev^2), digits = 5)
 > The output suggests the **1st principal component** explains around 65% of the total variance, the **2nd principal component** explains about 9% of the variance, and this goes on with diminishing proportion for each component. 
 
 
-## Cumulative Proportion of variance for components]
+## [Cumulative Proportion of variance for components]{.r-fit-text}
 
 3. The last row from the `summary(biopsy_pca)`, shows the **Cumulative Proportion** of variance, which calculates the cumulative sum of the Proportion of Variance. 
 
@@ -1459,7 +1466,7 @@ factoextra::fviz_eig(biopsy_pca,
 
 > Visualization is essential in the interpretation of PCA results. Based on the number of retained principal components, which is usually the first few, the observations expressed in component scores can be plotted in several ways.
 
-## Principal Component `Scores`]
+## Principal Component `Scores`
 
 After a PCA, the observations are expressed as **principal component scores**.   
 
@@ -1476,7 +1483,7 @@ head(PC_scores)
 
 It is also important to visualize the observations along the new axes (principal components) to interpret the relations in the dataset:
 
-## Principal Component `Scores` plot (adding label variable)]
+## [Principal Component `Scores` plot (adding label variable)]{.r-fit-text}
 
 3. When data includes a factor variable, like in our case, it may be interesting to show the grouping on the plot as well.
 
@@ -1492,7 +1499,7 @@ PC_scores$Label <- biopsy_no_na$class
 <br>
 The visualization of the observation points (point cloud) could be in 2D or 3D.
 
-## Principal Component `Scores` plot (2D)]
+## Principal Component `Scores` plot (2D)
 
 The Scores Plot can be visualized via the `ggplot2` package. 
 
@@ -1516,7 +1523,7 @@ ggplot2::ggplot(PC_scores,
 
 
 
-## Principal Component `Scores` (2D Ellipse Plot)]
+## [Principal Component `Scores` (2D Ellipse Plot)]{.r-fit-text}
 
 Confidence ellipses can also be added to a grouped scatter plot visualized after a PCA. We use the `ggplot2` package. 
 
@@ -1541,7 +1548,7 @@ ggplot2::ggplot(PC_scores,
 
 
 
-## Principal Component `Scores` plot (3D)]
+## Principal Component `Scores` plot (3D)
 
 ::: {style="font-size: 80%;"}
 A 3D scatterplot of observations shows the first **3 principal components’ scores**. 
@@ -1578,7 +1585,7 @@ legend(plot_3d$xyz.convert(0.5, 0.7, 0.5),
 
 :::
 
-## Biplot: principal components v. original variables]
+## [Biplot: principal components v. original variables]{.r-fit-text}
 
 Next, we create another special type of scatterplot (a **biplot**) to understand the relationship between the principal components and the original variables.  
 In the `biplot` each of the observations is projected onto a scatterplot that uses the ***first and second principal components as the axes***.
@@ -1662,34 +1669,34 @@ loadings[ ,1:2]
 
 
 
-## Recap of the workshop's content]
-
-::: {style="font-size: 95%;"}
-
-**TOPICS WE COVERED**
-
-1. Motivated the choice of learning/using **R for scientific quantitative analysis**, and lay out some fundamental concepts in biostatistics with concrete R coding examples.
-
-2. Consolidated understanding of **inferential statistic**, through R coding examples conducted on real biostatistics research data.
-
-3. Discussed the **relationship between any two variables**, and introduce a widely used analytical tool: **regression**.
- 
-4. Presented a popular ML technique for dimensionality reduction (**PCA**), performed both with `MetaboAnalyst` and `R`. 
-
-5. Introduction to **power analysis** to define the correct sample size for hypotheses testing and discussion of how ML approaches deal with available data.
-
-
-:::
-
-
-## Conclusions
+## Recap of the lab's content
 
 <!-- Say something about the PCA slides (similar to "Conclusions" slides 54 after Logistic regression) -->
-+ Today, we explored just a fraction of the **Machine Learning toolbox**, focusing on two fundamental approaches while learning essential **workflow steps** and **practical tools** that extend to more advanced analyses.
++ While we’ve only explored a small portion of the **Machine Learning** toolbox, we have covered two fundamental approaches and gained familiarity with the **ML workflow** and some key **practical tools** that extend to more advanced analyses.
 
 + **`Logistic Regression`** exemplifies **Supervised Learning**, where models learn from labeled data to make predictions—particularly useful for binary classification.
 
-+ **`PCA`** represents **Unsupervised Learning**, helping reduce dimensionality, visualize high-dimensional data, and uncover hidden structures.
++ **`PCA (Principal Component Analysis)`** represents **Unsupervised Learning**, helping to reduce dimensionality, visualize high-dimensional data, and uncover hidden structures.
 
-+ The **context** and the **data** shape analytical choices, whether it's setting a classification **threshold** in Logistic Regression or selecting the **number of components** in PCA to balance information retention and interpretability.
++ Analytical choices depend on the **context** and **data**—whether it's setting a classification **threshold** in Logistic Regression or selecting the **number of components** in PCA to balance information retention and interpretability.
+
+<!-- ## Recap of the workshop's content -->
+
+<!-- ::: {style="font-size: 95%;"} -->
+
+<!-- **ALONG THE WORKSHOP WE HAVE:** -->
+
+<!-- 1. Motivated the choice of learning/using **R for scientific quantitative analysis**, and lay out some fundamental concepts in biostatistics with concrete R coding examples. -->
+
+<!-- 2. Consolidated understanding of **inferential statistic**, through R coding examples conducted on real biostatistics research data. -->
+
+<!-- 3. Discussed the **relationship between any two variables**, and introduce a widely used analytical tool: **regression**. -->
+
+<!-- 4. Presented a popular ML technique for dimensionality reduction (**PCA**), performed both with `MetaboAnalyst` and `R`.  -->
+
+<!-- 5. Introduced **power analysis** to define the correct sample size for hypotheses testing and discussion of how ML approaches deal with available data. -->
+
+
+<!-- ::: -->
+
 

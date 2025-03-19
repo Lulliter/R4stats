@@ -14,13 +14,13 @@ This website [https://r4statistics.com/](https://r4statistics.com/) hosts some t
   + ~~aggiungere decision trees??? NO (dopo!)~~
   + ~~K-MEANS CLUSTERING ? NO (dopo!)~~
   + ~~logistic multiple variables ? NO (too much!)~~
-+ ️ 🔳 🟠 match the lecture in `lecture/lecture_slides/slides_lecture05.qmd` 
 
 + ️🔳 rivedere `practice/practice_slides/slides_lab06.qmd` &&&  verificare file `practice/Rcode/lab06_code.R`
   +️ 🖍️🖍️OKKIO che ho fatto nuova funzione che pass da slide a R code `R_resources/extract_r_code.sh`
 
 + ️🔳 `practice/practice_slides/slides_lab05.qmd`-->> standalone lesson on logistic regression for my website
 
++ ️🔳 ripulire un po' di cose extra (lez e labs)
 
 ### Extra TO DO
 

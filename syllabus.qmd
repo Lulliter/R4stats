@@ -58,7 +58,10 @@ The target audience for this course is undergraduate or graduate students, post-
 
 # Course Outline
 
-> [***Orange text***]{style="color:#bd710e"} indicates "currently under review"
+::: {.callout-caution}
+[***Orange text***]{style="color:#bd710e"} indicates "currently under review"
+:::
+
 
 ## Module 1: Introduction to [{{< fa brands r-project >}}]{style="color:#14455d"} and data analysis
 

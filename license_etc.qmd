@@ -211,7 +211,7 @@ mybib_df %>%
 + @applied_epi_team_r_2024
 + @bobbitt_statology_2024
 + @cetinkaya-rundel_introduction_2023
-+ @childs_introductory_2022-1
++ @childs_introductory_2022
 + @selby_analytical_2024                                   
 + @vu_introductory_2021
 
@@ -256,6 +256,8 @@ mybib_df %>%
 + @chicco_machine_2020
 + @ahmad_survival_2017
 + @joosten_cardiovascular_2013
++ @ripley_mass_2009
+
 <!-- <!-- For HTML output -->  
 <!-- ::: {.content-hidden when-format="html"} -->
 <!-- ## References -->
