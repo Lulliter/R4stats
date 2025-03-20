@@ -16,7 +16,7 @@ execute:
 ---
 
 
-## Outline
+## Topics covered
 
 + Introduction to R and R-studio
   + Why R?

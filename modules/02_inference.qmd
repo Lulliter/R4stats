@@ -6,7 +6,7 @@ subtitle: "<span class='code'>Module 2</span>"
 tbl-colwidths: [5,20,75]
 ---
 
-## Outline
+## Topics covered
 
 + **Purpose and foundations of inferential statistics**
   + Probability and random variables 

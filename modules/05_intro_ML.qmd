@@ -10,7 +10,7 @@ tbl-colwidths: [5,20,75]
 🟠  … currently under review … 🟠
 
 
-## Lecture Outline
+## Topics covered
 
 + Introduction to **Machine Learning**
 + Shifting the emphasis on **empirical prediction**

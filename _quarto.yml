@@ -94,7 +94,7 @@ format:
     ##----- code highlighting style 
     highlight-style: monokai # atom-one # github # dracula  
     mainfont: "Lato"
-    monofont: "Fira Mono" 
+    monofont: "Fira Mono"
 
 
 

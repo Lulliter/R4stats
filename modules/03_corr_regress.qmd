@@ -15,7 +15,7 @@ execute:
   cache: false # normalmnte false
 ---
 
-## Outline
+## Topics covered
 
 + Testing and summarizing relationship between 2 variables (**correlation**)
   + Pearson $r$ analysis (param)

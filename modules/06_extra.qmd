@@ -1,28 +1,26 @@
 ---
-title: "Extra materials"
+title: "Bonus materials"
 subtitle: "<span class='code'>Additional topics...</span>"
 # date: "2024-07-27"
 # image: "images/04-guide.png"
 tbl-colwidths: [5,20,75]
 ---
 
+## Topics covered
 
-🔴  … currently under review … 🔴
- 
-## Topics
-
--   Introduction to `MetaboAnalyst` software
-    -   A useful R-based resources for metabolomics
+<!-- -   Introduction to `MetaboAnalyst` software -->
+<!--     -   A useful R-based resources for metabolomics -->
 
 -   Elements of statistical **Power Analysis**
+-   Machine learning approaches with data : **Training and Testing** data splitting  
 
-## (Extra) lecture slides
+## (Bonus) lecture slides
 
 ::: {.custom-border style="border: 2px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"}
 [**View lecture slides in full screen** &nbsp;{{< fa file-powerpoint >}}](../lectures_slides/Lecture_06.pdf)
 :::
 
-## (Extra) practice slides
+## (Bonus) practice slides
 
 ::: {.custom-border style="border: 2px solid lightgray; padding: 10px 20px; background-color: #f9f6e7; border-radius: 15px; display: inline-block; text-align: center; margin: auto;"}
 [**View practice slides in full screen** &nbsp;{{< fa file-code >}}](../practice/practice_slides/slides_lab06.html)
@@ -33,7 +31,7 @@ tbl-colwidths: [5,20,75]
 \pagebreak
 
 ```{r}
-#| eval: false
+#| eval: true
 #| echo: false
 #| output: true
 
@@ -45,7 +43,7 @@ library(downloadthis)
 ### Practice input data (as `subfolder`)
 
 ```{r}
-#| eval: false
+#| eval: true
 #| echo: false
 #| output: true
 
@@ -63,7 +61,7 @@ download_dir(
 
 ### Practice R code (as `.R` file)
 ```{r}
-#| eval: false
+#| eval: true
 #| echo: false
 #| output: true
 

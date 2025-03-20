@@ -1960,11 +1960,11 @@
     "text": "🟠 … currently under review … 🟠"
   },
   {
-    "objectID": "modules/05_intro_ML.html#lecture-outline",
-    "href": "modules/05_intro_ML.html#lecture-outline",
+    "objectID": "modules/05_intro_ML.html#topics-covered",
+    "href": "modules/05_intro_ML.html#topics-covered",
     "title": "Introduction to machine learning",
-    "section": "Lecture Outline",
-    "text": "Lecture Outline\n\nIntroduction to Machine Learning\n\nShifting the emphasis on empirical prediction\n\nDistinction between supervised & unsupervised algorithms\n\nSupervised ML Example\n\nLogistic regression\n🌳 Random Forest / decision trees 🌲\n\n\nUnsupervised ML Example\n\nPCA for dimension reduction\nK-means Clustering"
+    "section": "Topics covered",
+    "text": "Topics covered\n\nIntroduction to Machine Learning\n\nShifting the emphasis on empirical prediction\n\nDistinction between supervised & unsupervised algorithms\n\nSupervised ML Example\n\nLogistic regression\n🌳 Random Forest / decision trees 🌲\n\n\nUnsupervised ML Example\n\nPCA for dimension reduction\nK-means Clustering"
   },
   {
     "objectID": "modules/05_intro_ML.html#lecture-slides",
@@ -1988,8 +1988,8 @@
     "text": "Testing and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (param)\n\n(numerical variables)\n\n\nSpearman’s test (no param)\n\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\n\nFisher’s Exact Test\n\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\n\nWidely used analytical tools\n\nSimple linear regression models\nMultiple Linear Regression models\n\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised & Unsupervised algorithms"
   },
   {
-    "objectID": "modules/03_corr_regress.html#outline",
-    "href": "modules/03_corr_regress.html#outline",
+    "objectID": "modules/03_corr_regress.html#topics-covered",
+    "href": "modules/03_corr_regress.html#topics-covered",
     "title": "Modeling correlation and regression",
     "section": "",
     "text": "Testing and summarizing relationship between 2 variables (correlation)\n\nPearson \\(r\\) analysis (param)\n\n(numerical variables)\n\n\nSpearman’s test (no param)\n\n\nMeasures of association\n\nChi-Square Test of Independence\n\n(categorical variables)\n\n\nFisher’s Exact Test\n\n\nFrom correlation/association to prediction/causation\n\nThe purpose of observational and experimental studies\n\n\nWidely used analytical tools\n\nSimple linear regression models\nMultiple Linear Regression models\n\n\nShifting the emphasis on empirical prediction\n\nIntroduction to Machine Learning (ML)\nDistinction between Supervised & Unsupervised algorithms"
@@ -2016,8 +2016,8 @@
     "text": "Introduction to R and R-studio\n\nWhy R?\nPrinciples of reproducible analysis with R + RStudio\n\n\nR objects, functions, packages\nUnderstanding different types of variables\n\nPrinciples of “tidy data”\nData cleaning and manipulation\n\n\nDescriptive statistics\n\nMeasures of central tendency, measures of variability (or spread), and\n\n\nFrequency distribution\nVisual data exploration\n\n{ggplot2}"
   },
   {
-    "objectID": "modules/01_data_with_R.html#outline",
-    "href": "modules/01_data_with_R.html#outline",
+    "objectID": "modules/01_data_with_R.html#topics-covered",
+    "href": "modules/01_data_with_R.html#topics-covered",
     "title": "Intro to R and data analysis",
     "section": "",
     "text": "Introduction to R and R-studio\n\nWhy R?\nPrinciples of reproducible analysis with R + RStudio\n\n\nR objects, functions, packages\nUnderstanding different types of variables\n\nPrinciples of “tidy data”\nData cleaning and manipulation\n\n\nDescriptive statistics\n\nMeasures of central tendency, measures of variability (or spread), and\n\n\nFrequency distribution\nVisual data exploration\n\n{ggplot2}"
@@ -2135,8 +2135,8 @@
     "text": "Purpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\n\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\n\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA) \n\n\n\n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations"
   },
   {
-    "objectID": "modules/02_inference.html#outline",
-    "href": "modules/02_inference.html#outline",
+    "objectID": "modules/02_inference.html#topics-covered",
+    "href": "modules/02_inference.html#topics-covered",
     "title": "Statistical inference & hypothesis testing",
     "section": "",
     "text": "Purpose and foundations of inferential statistics\n\nProbability and random variables\nMeaningful probability distributions\nSampling distributions and Central Limit Theorem\n\n\n\nGetting to know the “language” of hypothesis testing\n\nThe null and alternative hypothesis\nThe probability of error? (α or “significance level”)\nThe p-value probability and tests interpretation\nConfidence Intervals\nTypes of errors (Type 1 and Type 2)\nEffective vs statistical significance\n\n\n\nHypothesis tests examples\n\nComparing sample mean to a hypothesized population mean (Z test & t test)\nComparing two independent sample means (t test)\nComparing sample means from 3 or more groups (ANOVA) \n\n\n\n\nA closer look at testing assumptions (with examples)\n\nTesting two groups that are not independent\nTesting if the data are not normally distributed: non-parametric tests\nTesting samples without homogeneous variance of observations"
@@ -2163,8 +2163,8 @@
     "text": "Recall the essential features of experimental study designs\n\nLearning the vocabulary of causal analysis\n\n\nGet a visual intuition of causal pathways, including challenging elements:\n\n\nCollider variables\n\nConfounder variables\n\nMediator variables\n\n\nDiscuss the correct causal model to capture the association among exposure, outcome and other covariates, (including challenging ones)\nDefine causal outcomes and choosing the appropriate “estimands”:\n\n\nATE, ATT, or ATU?\n\n\nDevise statistical methods to estimate ATE, ATT, and ATU based on research question and (sub)population of interest"
   },
   {
-    "objectID": "modules/04_caus_pred.html#outline",
-    "href": "modules/04_caus_pred.html#outline",
+    "objectID": "modules/04_caus_pred.html#topics-covered",
+    "href": "modules/04_caus_pred.html#topics-covered",
     "title": "Causal analysis essentials",
     "section": "",
     "text": "Recall the essential features of experimental study designs\n\nLearning the vocabulary of causal analysis\n\n\nGet a visual intuition of causal pathways, including challenging elements:\n\n\nCollider variables\n\nConfounder variables\n\nMediator variables\n\n\nDiscuss the correct causal model to capture the association among exposure, outcome and other covariates, (including challenging ones)\nDefine causal outcomes and choosing the appropriate “estimands”:\n\n\nATE, ATT, or ATU?\n\n\nDevise statistical methods to estimate ATE, ATT, and ATU based on research question and (sub)population of interest"
@@ -2186,30 +2186,30 @@
   {
     "objectID": "modules/06_extra.html",
     "href": "modules/06_extra.html",
-    "title": "Extra materials",
+    "title": "Bonus materials",
     "section": "",
-    "text": "🔴 … currently under review … 🔴"
+    "text": "Elements of statistical Power Analysis\n\nMachine learning approaches with data : Training and Testing data splitting"
   },
   {
-    "objectID": "modules/06_extra.html#topics",
-    "href": "modules/06_extra.html#topics",
-    "title": "Extra materials",
-    "section": "Topics",
-    "text": "Topics\n\nIntroduction to MetaboAnalyst software\n\nA useful R-based resources for metabolomics\n\n\nElements of statistical Power Analysis"
+    "objectID": "modules/06_extra.html#topics-covered",
+    "href": "modules/06_extra.html#topics-covered",
+    "title": "Bonus materials",
+    "section": "",
+    "text": "Elements of statistical Power Analysis\n\nMachine learning approaches with data : Training and Testing data splitting"
   },
   {
-    "objectID": "modules/06_extra.html#extra-lecture-slides",
-    "href": "modules/06_extra.html#extra-lecture-slides",
-    "title": "Extra materials",
-    "section": "(Extra) lecture slides",
-    "text": "(Extra) lecture slides\n\nView lecture slides in full screen"
+    "objectID": "modules/06_extra.html#bonus-lecture-slides",
+    "href": "modules/06_extra.html#bonus-lecture-slides",
+    "title": "Bonus materials",
+    "section": "(Bonus) lecture slides",
+    "text": "(Bonus) lecture slides\n\nView lecture slides in full screen"
   },
   {
-    "objectID": "modules/06_extra.html#extra-practice-slides",
-    "href": "modules/06_extra.html#extra-practice-slides",
-    "title": "Extra materials",
-    "section": "(Extra) practice slides",
-    "text": "(Extra) practice slides\n\nView practice slides in full screen  \n\n\n\nPractice input data (as subfolder)\nPractice R code (as .R file)"
+    "objectID": "modules/06_extra.html#bonus-practice-slides",
+    "href": "modules/06_extra.html#bonus-practice-slides",
+    "title": "Bonus materials",
+    "section": "(Bonus) practice slides",
+    "text": "(Bonus) practice slides\n\nView practice slides in full screen  \n\n\n\nPractice input data (as subfolder)\n\n\n Download input data\n\n\nPractice R code (as .R file)\n\n\n Download R file"
   },
   {
     "objectID": "practice/practice_slides/slides_lab02.html#goal-of-todays-practice-session",
