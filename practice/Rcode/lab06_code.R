@@ -1,9 +1,6 @@
-# #    logo: imgs_slides/mitgest_logo.png ----
-# #    footer: <https://lulliter.github.io/R4biostats/lectures.html> ----
-# ## ------------- x salvare come PDF  ----
-# # [GOAL OF TODAY'S PRACTICE SESSION]{.r-fit-text} ----
+# # GOAL OF TODAY'S PRACTICE SESSION {.section-slide}  ----
 # ## Topics discussed in Lecture # 6 ----
-# # R ENVIRONMENT SET UP & DATA ----
+# # R ENVIRONMENT SET UP & DATA {.section-slide}  ----
 # ## Needed R Packages ----
 
 # # Load pckgs for this R session ----
@@ -25,9 +22,6 @@ library(scatterplot3d) # 3D Scatter Plot
 
 # # --- Statistics ----
 # --- Statistics
-library(MASS)       # Support Functions and Datasets for Venables and Ripley's MASS
-library(factoextra) # Extract and Visualize the Results of Multivariate Data Analyses
-library(FactoMineR) # Multivariate Exploratory Data Analysis and Data Mining
 library(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests
 
 # # --- Tidymodels (meta package) ----
@@ -35,19 +29,19 @@ library(rstatix)    # Pipe-Friendly Framework for Basic Statistical Tests
 library(rsample)    # General Resampling Infrastructure  
 library(broom)      # Convert Statistical Objects into Tidy Tibbles
 
-# # POWER ANALYSIS  ----
-# # DATASETS for today ----
-# ## Sample Size determination in Inferential statistics  ----
+# # POWER ANALYSIS  {.section-slide}  ----
+# # DATASETS for today {.section-slide}  ----
+# ## [Sample size in inferential statistics]{.r-fit-text} ----
 # ## [Purpose and challenges of Power Analysis]{.r-fit-text} ----
 # ## [Required inputs to define the sample size `n`]{.r-fit-text} ----
 # ## [Specifying effect size]{.r-fit-text} ----
 # ## [Specifying effect size: general guidelines]{.r-fit-text} ----
 # ## The `pwr` package   ----
-# ## [One Sample Mean: EXE data]{.r-fit-text} ----
+# ## [One Sample Mean: example data]{.r-fit-text} ----
 
 # # Load data on river fish length  ----
 # Load data on river fish length 
-fishlength_data <- readr::read_csv(here::here("practice", "data_input", "05_datasets", 
+fishlength_data <- readr::read_csv(here::here("practice", "data_input", "06_datasets", 
                                               "fishlength.csv"),
                               show_col_types = FALSE)
 
@@ -147,7 +141,7 @@ pwr::pwr.t.test(d = 0.94, power = 0.8, sig.level = 0.05,
 
 # # Load data  ----
 # Load data 
-cortisol_data <- read.csv(file = here::here("practice", "data_input", "05_datasets", 
+cortisol_data <- read.csv(file = here::here("practice", "data_input", "06_datasets", 
                                         "cortisol.csv"), 
                           header = TRUE, # 1st line is the name of the variables
                           sep = ",", # which is the field separator character.
@@ -208,7 +202,7 @@ pwr::pwr.t.test(# n = 20,
 
 # # Load data  ----
 # Load data 
-mussels_data <- read.csv(file = here::here("practice", "data_input", "05_datasets", 
+mussels_data <- read.csv(file = here::here("practice", "data_input", "06_datasets", 
                                         "mussels.csv"), 
                           header = TRUE, # 1st line is the name of the variables
                           sep = ",", # which is the field separator character.
@@ -295,21 +289,24 @@ lm_mussels <- lm(length ~ location,
                  data = mussels_data)
 
 
+#| echo: true
+#| output: true
 #| output-location: slide
 
 # # summarise the model ----
 # summarise the model
-summary(lm_mussels)
+summary(lm_mussels) 
 
 # ## [Linear Regression with grouped data: POWER ANALYSIS]{.r-fit-text} ----
 
 # # Extract R squared ----
 # Extract R squared
-R_2 <- summary(lm_mussels)$r.squared
+R_2 <- summary(lm_mussels)$r.squared  # 0.4558614
+
 # # compute f squared ----
 # compute f squared
 f_2 <- R_2 / (1 - R_2)
-f_2
+f_2                                   # 0.837767
 
 
 # # power analysis for overall linear model  ----
@@ -323,7 +320,7 @@ pwr::pwr.f2.test(u = 4, v = NULL,
 pwr::pwr.f2.test(u = 4, f2 = 0.8378974,
             sig.level = 0.05 , power = 0.8)
 
-# # SAMPLE SPLITTING IN MACHINE LEARNING ----
+# # SAMPLE SPLITTING IN MACHINE LEARNING {.section-slide}  ----
 # ## [2 different approaches with different takes on empirical data]{.r-fit-text} ----
 # ## [Data Splitting in ML approaches]{.r-fit-text} ----
 # ## [Introducing R (metapackage) `tidymodels` for modeling and ML]{.r-fit-text} ----
@@ -341,7 +338,7 @@ nhanes <- read.csv(file = here::here("practice", "data_input", "03_datasets",
                           na.strings = c("?","NA" ), # specific MISSING values  
                           row.names = NULL) 
 
-# ## Splitting the dataset into training and testing samples ----
+# ## [Splitting the dataset into training and testing samples]{.r-fit-text} ----
 
 # # ensure we always get the same result when sampling (for convenience ) ----
 # ensure we always get the same result when sampling (for convenience )
@@ -393,6 +390,6 @@ RMSE_train # 6.866044
 # R squared is also quite low 
 summary(lin_mod)$r.squared     # R^2 0.0341589
 
-# # WRAPPING UP TODAY'S KEY MESSAGE  ----
-# ## [Recap of the workshop's content]{.r-fit-text} ----
+# # WRAPPING UP {.section-slide}  ----
+# ## [Recap of the lab's content]{.r-fit-text} ----
 # ## Final thoughts ----

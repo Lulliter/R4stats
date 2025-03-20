@@ -202,3 +202,39 @@ details>summary {
 .section-slide h1 {
   color: #943451 !important;
 }
+
+// Style blockquotes more compactly
+.reveal blockquote {
+  border-left: 4px solid #00355d;
+  margin: 0.2em 0;  // Reduced vertical margins
+  padding: 0 0 0 1em;  // Remove vertical padding, keep left padding
+  font-family: "Meslo";
+  font-style: italic;
+  background: #e6eef5;
+  //box-shadow: 2px 2px 5px rgba(0, 88, 155, 0.2); //
+  box-shadow: none;
+  width: fit-content;  // Make container fit content
+  display: inline-block;  // Prevent full-width block
+
+  // Remove extra spacing and default quotes
+  &::before,
+  &::after {
+    content: none;
+  }
+
+  // Remove any default reveal.js styles
+  p {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+// Style blockquotes with their own bold formatting
+.reveal blockquote b,
+.reveal blockquote strong {
+  color: inherit;  // Keep the blockquote text color
+  font-weight: 700;  // Can be bolder within quotes
+}
+// replicate the CSS for a callout box with a custom title, icon, and default appearance
+// FROM https://github.com/melissavanbussel/YouTube-Tutorials/blob/main/quarto_custom_callouts/custom.scss
+// ...

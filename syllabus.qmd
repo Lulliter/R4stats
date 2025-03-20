@@ -35,7 +35,7 @@ suppress-bibliography: true
 <!-- https://bioinformatics.ca/workshops-all/2024-help-what-statistical-model-should-i-use-guelph-on/ -->
 <!-- This is a specialized course designed for bioinformatics professionals and researchers dealing with biological datasets who are unsure about which statistical analysis they should implement. This course focuses on empowering participants to conduct end-to-end data analyses. Learn the art of selecting appropriate statistical methods aligned with research questions, and develop a decision tree guiding data cleaning, exploration, analysis, and interpretation. Engage in hands-on coding sessions in the R software with real-world datasets, learning the skills needed to confidently navigate and communicate insights throughout the analytical process. Particular emphasis will be placed on developing an understanding of the statistical methods used, when to apply them, and how to interpret them. By the course’s conclusion, participants will be equipped with a concise and powerful toolkit for unlocking the full potential of complex biological datasets. -->
 
-This is an intensive course originally designed for students and researchers dealing with biological datasets to help them consolidate their practical understanding of frequently implemented data analysis and statistical modeling for academic research purposes. This course focuses on empowering participants to conduct **end-to-end data analyses**, guiding them through reproducible data storage, cleaning, exploration, analysis, and interpretation cycle. 
+This is an intensive course originally designed for students and researchers dealing with data to help them consolidate their practical understanding of frequently implemented data analysis and statistical modeling for academic research purposes. This course focuses on empowering participants to conduct **end-to-end data analyses**, guiding them through reproducible data storage, cleaning, exploration, analysis, and interpretation cycle. 
 
 Beyond the **conceptual foundations**, participants engage in **hands-on coding sessions** in the R software with real-world datasets and solved questions, validating in practice the skills needed to confidently acquire and communicate insights throughout the analytical process.   
 
@@ -140,7 +140,7 @@ The target audience for this course is undergraduate or graduate students, post-
   + **ATE**, **ATT**, or **ATU**?
 + Devise **statistical methods** to estimate ATE, ATT, and ATU based on research question and (sub)population of interest
 
-## [Module 5: Introduction to machine learning]{style="color:#bd710e"}
+## Module 5: Introduction to machine learning
 
 + Introduction to **Machine Learning**
 + Shifting the emphasis on **empirical prediction**
@@ -155,11 +155,11 @@ The target audience for this course is undergraduate or graduate students, post-
     + **PLS-Discriminant Analysis** -- "*supervised*" alternative to PCA performing simultaneous dimensionality reduction and classification 
    
    
-## [Module 6: Bonus topics]{style="color:#bd710e"} 
+## Module 6: Bonus topics 
 
-+ **Introduction to `MetaboAnalyst` software**
-  + Overview of a useful, R-based resources for metabolomics 
-  + Illustrative workflow with `MetaboAnalyst` 
+<!-- + **Introduction to `MetaboAnalyst` software** -->
+<!--   + Overview of a useful, R-based resources for metabolomics  -->
+<!--   + Illustrative workflow with `MetaboAnalyst`  -->
 + **Elements of statistical Power Analysis**
   + Brief review of hypothesis testing framework (from Module 2)
   + Review of *type I* and *type II* decision errors, contextualizing them in experimental settings

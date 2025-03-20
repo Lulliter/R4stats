@@ -10,13 +10,9 @@ This website [https://r4statistics.com/](https://r4statistics.com/) hosts some t
 + ✅ Must do manual 
   + ~~\*.PPTX 2 \*.PDF LOOSES THE EQUATIONS!!!!!~~
 
-+ ✅  ultimare `practice/practice_slides/slides_lab05.qmd` + practice/RCODE 5 
-  + ~~aggiungere decision trees??? NO (dopo!)~~
-  + ~~K-MEANS CLUSTERING ? NO (dopo!)~~
-  + ~~logistic multiple variables ? NO (too much!)~~
++ ✅ ~~Rivedere `practice/practice_slides/slides_lab06.qmd` &&&  verificare file `practice/Rcode/lab06_code.R`~~
 
-+ ️🔳 rivedere `practice/practice_slides/slides_lab06.qmd` &&&  verificare file `practice/Rcode/lab06_code.R`
-  +️ 🖍️🖍️OKKIO che ho fatto nuova funzione che pass da slide a R code `R_resources/extract_r_code.sh`
+  + ️️😎 ️OKKIO che ho fatto nuova funzione che pass da slide a R code `R_resources/extract_r_code.sh`
 
 + ️🔳 `practice/practice_slides/slides_lab05.qmd`-->> standalone lesson on logistic regression for my website
 
@@ -26,6 +22,11 @@ This website [https://r4statistics.com/](https://r4statistics.com/) hosts some t
 
 + ️◽ **[add `renv`]** bc this is going to last 
 + ️◽ turn re-usable practice slides code into `tidyeval` functions (plot etc) to be able to replace with different datasets 
++ ️◽ ultimare `practice/practice_slides/slides_lab05.qmd` + practice/RCODE 5   con:
+  + ~~aggiungere decision trees??? NO (dopo!)~~
+  + ~~K-MEANS CLUSTERING ? NO (dopo!)~~
+  + ~~logistic multiple variables ? NO (too much!)~~
+
 
 ## How this website was built
 

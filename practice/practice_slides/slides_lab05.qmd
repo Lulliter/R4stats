@@ -496,7 +496,7 @@ par(mfrow = c(1, 1))
 #| output: false
 
 # --- multicollinearity
-#vif(linear_mod) # ideally < 5
+vif(linear_mod) # ideally < 5
 ```
 
 ## [Fitting a `logistic regression` model]{.r-fit-text}

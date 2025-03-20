@@ -258,12 +258,9 @@ plot(linear_mod, which = 2)
 # # Reset graphical parameters (optional, avoids affecting later plots) ----
 # Reset graphical parameters (optional, avoids affecting later plots)
 par(mfrow = c(1, 1))
-# # multicollinearity ----
-# multicollinearity
-#vif(linear_mod) # need at least 2 predictors
-# # ideally < 5 ----
-# ideally < 5
 
+
+# # --- multicollinearity ----
 # ## [Fitting a `logistic regression` model]{.r-fit-text} ----
 
 #| output: true
@@ -718,19 +715,23 @@ roc_plot()
 # ## Conclusions ----
 # # PCA: EXAMPLE of UNSUPERVISED ML ALGORITHM {.section-slide} ----
 # # DATASET #2: `biopsy` {.section-slide} ----
-# ## Dataset on Breast Cancer Biopsy] ----
-# ## Importing Dataset `biopsy`] ----
+# ## Dataset on Breast Cancer Biopsy ----
+# ## Importing Dataset `biopsy` ----
 
-# # (after loading pckg) ----
-# (after loading pckg)
-# # library(MASS)   ----
-# library(MASS)  
+# # (need to load MASS pkg before) ----
+# (need to load MASS pkg before)
+library(MASS)  
 
-# # I can call  ----
-# I can call 
+# # ... so I can call  ----
+# ... so I can call 
 utils::data(biopsy)
 
-# ## `biopsy` variables with description] ----
+
+# # Find info on the dataset ----
+# Find info on the dataset
+?biopsy
+
+# ## `biopsy` variables with description ----
 
 #| output: true
 #| echo: false
@@ -752,21 +753,18 @@ biopsy_desc <- tibble::tribble(
 
 kableExtra::kable(biopsy_desc)
 
-# ## `biopsy` dataset manipulation] ----
-# # new (manipulated) dataset  ----
-# new (manipulated) dataset 
-#data_biopsy <- na.omit(biopsy[,-c(1,11)])
+# ## `biopsy` dataset manipulation ----
 
 
-# # new (manipulated) dataset  ----
-# new (manipulated) dataset 
+# # --- new (manipulated) dataset  ----
+# --- new (manipulated) dataset 
 data_biopsy <- biopsy %>% 
   # drop incomplete & non-integer columns
   dplyr::select(-ID, -class) %>% 
   # drop incomplete observations (rows)
   dplyr::filter(complete.cases(.))
 
-# ## `biopsy` dataset manipulation] ----
+# ## `biopsy` dataset manipulation ----
 
 # # check reduced dataset  ----
 # check reduced dataset 
@@ -788,7 +786,7 @@ names(biopsy_pca)
 
 summary(biopsy_pca)
 
-# ## Proportion of Variance for components] ----
+# ## [Proportion of Variance for components]{.r-fit-text} ----
 
 # # a) Extracting Proportion of Variance from summary ----
 # a) Extracting Proportion of Variance from summary
@@ -798,7 +796,7 @@ summary(biopsy_pca)$importance[2,]
 # b) (same thing)
 round(biopsy_pca$sdev^2 / sum(biopsy_pca$sdev^2), digits = 5)
 
-# ## Cumulative Proportion of variance for components] ----
+# ## [Cumulative Proportion of variance for components]{.r-fit-text} ----
 
 # # Extracting Cumulative Proportion from summary ----
 # Extracting Cumulative Proportion from summary
@@ -816,7 +814,7 @@ factoextra::fviz_eig(biopsy_pca,
                      addlabels = TRUE, 
                      ylim = c(0, 70))
 
-# ## Principal Component `Scores`] ----
+# ## Principal Component `Scores` ----
 
 #| output-location: slide
 
@@ -825,7 +823,7 @@ factoextra::fviz_eig(biopsy_pca,
 PC_scores <- as.data.frame(biopsy_pca$x)
 head(PC_scores)
 
-# ## Principal Component `Scores` plot (adding label variable)] ----
+# ## [Principal Component `Scores` plot (adding label variable)]{.r-fit-text} ----
 
 # # retrieve class variable ----
 # retrieve class variable
@@ -834,7 +832,7 @@ biopsy_no_na <- na.omit(biopsy)
 # adding class grouping variable to PC_scores
 PC_scores$Label <- biopsy_no_na$class
 
-# ## Principal Component `Scores` plot (2D)] ----
+# ## Principal Component `Scores` plot (2D) ----
 
 #| output-location: slide
 #| fig-cap: "Figure 1 shows the observations projected into the new data space made up of principal components"
@@ -848,7 +846,7 @@ ggplot2::ggplot(PC_scores,
   ggtitle("Figure 1: Scores Plot") +
   theme_bw()
 
-# ## Principal Component `Scores` (2D Ellipse Plot)] ----
+# ## [Principal Component `Scores` (2D Ellipse Plot)]{.r-fit-text} ----
 
 #| output-location: slide
 #| fig-cap: "Figure 2 shows the observations projected into the new data space made up of principal components, with 95% confidence regions displayed." 
@@ -863,7 +861,7 @@ ggplot2::ggplot(PC_scores,
   ggtitle("Figure 2: Ellipse Plot") +
   theme_bw()
 
-# ## Principal Component `Scores` plot (3D)] ----
+# ## Principal Component `Scores` plot (3D) ----
 
 #| output-location: slide
 #| fig-cap: "Figure 3 shows the observations projected into the new 3D data space made up of principal components." 
@@ -890,7 +888,7 @@ legend(plot_3d$xyz.convert(0.5, 0.7, 0.5),
        legend = levels(PC_scores$Label), 
        col = seq_along(levels(PC_scores$Label)))
 
-# ## Biplot: principal components v. original variables] ----
+# ## [Biplot: principal components v. original variables]{.r-fit-text} ----
 
 #| output-location: slide
 #| fig-cap: "The axes show the principal component scores, and the vectors are the loading vectors"
@@ -911,5 +909,4 @@ loadings <- biopsy_pca$rotation
 # excerpt of first 2 components
 loadings[ ,1:2] 
 
-# ## Recap of the workshop's content] ----
-# ## Conclusions ----
+# ## Recap of the lab's content ----
