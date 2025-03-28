@@ -19,7 +19,7 @@ This website [https://r4statistics.com/](https://r4statistics.com/) hosts some t
 + ️🔳 ripulire un po' di cose extra (lez e labs)
 
 ### Extra TO DO
-
++ ️🔳 su lez 4vedi anche programma di [Causal Inference in Econometrics - Online Course](https://statisticalhorizons.com/seminars/causal-inference-in-econometrics-on-demand/) di Nick Huntington-Klein
 + ️◽ **[add `renv`]** bc this is going to last 
 + ️◽ turn re-usable practice slides code into `tidyeval` functions (plot etc) to be able to replace with different datasets 
 + ️◽ ultimare `practice/practice_slides/slides_lab05.qmd` + practice/RCODE 5   con:
